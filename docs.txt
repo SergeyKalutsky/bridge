@@ -1,0 +1,73 @@
+"start": "C:/ProgramData/chocolatey/lib/electron/tools/electron.exe ." for windows
+"start": "electron ." for everithing else
+
+an amaising react write off:
+https://blog.logrocket.com/electron-forge-vs-electron-react-boilerplate/
+
+creating reac-forge project:
+Only some root issues
+yarn create electron-app my-new-app --template=typescript-webpack
+yarn add react react-dom
+yarn add @types/react @types/react-dom --dev
+
+sudo prompt stuff:
+https://github.com/electron/electron-packager/issues/647
+https://www.npmjs.com/package/sudo-prompt
+
+comprehensive rewiev of child_process:
+https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
+
+about xtermjs:
+https://stackoverflow.com/questions/63390143/how-do-i-connect-xterm-jsin-electron-to-a-real-working-command-prompt
+
+Initial plans where to use node-pty + xterm but apperently its huge pain in the ass
+to build node-pty since it requires some c++ tools. At this moment I will leave it for later 
+implementation. Consol is not comming right away. Or never? Whats the poin to duplicate code?
+
+So for first stage of development I need:
+1. Make init work
+2. Use only spawn process
+3. Make git work
+
+
+For the second stage:
+1. Add package installation
+2. Add code excecution with API
+
+
+For the third and last stage:
+1. Add terminal
+2. Make use of the terminal
+
+
+Init app WINDOWS
+1. Check access to admin privileges
+2. Install chocolatey
+3. Install git
+4. Install git cli
+5. Need to solve "gh auth login" issue
+    Authentikate with a auth token
+6. Download a repo if exists
+
+Init app Unix
+1. Check access to admin privileges(optional)
+2. Install Brew
+3. Install git
+4. Install git cli
+5. Need to solve "gh auth login" issue
+    Authentikate with a auth token
+6. Download a repo if exists
+
+
+remote API:
+
+1. Fast API for implemetation
+2. get login/password
+3. Returns user congig.
+
+User config:
+1. login
+2. password
+3. git auth tocken go cli gihub
+4. remotes for work
+5. Needed package config
