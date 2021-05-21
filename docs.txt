@@ -1,6 +1,8 @@
 "start": "C:/ProgramData/chocolatey/lib/electron/tools/electron.exe ." for windows
 "start": "electron ." for everithing else
 
+adding hot reload to react-typescript-electron forge https://github.com/electron-userland/electron-forge/issues/1390
+
 an amaising react write off:
 https://blog.logrocket.com/electron-forge-vs-electron-react-boilerplate/
 

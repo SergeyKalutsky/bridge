@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader';
 import { useState } from 'react'
 import Console from './components/Console'
 import LeftSideBar from './components/LeftMenu'
@@ -21,11 +20,8 @@ const Main = () => {
   )
 }
 
-function App() {
+export default function App() {
   return (
     <Main />
   );
 }
-
-
-export default hot(module)(App);

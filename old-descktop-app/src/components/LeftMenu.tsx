@@ -34,7 +34,7 @@ const LeftSideBar = () => {
           </IconButton>
       </div>
       <div className='tab-header'>
-        <span className='tab-text'>ЛЕНТА</span>
+        <span className='tab-text'>ЛЕНТА!</span>
       </div>
     </div>
   )
