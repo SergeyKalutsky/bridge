@@ -1,5 +1,19 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { spawn } from 'child_process';
+
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
+
+
+ipcMain.on('cmd', (event, arg) => {
+
+  const child = spawn('git', ['status'])
+  child.stdout.on('data', (chunk) => {
+    event.reply('stdout', chunk.toString())
+  })
+  child.stderr.on('data', (chunk) => {
+    event.reply('stdout', chunk.toString())
+  })
+})
 
 webPreferences: { nodeIntegration: true }
 
