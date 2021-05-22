@@ -7,8 +7,7 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 ipcMain.on('cmd', (event, arg) => {
 
-  const instance = { command: 'apt-get update' }
-  elevatedShell(instance,
+  elevatedShell({ command: 'apt-get update' },
     (error?: Error, data?: string | Buffer) => {
       console.log(data.toString())
     })
