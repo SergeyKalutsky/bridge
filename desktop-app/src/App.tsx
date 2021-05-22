@@ -5,7 +5,7 @@ import LeftSideBar from './components/LeftMenu'
 import WorkspaceBar from './components/WorkspaceBar'
 import './App.css'
 
-// https://github.com/praneshr/react-diff-viewer/tree/v2.0
+// https://github.com/praneshr/react-diff-viewer#readme unified verision
 // use for diff viewing
 
 // https://commonmark.org/help/
