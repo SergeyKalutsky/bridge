@@ -9,19 +9,9 @@ const Console = ({output}: propItems) => {
   return (
     <div className='console'>
       <KeyboardArrowDownIcon />
+      <div className='console-output'>
       {output}
-      {/* <p>
-      {'Test'}
-      </p>
-      <p>
-      {'Test2'}
-      </p>
-      <p>
-      {'Test3'}
-      </p>
-      <p>
-      {'Test4'}
-      </p> */}
+      </div>
     </div>
   );
 }

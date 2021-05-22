@@ -53,7 +53,7 @@ app.on('activate', () => {
 
 ipcMain.on('cmd', (event, arg) => {
 
-  elevatedShell({ command: 'apt-get update' },
+  elevatedShell({ command: 'apt-get install git-core' },
     (error?: Error, data?: string | Buffer) => {
       event.reply('stdout', data.toString())
     })

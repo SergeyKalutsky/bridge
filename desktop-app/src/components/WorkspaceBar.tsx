@@ -33,8 +33,7 @@ const WorkspaceBar = ({ output, setOutput }: propItem) => {
   const classes = useStyles()
 
   ipcRenderer.on('stdout', (event, arg) => {
-    setOutput([...output, <p key={arg}>{arg}</p>]);
-    // setOutput(output + '\n' + arg)
+    setOutput([...output, <p key={output.length}>{'>>> '+arg}</p>]);
   })
 
   const installFunc = () => {

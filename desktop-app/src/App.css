@@ -23,7 +23,13 @@ body,
     margin-top: 5%;
 }
 
+.console-output {
+    padding-left: 10px;
+}
+
 .console {
+    overflow: scroll;
+     /* height: 300px; */
     width: 100%;
     height: 30%;
     position: absolute;
