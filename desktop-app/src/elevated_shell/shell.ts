@@ -21,8 +21,3 @@ function elevatedShell(instance: instance,
 
 
 export { elevatedShell }
-const instance = { command: 'apt-get update' }
-elevatedShell(instance,
-  (error?: Error, data?: string | Buffer) => {
-    console.log(data.toString())
-  })
