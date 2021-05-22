@@ -1,34 +1,21 @@
-import  Git from 'nodegit'
+import path from 'path'
+let Git = require("nodegit");
 
+let pathToRepo = path.resolve("./platformer");
 
-// Clone a given repository into the `./tmp` folder.
-Git.Clone("https://github.com/nodegit/nodegit", "./tmp")
-  // Look up this known commit.
-  .then(function(repo) {
-    // Use a known commit sha from this repository.
-    return repo.getCommit("59b20b8d5c6ff8d09518454d4dd8b7b30f095ab5");
-  })
-  // Look up a specific file within that commit.
-  .then(function(commit) {
-    return commit.getEntry("README.md");
-  })
-  // Get the blob contents from the file.
-  .then(function(entry) {
-    // Patch the blob to contain a reference to the entry.
-    return entry.getBlob().then(function(blob) {
-      blob.entry = entry;
-      return blob;
-    });
-  })
-  // Display information about the blob.
-  .then(function(blob) {
-    // Show the path, sha, and filesize in bytes.
-    console.log(blob.entry.path() + blob.entry.sha() + blob.rawsize() + "b");
+const show_diffs = async () => {
+  const repo = await Git.Repository.open(pathToRepo);
+  
+  // commit before last
+  const from = await repo.getCommit('c0acd04cbe8f5dba93a38704dd3713b5da6302de');
+  const fromTree = await from.getTree();
+  
+  // last commit
+  const to = await repo.getCommit('8e5608ff06f6124c194fb22cc25f88d16696e8bc');
+  const toTree = await to.getTree();
 
-    // Show a spacer.
-    console.log(Array(72).join("=") + "\n\n");
-
-    // Show the entire file.
-    console.log(String(blob));
-  })
-  .catch(function(err) { console.log(err); });
+  const diff = await toTree.diff(fromTree);
+  const res = await diff.toBuf(1)
+  console.log(res)
+}
+show_diffs()
