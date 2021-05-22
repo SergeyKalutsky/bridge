@@ -19,6 +19,8 @@ function elevatedShell(instance: instance,
   callback(new Error('Platform not yet supported.'));
 }
 
+
+export { elevatedShell }
 const instance = { command: 'apt-get update' }
 elevatedShell(instance,
   (error?: Error, data?: string | Buffer) => {
