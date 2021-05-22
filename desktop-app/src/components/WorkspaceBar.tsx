@@ -25,15 +25,16 @@ const useStyles = makeStyles((theme) => ({
 );
 
 type propItem = {
-  output: String,
-  setOutput: (new_output: any) => void
+  output: JSX.Element[]
+  setOutput: (new_output: JSX.Element[]) => void
 }
 
 const WorkspaceBar = ({ output, setOutput }: propItem) => {
   const classes = useStyles()
 
   ipcRenderer.on('stdout', (event, arg) => {
-    setOutput(output + '\n' + arg)
+    setOutput([...output, <p key={arg}>{arg}</p>]);
+    // setOutput(output + '\n' + arg)
   })
 
   const installFunc = () => {

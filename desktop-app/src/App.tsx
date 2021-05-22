@@ -7,7 +7,7 @@ import './App.css'
 
 
 const Main = () => {
-  const [output, setOutput] = useState('');
+  const [output, setOutput] = useState([]);
   return (
     <>
       <LeftSideBar />
