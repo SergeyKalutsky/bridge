@@ -7,6 +7,12 @@ import { diff as DiffEditor } from "react-ace";
 import "ace-builds/src-noconflict/theme-github";
 import './App.css'
 
+// https://github.com/praneshr/react-diff-viewer/tree/v2.0
+// use for diff viewing
+
+// https://commonmark.org/help/
+// this is for task editing
+// https://github.com/remarkjs/react-markdown
 
 const Main = () => {
   const [output, setOutput] = useState([]);
@@ -16,15 +22,6 @@ const Main = () => {
       <div className='right-side-bar'>
         <div className='workspace'>
           <WorkspaceBar output={output} setOutput={setOutput} />
-          {/* <DiffEditor
-            value={["Test code differences", "Test code "]}
-            height="70%"
-            width="100%"
-            mode="python"
-            theme="github"
-            // readOnly={true}
-            editorProps={{ $blockScrolling: true }}
-          />   */}
         </div>
         <Console output={output} />
       </div>
