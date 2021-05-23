@@ -13,7 +13,7 @@ import './App.css'
 // this is for task editing
 // https://github.com/remarkjs/react-markdown
 const Main = () => {
-  const [output, setOutput] = useState([]);
+  const [output, setOutput] = useState('');
   return (
     <>
       <LeftSideBar />

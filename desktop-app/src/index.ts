@@ -55,8 +55,8 @@ app.on('activate', () => {
 
 ipcMain.on('cmd', (event, arg) => {
 
-  elevatedShell({ command: 'git status' },
-    (error?: Error, data?: string | Buffer) => {
-      event.reply('stdout', data.toString())
+  elevatedShell({ command: 'apt-get update -y' },
+    async (error?: Error, data?: string | Buffer) => {
+      await event.reply('stdout', data.toString())
     })
 })

@@ -15,9 +15,9 @@ function escapeDoubleQuotes(string: string | Array<string>) {
 }
 
 
-function linuxSpawn(instance: instance,
-  callback: (error?: Error, data?: string | Buffer) => void): void {
-  linuxBinary(instance, (error: Error, binary: string) => {
+async function linuxSpawn(instance: instance,
+  callback: (error?: Error, data?: string | Buffer) => void) {
+  linuxBinary(instance, async (error: Error, binary: string) => {
     if (error) return callback(error);
     const command = [];
     // Preserve current working directory:
@@ -43,21 +43,23 @@ function linuxSpawn(instance: instance,
     const str_command = command.join(' ');
     const child = spawn(str_command, { shell: true });
     child.stdout.on('data', (chunk) => {
-      callback(null, chunk)
+      // console.log(chunk.toString())
+       callback(null, chunk)
     })
     child.stderr.on('data', (chunk) => {
+      // console.log(chunk.toString())
       callback(null, chunk)
     })
   }
   );
 }
 
-function linuxBinary(instance: instance, callback: (error: Error, path?: string) => void) {
+async function linuxBinary(instance: instance, callback: (error: Error, path?: string) => void) {
   let index = 0;
   // We used to prefer gksudo over pkexec since it enabled a better prompt.
   // However, gksudo cannot run multiple commands concurrently.
   const paths = ['/usr/bin/kdesudo', '/usr/bin/pkexec'];
-  function test() {
+  async function test() {
     if (index === paths.length) {
       return callback(new Error('Unable to find pkexec or kdesudo.'));
     }

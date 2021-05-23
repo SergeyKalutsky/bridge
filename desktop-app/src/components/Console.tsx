@@ -3,7 +3,8 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import '../App.css'
 
 type propItems = {
-  output: JSX.Element[]
+  // output: JSX.Element[]
+  output: string
 }
 
 const Console = ({output}: propItems) => {
@@ -21,7 +22,7 @@ const Console = ({output}: propItems) => {
       <KeyboardArrowDownIcon />
       <div className='console-output'>
       {output}
-      <div ref={messagesEndRef} />
+      {/* <div ref={messagesEndRef} /> */}
       </div>
     </div>
   );

@@ -11,8 +11,8 @@ interface instance {
 }
 
 
-function elevatedShell(instance: instance,
-  callback: (error?: Error, data?: string | Buffer) => void) {
+async function elevatedShell(instance: instance,
+  callback:  (error?: Error, data?: string | Buffer) => void) {
   const platform = process.platform;
   if (platform === 'linux') return linux(instance, callback);
   if (platform === 'win32') return windows(instance);
