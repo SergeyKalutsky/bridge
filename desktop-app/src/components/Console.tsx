@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import { ipcRenderer } from "electron";
 import '../App.css'
 
 type propItems = {
@@ -7,9 +8,14 @@ type propItems = {
   output: string
 }
 
-const Console = ({output}: propItems) => {
+const Console = () => {
+  let output: JSX.Element[] = []
   const messagesEndRef = useRef(null)
 
+  ipcRenderer.on('stdout', async (event, arg) => {
+    output = [...output, <p key={output.length}>{'>>> '+arg}</p>]
+    console.log(output)
+  })
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
@@ -22,7 +28,6 @@ const Console = ({output}: propItems) => {
       <KeyboardArrowDownIcon />
       <div className='console-output'>
       {output}
-      {/* <div ref={messagesEndRef} /> */}
       </div>
     </div>
   );

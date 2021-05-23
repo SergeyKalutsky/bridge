@@ -24,30 +24,8 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-type propItem = {
-  output: string
-  setOutput: (new_output: string) => void
-  // output: JSX.Element[]
-  // setOutput: (new_output: JSX.Element[]) => void
-}
-
-const WorkspaceBar = ({ output, setOutput }: propItem) => {
+const WorkspaceBar = () => {
   const classes = useStyles()
-
-  ipcRenderer.on('stdout', async (event, arg) => {
-    // console.log(arg)
-    setOutput(output + '\n '+ arg)
-    // setOutput([...output, <p key={output.length}>{'>>> '+arg}</p>]);
-  })
-
-  // const installFunc = async () => {
-  //   ipcRenderer.send('cmd', module)
-  //   const modules = ['notepadplusplus.install']
-  //   for (const module of modules) {
-  //     ipcRenderer.send('cmd', module)
-  //   }
-  // }
-
   return (
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
