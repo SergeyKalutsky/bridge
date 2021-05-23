@@ -5,13 +5,13 @@ import LeftSideBar from './components/LeftMenu'
 import WorkspaceBar from './components/WorkspaceBar'
 import './App.css'
 
+
 // https://github.com/praneshr/react-diff-viewer#readme unified verision
 // use for diff viewing
 
 // https://commonmark.org/help/
 // this is for task editing
 // https://github.com/remarkjs/react-markdown
-// https://github.com/HarryChen0506/react-markdown-editor-lite#readme
 const Main = () => {
   const [output, setOutput] = useState([]);
   return (
