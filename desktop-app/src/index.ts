@@ -54,8 +54,19 @@ app.on('activate', () => {
 
 
 ipcMain.on('cmd', (event, arg) => {
-  elevatedShell({ command: 'choco install -y git; choco install -y python; choco install -y vscode' },
+  elevatedShell({ command: `-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1'')); Read-Host ''Type ENTER to exit''`},
     async (error?: Error, data?: string | Buffer) => {
       await event.reply('stdout', data.toString())
     })
 })
+
+
+
+// powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command Start-Process 'powershell.exe' -ArgumentList '-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1'')); choco upgrade -y python visualstudio2019-workload-vctools; Read-Host ''Type ENTER to exit'' ' -Verb RunAs
+
+// `Set-ExecutionPolicy Bypass -Scope Process -Force; 
+// [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; 
+// iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); 
+// choco install -y git; 
+// choco install -y python; 
+// choco install -y vscode`
