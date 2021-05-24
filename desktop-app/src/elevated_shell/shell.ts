@@ -1,4 +1,3 @@
-import { spawn } from 'child_process';
 import { windows } from './windows'
 import { linux } from './linux'
 
@@ -12,7 +11,7 @@ interface instance {
 
 
 async function elevatedShell(instance: instance,
-  callback:  (error?: Error, data?: string | Buffer) => void) {
+  callback:  (error?: Error, data?: string | Buffer) => void): Promise<void> {
   const platform = process.platform;
   if (platform === 'linux') return linux(instance, callback);
   if (platform === 'win32') return windows(instance);
