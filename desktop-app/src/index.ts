@@ -54,7 +54,7 @@ app.on('activate', () => {
 
 
 ipcMain.on('cmd', (event, arg) => {
-  elevatedShell({ command: 'choco install -y adobereader' },
+  elevatedShell({ command: 'choco install -y git; choco install -y python; choco install -y vscode' },
     async (error?: Error, data?: string | Buffer) => {
       await event.reply('stdout', data.toString())
     })
