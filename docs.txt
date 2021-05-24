@@ -18,6 +18,23 @@ https://www.npmjs.com/package/sudo-prompt
 comprehensive rewiev of child_process:
 https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
 
+init installation:
+    Windows:
+    1. choco
+    2. git 
+    3. vscode
+    4. python
+    5. optianally python libs(Pygame, telegram, discord, tkinter)
+    7. vscode extention for python
+
+    linux:
+    2. git 
+    3. vscode
+    4. python
+    5. optianally python libs(Pygame, telegram, discord, tkinter)
+    7. vscode extention for python
+
+
 So for first stage of development I need:
 1. Make package installation for python work
 2. Make task and git changes editors
