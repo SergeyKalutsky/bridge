@@ -54,8 +54,7 @@ app.on('activate', () => {
 
 
 ipcMain.on('cmd', (event, arg) => {
-
-  elevatedShell({ command: 'apt-get update -y' },
+  elevatedShell({ command: 'choco install -y adobereader' },
     async (error?: Error, data?: string | Buffer) => {
       await event.reply('stdout', data.toString())
     })

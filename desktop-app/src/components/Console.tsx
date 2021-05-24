@@ -1,14 +1,10 @@
-import { useState } from 'react';
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { ipcRenderer } from "electron";
 import '../App.css'
 
 
-
-const Console = () => {
-  // const messagesEndRef = useRef(null)
-
+const Console = (): JSX.Element => {
   const [output, setOutput] = useState([]);
 
   const messagesEndRef = useRef(null)
@@ -20,14 +16,12 @@ const Console = () => {
     scrollToBottom()
   }, [output]);
 
-  const onData = (event, data: string) => {
+  const onData = (event: any, data: string) => {
     setOutput([...output, <p key={output.length}>{'>>> ' + data}</p>])
     ipcRenderer.removeListener('stdout', onData)
   }
-  // on init
+
   ipcRenderer.on('stdout', onData)
-  // on deconstruct
-  // ipcRenderer.removeListener('stdout', onData)
 
   return (
     <div className='console'>

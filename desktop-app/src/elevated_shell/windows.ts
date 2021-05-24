@@ -18,6 +18,4 @@ function windows(instance: instance): void {
   child.stdin.end(); // Otherwise PowerShell waits indefinitely on Windows 7.
 }
 
-const instance = { command: 'choco install -y putty.install' }
-
 export { windows }
