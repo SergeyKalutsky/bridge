@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ipcRenderer } from "electron";
-import '../App.css'
+import '../../App.css'
 
 
 const Console = (): JSX.Element => {

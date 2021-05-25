@@ -1,7 +1,6 @@
 import { Button } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import ArchiveIcon from '@material-ui/icons/Archive';
-// import VsCodeIcon from '../assets/visual-studio-code.svg'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { ipcRenderer } from "electron";

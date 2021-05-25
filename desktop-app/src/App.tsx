@@ -1,7 +1,7 @@
 import { hot } from 'react-hot-loader';
-import LeftMenu from './components/LeftMenu'
+import LeftMenu from './components/git/LeftMenu'
 import SideNavBar from './components/SideNavBar'
-import Workspace from './components/Workspace'
+import Workspace from './components/git/Workspace'
 import './App.css'
 
 
