@@ -54,7 +54,7 @@ app.on('activate', () => {
 
 
 ipcMain.on('cmd', (event, arg) => {
-  elevatedShell({ command: `choco install -y python`},
+  elevatedShell({ command: `apt-get update`},
     async (error?: Error, data?: string | Buffer) => {
       await event.reply('stdout', data.toString())
     })

@@ -3,8 +3,6 @@ import { spawn } from 'child_process';
 interface instance {
   command: string,
 }
-// init windows command
-// `-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1'')); choco install -y python; choco install -y git; choco install -y vscode; Read-Host ''Type ENTER to exit''`
 
 function windows(instance: instance): void {
   const command = [];
