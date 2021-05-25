@@ -27,12 +27,14 @@ const Console = (): JSX.Element => {
   ipcRenderer.on('stdout', onData)
   if (hidden) return (
     <div className='console-hidden'>
-      <KeyboardArrowUpIcon onClick={() => { setHidden(hidden ? false: true); }} />
+      <KeyboardArrowUpIcon onClick={() => { setHidden(hidden ? false: true); 
+                                            ipcRenderer.removeListener('stdout', onData)}} />
     </div>
   )
   return (
     <div className='console'>
-      <KeyboardArrowDownIcon onClick={() => { setHidden(hidden ? false: true); }} />
+      <KeyboardArrowDownIcon onClick={() => { setHidden(hidden ? false: true); 
+                                              ipcRenderer.removeListener('stdout', onData)}} />
       <div className='console-output'>
         {output}
         <div ref={messagesEndRef} />
