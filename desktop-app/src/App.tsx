@@ -2,20 +2,11 @@ import { hot } from 'react-hot-loader';
 import LeftMenu from './components/git/LeftMenu'
 import SideNavBar from './components/SideNavBar'
 import Workspace from './components/git/Workspace'
-import './App.css'
-
-
-const Rooms = (): JSX.Element => {
-  return (
-    <div className='rooms'>
-    </div>
-  )
-}
+import './assets/css/base.css'
 
 
 
 const Main = () => {
-
   return (
     <>
       <SideNavBar />

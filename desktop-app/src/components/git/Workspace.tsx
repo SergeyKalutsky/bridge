@@ -1,6 +1,7 @@
 import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
 import Console from './Console'
+import '../../assets/css/Workspace.css'
 
 const oldCode = `
 const a = 10

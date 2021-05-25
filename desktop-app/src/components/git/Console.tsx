@@ -2,14 +2,14 @@ import { useRef, useEffect, useState } from 'react'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ipcRenderer } from "electron";
-import '../../App.css'
+import '../../assets/css/console.css'
 
 
 const Console = (): JSX.Element => {
-  
+
   const [output, setOutput] = useState([]);
   const [hidden, setHidden] = useState(false);
-  
+
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -27,14 +27,18 @@ const Console = (): JSX.Element => {
   ipcRenderer.on('stdout', onData)
   if (hidden) return (
     <div className='console-hidden'>
-      <KeyboardArrowUpIcon onClick={() => { setHidden(hidden ? false: true); 
-                                            ipcRenderer.removeListener('stdout', onData)}} />
+      <KeyboardArrowUpIcon onClick={() => {
+        setHidden(hidden ? false : true);
+        ipcRenderer.removeListener('stdout', onData)
+      }} />
     </div>
   )
   return (
     <div className='console'>
-      <KeyboardArrowDownIcon onClick={() => { setHidden(hidden ? false: true); 
-                                              ipcRenderer.removeListener('stdout', onData)}} />
+      <KeyboardArrowDownIcon onClick={() => {
+        setHidden(hidden ? false : true);
+        ipcRenderer.removeListener('stdout', onData)
+      }} />
       <div className='console-output'>
         {output}
         <div ref={messagesEndRef} />

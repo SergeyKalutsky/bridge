@@ -1,0 +1,25 @@
+.workspace {
+    right: 0;
+    width: 75%;
+    height: 100%;
+}
+
+.workspace-background {
+    display: flex;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: #130d01;
+}
+
+.code {
+    overflow: scroll;
+    display: flex;
+    justify-content: center;
+    top: 0;
+    width: 100%;
+    padding-top: 50px;
+    height: calc(100% - 50px);
+    background-color: #030200;
+}
+

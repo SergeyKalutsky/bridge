@@ -1,10 +1,8 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
 import { spawn } from 'child_process';
-import {Git} from "nodegit"
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
-
 
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.

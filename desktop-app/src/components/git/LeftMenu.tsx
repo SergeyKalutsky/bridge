@@ -1,4 +1,4 @@
-import '../../App.css'
+import '../../assets/css/leftMenu.css'
 
 const LeftMenu = (): JSX.Element => {
 

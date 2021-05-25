@@ -1,0 +1,20 @@
+.left-menu {
+    left: 0;
+    width: 25%;
+    height: 100%;
+    background-color: #242321
+}
+
+.tab-header {
+    width: 100%;
+    height: 50px;
+    background-color: #010818a9
+}
+
+.tab-text {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
