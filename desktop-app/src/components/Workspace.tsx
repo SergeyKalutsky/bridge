@@ -25,6 +25,7 @@ const boo = 10
 if(a === 10) {
   console.log('bar')
 }
+console.log('hello world')
 `;
 
 // https://commonmark.org/help/
@@ -37,7 +38,7 @@ const Workspace = (): JSX.Element => {
             <div className='workspace-background'>
                 <WorkspaceTab />
                 <div className='code'>
-                <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={false} />
+                <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
                 </div>
                 <Console />
             </div>
