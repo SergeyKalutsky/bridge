@@ -29,12 +29,12 @@ const WorkspaceTab = () => {
   return (
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
+        <Button color="primary">Pull</Button>
+        <Button color="secondary">Push</Button>
         <IconButton className={classes.menuIcon} onClick={() => { ipcRenderer.send('cmd', 'test') }}>
           <ArchiveIcon />
         </IconButton>
         {/* <img src={VsCodeIcon} alt="VsCodeIcon" /> */}
-        <Button color="primary">Pull</Button>
-        <Button color="secondary">Push</Button>
       </div>
     </MuiThemeProvider>
   )
