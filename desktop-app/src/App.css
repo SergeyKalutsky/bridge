@@ -63,10 +63,23 @@ body,
 }
 
 .workspace-background {
+    display: flex;
     position: relative;
     height: 100%;
     width: 100%;
     background-color: #130d01;
+}
+
+
+.code {
+    /* position: absolute; */
+    display: flex;
+    justify-content: center;
+    top: 0;
+    width: 100%;
+    padding-top: 50px;
+    height: calc(100% - 50px);
+    background-color: #030200;
 }
 
 .workspace-tab {

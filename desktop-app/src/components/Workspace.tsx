@@ -1,3 +1,4 @@
+import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
 import Console from './Console'
 
@@ -6,6 +7,26 @@ import Console from './Console'
 // https://github.com/praneshr/react-diff-viewer#readme unified verision
 // use for diff viewing
 
+const oldCode = `
+const a = 10
+const b = 10
+const c = () => console.log('foo')
+
+if(a > 10) {
+  console.log('bar')
+}
+
+console.log('done')
+`;
+const newCode = `
+const a = 10
+const boo = 10
+
+if(a === 10) {
+  console.log('bar')
+}
+`;
+
 // https://commonmark.org/help/
 // this is for task editing
 // https://github.com/remarkjs/react-markdown
@@ -13,11 +34,14 @@ import Console from './Console'
 const Workspace = (): JSX.Element => {
     return (
         <div className='workspace'>
-        <div className='workspace-background'>
-          <WorkspaceTab />
-          <Console />
+            <div className='workspace-background'>
+                <WorkspaceTab />
+                <div className='code'>
+                <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={false} />
+                </div>
+                <Console />
+            </div>
         </div>
-      </div>
     )
 }
 
