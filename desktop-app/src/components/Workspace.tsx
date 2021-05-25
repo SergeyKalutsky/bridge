@@ -32,17 +32,23 @@ console.log('hello world')
 // this is for task editing
 // https://github.com/remarkjs/react-markdown
 
-const Workspace = (): JSX.Element => {
-    return (
-        <div className='workspace'>
-            <div className='workspace-background'>
-                <WorkspaceTab />
-                <div className='code'>
-                <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
-                </div>
-                <Console />
-            </div>
+const WorkspaceGit = (): JSX.Element => {
+  return (
+    <div className='workspace'>
+      <div className='workspace-background'>
+        <WorkspaceTab />
+        <div className='code'>
+          <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
         </div>
+        <Console />
+      </div>
+    </div>
+  )
+}
+
+const Workspace = (): JSX.Element => {
+  return (
+    <WorkspaceGit />
     )
 }
 

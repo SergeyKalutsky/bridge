@@ -1,14 +1,27 @@
 import { hot } from 'react-hot-loader';
-import LeftSideBar from './components/LeftMenu'
+import LeftMenu from './components/LeftMenu'
+import SideNavBar from './components/SideNavBar'
 import Workspace from './components/Workspace'
 import './App.css'
 
 
+const Rooms = (): JSX.Element => {
+  return (
+    <div className='workspace'>
+    </div>
+  )
+}
+
+
+
 const Main = () => {
+
   return (
     <>
-      <LeftSideBar />
+      <SideNavBar />
+      <LeftMenu />
       <Workspace />
+      {/* <Rooms /> */}
     </>
   )
 }

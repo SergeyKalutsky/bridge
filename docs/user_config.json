@@ -1,0 +1,21 @@
+{
+    "name": "apetrov",
+    "rooms": [
+        {   
+            "type": "classroom",
+            "repo": "https://github.com/SergeyKalutsky/556-14.git",
+            "branch": "apetrov",
+            "role": "student",
+            "dir": "apetrov"
+                
+        },
+        {
+            "type": "project",
+            "repo": "https://github.com/platformer.git",
+            "branch": "master",
+            "role": "mainteiner",
+            "dir": "apetrov"
+        }
+    ]
+
+}
