@@ -4,12 +4,6 @@ import Workspace from './components/Workspace'
 import './App.css'
 
 
-// https://github.com/praneshr/react-diff-viewer#readme unified verision
-// use for diff viewing
-
-// https://commonmark.org/help/
-// this is for task editing
-// https://github.com/remarkjs/react-markdown
 const Main = () => {
   return (
     <>

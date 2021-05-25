@@ -5,8 +5,10 @@ import '../App.css'
 
 
 const Console = (): JSX.Element => {
+  
   const [output, setOutput] = useState([]);
-
+  const [hidden, setHidden] = useState(false);
+  
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -22,10 +24,10 @@ const Console = (): JSX.Element => {
   }
 
   ipcRenderer.on('stdout', onData)
-
+  if (hidden) return null
   return (
     <div className='console'>
-      <KeyboardArrowDownIcon />
+      <KeyboardArrowDownIcon onClick={() => { setHidden(hidden ? false: true); }} />
       <div className='console-output'>
         {output}
         <div ref={messagesEndRef} />
