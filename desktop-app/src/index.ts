@@ -54,7 +54,7 @@ app.on('activate', () => {
 
 
 ipcMain.on('cmd', (event, arg) => {
-  elevatedShell({ command: `-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1'')); choco install -y python; choco install -y git; choco install -y vscode; Read-Host ''Type ENTER to exit''`},
+  elevatedShell({ command: `choco install -y python`},
     async (error?: Error, data?: string | Buffer) => {
       await event.reply('stdout', data.toString())
     })
