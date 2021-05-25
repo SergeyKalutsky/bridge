@@ -23,3 +23,16 @@
     background-color: #030200;
 }
 
+.code::-webkit-scrollbar {
+    width: 9px;
+}
+
+.code::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border: 2px solid rgb(255, 255, 255);
+}
+
+.code::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(188, 188, 189);
+    border: 1px solid rgb(188, 188, 189);
+}
