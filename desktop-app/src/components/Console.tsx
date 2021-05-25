@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ipcRenderer } from "electron";
 import '../App.css'
 
@@ -24,7 +25,11 @@ const Console = (): JSX.Element => {
   }
 
   ipcRenderer.on('stdout', onData)
-  if (hidden) return null
+  if (hidden) return (
+    <div className='console-hidden'>
+      <KeyboardArrowUpIcon onClick={() => { setHidden(hidden ? false: true); }} />
+    </div>
+  )
   return (
     <div className='console'>
       <KeyboardArrowDownIcon onClick={() => { setHidden(hidden ? false: true); }} />

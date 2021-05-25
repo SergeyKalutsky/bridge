@@ -37,6 +37,16 @@ body,
     background-color: white;
 }
 
+.console-hidden {
+    /* overflow: scroll; */
+     /* height: 300px; */
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+}
+
 .left-side-bar {
     position: absolute;
     left: 0;
