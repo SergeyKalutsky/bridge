@@ -18,9 +18,9 @@ const Main = () => {
       <LeftSideBar />
       <div className='right-side-bar'>
         <div className='workspace'>
-          <WorkspaceBar/>
+          <WorkspaceBar />
+          <Console />
         </div>
-        <Console />
       </div>
     </>
   )
