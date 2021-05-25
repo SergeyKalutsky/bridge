@@ -2,6 +2,7 @@ import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { makeStyles } from '@material-ui/core/styles';
+import ClassIcon from '@material-ui/icons/Class';
 import IconButton from '@material-ui/core/IconButton';
 import '../App.css'
 
@@ -23,15 +24,18 @@ const LeftSideBar = () => {
   return (
     <div className='left-side-bar'>
       <div className='icon-left-side-bar'>
-          <IconButton className={classes.menuIcon}>
-            <EmojiEventsIcon />
-          </IconButton>
+        <IconButton className={classes.menuIcon}>
+          <EmojiEventsIcon />
+        </IconButton>
         <IconButton className={classes.menuIcon}>
           <FileCopyIcon />
-          </IconButton>
+        </IconButton>
         <IconButton className={classes.menuIcon}>
           <AssignmentTurnedInIcon />
-          </IconButton>
+        </IconButton>
+        <IconButton className={classes.menuIcon}>
+          <ClassIcon />
+        </IconButton>
       </div>
       <div className='tab-header'>
         <span className='tab-text'>ЛЕНТА</span>
