@@ -14,7 +14,8 @@
 
 .code {
     overflow: scroll;
-    display: flex;
+    overflow-y: scroll;
+    overflow-x: hidden;
     justify-content: center;
     top: 0;
     width: 100%;

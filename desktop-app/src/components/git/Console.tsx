@@ -20,7 +20,7 @@ const Console = (): JSX.Element => {
   }, [output]);
 
   const onData = (event: any, data: string) => {
-    setOutput([...output, <p key={output.length}>{'>>> ' + data}</p>])
+    setOutput([...output, <p key={output.length}>{data}</p>])
     ipcRenderer.removeListener('stdout', onData)
   }
 
@@ -35,10 +35,12 @@ const Console = (): JSX.Element => {
   )
   return (
     <div className='console'>
-      <KeyboardArrowDownIcon onClick={() => {
-        setHidden(hidden ? false : true);
-        ipcRenderer.removeListener('stdout', onData)
-      }} />
+      <div className='console-tab'>
+        <KeyboardArrowDownIcon onClick={() => {
+          setHidden(hidden ? false : true);
+          ipcRenderer.removeListener('stdout', onData)
+        }} />
+      </div>
       <div className='console-output'>
         {output}
         <div ref={messagesEndRef} />
