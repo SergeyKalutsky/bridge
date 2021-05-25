@@ -1,0 +1,9 @@
+TODO:
+
+git commands:
+    git pull -all
+    git add . && git commit -m "n commit so fat" && git push
+    git diff commit_last ... commit_pulled(to show)
+
+test on a git repo
+Write parser and executer for all the above
