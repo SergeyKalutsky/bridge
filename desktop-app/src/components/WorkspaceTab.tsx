@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-const WorkspaceBar = () => {
+const WorkspaceTab = () => {
   const classes = useStyles()
   return (
     <MuiThemeProvider theme={colortheme}>
@@ -41,4 +41,4 @@ const WorkspaceBar = () => {
 }
 
 
-export default WorkspaceBar
+export default WorkspaceTab

@@ -45,14 +45,14 @@ body,
     background-color: #242321
 }
 
-.right-side-bar {
+.workspace {
     position: absolute;
     right: 0;
     width: 75%;
     height: 100%;
 }
 
-.workspace {
+.workspace-background {
     position: relative;
     height: 100%;
     width: 100%;

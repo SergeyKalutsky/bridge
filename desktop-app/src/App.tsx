@@ -1,8 +1,6 @@
 import { hot } from 'react-hot-loader';
-import { useState } from 'react'
-import Console from './components/Console'
 import LeftSideBar from './components/LeftMenu'
-import WorkspaceBar from './components/WorkspaceBar'
+import Workspace from './components/Workspace'
 import './App.css'
 
 
@@ -16,21 +14,14 @@ const Main = () => {
   return (
     <>
       <LeftSideBar />
-      <div className='right-side-bar'>
-        <div className='workspace'>
-          <WorkspaceBar />
-          <Console />
-        </div>
-      </div>
+      <Workspace />
     </>
   )
 }
 
-function App() {
+
+export default hot(module)(function App() {
   return (
     <Main />
   );
-}
-
-
-export default hot(module)(App);
+});
