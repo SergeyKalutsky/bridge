@@ -1,16 +1,10 @@
 import { hot } from 'react-hot-loader';
-import LeftMenu from './components/git/LeftMenu'
+import GitMenu from './components/git/GitMenu'
 import SideNavBar from './components/SideNavBar'
 import Workspace from './components/git/Workspace'
+import Rooms from './components/rooms/Rooms'
+import RoomsMenu from './components/rooms/RoomsMenu'
 import './App.css'
-
-
-const Rooms = (): JSX.Element => {
-  return (
-    <div className='rooms'>
-    </div>
-  )
-}
 
 
 
@@ -19,9 +13,8 @@ const Main = () => {
   return (
     <>
       <SideNavBar />
-      <LeftMenu />
+      <GitMenu />
       <Workspace />
-      {/* <Rooms /> */}
     </>
   )
 }

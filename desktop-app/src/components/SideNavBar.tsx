@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
         '& svg': {
             fontSize: 50
         },
-        'padding-left': 10,
-        'color': '#b3afb0'
+        'padding-left': 20,
+        'color': '#b3afb0',
     }
 })
 );

@@ -1,6 +1,6 @@
 import '../../App.css'
 
-const LeftMenu = (): JSX.Element => {
+const GitMenu = (): JSX.Element => {
 
   return (
     <div className='left-menu'>
@@ -11,4 +11,4 @@ const LeftMenu = (): JSX.Element => {
   )
 }
 
-export default LeftMenu
+export default GitMenu

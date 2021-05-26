@@ -1,20 +1,31 @@
 {
     "name": "apetrov",
+    "login": "Petro23",
+    "password": "sdsse4",
+    "base_dir": "C:\\Users\\skalutsky\\Bridge",
     "rooms": [
-        {   
+        {   "id": "2123dsasdf2",
             "type": "classroom",
             "repo": "https://github.com/SergeyKalutsky/556-14.git",
             "branch": "apetrov",
             "role": "student",
-            "dir": "apetrov"
+            "dir": "apetrov",
+            "members":[
+                {
+                    "name": "sergey",
+                    "role": "teacher"
+                }
+
+            ]
                 
         },
-        {
+        {   "id": "2123d8676sasdf2",
             "type": "project",
             "repo": "https://github.com/platformer.git",
             "branch": "master",
             "role": "mainteiner",
-            "dir": "apetrov"
+            "dir": "apetrov",
+            "members":[]
         }
     ]
 
