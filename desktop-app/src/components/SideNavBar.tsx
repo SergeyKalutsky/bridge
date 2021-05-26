@@ -4,7 +4,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { makeStyles } from '@material-ui/core/styles';
 import ClassIcon from '@material-ui/icons/Class';
 import IconButton from '@material-ui/core/IconButton';
-import '../App.css'
+import '../assets/css/SideNavBar.css'
 
 const useStyles = makeStyles((theme) => ({
     menuIcon: {
@@ -22,7 +22,7 @@ const SideNavBar = (): JSX.Element => {
     const classes = useStyles();
 
     return (
-        <div className='icon-left-side-bar'>
+        <div className='icon-nav-bar'>
             <IconButton className={classes.menuIcon}>
                 <EmojiEventsIcon />
             </IconButton>

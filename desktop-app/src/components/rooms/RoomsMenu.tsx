@@ -1,7 +1,7 @@
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import '../../App.css'
+import '../../assets/css/RoomMenu.css'
 
 const useStyles = makeStyles((theme) => ({
   menuIcon: {

@@ -4,12 +4,12 @@ import SideNavBar from './components/SideNavBar'
 import Workspace from './components/git/Workspace'
 import Rooms from './components/rooms/Rooms'
 import RoomsMenu from './components/rooms/RoomsMenu'
-import './App.css'
+import './assets/css/base.css'
+
 
 
 
 const Main = () => {
-
   return (
     <>
       <SideNavBar />

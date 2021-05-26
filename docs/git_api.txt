@@ -1,0 +1,25 @@
+TODO:
+
+git commands:
+    git pull -all
+    git add . && git commit -m "n commit so fat" && git push
+    git diff commit_last ... commit_pulled(to show)
+
+test on a git repo
+Write parser and executer for all the above
+
+Master git commands
+git pull origin st1 --no-edit 
+&& git pull origin st2 --no-edit 
+&& git pull origin st3 --no-edit
+
+User git commands
+git clone
+git checkout -b branchname
+make changes
+git add . && git commit -m "first commit"
+git push --set-upstream branchname
+git add . && git commit -m "first commit" && git push
+
+git pull origin master --no-edit
+

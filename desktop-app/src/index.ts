@@ -1,10 +1,8 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
 import { spawn } from 'child_process';
-import {Git} from "nodegit"
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
-
 
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -54,7 +52,7 @@ app.on('activate', () => {
 
 
 ipcMain.on('cmd', (event, arg) => {
-  elevatedShell({ command: `choco install -y python`},
+  elevatedShell({ command: `apt-get update`},
     async (error?: Error, data?: string | Buffer) => {
       await event.reply('stdout', data.toString())
     })
