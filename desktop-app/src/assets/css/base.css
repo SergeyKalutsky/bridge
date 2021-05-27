@@ -11,3 +11,4 @@ html, body, #root, #app {
     display: flex
 }
 
+a { color: inherit; } 

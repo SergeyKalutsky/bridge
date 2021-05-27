@@ -4,8 +4,9 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { makeStyles } from '@material-ui/core/styles';
 import ClassIcon from '@material-ui/icons/Class';
 import IconButton from '@material-ui/core/IconButton';
-import '../assets/css/SideNavBar.css'
+import { ipcRenderer } from "electron";
 import { Link } from 'react-router-dom'
+import '../assets/css/SideNavBar.css'
 
 const useStyles = makeStyles((theme) => ({
     menuIcon: {
@@ -30,11 +31,11 @@ const SideNavBar = (): JSX.Element => {
             <IconButton className={classes.menuIcon}>
                 <FileCopyIcon />
             </IconButton>
-            <IconButton className={classes.menuIcon}>
-                <Link to="/"><AccountTreeIcon /></Link>
+            <IconButton className={classes.menuIcon} onClick={()=>ipcRenderer.removeAllListeners('stdout')}>
+                <Link to="/" replace><AccountTreeIcon /></Link>
             </IconButton>
             <IconButton className={classes.menuIcon}>
-                <Link to="/rooms"><ClassIcon /></Link>
+                <Link to="/rooms" replace><ClassIcon /></Link>
             </IconButton>
         </div>
     )
