@@ -1,0 +1,19 @@
+Remote API
+
+1. Hadle room creation
+    1. Make a bare git repo
+    2. Add a creator as Admin user
+        Add ssh key
+        assign a branch
+    3. Init repo with a README
+    4. Clone git repo to local app instance 
+
+2. Hande room finding
+    1. Add a new user as a guest('Show request for contributing')
+    2. If confirmed add to contributer
+    3. 
+
+3. Handle User
+    user_id
+    repos
+    User auth
