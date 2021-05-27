@@ -1,5 +1,7 @@
 TODO:
 
+setting your private git repo easily https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
+
 git commands:
     git pull -all
     git add . && git commit -m "n commit so fat" && git push

@@ -1,15 +1,18 @@
-import os
+from pathlib import Path
 from git import Repo
 from fastapi import FastAPI
 
 app = FastAPI()
+git_dir = Path('/home/git')
+
 
 @app.get("/")
-async def root():
-    bare_repo = Repo.init('bare-repo', bare=True)
-    assert bare_repo.bare
-    return {"message": "Hello World!"}
+async def home():
+    return {'messge': 'hi there'}
 
-@app.get("/items/{item_id}")
-async def read_item(item_id):
-    return {"item_id": item_id}
+
+@app.get("/init-bare/{repo}")
+async def init_bare(repo):
+    bare_repo = Repo.init(git_dir / repo, bare=True)
+    assert bare_repo.bare
+    return {"message": 'works!'}
