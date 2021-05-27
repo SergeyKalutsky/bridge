@@ -8,8 +8,8 @@ const useStyles = makeStyles((theme) => ({
       '& svg': {
           fontSize: 45
       },
-      'padding-left': 70,
-      'color': '#0811EF',
+      'margin-left': '50px',
+      'color': '#b3afb0',
       'justify-content': 'flex-end'
 
   }
