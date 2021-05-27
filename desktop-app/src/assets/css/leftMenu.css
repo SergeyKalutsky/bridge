@@ -6,12 +6,14 @@
 }
 
 .tab-header {
+    display: flex;
+    justify-content: center;
     width: 100%;
     height: 50px;
     background-color: #010818a9
 }
 
-.tab-text {
+.tab-text-feed {
     height: 100%;
     display: flex;
     align-items: center;

@@ -5,7 +5,7 @@ const GitMenu = (): JSX.Element => {
   return (
     <div className='left-menu'>
       <div className='tab-header'>
-        <span className='tab-text'>ЛЕНТА</span>
+        <span className='tab-text-feed'>ЛЕНТА</span>
       </div>
     </div>
   )
