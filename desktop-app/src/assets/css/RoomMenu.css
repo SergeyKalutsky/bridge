@@ -15,9 +15,11 @@
 }
 
 .tab-text {
+    display: flex;
     margin-left: 25%;
     height: 100%;
     align-items: center;
     justify-content: center;
     color: white;
+    height: 100%;
 }
