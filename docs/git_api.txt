@@ -2,26 +2,40 @@ TODO:
 
 setting your private git repo easily https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
 
-git commands:
-    git pull -all
-    git add . && git commit -m "n commit so fat" && git push
-    git diff commit_last ... commit_pulled(to show)
+The way to structure project:
+Each participant has its own branch
 
-test on a git repo
-Write parser and executer for all the above
+Teacher:
+    *master 
+    *techer
+init:
+    git clone bare-repo with README.md
+    make a branch teacher and folder teacher
+pull:
+    git pull
+    git merge teacher, origin/s1 ...
+push:
+    git diff --name-only
+    if 2 folders modified:
+        git stash push -- . #do this over each repo
+        repeat step2 for each modification
+    if 1 folder:
+        git stash
+        git checkout branch(folder)
+        git stash pop
+        git add . && git commit -m "1" && git push origin HEAD:branch
+        git checkout master && git merge origin/branch
 
-Master git commands
-git pull origin st1 --no-edit 
-&& git pull origin st2 --no-edit 
-&& git pull origin st3 --no-edit
 
-User git commands
-git clone
-git checkout -b branchname
-make changes
-git add . && git commit -m "first commit"
-git push --set-upstream branchname
-git add . && git commit -m "first commit" && git push
-
-git pull origin master --no-edit
-
+Students:
+init:
+    clone bare
+    make branch s_ 
+    git checkout branch s_
+    mkdir s_
+    git pull && git merge origin/teacher
+pull:
+    git pull
+    git merge origin/teacher
+push:
+    git add . && git commit -m "1" && git push origin branch
