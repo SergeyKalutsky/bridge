@@ -1,7 +1,13 @@
 from pathlib import Path
+from sql_app import sess, t
 from git import Repo
 from fastapi import FastAPI
+from pydantic import BaseModel
 
+
+class Creds(BaseModel):
+    password: str
+    login: str
 
 app = FastAPI()
 git_dir = Path('/home/git')
@@ -9,12 +15,18 @@ git_dir = Path('/home/git')
 
 @app.get("/")
 async def home():
-    return {'messge': 'hi there'}
+    return 'Hello world'
 
 
-@app.get("/auth/{login}-{password}")
-async def auth(login, password):
-    return {'login': login, 'passwd':password}
+@app.post("/auth/")
+async def auth(creds: Creds):
+    # TODO: add hash security check
+    user = sess.query(t.User).\
+        filter(t.User.login == creds.login).\
+        filter(t.User.password == creds.password).first()
+    if user:
+        return user
+    return {'error': 'Неверный логин или пароль'}
 
 
 
@@ -33,3 +45,6 @@ async def init_bare(repo):
 # run on remote command
 #  uvicorn main:app --host 0.0.0.0 --port 8000
 # run git@64.225.27.238:/home/git/project.git
+
+# uvicorn main:app --reload
+# for development
