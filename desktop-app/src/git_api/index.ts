@@ -13,11 +13,12 @@ const init = (remote: string, branch: string): void => {
   fs.mkdir(path.join(repo_path, branch));
 }
 
-// const git: SimpleGit = simpleGit('fluffy-meme', { binary: 'git' });
-// console.log(git.pull())
-// const pull = (branches: string[])=> {
-
-
-// }
+const pull = (branches: string[])=> {
+  const git: SimpleGit = simpleGit('C:\\Users\\skalutsky\\fluffy-meme', { binary: 'git' });
+  for (const branch of branches){
+    git.pull('origin', branch)
+  }
+}
 // console.log(os.homedir())
-init('https://github.com/SergeyKalutsky/fluffy-meme.git', 'teacher')
+// init('https://github.com/SergeyKalutsky/fluffy-meme.git', 'teacher')
+pull(['s1', 'teacher'])
