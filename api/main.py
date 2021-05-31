@@ -41,6 +41,7 @@ async def init_bare(repo):
 # 2. Write creation of a user.config.json
 # 3. Write auth frontend
 # 4. Write frontend for making a room
+# 5. Write api handling room creation
 
 # run on remote command
 #  uvicorn main:app --host 0.0.0.0 --port 8000
