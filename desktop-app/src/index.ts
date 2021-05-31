@@ -1,6 +1,9 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
-import { spawn } from 'child_process';
+// import { spawn } from 'child_process';
+import simpleGit, {SimpleGit} from 'simple-git';
+const git: SimpleGit = simpleGit();
+
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
@@ -50,6 +53,7 @@ app.on('activate', () => {
   }
 });
 
+git.clone('https://github.com/SergeyKalutsky/test.git')
 
 ipcMain.on('cmd', (event, arg) => {
   elevatedShell({ command: `apt-get update`},

@@ -117,3 +117,6 @@ dist
 
 # api
 __pycache__
+
+# tests 
+fluffy-meme
