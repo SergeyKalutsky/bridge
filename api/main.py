@@ -9,16 +9,23 @@ class Creds(BaseModel):
     password: str
     login: str
 
+
+class Data(BaseModel):
+    user_id: int
+    room_type: str
+    repo: str
+    
+
 app = FastAPI()
 git_dir = Path('/home/git')
 
 
-@app.get("/")
+@app.get('/')
 async def home():
-    return 'Hello world'
+    return 'Home'
 
 
-@app.post("/auth/")
+@app.post('/auth/')
 async def auth(creds: Creds):
     # TODO: add hash security check
     user = sess.query(t.User).\
@@ -29,12 +36,15 @@ async def auth(creds: Creds):
     return {'error': 'Неверный логин или пароль'}
 
 
+@app.post('/rooms/create')
+async def create_room(room: Room):
+    pass
 
-@app.get("/init-bare/{repo}")
+@app.get('/init-bare/{repo}')
 async def init_bare(repo):
     bare_repo = Repo.init(git_dir / repo + '.git', bare=True)
     assert bare_repo.bare
-    return {"message": 'works!'}
+    return {'message': 'works!'}
 
 # TODO:
 # 1. Write auth of a user

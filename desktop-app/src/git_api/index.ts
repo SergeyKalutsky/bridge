@@ -19,6 +19,8 @@ const pull = (branches: string[])=> {
     git.pull('origin', branch)
   }
 }
+
+
 // console.log(os.homedir())
 // init('https://github.com/SergeyKalutsky/fluffy-meme.git', 'teacher')
 pull(['s1', 'teacher'])
