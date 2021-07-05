@@ -5,9 +5,11 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 
-class Creds(BaseModel):
+class User(BaseModel):
     password: str
     login: str
+    ssh_pub_key: str
+    name: str
 
 
 class Room(BaseModel):
@@ -43,8 +45,19 @@ async def home():
     return 'Home'
 
 
-@app.post('/auth/')
-async def auth(creds: Creds):
+@app.post('/users/create')
+async def create_user(creds: User):
+    sess.add(t.User(
+        login=creds.login,
+        password=creds.password,
+        name=creds.name,
+        ssh_pub_key=creds.ssh_pub_key
+    ))
+    sess.commit()
+
+
+@app.post('/users/auth')
+async def auth(creds: User):
     # TODO: add hash security check
     user = sess.query(t.User).\
         filter(t.User.login == creds.login).\

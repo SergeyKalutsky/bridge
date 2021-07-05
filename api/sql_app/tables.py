@@ -11,6 +11,7 @@ class User(Base):
     name = Column(String)
     login = Column(String, unique=True, index=True)
     password = Column(String)
+    ssh_pub_key = Column(String)
 
 
 class Rooms(Base):
