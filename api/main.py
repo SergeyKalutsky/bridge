@@ -21,6 +21,23 @@ app = FastAPI()
 git_dir = Path('/home/git')
 
 
+def repo_already_exists(repo):
+    res = sess.query(t.Rooms).filter(t.Rooms.repo == repo).first()
+    if res is None:
+        return True
+    return False
+
+
+def add_room_record(room, isuserowner=True):
+    sess.add(t.Rooms(
+        room_type=room.room_type,
+        repo=room.repo,
+        isuserowner=isuserowner,
+        branch='master'
+    ))
+    sess.commit()
+
+
 @app.get('/')
 async def home():
     return 'Home'
@@ -39,33 +56,10 @@ async def auth(creds: Creds):
 
 @app.post('/rooms/create')
 async def create_room(room: Room):
-    path = str(git_dir / (room.repo + '.git'))
-    sess.add(t.Rooms(
-        room_type=room.room_type,
-        repo=path,
-        isuserowner=True,
-        branch='master'
-    ))
-    sess.commit()
-    bare_repo = Repo.init(path, bare=True)
+    # TODO: Add ssh key check
+    if repo_already_exists(room.repo):
+        return 'Exists'
+    add_room_record(room)
+    bare_repo = Repo.init(git_dir / (room.repo + '.git'), bare=True)
     assert bare_repo.bare
     return room
-
-
-@app.get('/init-bare/{repo}')
-async def init_bare(repo):
-    return {'message': 'works!'}
-
-# TODO:
-# 1. Write auth of a user
-# 2. Write creation of a user.config.json
-# 3. Write auth frontend
-# 4. Write frontend for making a room
-# 5. Write api handling room creation
-
-# run on remote command
-#  uvicorn main:app --host 0.0.0.0 --port 8000
-# run git@64.225.27.238:/home/git/project.git
-
-# uvicorn main:app --reload
-# for development
