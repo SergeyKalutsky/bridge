@@ -10,11 +10,12 @@ class Creds(BaseModel):
     login: str
 
 
-class Data(BaseModel):
+class Room(BaseModel):
     user_id: int
-    room_type: str
+    room_type: int
     repo: str
-    
+    ssh_pub_key: str
+
 
 app = FastAPI()
 git_dir = Path('/home/git')
@@ -38,12 +39,21 @@ async def auth(creds: Creds):
 
 @app.post('/rooms/create')
 async def create_room(room: Room):
-    pass
+    path = str(git_dir / (room.repo + '.git'))
+    sess.add(t.Rooms(
+        room_type=room.room_type,
+        repo=path,
+        isuserowner=True,
+        branch='master'
+    ))
+    sess.commit()
+    bare_repo = Repo.init(path, bare=True)
+    assert bare_repo.bare
+    return room
+
 
 @app.get('/init-bare/{repo}')
 async def init_bare(repo):
-    bare_repo = Repo.init(git_dir / repo + '.git', bare=True)
-    assert bare_repo.bare
     return {'message': 'works!'}
 
 # TODO:
