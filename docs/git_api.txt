@@ -5,7 +5,7 @@ setting your private git repo easily https://git-scm.com/book/en/v2/Git-on-the-S
 The way to structure project:
 Each participant has its own branch
 
-Teacher:
+Admin:
     *master 
     *techer
 init:
@@ -27,7 +27,7 @@ push:
         git checkout master && git merge origin/branch
 
 
-Students:
+Participant:
 init:
     clone bare
     make branch s_ 
