@@ -74,5 +74,8 @@ async def create_room(room: Room):
         return 'Exists'
     add_room_record(room)
     bare_repo = Repo.init(git_dir / (room.repo + '.git'), bare=True)
-    assert bare_repo.bare
     return room
+
+
+# Push
+# Pull methods
