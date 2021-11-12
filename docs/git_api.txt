@@ -7,13 +7,13 @@ Each participant has its own branch
 
 Admin:
     *master 
-    *techer
+    *admin
 init:
     git clone bare-repo with README.md
-    make a branch teacher and folder teacher
+    make a branch admin and folder admin
 pull:
     git pull
-    git merge teacher, origin/s1 ...
+    git merge admin, origin/s1 ...
 push:
     git diff --name-only
     if 2 folders modified:
@@ -33,9 +33,9 @@ init:
     make branch s_ 
     git checkout branch s_
     mkdir s_
-    git pull && git merge origin/teacher
+    git pull && git merge origin/admin
 pull:
     git pull
-    git merge origin/teacher
+    git merge origin/admin
 push:
     git add . && git commit -m "1" && git push origin branch
