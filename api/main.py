@@ -1,14 +1,15 @@
 # to run use python -m uvicorn main:app --reload
 from sql_app import sess, t
 from fastapi import FastAPI
+from typing import Optional
 from pydantic import BaseModel
 import git_remote as gapi
 
-class User(BaseModel):
+class Creds(BaseModel):
     password: str
     login: str
-    ssh_pub_key: str
-    name: str
+    ssh_pub_key: Optional[str] = None
+    name: Optional[str] = None
 
 
 class Project(BaseModel):
@@ -43,7 +44,7 @@ async def home():
 
 
 @app.post('/users/create')
-async def create_user(creds: User):
+async def create_user(creds: Creds):
     sess.add(t.User(
         login=creds.login,
         password=creds.password,
@@ -54,8 +55,9 @@ async def create_user(creds: User):
 
 
 @app.post('/users/auth')
-async def auth(creds: User):
+async def auth(creds: Creds):
     # TODO: add hash security check
+    print(creds)
     user = sess.query(t.User).\
         filter(t.User.login == creds.login).\
         filter(t.User.password == creds.password).first()
