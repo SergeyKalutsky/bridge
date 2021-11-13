@@ -4,10 +4,11 @@ gl = gitlab.Gitlab('https://gitlab.bridgeacross.xyz',
                    private_token='Yyw3diYYbsAimWmXpwn2')
 
 
-def create_project(user_name, project_name):
+def create_project(user_name, project_name, description):
     user = gl.users.list(username=user_name)[0]
-    user.projects.create(
-        {'name': project_name, 'description': 'something_here'})
+    user.projects.create({'name': project_name, 
+                          'description': description})
+    
 
 
 def get_user_projects(user_name):

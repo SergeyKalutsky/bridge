@@ -5,6 +5,7 @@ from typing import Optional
 from pydantic import BaseModel
 import git_remote as gapi
 
+
 class Creds(BaseModel):
     password: str
     login: str
@@ -13,24 +14,26 @@ class Creds(BaseModel):
 
 
 class Project(BaseModel):
-    user_id: int
-    room_type: int
+    user_login: str
+    type: Optional[int] = None
     repo: str
-    ssh_pub_key: str
+    description: Optional[str] = ''
+    ssh_pub_key: Optional[str] = None
 
 
 app = FastAPI()
 
+
 def project_already_exists(repo):
     res = sess.query(t.Projects).filter(t.Projects.repo == repo).first()
     if res is None:
-        return True
-    return False
+        return False
+    return True
 
 
 def add_project_record(project, isuserowner=True):
-    sess.add(t.Project(
-        room_type=project.type,
+    sess.add(t.Projects(
+        type=project.type,
         repo=project.repo,
         isuserowner=isuserowner,
         branch='master'
@@ -66,15 +69,23 @@ async def auth(creds: Creds):
     return {'error': 'Неверный логин или пароль'}
 
 
+@app.get('/projects/list/{user_login}')
+async def list_projects(user_login: str):
+    projects = gapi.get_user_projects(user_login)
+    return [p.name for p in projects]
+
+
+@app.post('/projects/delete')
+async def delete_project(project: Project):
+    gapi.delete_user_project(project.user_login, project.repo)
+    sess.query(t.Projects).filter(t.Projects.repo == project.repo).delete()
+
+
 @app.post('/projects/create')
-async def create_room(project: Project):
-    # TODO: Add ssh key check
+async def create_project(project: Project):
     if project_already_exists(project.repo):
         return 'Exists'
     add_project_record(project)
-    
-    return room
+    gapi.create_project(project.user_login, project.repo, project.description)
 
 
-# Push
-# Pull methods
