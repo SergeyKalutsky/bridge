@@ -1,9 +1,8 @@
-from pathlib import Path
+# to run use python -m uvicorn main:app --reload
 from sql_app import sess, t
-from git import Repo
 from fastapi import FastAPI
 from pydantic import BaseModel
-
+import git_remote as gapi
 
 class User(BaseModel):
     password: str
@@ -12,7 +11,7 @@ class User(BaseModel):
     name: str
 
 
-class Room(BaseModel):
+class Project(BaseModel):
     user_id: int
     room_type: int
     repo: str
@@ -20,20 +19,18 @@ class Room(BaseModel):
 
 
 app = FastAPI()
-git_dir = Path('/home/git')
 
-
-def repo_already_exists(repo):
-    res = sess.query(t.Rooms).filter(t.Rooms.repo == repo).first()
+def project_already_exists(repo):
+    res = sess.query(t.Projects).filter(t.Projects.repo == repo).first()
     if res is None:
         return True
     return False
 
 
-def add_room_record(room, isuserowner=True):
-    sess.add(t.Rooms(
-        room_type=room.room_type,
-        repo=room.repo,
+def add_project_record(project, isuserowner=True):
+    sess.add(t.Project(
+        room_type=project.type,
+        repo=project.repo,
         isuserowner=isuserowner,
         branch='master'
     ))
@@ -67,13 +64,13 @@ async def auth(creds: User):
     return {'error': 'Неверный логин или пароль'}
 
 
-@app.post('/rooms/create')
-async def create_room(room: Room):
+@app.post('/projects/create')
+async def create_room(project: Project):
     # TODO: Add ssh key check
-    if repo_already_exists(room.repo):
+    if project_already_exists(project.repo):
         return 'Exists'
-    add_room_record(room)
-    bare_repo = Repo.init(git_dir / (room.repo + '.git'), bare=True)
+    add_project_record(project)
+    
     return room
 
 

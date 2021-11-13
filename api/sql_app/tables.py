@@ -14,11 +14,11 @@ class User(Base):
     ssh_pub_key = Column(String)
 
 
-class Rooms(Base):
-    __tablename__ = 'rooms'
+class Projects(Base):
+    __tablename__ = 'projects'
 
     id = Column(Integer, primary_key=True, index=True)
-    room_type = Column(Integer)
+    type = Column(Integer)
     repo = Column(String, unique=True)
     isuserowner = Column(Integer)
     branch = Column(String)
