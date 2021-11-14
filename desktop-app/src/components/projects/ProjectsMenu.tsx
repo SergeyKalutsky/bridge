@@ -17,18 +17,17 @@ const useStyles = makeStyles((theme) => ({
 );
 
 type Name = {
-  name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ProjectsMenu = ({ name, setName }: Name): JSX.Element => {
+const ProjectsMenu = ({ setName }: Name): JSX.Element => {
   const classes = useStyles();
   const projects = ['testProject1', 'testProject2']
   return (
     <div className='left-menu'>
       <div className='tab-header'>
         <span className='tab-text'>ПРОЕКТЫ</span>
-        <IconButton className={classes.menuIcon}>
+        <IconButton className={classes.menuIcon} onClick={() => { console.log('hello') }}>
           <AddCircleOutlineIcon />
         </IconButton >
       </div>
