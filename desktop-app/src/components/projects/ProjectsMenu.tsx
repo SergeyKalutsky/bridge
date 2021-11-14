@@ -5,12 +5,12 @@ import '../../assets/css/ProjectsMenu.css'
 
 const useStyles = makeStyles((theme) => ({
   menuIcon: {
-      '& svg': {
-          fontSize: 45
-      },
-      'margin-left': '50px',
-      'color': '#b3afb0',
-      'justify-content': 'flex-end'
+    '& svg': {
+      fontSize: 45
+    },
+    'margin-left': '50px',
+    'color': '#b3afb0',
+    'justify-content': 'flex-end'
 
   }
 })
@@ -26,6 +26,14 @@ const ProjectsMenu = (): JSX.Element => {
         <IconButton className={classes.menuIcon}>
           <AddCircleOutlineIcon />
         </IconButton >
+      </div>
+      <div className='projects'>
+        <div className='project'>
+          <span>testProject1</span>
+        </div>
+        <div className='project'>
+          <span>testProject2</span>
+        </div>
       </div>
     </div>
   )
