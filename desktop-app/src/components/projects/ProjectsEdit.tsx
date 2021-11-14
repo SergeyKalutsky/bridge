@@ -1,8 +1,6 @@
 const ProjectsEdit = (): JSX.Element => {
     return (
-        <>
-            <div>test</div>
-        </>
+        <div className='edit'>EDIT</div>
     )
 }
 
