@@ -1,11 +1,11 @@
-import '../../assets/css/Rooms.css'
-import RoomsMenu from './RoomsMenu'
+import '../../assets/css/Projects.css'
+import ProjectsMenu from './ProjectsMenu'
 
 
-const Rooms = (): JSX.Element => {
+const Projects = (): JSX.Element => {
     return (
         <>
-        <RoomsMenu />
+        <ProjectsMenu />
         <div className='workspace'>
             <div className='workspace-background'>
             </div>
@@ -15,4 +15,4 @@ const Rooms = (): JSX.Element => {
 }
 
 
-export default Rooms
+export default Projects

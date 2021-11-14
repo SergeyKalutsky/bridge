@@ -1,7 +1,7 @@
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import '../../assets/css/RoomMenu.css'
+import '../../assets/css/ProjectsMenu.css'
 
 const useStyles = makeStyles((theme) => ({
   menuIcon: {
@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-const RoomsMenu = (): JSX.Element => {
+const ProjectsMenu = (): JSX.Element => {
   const classes = useStyles();
 
   return (
     <div className='left-menu'>
       <div className='tab-header'>
-        <span className='tab-text'>КОМНАТЫ</span>
+        <span className='tab-text'>ПРОЕКТЫ</span>
         <IconButton className={classes.menuIcon}>
           <AddCircleOutlineIcon />
         </IconButton >
@@ -31,4 +31,4 @@ const RoomsMenu = (): JSX.Element => {
   )
 }
 
-export default RoomsMenu
+export default ProjectsMenu

@@ -35,7 +35,7 @@ const SideNavBar = (): JSX.Element => {
                 <Link to="/" replace><AccountTreeIcon /></Link>
             </IconButton>
             <IconButton className={classes.menuIcon}>
-                <Link to="/rooms" replace><ClassIcon /></Link>
+                <Link to="/projects" replace><ClassIcon /></Link>
             </IconButton>
         </div>
     )

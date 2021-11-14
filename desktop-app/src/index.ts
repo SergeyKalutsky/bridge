@@ -53,8 +53,6 @@ app.on('activate', () => {
   }
 });
 
-git.clone('https://github.com/SergeyKalutsky/test.git')
-
 ipcMain.on('cmd', (event, arg) => {
   elevatedShell({ command: `apt-get update`},
     async (error?: Error, data?: string | Buffer) => {
