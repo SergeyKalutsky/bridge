@@ -16,9 +16,14 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-const ProjectsMenu = (): JSX.Element => {
-  const classes = useStyles();
+type Name = {
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+}
 
+const ProjectsMenu = ({ name, setName }: Name): JSX.Element => {
+  const classes = useStyles();
+  const projects = ['testProject1', 'testProject2']
   return (
     <div className='left-menu'>
       <div className='tab-header'>
@@ -28,11 +33,11 @@ const ProjectsMenu = (): JSX.Element => {
         </IconButton >
       </div>
       <div className='projects'>
-        <div className='project'>
-          <span>testProject1</span>
+        <div className='project' onClick={() => { setName(projects[0]) }} >
+          <span>{projects[0]}</span>
         </div>
-        <div className='project'>
-          <span>testProject2</span>
+        <div className='project' onClick={() => { setName(projects[1]) }}>
+          <span>{projects[1]}</span>
         </div>
       </div>
     </div>
