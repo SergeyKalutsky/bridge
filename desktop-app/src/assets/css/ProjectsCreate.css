@@ -1,0 +1,24 @@
+.menu {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    background-color: #45434c;
+    flex-direction: column;
+}
+
+.crete-inputs {
+    height: 100%;
+    width: 60%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    margin-top: 5%;
+}
+
+textarea {
+    width: 500px;
+    height: 100px;
+}
