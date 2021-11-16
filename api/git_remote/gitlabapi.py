@@ -28,7 +28,8 @@ def create_user(email, password, username, name):
     gl.users.create({'email': email,
                      'password': password,
                      'username': username,
-                     'name': name})
+                     'name': name,
+                     'skip_confirmation': True})
 
 
 def delete_user(username):
@@ -45,3 +46,4 @@ def add_project_member(user_id, project_id):
     project.members.create({'user_id': user_id,
                             'access_level': gitlab.DEVELOPER_ACCESS})
 
+create_user('test2@mail.ru', 'Rjyrehc123!', 'test2', 'test2')
