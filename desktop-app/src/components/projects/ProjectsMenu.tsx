@@ -28,8 +28,14 @@ const useStyles = makeStyles(() => ({
 })
 );
 
+type Project = {
+  id: number;
+  name: string
+}
+
 type Setter = {
-  setIsCreate: React.Dispatch<React.SetStateAction<boolean>>
+  setIsCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  projects: Array<Project>
 }
 
 type ProjectProp = {
@@ -57,9 +63,8 @@ const ProjectSelect = ({ project }: ProjectProp): JSX.Element => {
   )
 }
 
-const ProjectsMenu = ({ setIsCreate }: Setter): JSX.Element => {
+const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
   const classes = useStyles();
-  const projects = ['testProject1', 'testProject2']
 
   return (
     <div className='left-menu'>
@@ -75,8 +80,8 @@ const ProjectsMenu = ({ setIsCreate }: Setter): JSX.Element => {
         </IconButton >
       </div>
       <div className='projects' >
-        <ProjectSelect project={projects[0]} />
-        <ProjectSelect project={projects[1]} />
+        <ProjectSelect project={projects[0].name} />
+        {/* <ProjectSelect project={projects[1].name} /> */}
       </div >
     </div>
   )
