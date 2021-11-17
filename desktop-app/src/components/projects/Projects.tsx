@@ -5,8 +5,12 @@ import ProjectFind from './ProjectFind'
 import ProjectCreate from './ProjectsCreate'
 
 
+
 const Projects = (): JSX.Element => {
     const [iscreate, setIsCreate] = useState(false)
+    fetch('http://192.168.1.2:8000/projects/list/sergey', )
+        .then(response => response.json())
+        .then(data => console.log(data))
     return (
         <>
             <ProjectsMenu setIsCreate={setIsCreate} />
@@ -22,4 +26,4 @@ const Projects = (): JSX.Element => {
 }
 
 
-export { Projects, Page }
+export { Projects }
