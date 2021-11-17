@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../assets/css/ProjectsMenu.css'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   menuIcon: {
     '& svg': {
       fontSize: 30
