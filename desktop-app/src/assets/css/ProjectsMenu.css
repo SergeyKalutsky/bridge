@@ -29,10 +29,10 @@
 }
 
 .project .icon {
-    margin-left: 70px;
+    margin-left: 40px;
 }
-.project span {
-    margin-left: 70px;
+.project span.selected {
+    margin-left: 30px;
 }
 
 .project {

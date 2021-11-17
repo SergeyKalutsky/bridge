@@ -29,7 +29,7 @@ type ProjectProp = {
 
 const TrashButton = (): JSX.Element => {
   return (
-    <div className='icon' onClick={() => { alert('Dont click') }}>
+    <div className='icon' onClick={() => { alert('Удалено') }}>
       <FontAwesomeIcon icon={faTrashAlt} />
     </div>
   )
@@ -41,8 +41,8 @@ const ProjectSelect = ({ project }: ProjectProp): JSX.Element => {
     <div className='project'
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
-      <span>{project}</span>
-      {active && <TrashButton />}
+      <span className={active == true ? ' selected': ''}>{project}</span>
+      {active && <TrashButton />} 
     </div>
   )
 }
@@ -59,7 +59,6 @@ const ProjectsMenu = ({ setIsCreate }: Setter): JSX.Element => {
           onClick={() => { setIsCreate(true) }}>
           <AddCircleOutlineIcon />
         </IconButton >
-
       </div>
       <div className='projects' >
         <ProjectSelect project={projects[0]} />
