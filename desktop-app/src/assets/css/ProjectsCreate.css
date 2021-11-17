@@ -14,6 +14,26 @@
     flex-direction: column;
 }
 
+.crete-inputs input[type=text] {
+    width: 300px;
+    height: 30px;
+
+}
+
+.checkbox {
+    font-size: 20px;
+    font-family: monospace;
+    color: rgb(171, 218, 218);
+}
+
+.crete-inputs input:focus {
+    outline: none;
+}
+
+.crete-inputs textarea:focus {
+    outline: none;
+}
+
 .row {
     margin-top: 5%;
 }

@@ -1,0 +1,14 @@
+.search {
+    margin-top: 20%;
+}
+
+.search input {
+    margin-right: 5px;
+    height: 30px;
+    width: 300px;
+    /* font-size: 34px; */
+}
+
+.search input:focus {
+    outline: none;
+}

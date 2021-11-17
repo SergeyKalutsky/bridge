@@ -1,11 +1,10 @@
-// Add icons on focus
-// Pencil to edit, and checbox to select
-
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { useState } from 'react'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../assets/css/ProjectsMenu.css'
-import { Page } from './Projects'
 
 const useStyles = makeStyles((theme) => ({
   menuIcon: {
@@ -21,28 +20,51 @@ const useStyles = makeStyles((theme) => ({
 );
 
 type Setter = {
-  setPage: React.Dispatch<React.SetStateAction<Page>>
+  setIsCreate: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProjectsMenu = ({ setPage }: Setter): JSX.Element => {
+type ProjectProp = {
+  project: string
+}
+
+const TrashButton = (): JSX.Element => {
+  return (
+    <div className='icon' onClick={() => { alert('Dont click') }}>
+      <FontAwesomeIcon icon={faTrashAlt} />
+    </div>
+  )
+}
+
+const ProjectSelect = ({ project }: ProjectProp): JSX.Element => {
+  const [active, setActive] = useState(false)
+  return (
+    <div className='project'
+      onMouseOver={() => { setActive(true) }}
+      onMouseLeave={() => { setActive(false) }}>
+      <span>{project}</span>
+      {active && <TrashButton />}
+    </div>
+  )
+}
+
+const ProjectsMenu = ({ setIsCreate }: Setter): JSX.Element => {
   const classes = useStyles();
   const projects = ['testProject1', 'testProject2']
+
   return (
     <div className='left-menu'>
       <div className='tab-header'>
         <span className='tab-text'>ПРОЕКТЫ</span>
-        <IconButton className={classes.menuIcon} onClick={() => {setPage({iscreate: true}) }}>
+        <IconButton className={classes.menuIcon}
+          onClick={() => { setIsCreate(true) }}>
           <AddCircleOutlineIcon />
         </IconButton >
+
       </div>
-      <div className='projects'>
-        <div className='project' onClick={() => { setPage({ iscreate: false, projectName: projects[0] }) }} >
-          <span>{projects[0]}</span>
-        </div>
-        <div className='project' onClick={() => { setPage({ iscreate: false, projectName: projects[1] }) }}>
-          <span>{projects[1]}</span>
-        </div>
-      </div>
+      <div className='projects' >
+        <ProjectSelect project={projects[0]} />
+        <ProjectSelect project={projects[1]} />
+      </div >
     </div>
   )
 }

@@ -28,11 +28,19 @@
     height: 80%;
 }
 
+.project .icon {
+    margin-left: 70px;
+}
+.project span {
+    margin-left: 70px;
+}
+
 .project {
     height: 50px;
     line-height: 50px;
     display: flex;
     justify-content: center;
+    align-items: center;
     font-size: 28px;
 }
 

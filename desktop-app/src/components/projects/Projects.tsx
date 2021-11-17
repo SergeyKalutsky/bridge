@@ -1,23 +1,19 @@
 import { useState } from 'react'
 import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
-import ProjectEdit from './ProjectsEdit'
+import ProjectFind from './ProjectFind'
 import ProjectCreate from './ProjectsCreate'
 
-interface Page {
-    iscreate: boolean;
-    projectName?: String;
-}
 
 const Projects = (): JSX.Element => {
-    const [page, setPage] = useState<Page>({iscreate: false})
+    const [iscreate, setIsCreate] = useState(false)
     return (
         <>
-            <ProjectsMenu setPage={setPage} />
+            <ProjectsMenu setIsCreate={setIsCreate} />
             <div className='workspace'>
                 <div className='workspace-background'>
-                    {page.iscreate == true ?
-                        <ProjectCreate />: <ProjectEdit />
+                    {iscreate == true ?
+                        <ProjectCreate />: <ProjectFind />
                     }
                 </div>
             </div>
