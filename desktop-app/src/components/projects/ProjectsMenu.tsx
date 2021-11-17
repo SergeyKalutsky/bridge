@@ -51,7 +51,7 @@ const ProjectSelect = ({ project }: ProjectProp): JSX.Element => {
       onClick={()=>{alert('Выбран')}}
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
-      <span className={active == true ? ' selected' : ''}>{project}</span>
+      <span className={active == true ? 'selected' : ''}>{project}</span>
       {active && <TrashButton />}
     </div>
   )
