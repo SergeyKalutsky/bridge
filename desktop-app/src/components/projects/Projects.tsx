@@ -17,9 +17,9 @@ const Projects = (): JSX.Element => {
     const [projects, setProjects] = useState<Array<Project>>([{id:0, name:""}])
 
     useEffect(() => {
-        fetch('http://192.168.1.2:8000/projects/list/sergey')
+        fetch('http://172.29.0.1:8000/projects/list/sergey')
             .then(response => response.json())
-            .then(data => setProjects(data))
+            .then(data => setProjects(data['projects']))
     }, [])
     return (
         <>

@@ -54,7 +54,7 @@ const ProjectSelect = ({ project }: ProjectProp): JSX.Element => {
   const [active, setActive] = useState(false)
   return (
     <div className='project'
-      onClick={()=>{alert('Выбран')}}
+      onClick={() => { alert('Выбран') }}
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
       <span className={active == true ? 'selected' : ''}>{project}</span>
@@ -65,7 +65,8 @@ const ProjectSelect = ({ project }: ProjectProp): JSX.Element => {
 
 const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
   const classes = useStyles();
-
+  const projects_list = projects.map((project) =>
+    <ProjectSelect project={project.name} key={project.name} />)
   return (
     <div className='left-menu'>
       <div className='tab-header'>
@@ -80,8 +81,7 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
         </IconButton >
       </div>
       <div className='projects' >
-        <ProjectSelect project={projects[0].name} />
-        {/* <ProjectSelect project={projects[1].name} /> */}
+        {projects_list}
       </div >
     </div>
   )
