@@ -7,6 +7,7 @@ from pydantic import BaseModel
 import git_remote as gapi
 from fastapi.middleware.cors import CORSMiddleware
 
+
 class Creds(BaseModel):
     password: str
     login: str
@@ -24,12 +25,6 @@ class Project(BaseModel):
 
 app = FastAPI()
 
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8000",
-]
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,6 +33,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def project_already_exists(repo):
     res = sess.query(t.Projects).filter(t.Projects.repo == repo).first()
@@ -87,7 +83,7 @@ async def auth(creds: Creds):
 @app.get('/projects/list/{user_login}')
 async def list_projects(user_login: str):
     projects = gapi.get_user_projects(user_login)
-    return {'projects': [{'id':p.id, 'name': p.name} for p in projects]}
+    return {'projects': [{'id': p.id, 'name': p.name} for p in projects]}
 
 
 @app.post('/projects/delete')

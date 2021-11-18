@@ -44,7 +44,7 @@ type ProjectProp = {
 
 const TrashButton = (): JSX.Element => {
   return (
-    <div className='icon' onClick={() => { alert('Удалено') }}>
+    <div className='icon'>
       <FontAwesomeIcon icon={faTrashAlt} />
     </div>
   )
@@ -54,7 +54,6 @@ const ProjectSelect = ({ project }: ProjectProp): JSX.Element => {
   const [active, setActive] = useState(false)
   return (
     <div className='project'
-      onClick={() => { alert('Выбран') }}
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
       <span className={active == true ? 'selected' : ''}>{project}</span>
