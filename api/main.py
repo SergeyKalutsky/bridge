@@ -98,3 +98,4 @@ async def create_project(project: Project):
         return 'Exists'
     add_project_record(project)
     gapi.create_project(project.user_login, project.repo, project.description)
+    return {'res': 'created'}
