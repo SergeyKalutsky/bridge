@@ -42,7 +42,7 @@
 }
 
 .project .icon {
-    margin-left: 40px;
+    margin-left: 15px;
 }
 
 .project span.selected {
@@ -64,4 +64,9 @@
 
 .project span {
     color: rgb(45, 77, 107);
+}
+
+.icons {
+    display: flex;
+    flex-direction: row;
 }

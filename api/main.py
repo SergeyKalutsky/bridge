@@ -1,5 +1,6 @@
 # to run use python -m uvicorn main:app --reload
 # python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000 <---- run on open port
+import uuid
 from sql_app import sess, t
 from fastapi import FastAPI
 from typing import Optional
@@ -42,12 +43,13 @@ def project_already_exists(repo):
     return True
 
 
-def add_project_record(project, isuserowner=True):
+def add_project_record(project, key, isuserowner=True):
     sess.add(t.Projects(
         type=project.type,
         repo=project.repo,
         isuserowner=isuserowner,
-        branch='master'
+        branch='master',
+        key=key
     ))
     sess.commit()
 
@@ -97,6 +99,15 @@ async def delete_project(project: Project):
 async def create_project(project: Project):
     if project_already_exists(project.repo):
         return 'Exists'
-    add_project_record(project)
+    key = uuid.uuid4().hex
+    add_project_record(project, key)
     gapi.create_project(project.user_login, project.repo, project.description)
-    return {'res': 'created'}
+    return {'res': 'created', 'key': key}
+
+
+@app.get('/projects/key/{repo}')
+async def get_project_key(repo: str):
+    res = sess.query(t.Projects.key).\
+        filter(t.Projects.repo == repo).first()[0]
+    return {'key': res}
+    

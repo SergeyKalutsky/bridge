@@ -22,3 +22,4 @@ class Projects(Base):
     repo = Column(String, unique=True)
     isuserowner = Column(Integer)
     branch = Column(String)
+    key = Column(String)
