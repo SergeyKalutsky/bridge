@@ -18,7 +18,7 @@ class Creds(BaseModel):
 
 class Project(BaseModel):
     id: Optional[int]
-    repo: str
+    repo: Optional[str]
     user_login: Optional[str] = ''
     type: Optional[int] = None
     description: Optional[str] = ''

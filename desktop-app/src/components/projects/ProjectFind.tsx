@@ -19,7 +19,16 @@ const ProjectFind = (): JSX.Element => {
             {repo != '' ?
                 <div className='project-found'>
                     {repo}
-                    <button>Присоединится</button>
+                    <button onClick={() => { 
+                         fetch('http://172.29.0.1:8000/projects/members/add',
+                         {
+                             method: 'POST',
+                             headers: { 'Content-Type': 'application/json' },
+                             body: JSON.stringify({id:34, project: {id: 48}})
+                         })
+                         .then(response => response.json())
+                         .then(data => console.log(data))
+                    }}>Присоединится</button>
                 </div> :
                 null}
         </div>
