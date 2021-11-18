@@ -2,11 +2,23 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
 // import { spawn } from 'child_process';
 import simpleGit, {SimpleGit} from 'simple-git';
+const storage = require('electron-json-storage')
+
+
 const git: SimpleGit = simpleGit();
-
-
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
+console.log(storage.getDataPath())
+// storage.set('user_settings', { user: 'sergey', api_key: 'sdfsd234453211!!' }, function(error) {
+//   if (error) throw error;
+// });
+
+storage.get('user_settings', function(error, data) {
+  if (error) throw error;
+  console.log(data)
+});
+
+console.log(data)
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
