@@ -17,11 +17,18 @@ class Creds(BaseModel):
 
 
 class Project(BaseModel):
-    user_login: str
-    type: Optional[int] = None
+    id: Optional[int]
     repo: str
+    user_login: Optional[str] = ''
+    type: Optional[int] = None
     description: Optional[str] = ''
     ssh_pub_key: Optional[str] = None
+
+
+class Member(BaseModel):
+    id: int
+    user_login: Optional[str] = ''
+    project: Optional[Project] = None
 
 
 app = FastAPI()
@@ -110,4 +117,15 @@ async def get_project_key(repo: str):
     res = sess.query(t.Projects.key).\
         filter(t.Projects.repo == repo).first()[0]
     return {'key': res}
-    
+
+
+@app.get('/projects/get/{key}')
+async def get_project_by_key(key: str):
+    res = sess.query(t.Projects.repo).\
+        filter(t.Projects.key == key).first()[0]
+    return {'repo': res}
+
+
+@app.post('/projects/members/add')
+async def add_member(m: Member):
+    gapi.add_project_member(m.id, m.project.id)

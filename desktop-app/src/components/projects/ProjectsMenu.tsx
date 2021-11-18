@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
 
 type Project = {
   id: number;
-  name: string
+  name: string;
 }
 
 type Setter = {
@@ -42,6 +42,7 @@ type Setter = {
 type ProjectProp = {
   repo: string
   setActive?: React.Dispatch<React.SetStateAction<boolean>>
+  close?: any
 }
 
 
@@ -82,15 +83,26 @@ const TrashIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
 }
 
 
-const KeyIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
-  const [key, setKey] = useState('')
+const KeyIconButtonModa = ({ repo, setActive, close }: ProjectProp): JSX.Element => {
 
   useEffect(() => {
     fetch(`http://172.29.0.1:8000/projects/key/${repo}`)
       .then(response => response.json())
       .then(data => setKey(data['key']))
   }, [])
+  const [key, setKey] = useState('')
+  return (<div className="modal">
+    <div>{key}</div>
+    <button className="close" onClick={() => {
+      setActive(false);
+      close
+    }}>
+      Закрыть
+    </button>
+  </div>)
+}
 
+const KeyIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
   return (
     <Popup
       trigger={<div className='icon'><FontAwesomeIcon icon={faKey} /></div>}
@@ -98,15 +110,7 @@ const KeyIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
       modal
     >
       {close => (
-        <div className="modal">
-          <div>{key}</div>
-          <button className="close" onClick={() => {
-            setActive(false);
-            close
-          }}>
-            Закрыть
-          </button>
-        </div>
+        <KeyIconButtonModa repo={repo} setActive={setActive} close={close} />
       )
       }
     </Popup >
