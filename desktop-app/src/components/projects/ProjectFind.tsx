@@ -11,7 +11,7 @@ const ProjectFind = (): JSX.Element => {
                     placeholder='Введите ключ проекта'
                     onChange={(e) => { setKey(e.target.value) }} />
                 <button onClick={() => {
-                    fetch(`http://172.29.0.1:8000/projects/get/${key}`)
+                    fetch(`http://192.168.1.2:8000/projects/get/${key}`)
                         .then(response => response.json())
                         .then(data => setRepo(data['repo']))
                 }}>Поиск</button>
@@ -20,7 +20,7 @@ const ProjectFind = (): JSX.Element => {
                 <div className='project-found'>
                     {repo}
                     <button onClick={() => { 
-                         fetch('http://172.29.0.1:8000/projects/members/add',
+                         fetch('http://192.168.1.2:8000/projects/members/add',
                          {
                              method: 'POST',
                              headers: { 'Content-Type': 'application/json' },
