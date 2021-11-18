@@ -90,6 +90,7 @@ async def list_projects(user_login: str):
 async def delete_project(project: Project):
     gapi.delete_user_project(project.user_login, project.repo)
     sess.query(t.Projects).filter(t.Projects.repo == project.repo).delete()
+    return {'res': 'deleted'}
 
 
 @app.post('/projects/create')
