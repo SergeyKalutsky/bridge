@@ -86,7 +86,7 @@ const TrashIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
 const KeyIconButtonModa = ({ repo, setActive, close }: ProjectProp): JSX.Element => {
 
   useEffect(() => {
-    fetch(`http://192.168.1.2:8000/projects/key/${repo}`)
+    fetch(`http://localhost:8000/projects/key/${repo}`)
       .then(response => response.json())
       .then(data => setKey(data['key']))
   }, [])
