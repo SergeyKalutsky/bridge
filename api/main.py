@@ -1,10 +1,6 @@
 # to run use python -m uvicorn main:app --reload
 # python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000 <---- run on open port
 import uuid
-from sqlalchemy.sql.expression import true
-
-from sqlalchemy.sql.functions import user
-
 from sql_app import sess, t
 import git_remote as gapi
 from typing import Optional, List
@@ -116,12 +112,21 @@ async def delete_project(project: Project,
 
     if not auth(user_id, api_key):
         return 'Authentification failed'
-    gapi.gl.projects.delete(project.id)
-    sess.query(t.Projects).\
-        filter(t.Projects.id == project.id).delete()
-    sess.query(t.Members).\
-        filter(t.Members.project_id == project.id).delete()
-    sess.commit()
+    is_userowner = sess.query(t.Members.is_userowner).\
+        filter(t.Members.user_id == user_id).\
+        filter(t.Members.project_id == project.id).first()[0]
+    if is_userowner:
+        gapi.gl.projects.delete(project.id)
+        sess.query(t.Projects).\
+            filter(t.Projects.id == project.id).delete()
+        sess.query(t.Members).\
+            filter(t.Members.project_id == project.id).delete()
+        sess.commit()
+    else:
+        gapi.remove_member(user_id, project.id)
+        sess.query(t.Members).\
+            filter(t.Members.project_id == project.id).\
+            filter(t.Members.user_id == user_id).delete()
     return {'res': 'deleted'}
 
 

@@ -42,3 +42,8 @@ def add_project_member(user_id, project_id):
     project = gl.projects.get(project_id)
     project.members.create({'user_id': user_id,
                             'access_level': gitlab.DEVELOPER_ACCESS})
+
+
+def remove_member(user_id, project_id):
+    project = gl.projects.get(project_id)
+    project.members.delete(user_id)

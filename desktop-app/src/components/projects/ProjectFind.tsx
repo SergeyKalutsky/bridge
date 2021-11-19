@@ -47,6 +47,7 @@ const ProjectFind = (): JSX.Element => {
                             })
                             .then(response => response.json())
                             .then(data => console.log(data))
+                        window.location.reload()
                     }}>Присоединится</button>
                 </div> :
                 null}
