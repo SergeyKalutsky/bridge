@@ -6,7 +6,6 @@ import git_remote as gapi
 from typing import Optional, List
 from pydantic import BaseModel
 from fastapi import FastAPI, Header
-from sqlalchemy.ext.declarative import api
 from fastapi.middleware.cors import CORSMiddleware
 
 
