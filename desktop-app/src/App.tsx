@@ -30,7 +30,6 @@ export default hot(module)(function App() {
   })
 
   ipcRenderer.once('user-settings-get-response', (event, arg) => {
-    console.log(arg)
     if (Object.keys(arg).length == 0) {
       setIslogin(false)
     } else {
