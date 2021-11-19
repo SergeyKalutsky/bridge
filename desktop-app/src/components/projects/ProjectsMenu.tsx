@@ -1,6 +1,6 @@
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faTrashAlt, faKey, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faTrashAlt, faKey} from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react'
 import IconButton from '@material-ui/core/IconButton';
 import 'reactjs-popup/dist/index.css';

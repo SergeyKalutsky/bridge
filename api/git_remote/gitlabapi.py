@@ -8,7 +8,7 @@ gl = gitlab.Gitlab('https://gitlab.bridgeacross.xyz',
 
 def create_project(user_id, project):
     user = gl.users.get(user_id)
-    project = user.projects.create({'name': project.repo,
+    project = user.projects.create({'name': project.name,
                                     'description': project.description})
     return project.id
 

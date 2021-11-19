@@ -1,9 +1,15 @@
 import { useState } from 'react'
 import '../../assets/css/ProjectsFind.css'
 
+type Project = {
+    id: number
+    name: string
+}
+
+
 const ProjectFind = (): JSX.Element => {
     const [key, setKey] = useState('')
-    const [repo, setRepo] = useState('')
+    const [project, setProject] = useState<Project>({ id: 0, name: '' })
     return (
         <div className='menu'>
             <div className='search'>
@@ -13,21 +19,26 @@ const ProjectFind = (): JSX.Element => {
                 <button onClick={() => {
                     fetch(`http://localhost:8000/projects/get/${key}`)
                         .then(response => response.json())
-                        .then(data => setRepo(data['repo']))
+                        .then(data => setProject(data['repo']))
                 }}>Поиск</button>
             </div>
-            {repo != '' ?
+            {project.name != '' ?
                 <div className='project-found'>
-                    {repo}
-                    <button onClick={() => { 
-                         fetch('http://localhost:8000/projects/members/add',
-                         {
-                             method: 'POST',
-                             headers: { 'Content-Type': 'application/json' },
-                             body: JSON.stringify({id:34, project: {id: 48}})
-                         })
-                         .then(response => response.json())
-                         .then(data => console.log(data))
+                    {project.name}
+                    <button onClick={() => {
+                        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+                        fetch('http://localhost:8000/projects/members/add',
+                            {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'api-key': settings['user']['api_key'],
+                                    'user-id': settings['user']['id'],
+                                },
+                                body: JSON.stringify({ id: project.id })
+                            })
+                            .then(response => response.json())
+                            .then(data => console.log(data))
                     }}>Присоединится</button>
                 </div> :
                 null}

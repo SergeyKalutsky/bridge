@@ -23,7 +23,7 @@ class LoginCreds(BaseModel):
 class Project(BaseModel):
     id: Optional[int]
     key: Optional[str]
-    repo: Optional[str]
+    name: Optional[str]
     type: Optional[int] = None
     description: Optional[str] = ''
 
@@ -54,8 +54,8 @@ def auth(user_id, api_key):
     return False
 
 
-def project_already_exists(repo):
-    res = sess.query(t.Projects).filter(t.Projects.repo == repo).first()
+def project_already_exists(name):
+    res = sess.query(t.Projects).filter(t.Projects.name == name).first()
     if res is None:
         return False
     return True
@@ -65,7 +65,7 @@ def add_project_record(project, user_id):
     sess.add(t.Projects(
         id=project.id,
         type=project.type,
-        repo=project.repo,
+        name=project.name,
         key=project.key
     ))
     sess.add(t.Members(
@@ -129,7 +129,7 @@ async def create_project(project: Project,
                          user_id: str = Header(None)):
     if not auth(user_id, api_key):
         return 'Authentification failed'
-    if project_already_exists(project.repo):
+    if project_already_exists(project.name):
         return 'Exists'
     project.id = gapi.create_project(user_id, project)
     project.key = uuid.uuid4().hex
@@ -137,20 +137,24 @@ async def create_project(project: Project,
     return {'res': 'created', 'project': project}
 
 
-@app.get('/projects/key/{repo}')
-async def get_project_key(repo: str):
+@app.get('/projects/key/{name}')
+async def get_project_key(name: str):
     res = sess.query(t.Projects.key).\
-        filter(t.Projects.repo == repo).first()[0]
+        filter(t.Projects.name == name).first()[0]
     return {'key': res}
 
 
 @app.get('/projects/get/{key}')
 async def get_project_by_key(key: str):
-    res = sess.query(t.Projects.repo).\
+    project = sess.query(t.Projects.name, t.Projects.id).\
         filter(t.Projects.key == key).first()[0]
-    return {'repo': res}
+    return {'project': project}
 
 
 @app.post('/projects/members/add')
-async def add_member(m: Member):
-    gapi.add_project_member(m.id, m.project.id)
+async def add_member(project: Project,
+                     api_key: str = Header(None),
+                     user_id: str = Header(None)):
+    if not auth(user_id, api_key):
+        return 'Authentification failed'
+    gapi.add_project_member(user_id, project.id)

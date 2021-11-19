@@ -3,19 +3,17 @@ import { useState } from 'react'
 import '../../assets/css/ProjectsCreate.css'
 import storage from 'electron-json-storage';
 
-type Form = {
-    user_login: string,
-    repo: string,
-    description: string,
+type Project = {
+    name: string,
+    description?: string,
     isclassrom: boolean
 }
 
 const ProjectsCreate = (): JSX.Element => {
     const [checked, setChecked] = useState<number>(0)
 
-    const [form, setForm] = useState<Form>({
-        user_login: 'sergey',
-        repo: '',
+    const [project, setProject] = useState<Project>({
+        name: '',
         description: '',
         isclassrom: false
     })
@@ -24,23 +22,23 @@ const ProjectsCreate = (): JSX.Element => {
             <div className='crete-inputs row'>
                 <div className='row'>
                     <input type="text" placeholder='Название проекта'
-                        onChange={(e) => { setForm({ ...form, repo: e.target.value }) }} />
+                        onChange={(e) => { setProject({ ...project, name: e.target.value }) }} />
                 </div>
                 <div className='row'>
                     <textarea placeholder='Описание'
-                        onChange={(e) => { setForm({ ...form, description: e.target.value }) }} />
+                        onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                 </div>
                 <div className='row checkbox'>
                     <div>
                         <input type="checkbox"
                             checked={checked == 0}
-                            onChange={() => { setChecked(0); setForm({ ...form, isclassrom: false }) }} />
+                            onChange={() => { setChecked(0); setProject({ ...project, isclassrom: false }) }} />
                         <label>Личный проект</label>
                     </div>
                     <div>
                         <input type="checkbox"
                             checked={checked == 1}
-                            onChange={() => { setChecked(1); setForm({ ...form, isclassrom: true }) }} />
+                            onChange={() => { setChecked(1); setProject({ ...project, isclassrom: true }) }} />
                         <label>Для обучения</label>
                     </div>
                 </div>
@@ -55,7 +53,7 @@ const ProjectsCreate = (): JSX.Element => {
                                     'api-key': settings['user']['api_key'],
                                     'user-id': settings['user']['id'],
                                 },
-                                body: JSON.stringify(form)
+                                body: JSON.stringify(project)
 
                             })
                             .then(response => response.json())

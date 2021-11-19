@@ -20,7 +20,7 @@ class Projects(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     type = Column(Integer)
-    repo = Column(String, unique=True)
+    name = Column(String, unique=True)
     key = Column(String)
 
 class Members(Base):
