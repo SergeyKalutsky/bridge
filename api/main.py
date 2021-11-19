@@ -9,10 +9,9 @@ import git_remote as gapi
 from fastapi.middleware.cors import CORSMiddleware
 
 
-class Creds(BaseModel):
+class LoginCreds(BaseModel):
     password: str
     login: str
-    ssh_pub_key: Optional[str] = None
     name: Optional[str] = None
 
 
@@ -67,20 +66,18 @@ async def home():
 
 
 @app.post('/users/create')
-async def create_user(creds: Creds):
+async def create_user(creds: LoginCreds):
     sess.add(t.User(
         login=creds.login,
         password=creds.password,
         name=creds.name,
-        ssh_pub_key=creds.ssh_pub_key
     ))
     sess.commit()
 
 
 @app.post('/users/auth')
-async def auth(creds: Creds):
-    # TODO: add hash security check
-    print(creds)
+async def auth(creds: LoginCreds):
+    # TODO: add password hash security check
     user = sess.query(t.User).\
         filter(t.User.login == creds.login).\
         filter(t.User.password == creds.password).first()

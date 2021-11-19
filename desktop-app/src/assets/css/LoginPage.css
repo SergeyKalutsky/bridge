@@ -1,0 +1,43 @@
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    background-color: rgb(44, 16, 16);
+}
+
+.greetings {
+    font-size: 30px;
+    margin-bottom: 5%;
+    color: cadetblue;
+
+}
+
+.input-forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-forms input {
+    font-size: 20px;
+}
+
+input:focus {
+    outline: none;
+}
+
+.input-forms input:nth-child(2) {
+    margin-top: 10%;
+}
+
+.input-forms button {
+    margin-top: 10%;
+    font-size: 20px;
+    width: 50%;
+    background-color: #7277c0;
+}
+.input-forms button:focus {
+    outline: none;
+}

@@ -8,10 +8,10 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
     login = Column(String, unique=True, index=True)
+    name = Column(String)
     password = Column(String)
-    ssh_pub_key = Column(String)
+    api_key = Column(String, unique=True)
 
 
 class Projects(Base):

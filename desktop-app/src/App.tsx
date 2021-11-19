@@ -26,17 +26,15 @@ export default hot(module)(function App() {
   const [islogin, setIslogin] = useState(true)
 
   useEffect(() => {
-    ipcRenderer.send('user-settings-request', 'ping')
+    ipcRenderer.send('user-settings-get-request', 'ping')
   })
 
-  ipcRenderer.once('user-settings-response', (event, arg) => {
+  ipcRenderer.once('user-settings-get-response', (event, arg) => {
     console.log(Object.keys(arg).length)
     if (Object.keys(arg).length == 0) {
       setIslogin(false)
     }
   })
-
-  console.log(islogin)
   return (
     <>
       {islogin == true ? <AppContent /> : <LoginPage />}

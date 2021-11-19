@@ -1,22 +1,28 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
 import simpleGit, { SimpleGit } from 'simple-git';
-const storage = require('electron-json-storage')
+import storage from 'electron-json-storage';
 
 
-const git: SimpleGit = simpleGit();
+// const git: SimpleGit = simpleGit();
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
-// console.log(storage.getDataPath())
-// // storage.set('user_settings', { user: 'sergey', api_key: 'sdfsd234453211!!' }, function(error) {
-// //   if (error) throw error;
-// // });
+console.log(storage.getDataPath())
 
 
-ipcMain.on('user-settings-request', (event, arg) => {
-  storage.get('user_settings', function (error, data) {
+ipcMain.on('user-settings-set-request', (event, arg) => {
+  if ('name' in arg) {
+    storage.set('settings', { 'user': arg }, function (error: Error) {
+      if (error) throw error;
+    });
+  }
+})
+
+
+ipcMain.on('user-settings-get-request', (event, arg) => {
+  storage.get('user_settings', function (error: Error, data) {
     if (error) throw error;
-    event.reply('user-settings-response', data)
+    event.reply('user-settings-get-response', data)
   });
 })
 
