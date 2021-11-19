@@ -98,9 +98,12 @@ async def login_user(creds: LoginCreds):
     return {'error': 'Неверный логин или пароль'}
 
 
-@app.get('/projects/list/{user_login}')
-async def list_projects(user_login: str):
-    projects = gapi.get_user_projects(user_login)
+@app.post('/projects/list')
+async def list_projects(api_key: str = Header(None),
+                        user_id: str = Header(None)):
+    if not auth(user_id, api_key):
+        return 'Authentification failed'
+    projects = gapi.gl.users.get(user_id).projects.list()
     return {'projects': [{'id': p.id, 'name': p.name} for p in projects]}
 
 
@@ -108,13 +111,15 @@ async def list_projects(user_login: str):
 async def delete_project(project: Project,
                          api_key: str = Header(None),
                          user_id: str = Header(None)):
+
     if not auth(user_id, api_key):
         return 'Authentification failed'
-
     gapi.gl.projects.delete(project.id)
     sess.query(t.Projects).\
         filter(t.Projects.id == project.id).delete()
-        
+    sess.query(t.Members).\
+        filter(t.Members.project_id == project.id).delete()
+    sess.commit()
     return {'res': 'deleted'}
 
 
