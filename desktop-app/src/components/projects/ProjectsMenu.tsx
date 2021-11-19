@@ -118,27 +118,6 @@ const KeyIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
   )
 }
 
-const CheckIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
-  return (
-    <Popup
-      trigger={<div className='icon'><FontAwesomeIcon icon={faCheck} /></div>}
-      position="right center"
-      modal
-    >
-      {close => (
-        <div className="modal">
-          <div>Проект выбран как основной</div>
-          <button className="close" onClick={() => { setActive(false); close }}>
-            Закрыть
-          </button>
-        </div>
-      )
-      }
-    </Popup >
-
-  )
-}
-
 
 const ProjectSelect = ({ repo }: ProjectProp): JSX.Element => {
   const [active, setActive] = useState(false)
@@ -149,7 +128,6 @@ const ProjectSelect = ({ repo }: ProjectProp): JSX.Element => {
       <span className={active == true ? 'selected' : ''}>{repo}</span>
       {active &&
         <div className='icons'>
-          <CheckIconButton repo={repo} setActive={setActive} />
           <KeyIconButton repo={repo} setActive={setActive} />
           <TrashIconButton repo={repo} setActive={setActive} />
         </div>}

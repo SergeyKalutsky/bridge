@@ -6,19 +6,15 @@ gl = gitlab.Gitlab('https://gitlab.bridgeacross.xyz',
                    private_token='Yyw3diYYbsAimWmXpwn2')
 
 
-def create_project(user_name, project_name, description):
-    user = gl.users.list(username=user_name)[0]
-    user.projects.create({'name': project_name,
-                          'description': description})
+def create_project(user_id, project):
+    user = gl.users.get(user_id)
+    project = user.projects.create({'name': project.repo,
+                                    'description': project.description})
+    return project.id
 
 
-def get_user_projects(user_name):
-    user = gl.users.list(username=user_name)[0]
-    return user.projects.list()
-
-
-def delete_user_project(user_name, project_name):
-    projects = get_user_projects(user_name)
+def delete_user_project(user_id, project_name):
+    projects = gl.users.get(user_id).projects.list()
     for project in projects:
         if project.name == project_name:
             gl.projects.delete(project.id)

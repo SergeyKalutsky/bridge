@@ -1,10 +1,11 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.sqltypes import Boolean
 
 from .db import Base
 
 
-class User(Base):
+class Users(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True)
@@ -20,6 +21,12 @@ class Projects(Base):
     id = Column(Integer, primary_key=True, index=True)
     type = Column(Integer)
     repo = Column(String, unique=True)
-    isuserowner = Column(Integer)
-    branch = Column(String)
     key = Column(String)
+
+class Members(Base):
+
+    __tablename__ = 'members'
+
+    user_id = Column(Integer, primary_key=True)
+    project_id = Column(Integer, primary_key=True)
+    is_userowner = Column(Boolean)

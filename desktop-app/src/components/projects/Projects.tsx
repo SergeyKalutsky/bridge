@@ -31,6 +31,7 @@ const Projects = (): JSX.Element => {
                 </div>
             </div>
         </>
+        
     )
 }
 

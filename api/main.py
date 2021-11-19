@@ -1,11 +1,16 @@
 # to run use python -m uvicorn main:app --reload
 # python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000 <---- run on open port
 import uuid
+from sqlalchemy.sql.expression import true
+
+from sqlalchemy.sql.functions import user
+
 from sql_app import sess, t
-from fastapi import FastAPI
-from typing import Optional
-from pydantic import BaseModel
 import git_remote as gapi
+from typing import Optional, List
+from pydantic import BaseModel
+from fastapi import FastAPI, Header
+from sqlalchemy.ext.declarative import api
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -17,11 +22,10 @@ class LoginCreds(BaseModel):
 
 class Project(BaseModel):
     id: Optional[int]
+    key: Optional[str]
     repo: Optional[str]
-    user_login: Optional[str] = ''
     type: Optional[int] = None
     description: Optional[str] = ''
-    ssh_pub_key: Optional[str] = None
 
 
 class Member(BaseModel):
@@ -42,6 +46,14 @@ app.add_middleware(
 )
 
 
+def auth(user_id, api_key):
+    db_api_key = sess.query(t.Users.api_key).\
+        filter(t.Users.id == user_id).first()[0]
+    if db_api_key == api_key:
+        return True
+    return False
+
+
 def project_already_exists(repo):
     res = sess.query(t.Projects).filter(t.Projects.repo == repo).first()
     if res is None:
@@ -49,38 +61,38 @@ def project_already_exists(repo):
     return True
 
 
-def add_project_record(project, key, isuserowner=True):
+def add_project_record(project, user_id):
     sess.add(t.Projects(
+        id=project.id,
         type=project.type,
         repo=project.repo,
-        isuserowner=isuserowner,
-        branch='master',
-        key=key
+        key=project.key
+    ))
+    sess.add(t.Members(
+        user_id=user_id,
+        project_id=project.id,
+        is_userowner=True
     ))
     sess.commit()
 
 
-@app.get('/')
-async def home():
-    return 'Home'
-
-
 @app.post('/users/create')
 async def create_user(creds: LoginCreds):
-    sess.add(t.User(
+    sess.add(t.Users(
         login=creds.login,
         password=creds.password,
         name=creds.name,
+        api_key=uuid.uuid4().hex
     ))
     sess.commit()
 
 
 @app.post('/users/auth')
-async def auth(creds: LoginCreds):
+async def login_user(creds: LoginCreds):
     # TODO: add password hash security check
-    user = sess.query(t.User).\
-        filter(t.User.login == creds.login).\
-        filter(t.User.password == creds.password).first()
+    user = sess.query(t.Users).\
+        filter(t.Users.login == creds.login).\
+        filter(t.Users.password == creds.password).first()
     if user:
         return user
     return {'error': 'Неверный логин или пароль'}
@@ -93,20 +105,31 @@ async def list_projects(user_login: str):
 
 
 @app.post('/projects/delete')
-async def delete_project(project: Project):
-    gapi.delete_user_project(project.user_login, project.repo)
-    sess.query(t.Projects).filter(t.Projects.repo == project.repo).delete()
+async def delete_project(project: Project,
+                         api_key: str = Header(None),
+                         user_id: str = Header(None)):
+    if not auth(user_id, api_key):
+        return 'Authentification failed'
+
+    gapi.gl.projects.delete(project.id)
+    sess.query(t.Projects).\
+        filter(t.Projects.id == project.id).delete()
+        
     return {'res': 'deleted'}
 
 
 @app.post('/projects/create')
-async def create_project(project: Project):
+async def create_project(project: Project,
+                         api_key: str = Header(None),
+                         user_id: str = Header(None)):
+    if not auth(user_id, api_key):
+        return 'Authentification failed'
     if project_already_exists(project.repo):
         return 'Exists'
-    key = uuid.uuid4().hex
-    add_project_record(project, key)
-    gapi.create_project(project.user_login, project.repo, project.description)
-    return {'res': 'created', 'key': key}
+    project.id = gapi.create_project(user_id, project)
+    project.key = uuid.uuid4().hex
+    add_project_record(project, user_id)
+    return {'res': 'created', 'project': project}
 
 
 @app.get('/projects/key/{repo}')

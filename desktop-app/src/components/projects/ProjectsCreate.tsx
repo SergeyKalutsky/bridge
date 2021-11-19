@@ -1,5 +1,7 @@
+import { ConstructionOutlined } from '@mui/icons-material'
 import { useState } from 'react'
 import '../../assets/css/ProjectsCreate.css'
+import storage from 'electron-json-storage';
 
 type Form = {
     user_login: string,
@@ -10,13 +12,13 @@ type Form = {
 
 const ProjectsCreate = (): JSX.Element => {
     const [checked, setChecked] = useState<number>(0)
+
     const [form, setForm] = useState<Form>({
         user_login: 'sergey',
         repo: '',
         description: '',
         isclassrom: false
     })
-    console.log(form)
     return (
         <div className='menu'>
             <div className='crete-inputs row'>
@@ -44,10 +46,15 @@ const ProjectsCreate = (): JSX.Element => {
                 </div>
                 <div className='row'>
                     <button type='submit' onClick={() => {
+                        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
                         fetch('http://localhost:8000/projects/create',
                             {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'api-key': settings['user']['api_key'],
+                                    'user-id': settings['user']['id'],
+                                },
                                 body: JSON.stringify(form)
 
                             })
@@ -55,8 +62,8 @@ const ProjectsCreate = (): JSX.Element => {
                             .then(data => data['res'] == 'created' ? window.location.reload() : console.log(data))
 
                     }}>Создать</button>
+                </div>
             </div>
-        </div>
         </div >
 
     )

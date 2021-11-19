@@ -33,6 +33,8 @@ export default hot(module)(function App() {
     console.log(arg)
     if (Object.keys(arg).length == 0) {
       setIslogin(false)
+    } else {
+      window.sessionStorage.setItem('settings', JSON.stringify(arg))
     }
   })
   return (
