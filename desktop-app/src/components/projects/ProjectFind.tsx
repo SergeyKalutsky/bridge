@@ -17,9 +17,17 @@ const ProjectFind = (): JSX.Element => {
                     placeholder='Введите ключ проекта'
                     onChange={(e) => { setKey(e.target.value) }} />
                 <button onClick={() => {
-                    fetch(`http://localhost:8000/projects/get/${key}`)
-                        .then(response => response.json())
-                        .then(data => setProject(data['repo']))
+                    const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+                    fetch(`http://localhost:8000/projects/get/${key}`,
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'api-key': settings['user']['api_key'],
+                                'user-id': settings['user']['id'],
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => setProject(data))
                 }}>Поиск</button>
             </div>
             {project.name != '' ?
