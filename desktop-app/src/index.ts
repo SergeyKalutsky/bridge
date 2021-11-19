@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
-import simpleGit, { SimpleGit } from 'simple-git';
+// import simpleGit, { SimpleGit } from 'simple-git';
 import storage from 'electron-json-storage';
 
 
@@ -20,7 +20,7 @@ ipcMain.on('user-settings-set-request', (event, arg) => {
 
 
 ipcMain.on('user-settings-get-request', (event, arg) => {
-  storage.get('user_settings', function (error: Error, data) {
+  storage.get('settings', function (error: Error, data) {
     if (error) throw error;
     event.reply('user-settings-get-response', data)
   });
@@ -78,3 +78,4 @@ ipcMain.on('cmd', (event, arg) => {
       await event.reply('stdout', data.toString())
     })
 })
+

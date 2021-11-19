@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron';
 import { useState } from 'react'
 import '../assets/css/LoginPage.css'
 
@@ -16,11 +17,11 @@ type User = {
 }
 
 
-
 const LoginPage = (): JSX.Element => {
     const [loginData, setloginData] = useState<InputForms>({ login: '', password: '' })
     const handleData = (data: User) => {
-        console.log(data)
+        ipcRenderer.send('user-settings-set-request', data);
+        window.location.reload()
     }
     return (
         <div className='content'>
@@ -49,5 +50,6 @@ const LoginPage = (): JSX.Element => {
     )
 
 }
+
 
 export default LoginPage
