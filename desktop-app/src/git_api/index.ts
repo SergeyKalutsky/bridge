@@ -35,9 +35,17 @@ const dest = 'C:/Users/skalu/AppData/Roaming/my-new-app/storage/'
 const remote = 'https://gitlab.bridgeacross.xyz/sergey/Test22.git'
 
 // simplePush(gitDirName(remote, dest))
-pull(gitDirName(remote, dest))
+// pull(gitDirName(remote, dest))
 
+const options: Partial<SimpleGitOptions> = {
+  baseDir: gitDirName(remote, dest),
+  binary: 'git',
+  maxConcurrentProcesses: 6,
+};
+const git: SimpleGit = simpleGit(options);
 
-// git.clone(remote, gitDirName(remote, dest))
+// console.log(git.raw('diff'))
+// git.log().then(result => { console.log(result) });
 
-
+git.show('8b45f642590f0ea2476882792f93c33c85d1100f')
+        .then(result => { console.log(result) });
