@@ -146,9 +146,9 @@ async def get_project_key(name: str):
 
 @app.get('/projects/get/{key}')
 async def get_project_by_key(key: str):
-    project = sess.query(t.Projects.name, t.Projects.id).\
-        filter(t.Projects.key == key).first()[0]
-    return {'project': project}
+    project = sess.query(t.Projects).\
+        filter(t.Projects.key == key).first()
+    return  project
 
 
 @app.post('/projects/members/add')
@@ -158,3 +158,9 @@ async def add_member(project: Project,
     if not auth(user_id, api_key):
         return 'Authentification failed'
     gapi.add_project_member(user_id, project.id)
+    sess.add(t.Members(
+        user_id=user_id,
+        project_id=project.id,
+        is_userowner=False
+    ))
+    sess.commit()
