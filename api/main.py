@@ -103,7 +103,9 @@ async def list_projects(api_key: str = Header(None),
                         user_id: str = Header(None)):
     if not auth(user_id, api_key):
         return 'Authentification failed'
-    projects = gapi.gl.users.get(user_id).projects.list()
+    projects = sess.query(t.Projects.id, t.Projects.name).\
+                    filter(t.Members.project_id == t.Projects.id).\
+                    filter(t.Members.user_id == user_id).all()
     return {'projects': [{'id': p.id, 'name': p.name} for p in projects]}
 
 
