@@ -16,7 +16,15 @@ const Projects = (): JSX.Element => {
     const [projects, setProjects] = useState<Array<Project>>([{id:0, name:""}])
 
     useEffect(() => {
-        fetch('http://localhost:8000/projects/list/sergey')
+        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+        fetch('http://localhost:8000/projects/list', {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': settings['user']['api_key'],
+                'user-id': settings['user']['id'],
+            }
+        })
             .then(response => response.json())
             .then(data => setProjects(data['projects']))
     }, [])

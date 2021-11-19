@@ -32,6 +32,8 @@ const useStyles = makeStyles(() => ({
 type Project = {
   id: number;
   name: string;
+  setActive?: React.Dispatch<React.SetStateAction<boolean>>
+  close?: any
 }
 
 type Setter = {
@@ -39,14 +41,8 @@ type Setter = {
   projects: Array<Project>
 }
 
-type ProjectProp = {
-  repo: string
-  setActive?: React.Dispatch<React.SetStateAction<boolean>>
-  close?: any
-}
 
-
-const TrashIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
+const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
   return (
     <Popup
       trigger={<div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>}
@@ -57,12 +53,16 @@ const TrashIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
         <div className="modal">
           <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
           <button className="close" onClick={() => {
-            fetch('http://172.29.0.1:8000/projects/delete',
+            const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+            fetch('http://localhost:8000/projects/delete',
               {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_login: 'sergey', repo: repo })
-
+                headers: {
+                  'Content-Type': 'application/json',
+                  'api-key': settings['user']['api_key'],
+                  'user-id': settings['user']['id'],
+                },
+                body: JSON.stringify({ id: id, name: name })
               })
               .then(response => response.json())
               .then(data => data['res'] == 'deleted' ?
@@ -83,10 +83,11 @@ const TrashIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
 }
 
 
-const KeyIconButtonModa = ({ repo, setActive, close }: ProjectProp): JSX.Element => {
+const KeyIconButtonModal = ({ name, setActive,
+  close }: Project): JSX.Element => {
 
   useEffect(() => {
-    fetch(`http://localhost:8000/projects/key/${repo}`)
+    fetch(`http://localhost:8000/projects/key/${name}`)
       .then(response => response.json())
       .then(data => setKey(data['key']))
   }, [])
@@ -102,7 +103,7 @@ const KeyIconButtonModa = ({ repo, setActive, close }: ProjectProp): JSX.Element
   </div>)
 }
 
-const KeyIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
+const KeyIconButton = ({ name, id, setActive }: Project): JSX.Element => {
   return (
     <Popup
       trigger={<div className='icon'><FontAwesomeIcon icon={faKey} /></div>}
@@ -110,7 +111,7 @@ const KeyIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
       modal
     >
       {close => (
-        <KeyIconButtonModa repo={repo} setActive={setActive} close={close} />
+        <KeyIconButtonModal name={name} id={id} setActive={setActive} close={close} />
       )
       }
     </Popup >
@@ -119,17 +120,17 @@ const KeyIconButton = ({ repo, setActive }: ProjectProp): JSX.Element => {
 }
 
 
-const ProjectSelect = ({ repo }: ProjectProp): JSX.Element => {
+const ProjectSelect = ({ name, id }: Project): JSX.Element => {
   const [active, setActive] = useState(false)
   return (
     <div className='project'
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
-      <span className={active == true ? 'selected' : ''}>{repo}</span>
+      <span className={active == true ? 'selected' : ''}>{name}</span>
       {active &&
         <div className='icons'>
-          <KeyIconButton repo={repo} setActive={setActive} />
-          <TrashIconButton repo={repo} setActive={setActive} />
+          <KeyIconButton name={name} id={id} setActive={setActive} />
+          <TrashIconButton name={name} id={id} setActive={setActive} />
         </div>}
     </div>
   )
@@ -138,7 +139,7 @@ const ProjectSelect = ({ repo }: ProjectProp): JSX.Element => {
 const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
   const classes = useStyles();
   const projects_list = projects.map((project) =>
-    <ProjectSelect repo={project.name} key={project.name} />)
+    <ProjectSelect name={project.name} id={project.id} key={project.name} />)
   return (
     <div className='left-menu'>
       <div className='tab-header'>
