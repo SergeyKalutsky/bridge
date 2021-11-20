@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core';
+import { faSync } from '@fortawesome/free-solid-svg-icons'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import ArchiveIcon from '@material-ui/icons/Archive';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { ipcRenderer } from "electron";
@@ -17,7 +18,7 @@ const colortheme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
   menuIcon: {
     '& svg': {
-      fontSize: 50
+      fontSize: 30
     },
     'padding-left': 10,
     'color': '#b3afb0'
@@ -49,9 +50,8 @@ const WorkspaceTab = ({ git }: GitProp) => {
           }
         }}>Push</Button>
         <IconButton className={classes.menuIcon} onClick={() => { ipcRenderer.send('cmd', 'test') }}>
-          <ArchiveIcon />
+          <FontAwesomeIcon icon={faSync} />
         </IconButton>
-        {/* <img src={VsCodeIcon} alt="VsCodeIcon" /> */}
       </div>
     </MuiThemeProvider>
   )
