@@ -4,14 +4,14 @@
     align-items: center;
     width: 100%;
     flex-direction: column;
-    background-color: rgb(44, 16, 16);
+    background-color: #29272C;
 }
 
 .greetings {
-    font-size: 30px;
+    font-size: 70px;
     margin-bottom: 5%;
-    color: cadetblue;
-
+    color: white;
+    font-family: 'Raleway', sans-serif;
 }
 
 .input-forms {
@@ -24,20 +24,35 @@
     font-size: 20px;
 }
 
+input {
+    height: 50px;
+    width: 350px;
+    border-radius: 10px;
+    border: none;
+}
+
 input:focus {
     outline: none;
 }
 
-.input-forms input:nth-child(2) {
-    margin-top: 10%;
+.inputContainer {
+    margin-top: 5%;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
 }
 
 .input-forms button {
     margin-top: 10%;
     font-size: 20px;
-    width: 50%;
-    background-color: #7277c0;
+    background-color: white;
+    color: #515151;
+    border-radius: 10px;
+    height: 45px;
+    width: 180px;
 }
+
 .input-forms button:focus {
     outline: none;
 }
