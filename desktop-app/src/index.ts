@@ -48,6 +48,9 @@ const initGit = (data: settings) => {
 
 
 storage.get('settings', function (error: Error, data: settings) {
+  if ('active_project' in data) {
+    initGit(data)
+  }
   if (!('data_storage' in data)) {
     storage.set('settings', { ...data, data_storage: storage.getDataPath() },
       (error: Error) => {
@@ -63,6 +66,13 @@ ipcMain.on('git-push', (event, arg) => {
 ipcMain.on('git-pull', (event, arg) => {
   git.pull()
 })
+
+ipcMain.on('git-log', (event, arg) => {
+  git.log().then(result => {
+    event.returnValue = result
+  })
+})
+
 
 ipcMain.on('user-settings-set-request', (event, arg) => {
   storage.get('settings', function (error: Error, data: settings) {

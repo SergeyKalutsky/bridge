@@ -26,7 +26,7 @@ export default hot(module)(function App() {
   const [islogin, setIslogin] = useState(false)
   useEffect(() => {
     ipcRenderer.send('user-settings-get-request', 'ping')
-  })
+  }, [])
 
   ipcRenderer.once('user-settings-get-response', (event, arg) => {
     if (!('user' in arg)) {
