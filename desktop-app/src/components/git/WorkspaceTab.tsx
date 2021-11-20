@@ -49,7 +49,7 @@ const WorkspaceTab = ({ git }: GitProp) => {
             console.log('hasent loaded')
           }
         }}>Push</Button>
-        <IconButton className={classes.menuIcon} onClick={() => { ipcRenderer.send('cmd', 'test') }}>
+        <IconButton className={classes.menuIcon}>
           <FontAwesomeIcon icon={faSync} />
         </IconButton>
       </div>
