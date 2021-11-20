@@ -35,10 +35,18 @@ const WorkspaceTab = ({ git }: GitProp) => {
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
         <Button color="primary" onClick={() => {
+          if (git != undefined){
             git.pull()
+          } else {
+            console.log('hasent loaded')
+          }
         }}>Pull</Button>
         <Button color="secondary" onClick={() => {
-          git.add('./*').commit('test').push()
+          if (git != undefined){
+            git.add('./*').commit('test').push()
+          } else {
+            console.log('hasent loaded')
+          }
         }}>Push</Button>
         <IconButton className={classes.menuIcon} onClick={() => { ipcRenderer.send('cmd', 'test') }}>
           <ArchiveIcon />
