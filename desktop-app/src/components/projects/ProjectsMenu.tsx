@@ -64,10 +64,12 @@ const ProjectSelect = ({ name, id }: Project): JSX.Element => {
 const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
   const classes = useStyles();
   const projects_list = projects.map((project) =>
-    <Popup trigger={<div className='project-item'>
-      <ProjectSelect name={project.name} id={project.id} key={project.name} />
-    </div>}
+    <Popup
+      trigger={<div className='project-item'>
+        <ProjectSelect name={project.name} id={project.id} key={project.name} />
+      </div>}
       position="right center"
+      key={project.name}
       modal>
       {
         <div className="modal">

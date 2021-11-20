@@ -6,7 +6,7 @@ import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
 
 const initGit = () => {
   const settings = JSON.parse(window.sessionStorage.getItem('settings'))
-  if (settings !== null) {
+  if (settings !== null && 'active_project' in settings) {
     const project_dir = path.join(settings['data_storage'], settings['active_project']['name'])
     const remote = `https://gitlab.bridgeacross.xyz/${settings['user']['login']}/${settings['active_project']['name']}.git`
 
