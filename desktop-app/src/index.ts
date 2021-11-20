@@ -7,14 +7,16 @@ import storage from 'electron-json-storage';
 // const git: SimpleGit = simpleGit();
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
-console.log(storage.getDataPath())
-
+storage.get('settings', function (error: Error, data) {
+  if (!('data_storage' in data)) {
+    storage.set('settings', { ...data, data_storage: storage.getDataPath() }, function (error: Error) {
+      if (error) throw error;
+    })
+  }
+})
 
 ipcMain.on('user-settings-set-request', (event, arg) => {
   storage.get('settings', function (error: Error, data) {
-    if (!('data_storage' in data)) {
-      data = { ...data, data_storage: storage.getDataPath }
-    }
     storage.set('settings', { ...data, ...arg }, function (error: Error) {
       if (error) throw error;
     })

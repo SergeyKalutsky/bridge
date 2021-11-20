@@ -29,7 +29,7 @@ export default hot(module)(function App() {
   })
 
   ipcRenderer.once('user-settings-get-response', (event, arg) => {
-    if (Object.keys(arg).length == 0) {
+    if (!('user' in arg)) {
       setIslogin(false)
     } else {
       window.sessionStorage.setItem('settings', JSON.stringify(arg))

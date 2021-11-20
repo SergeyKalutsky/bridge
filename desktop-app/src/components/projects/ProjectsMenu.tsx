@@ -47,7 +47,6 @@ type Setter = {
 const ProjectSelect = ({ name, id }: Project): JSX.Element => {
   const [active, setActive] = useState(false)
   const settings = JSON.parse(window.sessionStorage.getItem('settings'))
-  console.log(settings)
   return (
     <div className={'active_project' in settings && settings['active_project']['id'] == id ? 'project active' : 'project'}
       onMouseOver={() => { setActive(true) }}
