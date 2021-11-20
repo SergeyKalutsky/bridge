@@ -1,5 +1,4 @@
 import ReactDiffViewer from 'react-diff-viewer';
-import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
 import WorkspaceTab from './WorkspaceTab'
 import '../../assets/css/Workspace.css'
 
@@ -25,7 +24,6 @@ console.log('hello world')
 `;
 
 const WorkspaceGit = (): JSX.Element => {
-  const settings = JSON.parse(window.sessionStorage.getItem('settings'))
   return (
     <div className='workspace'>
       <div className='workspace-background'>
