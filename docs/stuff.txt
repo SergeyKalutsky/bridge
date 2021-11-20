@@ -1,6 +1,6 @@
 "start": "C:/ProgramData/chocolatey/lib/electron/tools/electron.exe ." for windows
 "start": "electron ." for everithing else
-
+test
 setting your private git repo easily https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
 adding hot reload to react-typescript-electron forge https://github.com/electron-userland/electron-forge/issues/1390
 
