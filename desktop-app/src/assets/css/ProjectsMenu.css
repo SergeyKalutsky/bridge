@@ -1,40 +1,40 @@
 .left-menu {
-    left: 0;
-    width: 25%;
-    height: 100%;
+    left            : 0;
+    width           : 25%;
+    height          : 100%;
     background-color: #242321
 }
 
 .tab-header {
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    width: 100%;
-    height: 50px;
+    display         : flex;
+    align-items     : stretch;
+    justify-content : center;
+    width           : 100%;
+    height          : 50px;
     background-color: #010818a9
 }
 
 
 .modal {
     align-content: center;
-    text-align: center;
-    font-size: 20px;
+    text-align   : center;
+    font-size    : 20px;
 }
 
-.modal button{
-    font-size: 15px;
+.modal button {
+    font-size  : 15px;
     margin-left: 2%;
 }
 
 .tab-text {
-    display: flex;
-    margin-left: 25%;
-    height: 100%;
-    align-items: center;
+    display        : flex;
+    margin-left    : 25%;
+    height         : 100%;
+    align-items    : center;
     justify-content: center;
-    color: white;
-    height: 100%;
-    font-size: 22px;
+    color          : white;
+    height         : 100%;
+    font-size      : 22px;
 }
 
 .projects {
@@ -45,17 +45,21 @@
     margin-left: 15px;
 }
 
+.project-item {
+    cursor: pointer
+}
+
 .project span.selected {
     margin-left: 30px;
 }
 
 .project {
-    height: 50px;
-    line-height: 50px;
-    display: flex;
+    height         : 50px;
+    line-height    : 50px;
+    display        : flex;
     justify-content: center;
-    align-items: center;
-    font-size: 28px;
+    align-items    : center;
+    font-size      : 28px;
 }
 
 .project:hover {
@@ -67,6 +71,6 @@
 }
 
 .icons {
-    display: flex;
+    display       : flex;
     flex-direction: row;
 }

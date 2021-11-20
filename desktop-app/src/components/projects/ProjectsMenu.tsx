@@ -1,12 +1,13 @@
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faTrashAlt, faKey} from '@fortawesome/free-solid-svg-icons'
-import { useState, useEffect } from 'react'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { useState } from 'react'
 import IconButton from '@material-ui/core/IconButton';
 import 'reactjs-popup/dist/index.css';
 import Popup from 'reactjs-popup';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../assets/css/ProjectsMenu.css'
+import { KeyIconButton, TrashIconButton } from './projectsMenuIcons'
 
 const useStyles = makeStyles(() => ({
   menuIcon: {
@@ -42,84 +43,6 @@ type Setter = {
 }
 
 
-const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
-  return (
-    <Popup
-      trigger={<div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>}
-      position="right center"
-      modal
-    >
-      {close => (
-        <div className="modal">
-          <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
-          <button className="close" onClick={() => {
-            const settings = JSON.parse(window.sessionStorage.getItem('settings'))
-            fetch('http://localhost:8000/projects/delete',
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'api-key': settings['user']['api_key'],
-                  'user-id': settings['user']['id'],
-                },
-                body: JSON.stringify({ id: id, name: name })
-              })
-              .then(response => response.json())
-              .then(data => data['res'] == 'deleted' ?
-                window.location.reload() : console.log(data));
-            close
-          }}>
-            Удалить
-          </button>
-          <button className="close" onClick={() => { setActive(false); close }}>
-            Закрыть
-          </button>
-        </div>
-      )
-      }
-    </Popup >
-
-  )
-}
-
-
-const KeyIconButtonModal = ({ name, setActive,
-  close }: Project): JSX.Element => {
-
-  useEffect(() => {
-    fetch(`http://localhost:8000/projects/key/${name}`)
-      .then(response => response.json())
-      .then(data => setKey(data['key']))
-  }, [])
-  const [key, setKey] = useState('')
-  return (<div className="modal">
-    <div>{key}</div>
-    <button className="close" onClick={() => {
-      setActive(false);
-      close
-    }}>
-      Закрыть
-    </button>
-  </div>)
-}
-
-const KeyIconButton = ({ name, id, setActive }: Project): JSX.Element => {
-  return (
-    <Popup
-      trigger={<div className='icon'><FontAwesomeIcon icon={faKey} /></div>}
-      position="right center"
-      modal
-    >
-      {close => (
-        <KeyIconButtonModal name={name} id={id} setActive={setActive} close={close} />
-      )
-      }
-    </Popup >
-
-  )
-}
-
-
 const ProjectSelect = ({ name, id }: Project): JSX.Element => {
   const [active, setActive] = useState(false)
   return (
@@ -139,7 +62,20 @@ const ProjectSelect = ({ name, id }: Project): JSX.Element => {
 const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
   const classes = useStyles();
   const projects_list = projects.map((project) =>
-    <ProjectSelect name={project.name} id={project.id} key={project.name} />)
+    <Popup trigger={<div className='project-item'>
+      <ProjectSelect name={project.name} id={project.id} key={project.name} />
+    </div>}
+      position="right center"
+      modal>
+      {close => (
+        <div className="modal">
+          <div>Проект выбран как основной</div>
+          <button className="close" onClick={()=>{close()}}>
+            ОК
+          </button>
+        </div>
+      )}
+    </Popup>)
   return (
     <div className='left-menu'>
       <div className='tab-header'>
