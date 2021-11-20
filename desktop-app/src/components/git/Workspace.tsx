@@ -1,6 +1,6 @@
 import ReactDiffViewer from 'react-diff-viewer';
+import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
 import WorkspaceTab from './WorkspaceTab'
-import Console from './Console'
 import '../../assets/css/Workspace.css'
 
 const oldCode = `
@@ -25,6 +25,7 @@ console.log('hello world')
 `;
 
 const WorkspaceGit = (): JSX.Element => {
+  const settings = JSON.parse(window.sessionStorage.getItem('settings'))
   return (
     <div className='workspace'>
       <div className='workspace-background'>
@@ -32,7 +33,6 @@ const WorkspaceGit = (): JSX.Element => {
         <div className='code'>
           <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
         </div>
-        <Console />
       </div>
     </div>
   )

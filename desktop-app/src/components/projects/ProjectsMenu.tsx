@@ -49,7 +49,7 @@ const ProjectSelect = ({ name, id }: Project): JSX.Element => {
   const settings = JSON.parse(window.sessionStorage.getItem('settings'))
   console.log(settings)
   return (
-    <div className={settings['active_project']['id'] == id ? 'project active': 'project'}
+      <div className={'active_project' in settings && settings['active_project']['id'] == id ? 'project active' : 'project'}
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
       <span className={active == true ? 'selected' : ''}>{name}</span>
