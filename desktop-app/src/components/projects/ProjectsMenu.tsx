@@ -1,13 +1,14 @@
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { KeyIconButton, TrashIconButton } from './projectsMenuIcons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react'
 import IconButton from '@material-ui/core/IconButton';
-import 'reactjs-popup/dist/index.css';
-import Popup from 'reactjs-popup';
+import { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
+import { ipcRenderer } from 'electron'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 import '../../assets/css/ProjectsMenu.css'
-import { KeyIconButton, TrashIconButton } from './projectsMenuIcons'
 
 const useStyles = makeStyles(() => ({
   menuIcon: {
@@ -70,9 +71,18 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
       {close => (
         <div className="modal">
           <div>Проект выбран как основной</div>
-          <button className="close" onClick={()=>{close()}}>
+          <button className="close" onClick={() => {
+            close();
+            ipcRenderer.send('user-settings-set-request',
+              {
+                'active_project': {
+                  'name': project.name,
+                  'id': project.id
+                }
+              });
+          }}>
             ОК
-          </button> 
+          </button>
         </div>
       )}
     </Popup>)

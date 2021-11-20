@@ -21,6 +21,11 @@
     font-size    : 20px;
 }
 
+.active {
+    border-left: solid;
+    border-color: beige;
+}
+
 .modal button {
     font-size  : 15px;
     margin-left: 2%;
