@@ -32,7 +32,7 @@ const WorkspaceGit = ({ git }: GitProp): JSX.Element => {
   return (
     <div className='workspace'>
       <div className='workspace-background'>
-        <WorkspaceTab />
+        <WorkspaceTab git={git}/>
         <div className='code'>
           <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
         </div>

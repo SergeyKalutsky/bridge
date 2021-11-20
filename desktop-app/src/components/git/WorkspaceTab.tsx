@@ -4,7 +4,7 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { ipcRenderer } from "electron";
-// import VsCodeIcon from '../../assets/visual-studio-code.svg'
+import { SimpleGit } from 'simple-git';
 import '../../assets/css/WorkspaceTab.css'
 
 const colortheme = createMuiTheme({
@@ -25,13 +25,21 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-const WorkspaceTab = () => {
+type GitProp = {
+  git: SimpleGit
+}
+
+const WorkspaceTab = ({ git }: GitProp) => {
   const classes = useStyles()
   return (
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
-        <Button color="primary">Pull</Button>
-        <Button color="secondary">Push</Button>
+        <Button color="primary" onClick={() => {
+            git.pull()
+        }}>Pull</Button>
+        <Button color="secondary" onClick={() => {
+          git.add('./*').commit('test').push()
+        }}>Push</Button>
         <IconButton className={classes.menuIcon} onClick={() => { ipcRenderer.send('cmd', 'test') }}>
           <ArchiveIcon />
         </IconButton>
