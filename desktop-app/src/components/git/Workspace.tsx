@@ -1,6 +1,7 @@
 import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
 import '../../assets/css/Workspace.css'
+import { SimpleGit } from 'simple-git';
 
 const oldCode = `
 const a = 10
@@ -23,7 +24,11 @@ if(a === 10) {
 console.log('hello world')
 `;
 
-const WorkspaceGit = (): JSX.Element => {
+type GitProp = {
+  git: SimpleGit
+}
+
+const WorkspaceGit = ({ git }: GitProp): JSX.Element => {
   return (
     <div className='workspace'>
       <div className='workspace-background'>
@@ -36,10 +41,6 @@ const WorkspaceGit = (): JSX.Element => {
   )
 }
 
-const Workspace = (): JSX.Element => {
-  return (
-    <WorkspaceGit />
-  )
-}
 
-export default Workspace
+
+export default WorkspaceGit
