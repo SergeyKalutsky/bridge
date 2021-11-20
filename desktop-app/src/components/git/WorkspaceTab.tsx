@@ -4,9 +4,9 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import { ipcRenderer } from "electron";
 import { SimpleGit } from 'simple-git';
 import '../../assets/css/WorkspaceTab.css'
+import { ipcRenderer } from 'electron';
 
 const colortheme = createMuiTheme({
   palette: {
@@ -36,18 +36,10 @@ const WorkspaceTab = ({ git }: GitProp) => {
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
         <Button color="primary" onClick={() => {
-          if (git != undefined){
-            git.pull()
-          } else {
-            console.log('hasent loaded')
-          }
+          ipcRenderer.send('git-pull', 'pull')
         }}>Pull</Button>
         <Button color="secondary" onClick={() => {
-          if (git != undefined){
-            git.add('./*').commit('test').push()
-          } else {
-            console.log('hasent loaded')
-          }
+          ipcRenderer.send('git-push', 'push')
         }}>Push</Button>
         <IconButton className={classes.menuIcon}>
           <FontAwesomeIcon icon={faSync} />

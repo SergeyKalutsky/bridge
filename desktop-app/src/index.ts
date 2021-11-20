@@ -1,22 +1,74 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
-// import simpleGit, { SimpleGit } from 'simple-git';
+import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
+import fs from 'fs'
+import path from 'path'
 import storage from 'electron-json-storage';
 
+type settings = {
+  data_storage?: string,
+  user?: {
+    id: number,
+    password: string,
+    login: string,
+    api_key: string
+  },
+  active_project?: {
+    name: string
+    id: string
+  }
+}
 
 // const git: SimpleGit = simpleGit();
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
-storage.get('settings', function (error: Error, data) {
-  if (!('data_storage' in data)) {
-    storage.set('settings', { ...data, data_storage: storage.getDataPath() }, function (error: Error) {
-      if (error) throw error;
+let git: SimpleGit = simpleGit();
+
+const initGit = (data: settings) => {
+  if (data !== null && 'active_project' in data) {
+    const project_dir = path.join(data['data_storage'], data['active_project']['name'])
+    const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${data['active_project']['name']}.git`
+
+    const options: Partial<SimpleGitOptions> = {
+      baseDir: project_dir,
+      binary: 'git',
+      maxConcurrentProcesses: 6,
+    };
+    fs.stat(project_dir, (err, stat) => {
+      if (err == null) {
+        git = simpleGit(options)
+      } else if (err.code == 'ENOENT') {
+        git = simpleGit();
+        git.clone(remote, project_dir)
+          .then(() => git = simpleGit(options))
+      }
     })
+  }
+}
+
+
+storage.get('settings', function (error: Error, data: settings) {
+  if (!('data_storage' in data)) {
+    storage.set('settings', { ...data, data_storage: storage.getDataPath() },
+      (error: Error) => {
+        if (error) throw error;
+      })
   }
 })
 
+ipcMain.on('git-push', (event, arg) => {
+  git.add('./*').commit('test').push()
+})
+
+ipcMain.on('git-pull', (event, arg) => {
+  git.pull()
+})
+
 ipcMain.on('user-settings-set-request', (event, arg) => {
-  storage.get('settings', function (error: Error, data) {
+  storage.get('settings', function (error: Error, data: settings) {
+    if ('active_project' in arg) {
+      initGit({ ...data, ...arg })
+    }
     storage.set('settings', { ...data, ...arg }, function (error: Error) {
       if (error) throw error;
     })
@@ -25,7 +77,7 @@ ipcMain.on('user-settings-set-request', (event, arg) => {
 
 
 ipcMain.on('user-settings-get-request', (event, arg) => {
-  storage.get('settings', function (error: Error, data) {
+  storage.get('settings', function (error: Error, data: settings) {
     if (error) throw error;
     event.reply('user-settings-get-response', data)
   });

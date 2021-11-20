@@ -20,3 +20,13 @@
     justify-content: center;
     color: white;
 }
+.git-hash-list {
+    height: 100%;
+}
+
+.git-hash {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    height: 40px;
+    width: 100%;
+}
