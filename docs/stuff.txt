@@ -1,3 +1,7 @@
+git diff parser
+https://github.com/ecomfe/gitdiff-parser#readme
+
+
 "start": "C:/ProgramData/chocolatey/lib/electron/tools/electron.exe ." for windows
 "start": "electron ." for everithing else
 test
