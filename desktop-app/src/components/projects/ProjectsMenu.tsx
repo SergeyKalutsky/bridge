@@ -72,7 +72,7 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
           <div>Проект выбран как основной</div>
           <button className="close" onClick={()=>{close()}}>
             ОК
-          </button>
+          </button> 
         </div>
       )}
     </Popup>)

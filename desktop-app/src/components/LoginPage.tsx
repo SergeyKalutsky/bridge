@@ -20,7 +20,8 @@ type User = {
 const LoginPage = (): JSX.Element => {
     const [loginData, setloginData] = useState<InputForms>({ login: '', password: '' })
     const handleData = (data: User) => {
-        ipcRenderer.send('user-settings-set-request', data);
+        console.log(data)
+        ipcRenderer.send('user-settings-set-request', {'user': data});
         window.location.reload()
     }
     return (

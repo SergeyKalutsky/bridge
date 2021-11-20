@@ -11,11 +11,9 @@ console.log(storage.getDataPath())
 
 
 ipcMain.on('user-settings-set-request', (event, arg) => {
-  if ('name' in arg) {
-    storage.set('settings', { 'user': arg }, function (error: Error) {
+    storage.set('settings', arg, function (error: Error) {
       if (error) throw error;
     });
-  }
 })
 
 
