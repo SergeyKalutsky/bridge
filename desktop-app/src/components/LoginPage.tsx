@@ -30,7 +30,7 @@ const LoginPage = (): JSX.Element => {
             </div>
             <div className='input-forms'>
                 <div className='inputContainer'>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#515151" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#515151" fill="none" strokeLinecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <circle cx="12" cy="7" r="4" />
                         <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
@@ -39,7 +39,7 @@ const LoginPage = (): JSX.Element => {
                         onChange={(e) => { setloginData({ ...loginData, login: e.target.value }) }} />
                 </div>
                 <div className='inputContainer'>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-key" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#515151" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-key" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#515151" fill="none" strokeLinecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <circle cx="8" cy="15" r="4" />
                         <line x1="10.85" y1="12.15" x2="19" y2="4" />
