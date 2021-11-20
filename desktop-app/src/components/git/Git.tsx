@@ -13,17 +13,19 @@ const initGit = () => {
     if (!fs.existsSync(project_dir)) {
       const git: SimpleGit = simpleGit();
       git.clone(remote, project_dir)
+        .then(() => window.location.reload())
+        
+    } else {
+      const options: Partial<SimpleGitOptions> = {
+        baseDir: project_dir,
+        binary: 'git',
+        maxConcurrentProcesses: 6,
+      };
+      return simpleGit(options)
     }
-    const options: Partial<SimpleGitOptions> = {
-      baseDir: project_dir,
-      binary: 'git',
-      maxConcurrentProcesses: 6,
-    };
-    return simpleGit(options)
-  }
-  return simpleGit()
-}
 
+  }
+}
 
 const Git = () => {
   const git: SimpleGit = initGit()
