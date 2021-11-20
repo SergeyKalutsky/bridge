@@ -3,32 +3,34 @@ import WorkspaceGit from './Workspace'
 import fs from 'fs'
 import path from 'path'
 import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
+import { useEffect, useState } from 'react';
 
-const initGit = () => {
+const initGit = (setGit: React.Dispatch<React.SetStateAction<SimpleGit>>) => {
   const settings = JSON.parse(window.sessionStorage.getItem('settings'))
   if (settings !== null && 'active_project' in settings) {
     const project_dir = path.join(settings['data_storage'], settings['active_project']['name'])
     const remote = `https://gitlab.bridgeacross.xyz/${settings['user']['login']}/${settings['active_project']['name']}.git`
 
-    if (!fs.existsSync(project_dir)) {
-      const git: SimpleGit = simpleGit();
-      git.clone(remote, project_dir)
-        .then(() => window.location.reload())
-        
-    } else {
-      const options: Partial<SimpleGitOptions> = {
-        baseDir: project_dir,
-        binary: 'git',
-        maxConcurrentProcesses: 6,
-      };
-      return simpleGit(options)
-    }
-
+    fs.stat(project_dir, (err, stat) => {
+      if (err == null) {
+        const options: Partial<SimpleGitOptions> = {
+          baseDir: project_dir,
+          binary: 'git',
+          maxConcurrentProcesses: 6,
+        };
+        setGit(simpleGit(options))
+      } else if (err.code == 'ENOENT') {
+        const git: SimpleGit = simpleGit();
+        git.clone(remote, project_dir)
+          .then(() => setGit(simpleGit()))
+      }
+    })
   }
 }
 
 const Git = () => {
-  const git: SimpleGit = initGit()
+  const [git, setGit] = useState<SimpleGit>()
+  useEffect(() => { initGit(setGit) })
   return (
     <>
       <GitMenu />
