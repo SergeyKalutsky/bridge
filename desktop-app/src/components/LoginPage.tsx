@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import { useState } from 'react'
 import '../assets/css/LoginPage.css'
+import img from '../assets/Logo.png';
 
 type InputForms = {
     login: string
@@ -29,13 +30,14 @@ const LoginPage = (): JSX.Element => {
                 Добро пожаловать!
             </div>
             <div className='input-forms'>
+                <img src={img} className='logo'/>
                 <div className='inputContainer'>
                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#515151" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <circle cx="12" cy="7" r="4" />
                         <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                     </svg>
-                    <input type="text" placeholder=' Логин'
+                    <input className='inLog' type="text" placeholder='Логин'
                         onChange={(e) => { setloginData({ ...loginData, login: e.target.value }) }} />
                 </div>
                 <div className='inputContainer'>
@@ -46,7 +48,7 @@ const LoginPage = (): JSX.Element => {
                         <line x1="18" y1="5" x2="20" y2="7" />
                         <line x1="15" y1="8" x2="17" y2="10" />
                     </svg>
-                    <input type="password" placeholder=' Пароль'
+                    <input className='inLog' type="password" placeholder='Пароль'
                         onChange={(e) => { setloginData({ ...loginData, password: e.target.value }) }} />
                 </div>
                 <button
