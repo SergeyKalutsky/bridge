@@ -22,7 +22,7 @@ type settings = {
 // const git: SimpleGit = simpleGit();
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
-let git: SimpleGit = simpleGit();
+let git: SimpleGit = undefined
 
 const initGit = (data: settings) => {
   if (data !== null && 'active_project' in data) {
@@ -38,8 +38,7 @@ const initGit = (data: settings) => {
       if (err == null) {
         git = simpleGit(options)
       } else if (err.code == 'ENOENT') {
-        git = simpleGit();
-        git.clone(remote, project_dir)
+        simpleGit().clone(remote, project_dir)
           .then(() => git = simpleGit(options))
       }
     })
@@ -60,17 +59,25 @@ storage.get('settings', function (error: Error, data: settings) {
 })
 
 ipcMain.on('git-push', (event, arg) => {
-  git.add('./*').commit('test').push()
+  if (git !== undefined) {
+    git.add('./*').commit('test').push()
+  }
 })
 
 ipcMain.on('git-pull', (event, arg) => {
-  git.pull()
+  if (git !== undefined) {
+    git.pull()
+  }
 })
 
 ipcMain.on('git-log', (event, arg) => {
-  git.log().then(result => {
-    event.returnValue = result
-  })
+  if (git !== undefined) {
+      git.log().then(result => {
+      event.returnValue = result
+    })
+  } else {
+    event.returnValue = []
+  }
 })
 
 
