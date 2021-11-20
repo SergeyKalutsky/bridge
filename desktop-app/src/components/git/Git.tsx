@@ -11,18 +11,18 @@ const initGit = (setGit: React.Dispatch<React.SetStateAction<SimpleGit>>) => {
     const project_dir = path.join(settings['data_storage'], settings['active_project']['name'])
     const remote = `https://gitlab.bridgeacross.xyz/${settings['user']['login']}/${settings['active_project']['name']}.git`
 
+    const options: Partial<SimpleGitOptions> = {
+      baseDir: project_dir,
+      binary: 'git',
+      maxConcurrentProcesses: 6,
+    };
     fs.stat(project_dir, (err, stat) => {
       if (err == null) {
-        const options: Partial<SimpleGitOptions> = {
-          baseDir: project_dir,
-          binary: 'git',
-          maxConcurrentProcesses: 6,
-        };
         setGit(simpleGit(options))
       } else if (err.code == 'ENOENT') {
         const git: SimpleGit = simpleGit();
         git.clone(remote, project_dir)
-          .then(() => setGit(simpleGit()))
+          .then(() => setGit(simpleGit(options)))
       }
     })
   }
