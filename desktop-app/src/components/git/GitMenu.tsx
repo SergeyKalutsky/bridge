@@ -1,12 +1,8 @@
 import '../../assets/css/leftMenu.css'
-import { SimpleGit } from 'simple-git'
 import { useEffect } from 'react'
 
-type GitProp = {
-  git: SimpleGit
-}
 
-const GitMenu = ({ git }: GitProp): JSX.Element => {
+const GitMenu = (): JSX.Element => {
   return (
     <div className='left-menu'>
       <div className='tab-header'>

@@ -4,7 +4,6 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import { SimpleGit } from 'simple-git';
 import '../../assets/css/WorkspaceTab.css'
 import { ipcRenderer } from 'electron';
 
@@ -26,11 +25,8 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-type GitProp = {
-  git: SimpleGit
-}
 
-const WorkspaceTab = ({ git }: GitProp) => {
+const WorkspaceTab = () => {
   const classes = useStyles()
   return (
     <MuiThemeProvider theme={colortheme}>
