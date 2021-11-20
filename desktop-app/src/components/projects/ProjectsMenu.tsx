@@ -46,8 +46,10 @@ type Setter = {
 
 const ProjectSelect = ({ name, id }: Project): JSX.Element => {
   const [active, setActive] = useState(false)
+  const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+  console.log(settings)
   return (
-    <div className='project'
+    <div className={settings['active_project']['id'] == id ? 'project active': 'project'}
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
       <span className={active == true ? 'selected' : ''}>{name}</span>
@@ -68,11 +70,10 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
     </div>}
       position="right center"
       modal>
-      {close => (
+      {
         <div className="modal">
           <div>Проект выбран как основной</div>
           <button className="close" onClick={() => {
-            close();
             ipcRenderer.send('user-settings-set-request',
               {
                 'active_project': {
@@ -80,11 +81,12 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
                   'id': project.id
                 }
               });
+            window.location.reload()
           }}>
             ОК
           </button>
         </div>
-      )}
+      }
     </Popup>)
   return (
     <div className='left-menu'>

@@ -24,7 +24,6 @@ const AppContent = (): JSX.Element => {
 
 export default hot(module)(function App() {
   const [islogin, setIslogin] = useState(true)
-
   useEffect(() => {
     ipcRenderer.send('user-settings-get-request', 'ping')
   })
