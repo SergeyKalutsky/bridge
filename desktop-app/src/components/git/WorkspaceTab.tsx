@@ -46,9 +46,10 @@ const DropDown = ({ gitDiff,
   diffViewOption }: WorkspaceTabProp) => {
   const [selectedClient, setSelectedClient] = useState(diffViewOption);
   const options = gitDiff.map((diff, indx) =>
-    <option value={indx} 
+    <option value={indx}
       key={diff.filename}>{diff.filename}</option>
   )
+  useEffect(() => { setSelectedClient(diffViewOption) })
   return (
     <div className='dropdown'>
       <select name="select" value={selectedClient}
@@ -80,9 +81,9 @@ const WorkspaceTab = ({ setSplitView,
         <IconButton className={classes.menuIcon}>
           <FontAwesomeIcon icon={faSync} />
         </IconButton>
-        <DropDown gitDiff={gitDiff} 
-                  diffViewOption={diffViewOption}
-                  setDiffViewOption={setDiffViewOption} />
+        <DropDown gitDiff={gitDiff}
+          diffViewOption={diffViewOption}
+          setDiffViewOption={setDiffViewOption} />
         <Switch className='switch'
           onChange={() => {
             splitView == true ? setSplitView(false) : setSplitView(true)
