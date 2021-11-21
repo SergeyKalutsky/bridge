@@ -36,6 +36,7 @@ type Project = {
   name: string;
   setActive?: React.Dispatch<React.SetStateAction<boolean>>
   close?: any
+  isclassroom?: number
 }
 
 type Setter = {
@@ -66,7 +67,9 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
   const projects_list = projects.map((project) =>
     <Popup
       trigger={<div className='project-item'>
-        <ProjectSelect name={project.name} id={project.id} key={project.name} />
+        <ProjectSelect name={project.name}
+          id={project.id}
+          key={project.name} />
       </div>}
       position="right center"
       key={project.name}
@@ -79,7 +82,8 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
               {
                 'active_project': {
                   'name': project.name,
-                  'id': project.id
+                  'id': project.id,
+                  'isclassroom': project.isclassroom
                 }
               });
             window.location.reload()

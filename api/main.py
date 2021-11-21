@@ -19,7 +19,7 @@ class Project(BaseModel):
     id: Optional[int]
     key: Optional[str]
     name: Optional[str]
-    type: Optional[int] = None
+    isclassroom: Optional[bool] = None
     description: Optional[str] = ''
 
 
@@ -56,12 +56,13 @@ def project_already_exists(name):
     return True
 
 
-def add_project_record(project, user_id):
+def add_project_record(project, user_id, submodule_for=None):
     sess.add(t.Projects(
         id=project.id,
-        type=project.type,
+        isclassroom=project.isclassroom,
         name=project.name,
-        key=project.key
+        key=project.key,
+        submodule_for=submodule_for
     ))
     sess.add(t.Members(
         user_id=user_id,
@@ -98,10 +99,12 @@ async def list_projects(api_key: str = Header(None),
                         user_id: str = Header(None)):
     if not auth(user_id, api_key):
         return 'Authentification failed'
-    projects = sess.query(t.Projects.id, t.Projects.name).\
-                    filter(t.Members.project_id == t.Projects.id).\
-                    filter(t.Members.user_id == user_id).all()
-    return {'projects': [{'id': p.id, 'name': p.name} for p in projects]}
+    projects = sess.query(t.Projects.id,
+                          t.Projects.name,
+                          t.Projects.isclassroom).\
+        filter(t.Members.project_id == t.Projects.id).\
+        filter(t.Members.user_id == user_id).all()
+    return {'projects': [{'id': p.id, 'name': p.name, 'isclassroom': p.isclassroom} for p in projects]}
 
 
 @app.post('/projects/delete')
@@ -138,9 +141,18 @@ async def create_project(project: Project,
         return 'Authentification failed'
     if project_already_exists(project.name):
         return 'Exists'
-    project.id = gapi.create_project(user_id, project)
-    project.key = uuid.uuid4().hex
-    add_project_record(project, user_id)
+    if project.isclassroom:
+        project.id = gapi.create_project(user_id, project)
+        project.key = uuid.uuid4().hex
+        add_project_record(project, user_id)
+        project.name += '_teacher'
+        project.id = gapi.create_project(user_id, project, submodule_for=project.id)
+        project.key = uuid.uuid4().hex
+        add_project_record(project, user_id)
+    else:
+        project.id = gapi.create_project(user_id, project)
+        project.key = uuid.uuid4().hex
+        add_project_record(project, user_id)
     return {'res': 'created', 'project': project}
 
 
@@ -155,7 +167,7 @@ async def get_project_key(name: str):
 async def get_project_by_key(key: str):
     project = sess.query(t.Projects).\
         filter(t.Projects.key == key).first()
-    return  project
+    return project
 
 
 @app.post('/projects/members/add')

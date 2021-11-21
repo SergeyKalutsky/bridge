@@ -19,9 +19,10 @@ class Projects(Base):
     __tablename__ = 'projects'
 
     id = Column(Integer, primary_key=True, index=True)
-    type = Column(Integer)
+    isclassroom = Column(Boolean)
     name = Column(String, unique=True)
     key = Column(String)
+    submodule_for = Column(Integer)
 
 class Members(Base):
 

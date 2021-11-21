@@ -4,7 +4,7 @@ import '../../assets/css/ProjectsCreate.css'
 type Project = {
     name: string,
     description?: string,
-    isclassrom: boolean
+    isclassroom: number
 }
 
 const ProjectsCreate = (): JSX.Element => {
@@ -13,7 +13,7 @@ const ProjectsCreate = (): JSX.Element => {
     const [project, setProject] = useState<Project>({
         name: '',
         description: '',
-        isclassrom: false
+        isclassroom: 0
     })
     return (
         <div className='menu'>
@@ -30,13 +30,13 @@ const ProjectsCreate = (): JSX.Element => {
                     <div>
                         <input type="checkbox"
                             checked={checked == 0}
-                            onChange={() => { setChecked(0); setProject({ ...project, isclassrom: false }) }} />
+                            onChange={() => { setChecked(0); setProject({ ...project, isclassroom: 0 }) }} />
                         <label>Личный проект</label>
                     </div>
                     <div>
                         <input type="checkbox"
                             checked={checked == 1}
-                            onChange={() => { setChecked(1); setProject({ ...project, isclassrom: true }) }} />
+                            onChange={() => { setChecked(1); setProject({ ...project, isclassroom: 1 }) }} />
                         <label>Для обучения</label>
                     </div>
                 </div>
@@ -55,7 +55,7 @@ const ProjectsCreate = (): JSX.Element => {
 
                             })
                             .then(response => response.json())
-                            .then(data => data['res'] == 'created' ? window.location.reload() : console.log(data))
+                            .then(data => {data['res'] == 'created' ? window.location.reload(): console.log(data)})
 
                     }}>Создать</button>
                 </div>
