@@ -1,7 +1,5 @@
-import { ConstructionOutlined } from '@mui/icons-material'
 import { useState } from 'react'
 import '../../assets/css/ProjectsCreate.css'
-import storage from 'electron-json-storage';
 
 type Project = {
     name: string,
