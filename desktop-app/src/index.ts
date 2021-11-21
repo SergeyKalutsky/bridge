@@ -4,6 +4,7 @@ import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
 import fs from 'fs'
 import path from 'path'
 import storage from 'electron-json-storage';
+import parseGitDiff from './git_api/parse'
 
 type settings = {
   data_storage?: string,
@@ -19,7 +20,6 @@ type settings = {
   }
 }
 
-// const git: SimpleGit = simpleGit();
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 let git: SimpleGit = undefined
@@ -58,6 +58,14 @@ storage.get('settings', function (error: Error, data: settings) {
   }
 })
 
+ipcMain.on('git-diff', (event, arg) => {
+  git.show(arg)
+    .then(result => {
+      event.returnValue = parseGitDiff(result)
+    });
+})
+
+
 ipcMain.on('git-push', (event, arg) => {
   if (git !== undefined) {
     git.add('./*').commit('test').push()
@@ -72,7 +80,7 @@ ipcMain.on('git-pull', (event, arg) => {
 
 ipcMain.on('git-log', (event, arg) => {
   if (git !== undefined) {
-      git.log().then(result => {
+    git.log().then(result => {
       event.returnValue = result
     })
   } else {

@@ -1,10 +1,12 @@
-import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git'
+type ParsedGitDiff = {
+  filename: string
+  oldFile: string
+  newFile: string
+}
 
-const git: SimpleGit = simpleGit();
 
-const test = 'diff --git a/desktop-app/src/assets/css/ProjectsMenu.css b/desktop-app/src/assets/css/ProjectsMenu.css'
-
-const handleFnc = (diffOutput: string) => {
+const parseGitDiff = (diffOutput: string) => {
+  const output: ParsedGitDiff[] = []
   const files: string[][] = [[]]
   let fileIndex = 0
   let doPush = false
@@ -22,9 +24,27 @@ const handleFnc = (diffOutput: string) => {
       files[fileIndex].push(line)
     }
   }
-  console.log(files[0])
+  for (const file of files) {
+    const filename = file[0].split(/\r? /).slice(-1)[0].slice(1)
+    const OldFileList = []
+    const NewFileList = []
+    for (const line of file.slice(5)) {
+      if (line[0] === ' ') {
+        OldFileList.push(line.slice(1))
+        NewFileList.push(line.slice(1))
+      } else if (line[0] === '+') {
+        NewFileList.push(line.slice(1))
+      } else if (line[0] === '-') {
+        OldFileList.push(line.slice(1))
+      }
+    }
+    output.push({
+      filename: filename,
+      oldFile: OldFileList.join("\r\n"),
+      newFile: NewFileList.join("\r\n")
+    })
+  }
+  return output
 }
 
-
-git.show('7af75457c444960d69c47ad44cacd3676298d22c')
-  .then(result => handleFnc(result));
+export default parseGitDiff

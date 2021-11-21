@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { ipcRenderer } from 'electron';
 import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
 import '../../assets/css/Workspace.css'
@@ -24,17 +26,25 @@ if(a === 10) {
 console.log('hello world')
 `;
 
-type GitProp = {
-  git: SimpleGit
+type GitDiff = {
+  filename: string
+  newFile: string
+  oldFile: string
 }
 
-const WorkspaceGit = ({ git }: GitProp): JSX.Element => {
+
+const WorkspaceGit = (): JSX.Element => {
+  const [gitDiff, setGitDiff] = useState<GitDiff>({filename:'', newFile:'', oldFile:''})
+  useEffect(() => {
+    const gitDiff = ipcRenderer.sendSync('git-diff', '9c1224f18f2e2642b52831f9f44fb94dca87bdd4')
+    setGitDiff(gitDiff[0])
+  }, [])
   return (
     <div className='workspace'>
       <div className='workspace-background'>
-        <WorkspaceTab git={git}/>
+        <WorkspaceTab />
         <div className='code'>
-          <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
+          <ReactDiffViewer oldValue={gitDiff.oldFile} newValue={gitDiff.newFile} splitView={true} />
         </div>
       </div>
     </div>
