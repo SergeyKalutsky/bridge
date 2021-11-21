@@ -16,12 +16,13 @@ type WorkspaceGitProp = {
 }
 
 const WorkspaceGit = ({ gitDiff }: WorkspaceGitProp): JSX.Element => {
+  const [splitView, setSplitView] = useState(true)
   return (
     <div className='workspace'>
       <div className='workspace-background'>
-        <WorkspaceTab />
+        <WorkspaceTab setSplitView={setSplitView} splitView={splitView}/>
         <div className='code'>
-          <ReactDiffViewer oldValue={gitDiff.oldFile} newValue={gitDiff.newFile} splitView={true} />
+          <ReactDiffViewer oldValue={gitDiff.oldFile} newValue={gitDiff.newFile} splitView={splitView} />
         </div>
       </div>
     </div>

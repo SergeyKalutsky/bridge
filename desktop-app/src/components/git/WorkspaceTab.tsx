@@ -6,6 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import '../../assets/css/WorkspaceTab.css'
 import { ipcRenderer } from 'electron';
+import Switch from "react-switch";
+import { useState } from 'react';
 
 const colortheme = createMuiTheme({
   palette: {
@@ -25,8 +27,12 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
+type WorkspaceTabProp = {
+  setSplitView: React.Dispatch<React.SetStateAction<boolean>>
+  splitView: boolean
+}
 
-const WorkspaceTab = () => {
+const WorkspaceTab = ({ setSplitView, splitView }: WorkspaceTabProp) => {
   const classes = useStyles()
   return (
     <MuiThemeProvider theme={colortheme}>
@@ -40,6 +46,7 @@ const WorkspaceTab = () => {
         <IconButton className={classes.menuIcon}>
           <FontAwesomeIcon icon={faSync} />
         </IconButton>
+        <Switch className='switch' onChange={() => { splitView == true ? setSplitView(false) : setSplitView(true) }} checked={splitView} />
       </div>
     </MuiThemeProvider>
   )
