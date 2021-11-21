@@ -1,36 +1,54 @@
 import '../../assets/css/leftMenu.css'
 import { useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
-import { CollectionsOutlined } from '@material-ui/icons'
 
+type ActiveHash = {
+  hash: string
+}
 
 type Hash = {
+  setActiveHash?: React.Dispatch<React.SetStateAction<ActiveHash>>
+  setActiveHashRow?: React.Dispatch<React.SetStateAction<string>>
   author_email?: string,
   author_name?: string,
   body?: string,
   date?: string,
   hash: string,
   message?: string,
-  refs?: string
+  refs?: string,
+  activeHashRow?: string,
 }
 
-const HashElement = ({ hash }: Hash): JSX.Element => {
+const HashElement = ({ hash,
+  setActiveHash,
+  activeHashRow,
+  setActiveHashRow }: Hash): JSX.Element => {
   return (
-    <div className='git-hash'>
+    <div className={activeHashRow == hash ? 'git-hash active' : 'git-hash'}
+      onClick={() => {
+        setActiveHashRow(hash)
+      }}
+    >
       <span className='commit'>commit</span>
       <span className='hash'>{hash.substr(0, 8)}</span>
     </div>
   )
 }
 
-const GitMenu = (): JSX.Element => {
+const GitMenu = ({ setActiveHash }: Hash): JSX.Element => {
+  const [activeHashRow, setActiveHashRow] = useState<string>()
   const [hashList, setHashList] = useState<Array<Hash>>()
   useEffect(() => {
     const hashes = ipcRenderer.sendSync('git-log', '')['all']
     setHashList(hashes)
   }, [])
   const elements = hashList !== undefined ? hashList.map((hash) =>
-    <HashElement hash={hash.hash} key={hash.hash} />
+    <HashElement hash={hash.hash}
+      key={hash.hash}
+      setActiveHash={setActiveHash}
+      activeHashRow={activeHashRow}
+      setActiveHashRow={setActiveHashRow}
+    />
   ) : null
   return (
     <div className='left-menu'>

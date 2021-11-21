@@ -62,6 +62,9 @@ ipcMain.on('git-diff', (event, arg) => {
   git.show(arg)
     .then(result => {
       event.returnValue = parseGitDiff(result)
+    })
+    .catch(err => {
+      event.returnValue = undefined
     });
 })
 
