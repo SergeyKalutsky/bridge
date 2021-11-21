@@ -1,46 +1,44 @@
-import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
+import fs from 'fs'
+import path from 'path'
 import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
-const storage = require('electron-json-storage')
 
-const gitDirName = (remote: string, dir: string) => {
-  const folders = remote.split('/')
-  dir = dir + '/' + folders[folders.length - 1].replace('.git', '')
-  return dir
+
+type settings = {
+  data_storage?: string,
+  user?: {
+    id: number,
+    password: string,
+    login: string,
+    api_key: string
+  },
+  active_project?: {
+    name: string
+    id: string
+  }
 }
 
-const simplePush = (dir: string) => {
-  const options: Partial<SimpleGitOptions> = {
-    baseDir: dir,
-    binary: 'git',
-    maxConcurrentProcesses: 6,
-  };
+let git: SimpleGit = undefined
 
-  const git: SimpleGit = simpleGit(options);
-  git.add('./*')
-    .commit('test')
-    .push()
+const initGit = (data: settings) => {
+  if (data !== null && 'active_project' in data) {
+    const project_dir = path.join(data['data_storage'], data['active_project']['name'])
+    const project_git = data['active_project']['name'].replace(/ /g, '-')
+    const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${project_git}.git`
+
+    const options: Partial<SimpleGitOptions> = {
+      baseDir: project_dir,
+      binary: 'git',
+      maxConcurrentProcesses: 6,
+    };
+    fs.stat(project_dir, (err, stat) => {
+      if (err == null) {
+        git = simpleGit(options)
+      } else if (err.code == 'ENOENT') {
+        simpleGit().clone(remote, project_dir)
+          .then(() => git = simpleGit(options))
+      }
+    })
+  }
 }
 
-const pull = (dir: string) => {
-  const options: Partial<SimpleGitOptions> = {
-    baseDir: dir,
-    binary: 'git',
-    maxConcurrentProcesses: 6,
-  };
-  const git: SimpleGit = simpleGit(options);
-  git.pull()
-}
-
-
-const dest = 'C:/Users/skalu/AppData/Roaming/my-new-app/storage/'
-const remote = 'https://gitlab.bridgeacross.xyz/sergey/Test22.git'
-
-// simplePush(gitDirName(remote, dest))
-// pull(gitDirName(remote, dest))
-
-const options: Partial<SimpleGitOptions> = {
-  baseDir: gitDirName(remote, dest),
-  binary: 'git',
-  maxConcurrentProcesses: 6,
-};
-const git: SimpleGit = simpleGit(options);
+export {initGit, git, settings}

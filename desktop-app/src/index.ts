@@ -1,8 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
-import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
-import fs from 'fs'
-import path from 'path'
+import { initGit, git} from './git_api/index'
 import storage from 'electron-json-storage';
 import parseGitDiff from './git_api/parse'
 
@@ -21,30 +19,6 @@ type settings = {
 }
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
-
-let git: SimpleGit = undefined
-
-const initGit = (data: settings) => {
-  if (data !== null && 'active_project' in data) {
-    const project_dir = path.join(data['data_storage'], data['active_project']['name'])
-    const project_git = data['active_project']['name'].replace(/ /g, '-')
-    const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${project_git}.git`
-
-    const options: Partial<SimpleGitOptions> = {
-      baseDir: project_dir,
-      binary: 'git',
-      maxConcurrentProcesses: 6,
-    };
-    fs.stat(project_dir, (err, stat) => {
-      if (err == null) {
-        git = simpleGit(options)
-      } else if (err.code == 'ENOENT') {
-        simpleGit().clone(remote, project_dir)
-          .then(() => git = simpleGit(options))
-      }
-    })
-  }
-}
 
 
 storage.get('settings', function (error: Error, data: settings) {
@@ -87,6 +61,7 @@ ipcMain.on('git-log', (event, arg) => {
     git.log().then(result => {
       event.returnValue = result
     })
+    .catch(err => event.returnValue = [])
   } else {
     event.returnValue = []
   }
