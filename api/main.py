@@ -126,6 +126,7 @@ async def delete_project(project: Project,
         sess.query(t.Members).\
             filter(t.Members.project_id == project.id).\
             filter(t.Members.user_id == user_id).delete()
+        sess.commit()
     return {'res': 'deleted'}
 
 
