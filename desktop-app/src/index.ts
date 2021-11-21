@@ -27,7 +27,8 @@ let git: SimpleGit = undefined
 const initGit = (data: settings) => {
   if (data !== null && 'active_project' in data) {
     const project_dir = path.join(data['data_storage'], data['active_project']['name'])
-    const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${data['active_project']['name']}.git`
+    const project_git = data['active_project']['name'].replace(/ /g, '-')
+    const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${project_git}.git`
 
     const options: Partial<SimpleGitOptions> = {
       baseDir: project_dir,
