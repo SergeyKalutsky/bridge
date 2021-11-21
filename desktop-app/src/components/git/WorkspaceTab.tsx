@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import '../../assets/css/WorkspaceTab.css'
 import { ipcRenderer } from 'electron';
 import Switch from "react-switch";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const colortheme = createMuiTheme({
   palette: {
@@ -27,12 +27,46 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-type WorkspaceTabProp = {
-  setSplitView: React.Dispatch<React.SetStateAction<boolean>>
-  splitView: boolean
+type GitDiff = {
+  filename: string
+  newFile: string
+  oldFile: string
 }
 
-const WorkspaceTab = ({ setSplitView, splitView }: WorkspaceTabProp) => {
+type WorkspaceTabProp = {
+  setDiffViewOption?: React.Dispatch<React.SetStateAction<number>>
+  setSplitView?: React.Dispatch<React.SetStateAction<boolean>>
+  diffViewOption: number
+  splitView?: boolean
+  gitDiff: GitDiff[]
+}
+
+const DropDown = ({ gitDiff,
+  setDiffViewOption,
+  diffViewOption }: WorkspaceTabProp) => {
+  const [selectedClient, setSelectedClient] = useState(diffViewOption);
+  const options = gitDiff.map((diff, indx) =>
+    <option value={indx} 
+      key={diff.filename}>{diff.filename}</option>
+  )
+  return (
+    <div className='dropdown'>
+      <select name="select" value={selectedClient}
+        onChange={(e) => {
+          const index = Number(e.target.value);
+          setSelectedClient(index)
+          setDiffViewOption(index);
+        }}>
+        {options}
+      </select>
+    </div>
+  )
+}
+
+const WorkspaceTab = ({ setSplitView,
+  splitView,
+  gitDiff,
+  setDiffViewOption, diffViewOption }: WorkspaceTabProp) => {
   const classes = useStyles()
   return (
     <MuiThemeProvider theme={colortheme}>
@@ -46,7 +80,14 @@ const WorkspaceTab = ({ setSplitView, splitView }: WorkspaceTabProp) => {
         <IconButton className={classes.menuIcon}>
           <FontAwesomeIcon icon={faSync} />
         </IconButton>
-        <Switch className='switch' onChange={() => { splitView == true ? setSplitView(false) : setSplitView(true) }} checked={splitView} />
+        <DropDown gitDiff={gitDiff} 
+                  diffViewOption={diffViewOption}
+                  setDiffViewOption={setDiffViewOption} />
+        <Switch className='switch'
+          onChange={() => {
+            splitView == true ? setSplitView(false) : setSplitView(true)
+          }}
+          checked={splitView} />
       </div>
     </MuiThemeProvider>
   )

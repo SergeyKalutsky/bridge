@@ -44,8 +44,3 @@ const options: Partial<SimpleGitOptions> = {
   maxConcurrentProcesses: 6,
 };
 const git: SimpleGit = simpleGit(options);
-// console.log(git.raw('diff'))
-// git.log().then(result => { console.log(result) });
-
-// git.show('8b45f642590f0ea2476882792f93c33c85d1100f')
-//         .then(result => { console.log(result) });

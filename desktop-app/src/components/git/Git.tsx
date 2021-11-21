@@ -10,11 +10,14 @@ type GitDiff = {
 
 
 const Git = () => {
-  const [gitDiff, setGitDiff] = useState<GitDiff>({ filename: '', newFile: '', oldFile: '' })
+  const [diffViewOption, setDiffViewOption] = useState(0)
+  const [gitDiff, setGitDiff] = useState<GitDiff[]>([{ filename: '', newFile: '', oldFile: '' }])
   return (
     <>
-      <GitMenu  setGitDiff={setGitDiff}/>
-      <WorkspaceGit gitDiff={gitDiff}/>
+      <GitMenu  setGitDiff={setGitDiff} setDiffViewOption={setDiffViewOption}/>
+      <WorkspaceGit gitDiff={gitDiff} 
+                    diffViewOption={diffViewOption} 
+                    setDiffViewOption={setDiffViewOption}/>
     </>
   )
 }

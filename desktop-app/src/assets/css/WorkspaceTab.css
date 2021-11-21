@@ -19,3 +19,26 @@
 .react-switch-handle {
     background: rgb(199, 195, 195) !important
 }
+
+.dropdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    margin-left: 5%;
+}
+.dropdown select{
+    color: white;
+    background: #504747;
+    border: none;
+    width: 100%;
+    height: 70%
+}
+
+.dropdown select:focus{
+    border: none
+}
+
+.hidden {
+    display: none;
+}

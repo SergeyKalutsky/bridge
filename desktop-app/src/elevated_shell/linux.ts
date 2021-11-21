@@ -43,11 +43,9 @@ async function linuxSpawn(instance: instance,
     const str_command = command.join(' ');
     const child = spawn(str_command, { shell: true });
     child.stdout.on('data', (chunk) => {
-      // console.log(chunk.toString())
        callback(null, chunk)
     })
     child.stderr.on('data', (chunk) => {
-      // console.log(chunk.toString())
       callback(null, chunk)
     })
   }

@@ -23,24 +23,28 @@ type HashElementProp = {
   hash: string
   activeHashRow: string
   setActiveHashRow: React.Dispatch<React.SetStateAction<string>>
-  setGitDiff: React.Dispatch<React.SetStateAction<GitDiff>>
+  setGitDiff: React.Dispatch<React.SetStateAction<GitDiff[]>>
+  setDiffViewOption: React.Dispatch<React.SetStateAction<number>>
 }
 
 type GitMenuProp = {
-  setGitDiff: React.Dispatch<React.SetStateAction<GitDiff>>
+  setGitDiff: React.Dispatch<React.SetStateAction<GitDiff[]>>
+  setDiffViewOption: React.Dispatch<React.SetStateAction<number>>
 }
 
 
 const HashElement = ({ hash,
   setGitDiff,
   activeHashRow,
-  setActiveHashRow }: HashElementProp): JSX.Element => {
+  setActiveHashRow,
+  setDiffViewOption }: HashElementProp): JSX.Element => {
   return (
     <div className={activeHashRow == hash ? 'git-hash active' : 'git-hash'}
       onClick={() => {
         setActiveHashRow(hash)
         const gitDiff = ipcRenderer.sendSync('git-diff', hash)
-        setGitDiff(gitDiff[0])
+        setGitDiff(gitDiff)
+        setDiffViewOption(0)
       }}
     >
       <span className='commit'>commit</span>
@@ -49,7 +53,7 @@ const HashElement = ({ hash,
   )
 }
 
-const GitMenu = ({ setGitDiff }: GitMenuProp): JSX.Element => {
+const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element => {
   const [activeHashRow, setActiveHashRow] = useState<string>()
   const [hashList, setHashList] = useState<Array<Hash>>()
   useEffect(() => {
@@ -62,6 +66,7 @@ const GitMenu = ({ setGitDiff }: GitMenuProp): JSX.Element => {
       setGitDiff={setGitDiff}
       activeHashRow={activeHashRow}
       setActiveHashRow={setActiveHashRow}
+      setDiffViewOption={setDiffViewOption}
     />
   ) : null
   return (
@@ -71,7 +76,6 @@ const GitMenu = ({ setGitDiff }: GitMenuProp): JSX.Element => {
           onClick={() => {
             const hashes = ipcRenderer.sendSync('git-log', '')['all']
             setHashList(hashes)
-            console.log(hashes)
           }}
         >ЛЕНТА</span>
       </div>
