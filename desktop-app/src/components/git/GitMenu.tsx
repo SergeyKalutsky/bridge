@@ -2,31 +2,45 @@ import '../../assets/css/leftMenu.css'
 import { useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
 
-type ActiveHash = {
-  hash: string
+type GitDiff = {
+  filename: string
+  newFile: string
+  oldFile: string
 }
 
 type Hash = {
-  setActiveHash?: React.Dispatch<React.SetStateAction<ActiveHash>>
-  setActiveHashRow?: React.Dispatch<React.SetStateAction<string>>
   author_email?: string,
   author_name?: string,
   body?: string,
   date?: string,
-  hash: string,
+  hash?: string,
   message?: string,
   refs?: string,
   activeHashRow?: string,
 }
 
+type HashElementProp = {
+  hash: string
+  activeHashRow: string
+  setActiveHashRow: React.Dispatch<React.SetStateAction<string>>
+  setGitDiff: React.Dispatch<React.SetStateAction<GitDiff>>
+}
+
+type GitMenuProp = {
+  setGitDiff: React.Dispatch<React.SetStateAction<GitDiff>>
+}
+
+
 const HashElement = ({ hash,
-  setActiveHash,
+  setGitDiff,
   activeHashRow,
-  setActiveHashRow }: Hash): JSX.Element => {
+  setActiveHashRow }: HashElementProp): JSX.Element => {
   return (
     <div className={activeHashRow == hash ? 'git-hash active' : 'git-hash'}
       onClick={() => {
         setActiveHashRow(hash)
+        const gitDiff = ipcRenderer.sendSync('git-diff', hash)
+        setGitDiff(gitDiff[0])
       }}
     >
       <span className='commit'>commit</span>
@@ -35,7 +49,7 @@ const HashElement = ({ hash,
   )
 }
 
-const GitMenu = ({ setActiveHash }: Hash): JSX.Element => {
+const GitMenu = ({ setGitDiff }: GitMenuProp): JSX.Element => {
   const [activeHashRow, setActiveHashRow] = useState<string>()
   const [hashList, setHashList] = useState<Array<Hash>>()
   useEffect(() => {
@@ -45,7 +59,7 @@ const GitMenu = ({ setActiveHash }: Hash): JSX.Element => {
   const elements = hashList !== undefined ? hashList.map((hash) =>
     <HashElement hash={hash.hash}
       key={hash.hash}
-      setActiveHash={setActiveHash}
+      setGitDiff={setGitDiff}
       activeHashRow={activeHashRow}
       setActiveHashRow={setActiveHashRow}
     />

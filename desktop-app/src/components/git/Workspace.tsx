@@ -4,20 +4,18 @@ import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
 import '../../assets/css/Workspace.css'
 
+
 type GitDiff = {
   filename: string
   newFile: string
   oldFile: string
 }
 
-const WorkspaceGit = (): JSX.Element => {
-  const [gitDiff, setGitDiff] = useState<GitDiff>({ filename: '', newFile: '', oldFile: '' })
-  useEffect(() => {
-    const gitDiff = ipcRenderer.sendSync('git-diff', '9c1224f18f2e2642b52831f9f44fb94dca87bdd4')
-    if (gitDiff != undefined){
-      setGitDiff(gitDiff[0])
-    }
-  }, [])
+type WorkspaceGitProp = {
+  gitDiff: GitDiff
+}
+
+const WorkspaceGit = ({ gitDiff }: WorkspaceGitProp): JSX.Element => {
   return (
     <div className='workspace'>
       <div className='workspace-background'>
