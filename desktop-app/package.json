@@ -101,6 +101,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@mui/icons-material": "^5.1.1",
+    "debug": "^4.3.2",
     "electron-json-storage": "^4.5.0",
     "electron-squirrel-startup": "^1.0.0",
     "file-loader": "^6.2.0",

@@ -34,8 +34,7 @@ const initGit = (data: settings) => {
       if (err == null) {
         git = simpleGit(options)
       } else if (err.code == 'ENOENT') {
-        simpleGit().clone(remote, project_dir)
-          .then(() => git = simpleGit(options))
+        simpleGit().clone(remote, project_dir).cwd(project_dir)
       }
     })
   }

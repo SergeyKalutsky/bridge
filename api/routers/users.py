@@ -2,6 +2,7 @@ import uuid
 from typing import Optional
 from pydantic import BaseModel
 from fastapi import APIRouter, Depends
+from .. import gitlab_api as gapi
 from ..database import sess, t
 from ..dependencies import get_token_header
 
@@ -21,10 +22,12 @@ class LoginCreds(BaseModel):
     password: str
     login: str
     name: Optional[str] = None
+    email: str
 
 
 @router.post('/create')
 async def create_user(creds: LoginCreds):
+    gapi.create_user(creds)
     sess.add(t.Users(
         login=creds.login,
         password=creds.password,
