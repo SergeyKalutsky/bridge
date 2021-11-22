@@ -1,26 +1,15 @@
-# to run use python -m uvicorn main:app --reload
-# python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000 <---- run on open port
-
-# The import system in python is a joke
-import os
-import sys
-
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(SCRIPT_DIR))
-
 import uuid
-from database import sess, t
-import gitlab_api as gapi
-from typing import Optional, List
+from api import gitlab_api as gapi
+from fastapi import APIRouter, Header, Depends
+from typing import Optional
 from pydantic import BaseModel
-from fastapi import FastAPI, Header
-from fastapi.middleware.cors import CORSMiddleware
+from ..database import sess, t
+from ..dependencies import get_token_header
 
 
-class LoginCreds(BaseModel):
-    password: str
-    login: str
-    name: Optional[str] = None
+router = APIRouter(prefix="/projects",
+                   tags=['projects'],
+                   dependencies=[Depends(get_token_header)])
 
 
 class Project(BaseModel):
@@ -29,32 +18,6 @@ class Project(BaseModel):
     name: Optional[str]
     isclassroom: Optional[bool] = None
     description: Optional[str] = ''
-
-
-class Member(BaseModel):
-    id: int
-    user_login: Optional[str] = ''
-    project: Optional[Project] = None
-
-
-app = FastAPI()
-
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=['*'],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-def auth(user_id, api_key):
-    db_api_key = sess.query(t.Users.api_key).\
-        filter(t.Users.id == user_id).first()[0]
-    if db_api_key == api_key:
-        return True
-    return False
 
 
 def project_already_exists(name):
@@ -80,33 +43,8 @@ def add_project_record(project, user_id, submodule_for=None):
     sess.commit()
 
 
-@app.post('/users/create')
-async def create_user(creds: LoginCreds):
-    sess.add(t.Users(
-        login=creds.login,
-        password=creds.password,
-        name=creds.name,
-        api_key=uuid.uuid4().hex
-    ))
-    sess.commit()
-
-
-@app.post('/users/auth')
-async def login_user(creds: LoginCreds):
-    # TODO: add password hash security check
-    user = sess.query(t.Users).\
-        filter(t.Users.login == creds.login).\
-        filter(t.Users.password == creds.password).first()
-    if user:
-        return user
-    return {'error': 'Неверный логин или пароль'}
-
-
-@app.post('/projects/list')
-async def list_projects(api_key: str = Header(None),
-                        user_id: str = Header(None)):
-    if not auth(user_id, api_key):
-        return 'Authentification failed'
+@router.post('/list')
+async def list_projects(user_id: str = Header(None)):
     projects = sess.query(t.Projects.id,
                           t.Projects.name,
                           t.Projects.isclassroom).\
@@ -115,13 +53,9 @@ async def list_projects(api_key: str = Header(None),
     return {'projects': [{'id': p.id, 'name': p.name, 'isclassroom': p.isclassroom} for p in projects]}
 
 
-@app.post('/projects/delete')
+@router.post('/delete')
 async def delete_project(project: Project,
-                         api_key: str = Header(None),
                          user_id: str = Header(None)):
-
-    if not auth(user_id, api_key):
-        return 'Authentification failed'
     is_userowner = sess.query(t.Members.is_userowner).\
         filter(t.Members.user_id == user_id).\
         filter(t.Members.project_id == project.id).first()[0]
@@ -141,12 +75,9 @@ async def delete_project(project: Project,
     return {'res': 'deleted'}
 
 
-@app.post('/projects/create')
+@router.post('/create')
 async def create_project(project: Project,
-                         api_key: str = Header(None),
                          user_id: str = Header(None)):
-    if not auth(user_id, api_key):
-        return 'Authentification failed'
     if project_already_exists(project.name):
         return 'Exists'
     if project.isclassroom:
@@ -154,7 +85,8 @@ async def create_project(project: Project,
         project.key = uuid.uuid4().hex
         add_project_record(project, user_id)
         project.name += '_teacher'
-        project.id = gapi.create_project(user_id, project, submodule_for=project.id)
+        project.id = gapi.create_project(
+            user_id, project, submodule_for=project.id)
         project.key = uuid.uuid4().hex
         add_project_record(project, user_id)
     else:
@@ -164,26 +96,23 @@ async def create_project(project: Project,
     return {'res': 'created', 'project': project}
 
 
-@app.get('/projects/key/{name}')
+@router.get('/key/{name}')
 async def get_project_key(name: str):
     res = sess.query(t.Projects.key).\
         filter(t.Projects.name == name).first()[0]
     return {'key': res}
 
 
-@app.get('/projects/get/{key}')
+@router.get('/get/{key}')
 async def get_project_by_key(key: str):
     project = sess.query(t.Projects).\
         filter(t.Projects.key == key).first()
     return project
 
 
-@app.post('/projects/members/add')
+@router.post('/members/add')
 async def add_member(project: Project,
-                     api_key: str = Header(None),
                      user_id: str = Header(None)):
-    if not auth(user_id, api_key):
-        return 'Authentification failed'
     gapi.add_project_member(user_id, project.id)
     sess.add(t.Members(
         user_id=user_id,
