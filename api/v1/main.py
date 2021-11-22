@@ -1,8 +1,16 @@
 # to run use python -m uvicorn main:app --reload
 # python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000 <---- run on open port
+
+# The import system in python is a joke
+import os
+import sys
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
 import uuid
-from sql_app import sess, t
-import git_remote as gapi
+from database import sess, t
+import gitlab_api as gapi
 from typing import Optional, List
 from pydantic import BaseModel
 from fastapi import FastAPI, Header
