@@ -10,51 +10,49 @@ router = APIRouter(prefix="/users",
                    tags=['users'],
                    dependencies=[Depends(get_token_header)])
 
-# # The import system in python is a joke
-# import os
-# import sys
 
-# SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-# sys.path.append(os.path.dirname(SCRIPT_DIR))
-
-
-class LoginCreds(BaseModel):
-    password: str
-    login: str
+class User(BaseModel):
+    id: Optional[int] = None
     name: Optional[str] = None
-    email: str
+    login: Optional[str] = None
+    password: Optional[str] = None
+    email: Optional[str] = None
+
+
+@router.post('/find')
+async def find():
+    pass
 
 
 @router.post('/create')
-async def create_user(creds: LoginCreds):
-    gapi.create_user(creds)
+async def create_user(user: User):
+    gapi.create_user(user)
     sess.add(t.Users(
-        login=creds.login,
-        password=creds.password,
-        name=creds.name,
+        login=user.login,
+        password=user.password,
+        name=user.name,
         api_key=uuid.uuid4().hex
     ))
     sess.commit()
 
 
 @router.post('/users')
-async def login_user(creds: LoginCreds, tags=['users']):
+async def login_user(user: User, tags=['users']):
     # TODO: add password hash security check
     user = sess.query(t.Users).\
-        filter(t.Users.login == creds.login).\
-        filter(t.Users.password == creds.password).first()
+        filter(t.Users.login == user.login).\
+        filter(t.Users.password == user.password).first()
     if user:
         return user
     return {'error': 'Неверный логин или пароль'}
 
 
 @router.post('/auth')
-async def login_user(creds: LoginCreds):
+async def login_user(user: User):
     # TODO: add password hash security check
     user = sess.query(t.Users).\
-        filter(t.Users.login == creds.login).\
-        filter(t.Users.password == creds.password).first()
+        filter(t.Users.login == user.login).\
+        filter(t.Users.password == user.password).first()
     if user:
         return user
     return {'error': 'Неверный логин или пароль'}
-
