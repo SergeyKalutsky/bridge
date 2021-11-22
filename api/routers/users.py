@@ -20,9 +20,11 @@ class User(BaseModel):
 
 
 @router.post('/find')
-async def find():
-    pass
-
+async def find(user: User):
+    q = sess.query(t.Users.id, t.Users.name).\
+        filter(t.Users.name.contains(f'%{user.name}%')).all()
+    return q
+    
 
 @router.post('/create')
 async def create_user(user: User):

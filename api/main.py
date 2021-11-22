@@ -1,5 +1,3 @@
-# to run use python -m uvicorn main:app --reload
-# python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000 <---- run on open port
 #!python -m uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
 from fastapi import FastAPI
