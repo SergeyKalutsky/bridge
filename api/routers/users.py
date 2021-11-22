@@ -1,22 +1,13 @@
 import uuid
-from typing import Optional
-from pydantic import BaseModel
 from fastapi import APIRouter, Depends
 from .. import gitlab_api as gapi
 from ..database import sess, t
 from ..dependencies import get_token_header
+from ..types import User
 
 router = APIRouter(prefix="/users",
                    tags=['users'],
                    dependencies=[Depends(get_token_header)])
-
-
-class User(BaseModel):
-    id: Optional[int] = None
-    name: Optional[str] = None
-    login: Optional[str] = None
-    password: Optional[str] = None
-    email: Optional[str] = None
 
 
 @router.post('/find')

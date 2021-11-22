@@ -1,23 +1,14 @@
 import uuid
 from api import gitlab_api as gapi
 from fastapi import APIRouter, Header, Depends
-from typing import Optional
-from pydantic import BaseModel
 from ..database import sess, t
 from ..dependencies import get_token_header
+from ..types import Project
 
 
 router = APIRouter(prefix="/projects",
                    tags=['projects'],
                    dependencies=[Depends(get_token_header)])
-
-
-class Project(BaseModel):
-    id: Optional[int]
-    key: Optional[str]
-    name: Optional[str]
-    isclassroom: Optional[bool] = None
-    description: Optional[str] = ''
 
 
 def project_already_exists(name):
@@ -109,14 +100,3 @@ async def get_project_by_key(key: str):
         filter(t.Projects.key == key).first()
     return project
 
-
-@router.post('/members/add')
-async def add_member(project: Project,
-                     user_id: str = Header(None)):
-    gapi.add_project_member(user_id, project.id)
-    sess.add(t.Members(
-        user_id=user_id,
-        project_id=project.id,
-        is_userowner=False
-    ))
-    sess.commit()

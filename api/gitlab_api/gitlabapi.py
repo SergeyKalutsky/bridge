@@ -1,5 +1,4 @@
-# sergey ID 34
-# Jdoe ID 35
+from os import access
 import gitlab
 
 gl = gitlab.Gitlab('https://gitlab.bridgeacross.xyz',
@@ -38,12 +37,12 @@ def get_project_by_name(name):
     return gl.projects.list(search=name)[0]
 
 
-def add_project_member(user_id, project_id):
+def add_project_member(user_id, project_id, permission):
     project = gl.projects.get(project_id)
     project.members.create({'user_id': user_id,
-                            'access_level': gitlab.DEVELOPER_ACCESS})
+                            'access_level': getattr(gitlab, f'{permission}_ACCESS')})
 
 
-def remove_member(user_id, project_id):
-    project = gl.projects.get(project_id)
+def remove_member(project, user_id):
+    project = gl.projects.get(project.id)
     project.members.delete(user_id)
