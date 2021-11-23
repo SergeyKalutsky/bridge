@@ -36,7 +36,8 @@ def add_project_record(project, user_id, membership_accepted, access):
 
 
 @router.get('/list')
-async def list_projects(user_id: str):
+async def list_projects(x_api_key: str = Header(None)):
+    user_id = jwt.decode(x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
     projects = sess.query(t.Projects.id,
                           t.Projects.name,
                           t.Projects.isclassroom).\

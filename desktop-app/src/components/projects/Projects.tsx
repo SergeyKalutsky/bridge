@@ -19,11 +19,9 @@ const Projects = (): JSX.Element => {
     useEffect(() => {
         const settings = JSON.parse(window.sessionStorage.getItem('settings'))
         fetch('http://localhost:8000/projects/list', {
-            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'api-key': settings['user']['api_key'],
-                'user-id': settings['user']['id'],
+                'x-api-key': settings['user']['X-API-Key'],
             }
         })
             .then(response => response.json())
