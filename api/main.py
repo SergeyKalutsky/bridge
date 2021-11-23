@@ -27,5 +27,8 @@ async def login_user(user: User):
     db_user = sess.query(t.Users).\
         filter(t.Users.login == user.login).first()
     if check_password(user.password, db_user.password):
-        return {'X-API-Key': encode_auth_token(db_user.id)}
+        user_data = db_user.__dict__
+        user_data['password'] = user.password
+        user_data.update({'X-API-Key': encode_auth_token(db_user.id)})
+        return user_data
     return {'status': 'auth failed', 'error': 'Неверный логин или пароль'}

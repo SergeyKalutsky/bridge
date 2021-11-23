@@ -21,7 +21,7 @@ const LoginPage = (): JSX.Element => {
     const [loginData, setloginData] = useState<InputForms>({ login: '', password: '' })
     const handleData = (data: User) => {
         if (!('error' in data)) {
-            data['name'] = loginData.login
+            data['password'] = loginData.password
             ipcRenderer.send('user-settings-set-request', { 'user': data });
             window.location.reload()
         }
