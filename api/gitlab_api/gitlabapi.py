@@ -20,12 +20,12 @@ def delete_user_project(user_id, project_name):
 
 
 def create_user(creds):
-    # TODO: after creating a user add him with id to the DB
-    gl.users.create({'email': creds.email,
+    user = gl.users.create({'email': creds.email,
                      'password':creds.password,
                      'username': creds.login,
                      'name': creds.name,
                      'skip_confirmation': True})
+    return user.id
 
 
 def delete_user(username):

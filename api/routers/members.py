@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, Header
 from .. import gitlab_api as gapi
 from ..database import sess, t
-from ..dependencies import get_token_header
+from ..dependencies import verify_token
 from ..types import Project
 
 router = APIRouter(prefix="/members",
                    tags=['members'],
-                   dependencies=[Depends(get_token_header)])
+                   dependencies=[Depends(verify_token)])
 
 
 @router.post('/add')

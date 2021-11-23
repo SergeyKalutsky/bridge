@@ -2,13 +2,13 @@ import uuid
 from api import gitlab_api as gapi
 from fastapi import APIRouter, Header, Depends
 from ..database import sess, t
-from ..dependencies import get_token_header
+from ..dependencies import verify_token
 from ..types import Project
 
 
 router = APIRouter(prefix="/projects",
                    tags=['projects'],
-                   dependencies=[Depends(get_token_header)])
+                   dependencies=[Depends(verify_token)])
 
 
 def project_already_exists(name):

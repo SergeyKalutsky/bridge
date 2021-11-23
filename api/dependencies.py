@@ -1,17 +1,11 @@
 from fastapi import Header, HTTPException
-from .database import sess, t
+import jwt
 
-
-def auth(user_id, api_key):
-    print
-    db_api_key = sess.query(t.Users.api_key).\
-        filter(t.Users.id == user_id).first()[0]
-    if db_api_key == api_key:
-        return True
-    return False
-
-
-async def get_token_header(api_key: str = Header(None),
-                           user_id: str = Header(None)):
-    if not auth(user_id, api_key):
-        raise HTTPException(status_code=400, detail="API-Token header invalid")
+async def verify_token(x_api_key: str = Header(None)):
+    try:
+        payload = jwt.decode(x_api_key, 'SECRET_KEY', algorithms=['HS256'])
+        return payload['sub']
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=400, detail='Signature expired. Please log in again.')
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=400, detail='Invalid token. Please log in again.')
