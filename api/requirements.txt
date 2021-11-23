@@ -1,5 +1,6 @@
 pyjwt
 pytest
+bcrypt
 uvicorn
 fastapi
 sqlalchemy
