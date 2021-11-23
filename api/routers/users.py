@@ -1,10 +1,9 @@
-import uuid
 from fastapi import APIRouter, Depends
 from .. import gitlab_api as gapi
 from ..database import sess, t
 from ..dependencies import verify_token
 from ..types import User
-from ..security import hashed_password, check_password, encode_auth_token
+from ..security import hashed_password
 
 
 router = APIRouter(prefix="/users",
@@ -26,7 +25,7 @@ async def create_user(user: User):
         login=user.login,
         password=hashed_password(user.password),
         name=user.name,
-        user_id=user_id
+        id=user_id
     ))
     sess.commit()
     return {'status': 'success'}
