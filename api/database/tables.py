@@ -31,6 +31,7 @@ class Members(Base):
     project_id = Column(Integer, primary_key=True)
     is_userowner = Column(Boolean)
     membership_accepted = Column(Boolean)
+    access = Column(String(24))
 
 
 class Classroom(Base):

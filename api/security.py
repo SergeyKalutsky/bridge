@@ -28,5 +28,7 @@ def hashed_password(plain_text_password):
 
 
 def check_password(plain_text_password, hashed_password):
+    if type(hashed_password) == str:
+        hashed_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'),
-                          hashed_password.encode('utf-8'))
+                          hashed_password)

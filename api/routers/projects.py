@@ -1,4 +1,5 @@
-import uuid
+from os import access
+import jwt
 from api import gitlab_api as gapi
 from fastapi import APIRouter, Header, Depends
 from ..database import sess, t
@@ -18,24 +19,24 @@ def project_already_exists(name):
     return True
 
 
-def add_project_record(project, user_id, submodule_for=None):
+def add_project_record(project, user_id, membership_accepted, access):
     sess.add(t.Projects(
         id=project.id,
         isclassroom=project.isclassroom,
         name=project.name,
-        key=project.key,
-        submodule_for=submodule_for
     ))
     sess.add(t.Members(
         user_id=user_id,
         project_id=project.id,
-        is_userowner=True
+        is_userowner=True,
+        membership_accepted=membership_accepted,
+        access=access
     ))
     sess.commit()
 
 
-@router.post('/list')
-async def list_projects(user_id: str = Header(None)):
+@router.get('/list')
+async def list_projects(user_id: str):
     projects = sess.query(t.Projects.id,
                           t.Projects.name,
                           t.Projects.isclassroom).\
@@ -44,9 +45,26 @@ async def list_projects(user_id: str = Header(None)):
     return {'projects': [{'id': p.id, 'name': p.name, 'isclassroom': p.isclassroom} for p in projects]}
 
 
+@router.post('/create')
+async def create_project(project: Project,
+                         x_api_key: str = Header(None)):
+    payload = jwt.decode(x_api_key, 'SECRET_KEY', algorithms=['HS256'])
+    if project_already_exists(project.name):
+        return 'Exists'
+    if project.isclassroom:
+        project.name += '_teacher'
+    project.id = gapi.create_project(payload['sub'], project)
+    add_project_record(project,
+                       payload['sub'],
+                       membership_accepted=True,
+                       access='maintainer')
+    return {'status': 'created', 'project': project}
+
+
 @router.post('/delete')
 async def delete_project(project: Project,
-                         user_id: str = Header(None)):
+                         x_api_key: str = Header(None)):
+    user_id = jwt.decode(x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
     is_userowner = sess.query(t.Members.is_userowner).\
         filter(t.Members.user_id == user_id).\
         filter(t.Members.project_id == project.id).first()[0]
@@ -57,46 +75,5 @@ async def delete_project(project: Project,
         sess.query(t.Members).\
             filter(t.Members.project_id == project.id).delete()
         sess.commit()
-    else:
-        gapi.remove_member(user_id, project.id)
-        sess.query(t.Members).\
-            filter(t.Members.project_id == project.id).\
-            filter(t.Members.user_id == user_id).delete()
-        sess.commit()
-    return {'res': 'deleted'}
-
-
-@router.post('/create')
-async def create_project(project: Project,
-                         user_id: str = Header(None)):
-    if project_already_exists(project.name):
-        return 'Exists'
-    if project.isclassroom:
-        project.id = gapi.create_project(user_id, project)
-        project.key = uuid.uuid4().hex
-        add_project_record(project, user_id)
-        project.name += '_teacher'
-        project.id = gapi.create_project(
-            user_id, project, submodule_for=project.id)
-        project.key = uuid.uuid4().hex
-        add_project_record(project, user_id)
-    else:
-        project.id = gapi.create_project(user_id, project)
-        project.key = uuid.uuid4().hex
-        add_project_record(project, user_id)
-    return {'res': 'created', 'project': project}
-
-
-@router.get('/key/{name}')
-async def get_project_key(name: str):
-    res = sess.query(t.Projects.key).\
-        filter(t.Projects.name == name).first()[0]
-    return {'key': res}
-
-
-@router.get('/get/{key}')
-async def get_project_by_key(key: str):
-    project = sess.query(t.Projects).\
-        filter(t.Projects.key == key).first()
-    return project
-
+        return {'stutus': 'sucesses', 'res': 'deleted'}
+    return {'stutus': 'failed', 'error': 'user doesnt have rights to delete'}
