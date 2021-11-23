@@ -16,8 +16,8 @@ def test_users_find():
     )
     assert res.status_code == 200
     assert res.json() == [
-        {
-            "id": 37,
-            "name": "nikita"
-        }
+        [
+            37,
+            "nikita"
+        ]
     ]
