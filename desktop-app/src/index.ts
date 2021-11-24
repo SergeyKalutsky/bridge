@@ -1,5 +1,4 @@
-import fs from 'fs'
-import path from 'path'
+import { join } from 'path'
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { git } from './git_api/index'
 import storage from 'electron-json-storage';
@@ -20,16 +19,16 @@ type settings = {
 }
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
+let git_cwd = storage.getDataPath()
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
   if (arg['cmd'] === 'log') {
-    git.log().then(result => {
+    console.log(git_cwd)
+    git.cwd(git_cwd).log().then(result => {
       event.returnValue = result
     })
       .catch(err => { event.returnValue = []; console.log(err) })
-    event.returnValue = []
-
   } else if (arg['cmd'] === 'diff') {
     git.show(arg['hash'])
       .then(result => {
@@ -40,23 +39,16 @@ ipcMain.on('git', (event, arg) => {
       });
 
   } else if (arg['cmd'] === 'pull') {
-    if (git !== undefined) {
-      git.pull()
-    }
-
+    git.cwd(git_cwd).pull()
   } else if (arg['cmd'] === 'push') {
-    if (git !== undefined) {
-      git.add('./*').commit('test').push()
-    }
-    
+    git.cwd(git_cwd).add('./*').commit('test').push()
   } else if (arg['cmd'] === 'clone') {
     storage.get('settings', function (error: Error, data: settings) {
       if (data !== null && 'active_project' in data) {
         const project_git = arg['project']['name'].replace(/ /g, '-')
         const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${project_git}.git`
-        git.cwd(data['data_storage'])
-          .clone(remote)
-        git.cwd(path.join(data['data_storage'], project_git))
+        git.cwd(storage.getDataPath()).clone(remote)
+        git_cwd = join(storage.getDataPath(), project_git)
       }
     })
   }

@@ -19,15 +19,5 @@ type settings = {
 
 const git: SimpleGit = simpleGit()
 
-const clone = (data: settings, git: SimpleGit): void => {
-  if (data !== null && 'active_project' in data) {
-    const project_dir = path.join(data['data_storage'], data['active_project']['name'])
-    const project_git = data['active_project']['name'].replace(/ /g, '-')
-    const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${project_git}.git`
-    git.cwd(project_dir).clone(remote)
-  }
-}
 
-
-
-export { clone, git, settings }
+export { git, settings }
