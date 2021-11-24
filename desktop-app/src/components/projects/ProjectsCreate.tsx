@@ -48,14 +48,13 @@ const ProjectsCreate = (): JSX.Element => {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'api-key': settings['user']['api_key'],
-                                    'user-id': settings['user']['id'],
+                                    'x-api-key': settings['user']['X-API-Key'],
                                 },
                                 body: JSON.stringify(project)
 
                             })
                             .then(response => response.json())
-                            .then(data => {data['res'] == 'created' ? window.location.reload(): console.log(data)})
+                            .then(data => {data['status'] == 'created' ? window.location.reload(): console.log(data)})
 
                     }}>Создать</button>
                 </div>

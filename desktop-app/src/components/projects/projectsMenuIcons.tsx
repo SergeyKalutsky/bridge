@@ -24,18 +24,18 @@ const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                     <button className="close" onClick={() => {
                         const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+                        console.log(settings['user']['X-API-key'])
                         fetch('http://localhost:8000/projects/delete',
                             {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'api-key': settings['user']['api_key'],
-                                    'user-id': settings['user']['id'],
+                                    'x-api-key': settings['user']['X-API-Key'],
                                 },
                                 body: JSON.stringify({ id: id, name: name })
                             })
                             .then(response => response.json())
-                            .then(data => data['res'] == 'deleted' ?
+                            .then(data => data['stutus'] == 'sucesses' ?
                                 window.location.reload() : console.log(data));
                         close
                     }}>

@@ -89,6 +89,7 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
                   }
                 }
               });
+            ipcRenderer.send('git', {cmd: 'clone', project: project})
             window.location.reload()
           }}>
             ОК

@@ -24,14 +24,12 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
   if (arg['cmd'] === 'log') {
-    if (git !== undefined) {
-      git.log().then(result => {
-        event.returnValue = result
-      })
-        .catch(err => { event.returnValue = []; console.log(err) })
-    } else {
-      event.returnValue = []
-    }
+    git.log().then(result => {
+      event.returnValue = result
+    })
+      .catch(err => { event.returnValue = []; console.log(err) })
+    event.returnValue = []
+
   } else if (arg['cmd'] === 'diff') {
     git.show(arg['hash'])
       .then(result => {
@@ -40,14 +38,27 @@ ipcMain.on('git', (event, arg) => {
       .catch(err => {
         event.returnValue = undefined
       });
+
   } else if (arg['cmd'] === 'pull') {
     if (git !== undefined) {
       git.pull()
     }
+
   } else if (arg['cmd'] === 'push') {
     if (git !== undefined) {
       git.add('./*').commit('test').push()
     }
+    
+  } else if (arg['cmd'] === 'clone') {
+    storage.get('settings', function (error: Error, data: settings) {
+      if (data !== null && 'active_project' in data) {
+        const project_git = arg['project']['name'].replace(/ /g, '-')
+        const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${project_git}.git`
+        git.cwd(data['data_storage'])
+          .clone(remote)
+        git.cwd(path.join(data['data_storage'], project_git))
+      }
+    })
   }
 })
 
@@ -55,6 +66,9 @@ ipcMain.on('git', (event, arg) => {
 ipcMain.on('user-settings', (event, arg) => {
   if (arg['cmd'] === 'set') {
     storage.get('settings', function (error: Error, data: settings) {
+      if (!('data_storage' in data)) {
+        data['data_storage'] = storage.getDataPath()
+      }
       storage.set('settings', { ...data, ...arg['data'] }, function (error: Error) {
         if (error) throw error;
       })
@@ -67,31 +81,6 @@ ipcMain.on('user-settings', (event, arg) => {
     });
   }
 })
-// ipcMain.on('user-settings-set-request', (event, arg) => {
-//   storage.get('settings', function (error: Error, data: settings) {
-//     if (!('projects' in data)) {
-//       const dir = path.join(storage.getDataPath(), data['user']['login'])
-//       fs.readdir(dir, (err, files) => {
-//         if (err) throw err
-//         files.forEach(file => {
-//           console.log(file);
-//         });
-//       });
-
-//     }
-//     storage.set('settings', { ...data, ...arg }, function (error: Error) {
-//       if (error) throw error;
-//     })
-//   })
-// })
-
-
-// ipcMain.on('user-settings-get-request', (event, arg) => {
-//   storage.get('settings', function (error: Error, data: settings) {
-//     if (error) throw error;
-//     event.returnValue = data
-//   });
-// })
 
 // Usual Stuff ---------------------------------------------------------------------
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -127,11 +116,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// ipcMain.on('cmd', (event, arg) => {
-//   elevatedShell({ command: `apt-get update` },
-//     async (error?: Error, data?: string | Buffer) => {
-//       await event.reply('stdout', data.toString())
-//     })
-// })
-

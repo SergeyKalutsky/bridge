@@ -17,7 +17,7 @@ type settings = {
   }
 }
 
-const git: SimpleGit = undefined
+const git: SimpleGit = simpleGit()
 
 const clone = (data: settings, git: SimpleGit): void => {
   if (data !== null && 'active_project' in data) {
