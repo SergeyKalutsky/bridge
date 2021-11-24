@@ -26,6 +26,7 @@ export default hot(module)(function App() {
   const [islogin, setIslogin] = useState(false)
   useEffect(() => {
     const settings = ipcRenderer.sendSync('user-settings', {cmd: 'get'})
+    console.log(settings)
     if (!('user' in settings)) {
       setIslogin(true)
     } else {

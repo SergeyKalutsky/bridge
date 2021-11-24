@@ -78,12 +78,15 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
         <div className="modal">
           <div>Проект выбран как основной</div>
           <button className="close" onClick={() => {
-            ipcRenderer.send('user-settings-set-request',
+            ipcRenderer.send('user-settings',
               {
-                'active_project': {
-                  'name': project.name,
-                  'id': project.id,
-                  'isclassroom': project.isclassroom
+                cmd: 'set',
+                data: {
+                  'active_project': {
+                    'name': project.name,
+                    'id': project.id,
+                    'isclassroom': project.isclassroom
+                  }
                 }
               });
             window.location.reload()
