@@ -27,6 +27,8 @@ storage.get('settings', function (error: Error, data: Settings) {
   settings = data
   if (!('data_storage' in settings)) {
     settings.data_storage = storage.getDataPath()
+  }
+  if (!('git_cwd' in settings)) {
     settings.git_cwd = storage.getDataPath()
   }
 })

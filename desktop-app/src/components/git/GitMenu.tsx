@@ -57,8 +57,13 @@ const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element =>
   const [activeHashRow, setActiveHashRow] = useState<string>()
   const [hashList, setHashList] = useState<Array<Hash>>()
   useEffect(() => {
-    const hashes = ipcRenderer.sendSync('git', { cmd: 'log' })['all']
-    setHashList(hashes)
+    const interval = setInterval(() => {
+      const hashes = ipcRenderer.sendSync('git', { cmd: 'log' })['all']
+      setHashList(hashes)
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
   }, [])
   const elements = hashList !== undefined ? hashList.map((hash) =>
     <HashElement hash={hash.hash}
@@ -74,7 +79,7 @@ const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element =>
       <div className='tab-header'>
         <span className='tab-text-feed'
           onClick={() => {
-            const hashes = ipcRenderer.sendSync('git',  { cmd: 'log' })['all']
+            const hashes = ipcRenderer.sendSync('git', { cmd: 'log' })['all']
             setHashList(hashes)
           }}
         >ЛЕНТА</span>
