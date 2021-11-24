@@ -25,16 +25,14 @@ const AppContent = (): JSX.Element => {
 export default hot(module)(function App() {
   const [islogin, setIslogin] = useState(false)
   useEffect(() => {
-    ipcRenderer.send('user-settings-get-request', 'ping')
-  }, [])
-
-  ipcRenderer.once('user-settings-get-response', (event, arg) => {
-    if (!('user' in arg)) {
+    const settings = ipcRenderer.sendSync('user-settings-get-request', '')
+    if (!('user' in settings)) {
       setIslogin(true)
     } else {
-      window.sessionStorage.setItem('settings', JSON.stringify(arg))
+      window.sessionStorage.setItem('settings', JSON.stringify(settings))
     }
-  })
+  }, [])
+
   return (
     <>
       {islogin == false ? <AppContent /> : <LoginPage />}

@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { elevatedShell } from './elevated_shell/shell'
-import { initGit, git} from './git_api/index'
+import { initGit, git } from './git_api/index'
 import storage from 'electron-json-storage';
 import parseGitDiff from './git_api/parse'
 
@@ -22,9 +22,6 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 
 storage.get('settings', function (error: Error, data: settings) {
-  if ('active_project' in data) {
-    initGit(data)
-  }
   if (!('data_storage' in data)) {
     storage.set('settings', { ...data, data_storage: storage.getDataPath() },
       (error: Error) => {
@@ -61,18 +58,15 @@ ipcMain.on('git-log', (event, arg) => {
     git.log().then(result => {
       event.returnValue = result
     })
-    .catch(err => event.returnValue = [])
+      .catch(err => { event.returnValue = []; console.log(err) })
   } else {
     event.returnValue = []
   }
 })
 
-
+// User Settings -------------------------------------------------------------------
 ipcMain.on('user-settings-set-request', (event, arg) => {
   storage.get('settings', function (error: Error, data: settings) {
-    if ('active_project' in arg) {
-      initGit({ ...data, ...arg })
-    }
     storage.set('settings', { ...data, ...arg }, function (error: Error) {
       if (error) throw error;
     })
@@ -83,12 +77,11 @@ ipcMain.on('user-settings-set-request', (event, arg) => {
 ipcMain.on('user-settings-get-request', (event, arg) => {
   storage.get('settings', function (error: Error, data: settings) {
     if (error) throw error;
-    event.reply('user-settings-get-response', data)
+    event.returnValue = data
   });
 })
 
-
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+// Usual Stuff ---------------------------------------------------------------------
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
@@ -104,21 +97,13 @@ const createWindow = (): void => {
     }
   });
 
-  // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -126,17 +111,15 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
 
-ipcMain.on('cmd', (event, arg) => {
-  elevatedShell({ command: `apt-get update` },
-    async (error?: Error, data?: string | Buffer) => {
-      await event.reply('stdout', data.toString())
-    })
-})
+// ipcMain.on('cmd', (event, arg) => {
+//   elevatedShell({ command: `apt-get update` },
+//     async (error?: Error, data?: string | Buffer) => {
+//       await event.reply('stdout', data.toString())
+//     })
+// })
 
