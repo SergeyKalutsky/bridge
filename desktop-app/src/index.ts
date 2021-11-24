@@ -77,6 +77,9 @@ ipcMain.on('user-settings', (event, arg) => {
 
 // Usual Stuff ---------------------------------------------------------------------
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+  storage.set('settings', settings, function (error: Error) {
+    if (error) throw error;
+  })
   app.quit();
 }
 
@@ -100,6 +103,9 @@ app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    storage.set('settings', settings, function (error: Error) {
+      if (error) throw error;
+    })
     app.quit();
   }
 });
