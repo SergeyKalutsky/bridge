@@ -4,7 +4,7 @@ import { git } from './git_api/index'
 import storage from 'electron-json-storage';
 import parseGitDiff from './git_api/parse'
 
-type settings = {
+type Settings = {
   data_storage?: string,
   user?: {
     id: number,
@@ -19,7 +19,13 @@ type settings = {
 }
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
+const GITLAB = 'https://gitlab.bridgeacross.xyz'
 let git_cwd = storage.getDataPath()
+let settings: Settings
+
+storage.get('settings', function (error: Error, data: Settings) {
+  settings = data
+})
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
@@ -29,6 +35,7 @@ ipcMain.on('git', (event, arg) => {
       event.returnValue = result
     })
       .catch(err => { event.returnValue = []; console.log(err) })
+      
   } else if (arg['cmd'] === 'diff') {
     git.show(arg['hash'])
       .then(result => {
@@ -40,34 +47,33 @@ ipcMain.on('git', (event, arg) => {
 
   } else if (arg['cmd'] === 'pull') {
     git.cwd(git_cwd).pull()
+
   } else if (arg['cmd'] === 'push') {
     git.cwd(git_cwd).add('./*').commit('test').push()
+
   } else if (arg['cmd'] === 'clone') {
-    storage.get('settings', function (error: Error, data: settings) {
-      if (data !== null && 'active_project' in data) {
-        const project_git = arg['project']['name'].replace(/ /g, '-')
-        const remote = `https://gitlab.bridgeacross.xyz/${data['user']['login']}/${project_git}.git`
-        git.cwd(storage.getDataPath()).clone(remote)
-        git_cwd = join(storage.getDataPath(), project_git)
-      }
-    })
+    const project_git = arg['project']['name'].replace(/ /g, '-')
+    const remote = `${GITLAB}/${settings['user']['login']}/${project_git}.git`
+    git.cwd(storage.getDataPath()).clone(remote)
+    git_cwd = join(storage.getDataPath(), project_git)
   }
 })
 
 // User Settings -------------------------------------------------------------------
 ipcMain.on('user-settings', (event, arg) => {
   if (arg['cmd'] === 'set') {
-    storage.get('settings', function (error: Error, data: settings) {
+    storage.get('settings', function (error: Error, data: Settings) {
       if (!('data_storage' in data)) {
         data['data_storage'] = storage.getDataPath()
       }
       storage.set('settings', { ...data, ...arg['data'] }, function (error: Error) {
         if (error) throw error;
+        settings = { ...data, ...arg['data'] }
       })
     })
   }
   if (arg['cmd'] === 'get') {
-    storage.get('settings', function (error: Error, data: settings) {
+    storage.get('settings', function (error: Error, data: Settings) {
       if (error) throw error;
       event.returnValue = data
     });
