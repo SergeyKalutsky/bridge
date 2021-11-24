@@ -1,11 +1,12 @@
-import { join } from 'path'
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { git } from './git_api/index'
 import storage from 'electron-json-storage';
 import parseGitDiff from './git_api/parse'
+import { git } from './git_api/index'
+import { join } from 'path'
 
 type Settings = {
   data_storage?: string,
+  git_cwd: string,
   user?: {
     id: number,
     password: string,
@@ -25,17 +26,20 @@ let settings: Settings
 
 storage.get('settings', function (error: Error, data: Settings) {
   settings = data
+  if (!('data_storage' in settings)) {
+    settings.data_storage = storage.getDataPath()
+    settings.git_cwd = storage.getDataPath()
+  }
 })
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
   if (arg['cmd'] === 'log') {
-    console.log(git_cwd)
-    git.cwd(git_cwd).log().then(result => {
+    git.cwd(settings.git_cwd).log().then(result => {
       event.returnValue = result
     })
       .catch(err => { event.returnValue = []; console.log(err) })
-      
+
   } else if (arg['cmd'] === 'diff') {
     git.show(arg['hash'])
       .then(result => {
@@ -46,37 +50,29 @@ ipcMain.on('git', (event, arg) => {
       });
 
   } else if (arg['cmd'] === 'pull') {
-    git.cwd(git_cwd).pull()
+    git.cwd(settings.git_cwd).pull()
 
   } else if (arg['cmd'] === 'push') {
-    git.cwd(git_cwd).add('./*').commit('test').push()
+    git.cwd(settings.git_cwd).add('./*').commit('test').push()
 
   } else if (arg['cmd'] === 'clone') {
     const project_git = arg['project']['name'].replace(/ /g, '-')
-    const remote = `${GITLAB}/${settings['user']['login']}/${project_git}.git`
-    git.cwd(storage.getDataPath()).clone(remote)
-    git_cwd = join(storage.getDataPath(), project_git)
+    const remote = `${GITLAB}/${settings.user.login}/${project_git}.git`
+    git.cwd(settings.data_storage).clone(remote)
+    settings.git_cwd = join(settings.data_storage, project_git)
   }
 })
 
 // User Settings -------------------------------------------------------------------
 ipcMain.on('user-settings', (event, arg) => {
   if (arg['cmd'] === 'set') {
-    storage.get('settings', function (error: Error, data: Settings) {
-      if (!('data_storage' in data)) {
-        data['data_storage'] = storage.getDataPath()
-      }
-      storage.set('settings', { ...data, ...arg['data'] }, function (error: Error) {
-        if (error) throw error;
-        settings = { ...data, ...arg['data'] }
-      })
+    settings = { ...settings, ...arg['data'] }
+    storage.set('settings', settings, function (error: Error) {
+      if (error) throw error;
     })
   }
   if (arg['cmd'] === 'get') {
-    storage.get('settings', function (error: Error, data: Settings) {
-      if (error) throw error;
-      event.returnValue = data
-    });
+    event.returnValue = settings
   }
 })
 
