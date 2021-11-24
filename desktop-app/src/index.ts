@@ -21,7 +21,6 @@ type Settings = {
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 const GITLAB = 'https://gitlab.bridgeacross.xyz'
-let git_cwd = storage.getDataPath()
 let settings: Settings
 
 storage.get('settings', function (error: Error, data: Settings) {
