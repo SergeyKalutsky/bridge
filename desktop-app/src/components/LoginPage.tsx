@@ -22,7 +22,7 @@ const LoginPage = (): JSX.Element => {
     const handleData = (data: User) => {
         if (!('error' in data)) {
             data['password'] = loginData.password
-            ipcRenderer.send('user-settings-set-request', { 'user': data });
+            ipcRenderer.send('user-settings', {cmd:'set', data: {'user': data} });
             window.location.reload()
         }
     }
