@@ -1,6 +1,7 @@
+import fs from 'fs'
+import path from 'path'
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { elevatedShell } from './elevated_shell/shell'
-import { initGit, git } from './git_api/index'
+import { git } from './git_api/index'
 import storage from 'electron-json-storage';
 import parseGitDiff from './git_api/parse'
 
@@ -23,50 +24,58 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 storage.get('settings', function (error: Error, data: settings) {
   if (!('data_storage' in data)) {
-    storage.set('settings', { ...data, data_storage: storage.getDataPath() },
+    storage.set('settings', {
+      ...data,
+      data_storage: storage.getDataPath()
+    },
       (error: Error) => {
         if (error) throw error;
       })
   }
 })
 
-ipcMain.on('git-diff', (event, arg) => {
-  git.show(arg)
-    .then(result => {
-      event.returnValue = parseGitDiff(result)
-    })
-    .catch(err => {
-      event.returnValue = undefined
-    });
-})
-
-
-ipcMain.on('git-push', (event, arg) => {
-  if (git !== undefined) {
-    git.add('./*').commit('test').push()
-  }
-})
-
-ipcMain.on('git-pull', (event, arg) => {
-  if (git !== undefined) {
-    git.pull()
-  }
-})
-
-ipcMain.on('git-log', (event, arg) => {
-  if (git !== undefined) {
-    git.log().then(result => {
-      event.returnValue = result
-    })
-      .catch(err => { event.returnValue = []; console.log(err) })
-  } else {
-    event.returnValue = []
+ipcMain.on('git', (event, arg) => {
+  if (arg['cmd'] === 'log') {
+    if (git !== undefined) {
+      git.log().then(result => {
+        event.returnValue = result
+      })
+        .catch(err => { event.returnValue = []; console.log(err) })
+    } else {
+      event.returnValue = []
+    }
+  } else if (arg['cmd'] === 'diff') {
+    git.show(arg['hash'])
+      .then(result => {
+        event.returnValue = parseGitDiff(result)
+      })
+      .catch(err => {
+        event.returnValue = undefined
+      });
+  } else if (arg['cmd'] === 'pull') {
+    if (git !== undefined) {
+      git.pull()
+    }
+  } else if (arg['cmd'] === 'push') {
+    if (git !== undefined) {
+      git.add('./*').commit('test').push()
+    }
   }
 })
 
 // User Settings -------------------------------------------------------------------
 ipcMain.on('user-settings-set-request', (event, arg) => {
   storage.get('settings', function (error: Error, data: settings) {
+    if (!('projects' in data)) {
+      const dir = path.join(storage.getDataPath(), data['user']['login'])
+      fs.readdir(dir, (err, files) => {
+        if (err) throw err
+        files.forEach(file => {
+          console.log(file);
+        });
+      });
+
+    }
     storage.set('settings', { ...data, ...arg }, function (error: Error) {
       if (error) throw error;
     })

@@ -67,16 +67,16 @@ const DropDown = ({ gitDiff,
 const WorkspaceTab = ({ setSplitView,
   splitView,
   gitDiff,
-  setDiffViewOption, diffViewOption }: WorkspaceTabProp) => {
+  setDiffViewOption, diffViewOption }: WorkspaceTabProp): JSX.Element => {
   const classes = useStyles()
   return (
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
         <Button color="primary" onClick={() => {
-          ipcRenderer.send('git-pull', 'pull')
+          ipcRenderer.send('git', { cmd: 'pull' })
         }}>Pull</Button>
         <Button color="secondary" onClick={() => {
-          ipcRenderer.send('git-push', 'push')
+          ipcRenderer.send('git', { cmd: 'push' })
         }}>Push</Button>
         <IconButton className={classes.menuIcon}>
           <FontAwesomeIcon icon={faSync} />

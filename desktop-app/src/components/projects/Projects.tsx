@@ -25,7 +25,10 @@ const Projects = (): JSX.Element => {
             }
         })
             .then(response => response.json())
-            .then(data => setProjects(data['projects']))
+            .then(data => () => { 
+                setProjects(data['projects']);
+                
+            })
     }, [])
     return (
         <>
