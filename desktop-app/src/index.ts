@@ -3,6 +3,7 @@ import storage from 'electron-json-storage';
 import parseGitDiff from './git_api/parse'
 import { git } from './git_api/index'
 import { join } from 'path'
+import fs from 'fs'
 
 type Settings = {
   data_storage?: string,
@@ -58,9 +59,13 @@ ipcMain.on('git', (event, arg) => {
 
   } else if (arg['cmd'] === 'clone') {
     const project_git = arg['project']['name'].replace(/ /g, '-')
-    const remote = `${GITLAB}/${settings.user.login}/${project_git}.git`
-    git.cwd(settings.data_storage).clone(remote)
     settings.git_cwd = join(settings.data_storage, project_git)
+    if (!fs.existsSync(settings.git_cwd)) {
+      console.log('here')
+      git.cwd(settings.data_storage)
+        .clone(`${GITLAB}/${settings.user.login}/${project_git}.git`)
+    }
+
   }
 })
 
