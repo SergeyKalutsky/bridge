@@ -1,5 +1,5 @@
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { KeyIconButton, TrashIconButton } from './projectsMenuIcons'
+import { UserIconButton, TrashIconButton } from './projectsMenuIcons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import IconButton from '@material-ui/core/IconButton';
@@ -45,7 +45,7 @@ type Setter = {
 }
 
 
-const ProjectSelect = ({ name, id }: Project): JSX.Element => {
+const ProjectSelect = ({ name, id, isclassroom }: Project): JSX.Element => {
   const [active, setActive] = useState(false)
   const settings = JSON.parse(window.sessionStorage.getItem('settings'))
   return (
@@ -53,10 +53,36 @@ const ProjectSelect = ({ name, id }: Project): JSX.Element => {
       settings['active_project']['id'] == id ? 'project active' : 'project'}
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
-      <span className={active == true ? 'selected' : ''}>{name}</span>
+      <Popup
+        trigger={<span className={active == true ? 'selected' : ''}>{name}</span>}
+        position="right center"
+        key={name}
+        modal>
+        {
+          <div className="modal">
+            <div>Проект выбран как основной</div>
+            <button className="close" onClick={() => {
+              ipcRenderer.send('user-settings',
+                {
+                  cmd: 'set',
+                  data: {
+                    'active_project': {
+                      'name': name,
+                      'id': id,
+                      'isclassroom': isclassroom
+                    }
+                  }
+                });
+              window.location.reload()
+            }}>
+              ОК
+            </button>
+          </div>
+        }
+      </Popup>
       {active &&
         <div className='icons'>
-          <KeyIconButton name={name} id={id} setActive={setActive} />
+          <UserIconButton name={name} id={id} setActive={setActive} />
           <TrashIconButton name={name} id={id} setActive={setActive} />
         </div>}
     </div>
@@ -66,37 +92,12 @@ const ProjectSelect = ({ name, id }: Project): JSX.Element => {
 const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
   const classes = useStyles();
   const projects_list = projects.map((project) =>
-    <Popup
-      trigger={<div className='project-item'>
-        <ProjectSelect name={project.name}
-          id={project.id}
-          key={project.name} />
-      </div>}
-      position="right center"
-      key={project.name}
-      modal>
-      {
-        <div className="modal">
-          <div>Проект выбран как основной</div>
-          <button className="close" onClick={() => {
-            ipcRenderer.send('user-settings',
-              {
-                cmd: 'set',
-                data: {
-                  'active_project': {
-                    'name': project.name,
-                    'id': project.id,
-                    'isclassroom': project.isclassroom
-                  }
-                }
-              });
-            window.location.reload()
-          }}>
-            ОК
-          </button>
-        </div>
-      }
-    </Popup>)
+    <div className='project-item'>
+      <ProjectSelect name={project.name}
+        id={project.id}
+        key={project.name}
+        isclassroom={project.isclassroom} />
+    </div>)
   return (
     <div className='left-menu'>
       <div className='tab-header'>

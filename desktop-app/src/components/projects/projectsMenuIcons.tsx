@@ -54,16 +54,10 @@ const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
 }
 
 
-const KeyIconButton = ({ name, id, setActive }: Project): JSX.Element => {
+const UserIconButton = ({ name, id, setActive }: Project): JSX.Element => {
     return (
-        <Popup
-            trigger={<div className='icon'><FontAwesomeIcon icon={faUserEdit} /></div>}
-            position="right center"
-        >
-            { }
-        </Popup >
-
+        <div className='icon'><FontAwesomeIcon icon={faUserEdit}/></div>
     )
 }
 
-export { KeyIconButton, TrashIconButton }
+export { UserIconButton, TrashIconButton }
