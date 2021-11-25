@@ -19,7 +19,7 @@ const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
             position="right center"
             modal
         >
-            {close => (
+            {() => (
                 <div className="modal">
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                     <button className="close" onClick={() => {
@@ -80,7 +80,7 @@ const KeyIconButton = ({ name, id, setActive }: Project): JSX.Element => {
             position="right center"
             modal
         >
-            {close => (
+            {() => (
                 <KeyIconButtonModal name={name} id={id} setActive={setActive} close={close} />
             )
             }
