@@ -39,6 +39,9 @@ ipcMain.on('projects', (event, arg) => {
   if (arg['cmd'] === 'delete') {
     const dir = join(settings.data_storage, arg['project']['name'])
     fs.rmdirSync(dir, { recursive: true });
+    if (settings.active_project === arg['project']['name']){
+      delete settings.active_project
+    }
   }
 })
 
@@ -69,7 +72,6 @@ ipcMain.on('git', (event, arg) => {
     const project_git = arg['project']['name'].replace(/ /g, '-')
     settings.git_cwd = join(settings.data_storage, project_git)
     if (!fs.existsSync(settings.git_cwd)) {
-      console.log('here')
       git.cwd(settings.data_storage)
         .clone(`${GITLAB}/${settings.user.login}/${project_git}.git`)
     }

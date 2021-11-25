@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ipcRenderer } from 'electron'
 import '../../assets/css/ProjectsCreate.css'
 
 type Project = {
@@ -15,6 +16,11 @@ const ProjectsCreate = (): JSX.Element => {
         description: '',
         isclassroom: 0
     })
+
+    const setNewProject = ()=> {
+        ipcRenderer.send('git', { cmd: 'clone', project: project })
+        window.location.reload()
+    }
     return (
         <div className='menu'>
             <div className='crete-inputs row'>
@@ -54,7 +60,7 @@ const ProjectsCreate = (): JSX.Element => {
 
                             })
                             .then(response => response.json())
-                            .then(data => {data['status'] == 'created' ? window.location.reload(): console.log(data)})
+                            .then(data => {data['status'] == 'created' ? setNewProject(): console.log(data)})
 
                     }}>Создать</button>
                 </div>
