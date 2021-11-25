@@ -8,6 +8,7 @@ import { ipcRenderer } from 'electron';
 type Project = {
     id: number;
     name: string;
+    setIsAddMember:React.Dispatch<React.SetStateAction<boolean>>
     setActive?: React.Dispatch<React.SetStateAction<boolean>>
     close?: any
 }
@@ -54,9 +55,11 @@ const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
 }
 
 
-const UserIconButton = ({ name, id, setActive }: Project): JSX.Element => {
+const UserIconButton = ({ name, id, setActive, setIsAddMember }: Project): JSX.Element => {
     return (
-        <div className='icon'><FontAwesomeIcon icon={faUserEdit}/></div>
+        <div className='icon'><FontAwesomeIcon icon={faUserEdit}
+        onClick={()=>{setIsAddMember(true)}}
+        /></div>
     )
 }
 

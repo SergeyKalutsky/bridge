@@ -9,10 +9,12 @@ type Project = {
     id: number
     name: string
     isclassroom: number
+    setIsAddMember?:React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
 const Projects = (): JSX.Element => {
+    const [isAddMember, setIsAddMember] = useState(false)
     const [iscreate, setIsCreate] = useState(false)
     const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
 
@@ -29,11 +31,14 @@ const Projects = (): JSX.Element => {
     }, [])
     return (
         <>
-            <ProjectsMenu setIsCreate={setIsCreate} projects={projects} />
+            <ProjectsMenu setIsCreate={setIsCreate} 
+                          projects={projects}
+                          setIsAddMember={setIsAddMember} />
             <div className='workspace'>
                 <div className='workspace-background'>
-                    {iscreate == true ?
-                        <ProjectCreate /> : <ProjectFind />
+
+                    {isAddMember == false ? iscreate == true ?
+                        <ProjectCreate /> : <ProjectFind />: null
                     }
                 </div>
             </div>

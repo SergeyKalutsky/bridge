@@ -35,17 +35,19 @@ type Project = {
   id: number;
   name: string;
   setActive?: React.Dispatch<React.SetStateAction<boolean>>
+  setIsAddMember: React.Dispatch<React.SetStateAction<boolean>>
   close?: any
   isclassroom?: number
 }
 
 type Setter = {
   setIsCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAddMember: React.Dispatch<React.SetStateAction<boolean>>
   projects: Array<Project>
 }
 
 
-const ProjectSelect = ({ name, id, isclassroom }: Project): JSX.Element => {
+const ProjectSelect = ({ name, id, isclassroom, setIsAddMember }: Project): JSX.Element => {
   const [active, setActive] = useState(false)
   const settings = JSON.parse(window.sessionStorage.getItem('settings'))
   return (
@@ -82,32 +84,32 @@ const ProjectSelect = ({ name, id, isclassroom }: Project): JSX.Element => {
       </Popup>
       {active &&
         <div className='icons'>
-          <UserIconButton name={name} id={id} setActive={setActive} />
+          <UserIconButton name={name} id={id} setActive={setActive} setIsAddMember={setIsAddMember}/>
           <TrashIconButton name={name} id={id} setActive={setActive} />
         </div>}
     </div>
   )
 }
 
-const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
+const ProjectsMenu = ({ setIsCreate, setIsAddMember, projects }: Setter): JSX.Element => {
   const classes = useStyles();
   const projects_list = projects.map((project) =>
-    <div className='project-item'>
+    <div className='project-item' key={project.name}>
       <ProjectSelect name={project.name}
         id={project.id}
-        key={project.name}
-        isclassroom={project.isclassroom} />
+        isclassroom={project.isclassroom} 
+        setIsAddMember={setIsAddMember}/>
     </div>)
   return (
     <div className='left-menu'>
       <div className='tab-header'>
         <span className='tab-text'>ПРОЕКТЫ</span>
         <IconButton className={classes.menuIcon}
-          onClick={() => { setIsCreate(true) }}>
+          onClick={() => { setIsCreate(true); setIsAddMember(false) }}>
           <AddCircleOutlineIcon />
         </IconButton >
         <IconButton className={classes.menuIconSerach}
-          onClick={() => { setIsCreate(false) }}>
+          onClick={() => { setIsCreate(false); setIsAddMember(false) }}>
           <FontAwesomeIcon icon={faSearch} />
         </IconButton >
       </div>
