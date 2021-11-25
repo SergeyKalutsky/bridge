@@ -35,19 +35,25 @@ type Project = {
   id: number;
   name: string;
   setActive?: React.Dispatch<React.SetStateAction<boolean>>
-  setIsAddMember: React.Dispatch<React.SetStateAction<boolean>>
+  setMember?: React.Dispatch<React.SetStateAction<{
+    on: boolean;
+    project_name: string;
+  }>>
   close?: any
   isclassroom?: number
 }
 
 type Setter = {
   setIsCreate: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAddMember: React.Dispatch<React.SetStateAction<boolean>>
+  setMember: React.Dispatch<React.SetStateAction<{
+    on: boolean;
+    project_name: string;
+  }>>
   projects: Array<Project>
 }
 
 
-const ProjectSelect = ({ name, id, isclassroom, setIsAddMember }: Project): JSX.Element => {
+const ProjectSelect = ({ name, id, isclassroom, setMember }: Project): JSX.Element => {
   const [active, setActive] = useState(false)
   const settings = JSON.parse(window.sessionStorage.getItem('settings'))
   return (
@@ -84,32 +90,32 @@ const ProjectSelect = ({ name, id, isclassroom, setIsAddMember }: Project): JSX.
       </Popup>
       {active &&
         <div className='icons'>
-          <UserIconButton name={name} id={id} setActive={setActive} setIsAddMember={setIsAddMember}/>
+          <UserIconButton name={name} id={id} setActive={setActive} setMember={setMember} />
           <TrashIconButton name={name} id={id} setActive={setActive} />
         </div>}
     </div>
   )
 }
 
-const ProjectsMenu = ({ setIsCreate, setIsAddMember, projects }: Setter): JSX.Element => {
+const ProjectsMenu = ({ setIsCreate, setMember, projects }: Setter): JSX.Element => {
   const classes = useStyles();
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
       <ProjectSelect name={project.name}
         id={project.id}
-        isclassroom={project.isclassroom} 
-        setIsAddMember={setIsAddMember}/>
+        isclassroom={project.isclassroom}
+        setMember={setMember} />
     </div>)
   return (
     <div className='left-menu'>
       <div className='tab-header'>
         <span className='tab-text'>ПРОЕКТЫ</span>
         <IconButton className={classes.menuIcon}
-          onClick={() => { setIsCreate(true); setIsAddMember(false) }}>
+          onClick={() => { setIsCreate(true); setMember({on: false}) }}>
           <AddCircleOutlineIcon />
         </IconButton >
         <IconButton className={classes.menuIconSerach}
-          onClick={() => { setIsCreate(false); setIsAddMember(false) }}>
+          onClick={() => { setIsCreate(false); setMember({on: false}) }}>
           <FontAwesomeIcon icon={faSearch} />
         </IconButton >
       </div>

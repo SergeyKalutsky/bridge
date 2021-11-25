@@ -3,18 +3,23 @@ import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectFind from './ProjectFind'
 import ProjectCreate from './ProjectsCreate'
-
+import ProjectMembers from './ProjectMembers'
 
 type Project = {
     id: number
     name: string
     isclassroom: number
-    setIsAddMember?:React.Dispatch<React.SetStateAction<boolean>>
+    setMember?: any
+}
+
+type Member = {
+    on: boolean;
+    project_id?: number
 }
 
 
 const Projects = (): JSX.Element => {
-    const [isAddMember, setIsAddMember] = useState(false)
+    const [member, setMember] = useState({on: false, project_id:0})
     const [iscreate, setIsCreate] = useState(false)
     const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
 
@@ -31,14 +36,14 @@ const Projects = (): JSX.Element => {
     }, [])
     return (
         <>
-            <ProjectsMenu setIsCreate={setIsCreate} 
-                          projects={projects}
-                          setIsAddMember={setIsAddMember} />
+            <ProjectsMenu setIsCreate={setIsCreate}
+                projects={projects}
+                setMember={setMember} />
             <div className='workspace'>
                 <div className='workspace-background'>
 
-                    {isAddMember == false ? iscreate == true ?
-                        <ProjectCreate /> : <ProjectFind />: null
+                    {member.on == false ? iscreate == true ?
+                        <ProjectCreate /> : <ProjectFind /> : <ProjectMembers project_id={member.project_id} />
                     }
                 </div>
             </div>
