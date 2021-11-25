@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import '../../assets/css/ProjectMembers.css'
 
 type Member = {
@@ -6,13 +7,26 @@ type Member = {
 }
 
 const ProjectMembers = ({ project_id }: Member): JSX.Element => {
+    const [search, setSearch] = useState('')
     return (
         <div className='menu'>
             <div className='search'>
                 <input type="text"
-                    placeholder='Введите имя пользователя' />
+                    placeholder='Введите имя пользователя'
+                    onChange={(e) => { setSearch(e.target.value); console.log(search) }} />
                 <button onClick={() => {
                     const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+                    fetch(`http://localhost:8000/users/find`,
+                        {   
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-api-key': settings['user']['X-API-Key']
+                            },
+                            body: JSON.stringify({name: search})
+                        })
+                            .then(response => response.json())
+                            .then(data => console.log(data))
                 }}> Поиск</button>
             </div>
         </div>
