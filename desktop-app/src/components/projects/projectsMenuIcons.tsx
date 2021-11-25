@@ -78,12 +78,8 @@ const KeyIconButton = ({ name, id, setActive }: Project): JSX.Element => {
         <Popup
             trigger={<div className='icon'><FontAwesomeIcon icon={faUserEdit} /></div>}
             position="right center"
-            modal
         >
-            {() => (
-                <KeyIconButtonModal name={name} id={id} setActive={setActive} close={close} />
-            )
-            }
+            {}
         </Popup >
 
     )
