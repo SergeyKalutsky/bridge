@@ -34,6 +34,14 @@ storage.get('settings', function (error: Error, data: Settings) {
   }
 })
 
+// Projects ===========================================================
+ipcMain.on('projects', (event, arg) => {
+  if (arg['cmd'] === 'delete') {
+    const dir = join(settings.data_storage, arg['project']['name'])
+    fs.rmdirSync(dir, { recursive: true });
+  }
+})
+
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
   if (arg['cmd'] === 'log') {
