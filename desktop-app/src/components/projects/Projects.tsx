@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
-import ProjectFind from './ProjectFind'
+// import ProjectFind from './ProjectFind'
 import ProjectCreate from './ProjectsCreate'
 import ProjectMembers from './ProjectMembers'
 
@@ -43,7 +43,7 @@ const Projects = (): JSX.Element => {
                 <div className='workspace-background'>
 
                     {member.on == false ? iscreate == true ?
-                        <ProjectCreate /> : <ProjectFind /> : <ProjectMembers project_id={member.project_id} />
+                        <ProjectCreate /> : null : <ProjectMembers project_id={member.project_id} />
                     }
                 </div>
             </div>

@@ -1,3 +1,4 @@
+import '../../assets/css/ProjectMembers.css'
 
 type Member = {
     on?: boolean;
