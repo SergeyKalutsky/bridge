@@ -37,9 +37,9 @@ storage.get('settings', function (error: Error, data: Settings) {
 // Projects ===========================================================
 ipcMain.on('projects', (event, arg) => {
   if (arg['cmd'] === 'delete') {
-    const dir = join(settings.data_storage, arg['project']['name'])
+    const dir = join(settings.data_storage, arg['project']['name'].replace(/ /g, '-'))
     fs.rmdirSync(dir, { recursive: true });
-    if (settings.active_project === arg['project']['name']){
+    if (settings.active_project.name === arg['project']['name']){
       delete settings.active_project
     }
   }

@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ClassIcon from '@material-ui/icons/Class';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Popup from 'reactjs-popup';
 import '../assets/css/SideNavBar.css'
 
@@ -20,7 +20,16 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-const HelperMessage = (): JSX.Element => {
+type Setter = {
+    setActiveProjectSet: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const GitLink = ({ setActiveProjectSet }: Setter): JSX.Element => {
+    useEffect(()=>{
+        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+        'active_project' in settings ? setActiveProjectSet(true) : setActiveProjectSet(false)
+        console.log('here')
+    }, [])
     return (
         <Popup
             trigger={<div className='icon'><AccountTreeIcon /></div>}
@@ -47,14 +56,10 @@ const SideNavBar = (): JSX.Element => {
             <IconButton className={classes.menuIcon}>
                 <FileCopyIcon />
             </IconButton>
-            <IconButton className={classes.menuIcon} onClick={() => {
-                const settings = JSON.parse(window.sessionStorage.getItem('settings'))
-                'active_project' in settings ? setActiveProjectSet(true) : setActiveProjectSet(false)
-            }
-            }>
+            <IconButton className={classes.menuIcon}>
                 {activeProjectSet == true ?
                     <Link to="/git" replace><AccountTreeIcon /></Link> :
-                    <HelperMessage />}
+                    <GitLink setActiveProjectSet={setActiveProjectSet} />}
             </IconButton>
             <IconButton className={classes.menuIcon}>
                 <Link to="/" replace><ClassIcon /></Link>
