@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { faTrashAlt, faKey } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Popup from 'reactjs-popup';
 
@@ -76,7 +76,7 @@ const KeyIconButtonModal = ({ name, setActive,
 const KeyIconButton = ({ name, id, setActive }: Project): JSX.Element => {
     return (
         <Popup
-            trigger={<div className='icon'><FontAwesomeIcon icon={faKey} /></div>}
+            trigger={<div className='icon'><FontAwesomeIcon icon={faUserEdit} /></div>}
             position="right center"
             modal
         >
