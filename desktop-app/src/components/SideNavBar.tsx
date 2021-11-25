@@ -32,10 +32,10 @@ const SideNavBar = (): JSX.Element => {
                 <FileCopyIcon />
             </IconButton>
             <IconButton className={classes.menuIcon} onClick={()=>ipcRenderer.removeAllListeners('stdout')}>
-                <Link to="/" replace><AccountTreeIcon /></Link>
+                <Link to="/git" replace><AccountTreeIcon /></Link>
             </IconButton>
             <IconButton className={classes.menuIcon}>
-                <Link to="/projects" replace><ClassIcon /></Link>
+                <Link to="/" replace><ClassIcon /></Link>
             </IconButton>
         </div>
     )

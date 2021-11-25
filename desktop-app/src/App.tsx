@@ -15,8 +15,8 @@ const AppContent = (): JSX.Element => {
     <Router>
       <SideNavBar />
       <Switch>
-        <Route exact path="/" component={Git} />
-        <Route exact path="/projects" component={Projects} />
+        <Route exact path="/" component={Projects} />
+        <Route exact path="/git" component={Git} />
       </Switch>
     </Router>
   )
@@ -24,18 +24,20 @@ const AppContent = (): JSX.Element => {
 
 export default hot(module)(function App() {
   const [islogin, setIslogin] = useState(false)
+  const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
   useEffect(() => {
-    const settings = ipcRenderer.sendSync('user-settings', {cmd: 'get'})
+    const settings = ipcRenderer.sendSync('user-settings', { cmd: 'get' })
     if (!('user' in settings)) {
       setIslogin(true)
     } else {
       window.sessionStorage.setItem('settings', JSON.stringify(settings))
     }
+    setUserSettingLoaded(true)
   }, [])
 
   return (
     <>
-      {islogin == false ? <AppContent /> : <LoginPage />}
+      {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
     </>
   )
 });

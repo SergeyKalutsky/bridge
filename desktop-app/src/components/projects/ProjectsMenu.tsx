@@ -49,7 +49,8 @@ const ProjectSelect = ({ name, id }: Project): JSX.Element => {
   const [active, setActive] = useState(false)
   const settings = JSON.parse(window.sessionStorage.getItem('settings'))
   return (
-    <div className={'active_project' in settings && settings['active_project']['id'] == id ? 'project active' : 'project'}
+    <div className={'active_project' in settings &&
+      settings['active_project']['id'] == id ? 'project active' : 'project'}
       onMouseOver={() => { setActive(true) }}
       onMouseLeave={() => { setActive(false) }}>
       <span className={active == true ? 'selected' : ''}>{name}</span>
@@ -89,7 +90,7 @@ const ProjectsMenu = ({ setIsCreate, projects }: Setter): JSX.Element => {
                   }
                 }
               });
-            ipcRenderer.send('git', {cmd: 'clone', project: project})
+            ipcRenderer.send('git', { cmd: 'clone', project: project })
             window.location.reload()
           }}>
             ОК
