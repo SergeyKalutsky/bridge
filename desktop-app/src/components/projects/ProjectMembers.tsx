@@ -36,7 +36,6 @@ const FoundMemberList = ({ member, project_id }: FoundMemberListProps): JSX.Elem
                     })
                     .then(response => response.json())
                     .then(data => console.log(data))
-                window.location.reload()
             }}>Присоединится</button>
         </div>
     )
