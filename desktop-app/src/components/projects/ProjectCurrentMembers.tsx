@@ -13,9 +13,11 @@ interface Member {
 interface CurrentMembersProp {
     members: Member[]
     project_id: number
+    forceUpdate: boolean
+    setForceUpdate: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProjectCurrentMembers = ({ members, project_id }: CurrentMembersProp): JSX.Element => {
+const ProjectCurrentMembers = ({ members, project_id, forceUpdate, setForceUpdate }: CurrentMembersProp): JSX.Element => {
 
     const membersArray = members.map((member) =>
         <div className='current-member' key={member.id}>
@@ -41,8 +43,7 @@ const ProjectCurrentMembers = ({ members, project_id }: CurrentMembersProp): JSX
                                     },
                                     body: JSON.stringify({ project_id: project_id, user_id: member.id })
                                 })
-                                .then(response => response.json())
-                                .then(data => console.log(data));
+                            setForceUpdate(forceUpdate == true ? false : true)
                         }}>
                             Удалить
                         </button>

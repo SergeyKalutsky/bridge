@@ -7,9 +7,14 @@ interface Member {
 type FoundMemberListProps = {
     member: Member
     project_id: number
+    forceUpdate: boolean
+    setForceUpdate: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const FoundMemberList = ({ member, project_id }: FoundMemberListProps): JSX.Element => {
+const FoundMemberList = ({ member,
+    project_id,
+    forceUpdate, 
+    setForceUpdate }: FoundMemberListProps): JSX.Element => {
 
     return (
         <div className='project-found'>
@@ -28,8 +33,7 @@ const FoundMemberList = ({ member, project_id }: FoundMemberListProps): JSX.Elem
                             project_id: project_id
                         })
                     })
-                    .then(response => response.json())
-                    .then(data => console.log(data))
+                setForceUpdate(forceUpdate == true ? false : true)
             }}>Пригласить</button>
         </div>
     )

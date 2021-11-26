@@ -16,6 +16,7 @@ interface Member {
 
 
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
+    const [forceUpdate, setForceUpdate] = useState(true)
     const [membersFind, setMembersFind] = useState<Member[]>([])
     const [membersCurrent, setMembersCureent] = useState<Member[]>([])
     const [search, setSearch] = useState('')
@@ -31,12 +32,15 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             })
             .then(response => response.json())
             .then(data => setMembersCureent(data))
-    }, [])
+    }, [forceUpdate])
 
     const membersArray = membersFind.map((member) =>
-        <FoundMemberList member={member} project_id={project_id} key={member.id} />
+        <FoundMemberList member={member}
+            project_id={project_id}
+            key={member.id}
+            forceUpdate={forceUpdate}
+            setForceUpdate={setForceUpdate} />
     )
-    console.log(membersArray)
     return (
         <div className='menu'>
             <div className='search'>
@@ -59,7 +63,10 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                 }}> Поиск</button>
             </div>
             {membersArray}
-            <ProjectCurrentMembers members={membersCurrent} project_id={project_id} />
+            <ProjectCurrentMembers members={membersCurrent}
+                project_id={project_id}
+                setForceUpdate={setForceUpdate}
+                forceUpdate={forceUpdate} />
         </div>
     )
 }
