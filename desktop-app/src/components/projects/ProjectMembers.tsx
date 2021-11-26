@@ -14,7 +14,6 @@ interface Member {
 }
 
 
-
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     const [forceUpdate, setForceUpdate] = useState(true)
     const [membersFind, setMembersFind] = useState<Member[]>([])

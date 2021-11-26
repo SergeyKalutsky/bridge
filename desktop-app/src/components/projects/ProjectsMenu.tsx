@@ -41,6 +41,7 @@ type Project = {
 
 const ProjectsMenu = ({ projects, dispatch }: Props): JSX.Element => {
   const classes = useStyles();
+  console.log(projects)
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
       <ProjectSelect project={project} dispatch={dispatch} />

@@ -26,8 +26,8 @@ export default hot(module)(function App() {
   const [islogin, setIslogin] = useState(false)
   const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
   useEffect(() => {
-    const settings = ipcRenderer.sendSync('user-settings', { cmd: 'get' })
-    if (!('user' in settings)) {
+    const settings = ipcRenderer.sendSync('user-settings', { cmd: 'get' })['settings']
+    if (settings === undefined) {
       setIslogin(true)
     } else {
       window.sessionStorage.setItem('settings', JSON.stringify(settings))

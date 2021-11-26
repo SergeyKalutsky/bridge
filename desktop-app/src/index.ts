@@ -5,43 +5,20 @@ import { git } from './git_api/index'
 import { join } from 'path'
 import fs from 'fs'
 
-type Settings = {
-  data_storage?: string,
-  git_cwd: string,
-  user?: {
-    id: number,
-    password: string,
-    login: string,
-    api_key: string
-  },
-  active_project?: {
-    name: string
-    id: string
-  }
-}
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 const GITLAB = 'https://gitlab.bridgeacross.xyz'
-let settings: Settings
 
-storage.get('settings', function (error: Error, data: Settings) {
-  settings = data
-  if (!('data_storage' in settings)) {
-    settings.data_storage = storage.getDataPath()
-  }
-  if (!('git_cwd' in settings)) {
-    settings.git_cwd = storage.getDataPath()
-  }
-})
 
 // Projects ===========================================================
 ipcMain.on('projects', (event, arg) => {
   if (arg['cmd'] === 'delete') {
-    const dir = join(settings.data_storage, arg['project']['name'].replace(/ /g, '-'))
+    const settings = storage.getSync('settings');
+    const dir = join(storage.getDataPath(), arg['project']['name'].replace(/ /g, '-'))
+
     fs.rmdirSync(dir, { recursive: true });
     if (settings.active_project !== undefined && settings.active_project.name === arg['project']['name']) {
       delete settings.active_project
-      storage.remove('settings');
       storage.set('settings', settings);
     }
   }
@@ -49,8 +26,16 @@ ipcMain.on('projects', (event, arg) => {
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
+  const settings = storage.getSync('settings');
+  let project_git = ''
+  if (!('active_project' in settings)) {
+    project_git = arg['project']['name'].replace(/ /g, '-')
+  } else {
+    project_git = settings.active_project
+  }
+
   if (arg['cmd'] === 'log') {
-    git.cwd(settings.git_cwd).log().then(result => {
+    git.cwd(project_git).log().then(result => {
       event.returnValue = result
     })
       .catch(err => { event.returnValue = []; console.log(err) })
@@ -65,16 +50,14 @@ ipcMain.on('git', (event, arg) => {
       });
 
   } else if (arg['cmd'] === 'pull') {
-    git.cwd(settings.git_cwd).pull()
+    git.cwd(project_git).pull()
 
   } else if (arg['cmd'] === 'push') {
-    git.cwd(settings.git_cwd).add('./*').commit('test').push()
+    git.cwd(project_git).add('./*').commit('test').push()
 
   } else if (arg['cmd'] === 'clone') {
-    const project_git = arg['project']['name'].replace(/ /g, '-')
-    settings.git_cwd = join(settings.data_storage, project_git)
-    if (!fs.existsSync(settings.git_cwd)) {
-      git.cwd(settings.data_storage)
+    if (!fs.existsSync(join(storage.getDataPath(), project_git))) {
+      git.cwd(storage.getDataPath())
         .clone(`${GITLAB}/${settings.user.login}/${project_git}.git`)
     }
 
@@ -84,17 +67,20 @@ ipcMain.on('git', (event, arg) => {
 // User Settings -------------------------------------------------------------------
 ipcMain.on('user-settings', (event, arg) => {
   if (arg['cmd'] === 'set') {
-    settings = { ...settings, ...arg['data'] }
-    storage.set('settings', settings)
+    storage.getAll(function (error: Error, data: any) {
+      storage.set('settings', { ...data['settings'], ...arg['data'] })
+    })
   }
   if (arg['cmd'] === 'get') {
-    event.returnValue = settings
+    storage.getAll(function (error: Error, data: any) {
+      event.returnValue = data
+    });
+
   }
 })
 
 // Usual Stuff ---------------------------------------------------------------------
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-  storage.set('settings', settings)
   app.quit();
 }
 
@@ -118,7 +104,6 @@ app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    storage.set('settings', settings)
     app.quit();
   }
 });
