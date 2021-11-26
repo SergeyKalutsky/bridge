@@ -18,7 +18,8 @@ type State = {
 
 type Action =
     | { type: 'memberFind', payload: number }
-    | { type: string }
+    | { type: 'findProject' }
+    | { type: 'createProject' }
 
 function reducer(state: State, action: Action) {
     switch (action.type) {
