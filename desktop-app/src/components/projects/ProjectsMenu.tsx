@@ -28,11 +28,7 @@ const useStyles = makeStyles(() => ({
 );
 
 interface Props {
-  setIsCreate: React.Dispatch<React.SetStateAction<boolean>>
-  setMember: React.Dispatch<React.SetStateAction<{
-    on: boolean;
-    project_name: string;
-  }>>
+  dispatch: React.Dispatch<any>
   projects: Project[]
 }
 
@@ -43,25 +39,24 @@ type Project = {
 }
 
 
-const ProjectsMenu = ({ setIsCreate, setMember, projects }: Props): JSX.Element => {
+const ProjectsMenu = ({ projects, dispatch }: Props): JSX.Element => {
   const classes = useStyles();
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
       <ProjectSelect name={project.name}
         id={project.id}
-        isclassroom={project.isclassroom}
-        setMember={setMember} />
+        isclassroom={project.isclassroom} />
     </div>)
   return (
     <div className='left-menu'>
       <div className='tab-header'>
         <span className='tab-text'>ПРОЕКТЫ</span>
         <IconButton className={classes.menuIcon}
-          onClick={() => { setIsCreate(true); setMember({on: false}) }}>
+          onClick={() => { dispatch({type: 'createProject'}) }}>
           <AddCircleOutlineIcon />
         </IconButton >
         <IconButton className={classes.menuIconSerach}
-          onClick={() => { setIsCreate(false); setMember({on: false}) }}>
+          onClick={() => { dispatch({type: 'findProject'}) }}>
           <FontAwesomeIcon icon={faSearch} />
         </IconButton >
       </div>

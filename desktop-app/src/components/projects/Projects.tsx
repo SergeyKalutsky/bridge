@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useReducer } from 'react'
 import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
 // import ProjectFind from './ProjectFind'
 import ProjectCreate from './ProjectsCreate'
 import ProjectMembers from './ProjectMembers'
+import ProjectFind from './ProjectFind'
 
 type Project = {
     id: number
@@ -12,15 +13,22 @@ type Project = {
     setMember?: any
 }
 
-type Member = {
-    on: boolean;
-    project_id?: number
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'findProject':
+            return { page: <ProjectFind /> }
+        case 'createProject':
+            return { page: <ProjectCreate /> }
+        case 'memberFind':
+            return <ProjectMembers />
+
+    }
 }
 
 
 const Projects = (): JSX.Element => {
-    const [member, setMember] = useState({on: false, project_id:0})
-    const [iscreate, setIsCreate] = useState(false)
+    const [state, dispatch] = useReducer(reducer, { page: <ProjectCreate /> });
     const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
 
     useEffect(() => {
@@ -36,15 +44,10 @@ const Projects = (): JSX.Element => {
     }, [])
     return (
         <>
-            <ProjectsMenu setIsCreate={setIsCreate}
-                projects={projects}
-                setMember={setMember} />
+            <ProjectsMenu projects={projects} dispatch={dispatch} />
             <div className='workspace'>
                 <div className='workspace-background'>
-
-                    {member.on == false ? iscreate == true ?
-                        <ProjectCreate /> : null : <ProjectMembers project_id={member.project_id} />
-                    }
+                    {state.page}
                 </div>
             </div>
         </>
