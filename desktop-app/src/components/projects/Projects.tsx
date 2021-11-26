@@ -13,15 +13,21 @@ type Project = {
     setMember?: any
 }
 
+type State = {
+    page: JSX.Element
+}
 
-function reducer(state, action) {
+type Action =
+    | { type: string }
+
+function reducer(state: State, action: Action) {
     switch (action.type) {
         case 'findProject':
             return { page: <ProjectFind /> }
         case 'createProject':
             return { page: <ProjectCreate /> }
         case 'memberFind':
-            return <ProjectMembers />
+            return { page: <ProjectMembers /> }
 
     }
 }
