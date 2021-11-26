@@ -4,17 +4,25 @@ from ..database import sess, t
 from ..dependencies import verify_token
 from ..types import User
 from ..security import hashed_password
+from typing import Optional
+from pydantic import BaseModel
 
+class ReturnUser(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
 
 router = APIRouter(prefix="/users",
                    tags=['users'],
                    dependencies=[Depends(verify_token)])
 
 
-@router.post('/find')
+@router.post('/find', response_model=ReturnUser)
 async def find(user: User):
-    q = sess.query(t.Users.id, t.Users.name).\
-        filter(t.Users.name.contains(f'%{user.name}%')).all()
+    q = sess.query(t.Users).\
+        filter(t.Users.name.contains(f'%{user.name}%')).first()
     return q
 
 
