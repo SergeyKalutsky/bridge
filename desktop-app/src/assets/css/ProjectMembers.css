@@ -25,6 +25,30 @@
 
 }
 
+.member {
+    margin-right: 40%;
+}
+
+.current-member {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 2%;
+}
+
+.current-members {
+    width: 50%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    font-size: 25px;
+    color: azure;
+    align-content: center;
+    justify-content: center;
+
+}
+
 .project-found button {
     margin-left: 5%;
 }

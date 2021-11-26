@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Popup from 'reactjs-popup';

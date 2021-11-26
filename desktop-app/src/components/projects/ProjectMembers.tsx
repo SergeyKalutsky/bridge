@@ -1,5 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../../assets/css/ProjectMembers.css'
+import FoundMemberList from './FoundMemberList'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 type Props = {
     project_id: number
@@ -8,47 +11,56 @@ type Props = {
 interface Member {
     id: number
     name: string
+    iscurrent?: boolean
 }
 
-type FoundMemberListProps = {
-    member: Member
-    project_id: number
+interface CurrentMembersProp {
+    members: Member[]
 }
 
-const FoundMemberList = ({ member, project_id }: FoundMemberListProps): JSX.Element => {
+const CurrentMembers = ({ members }: CurrentMembersProp): JSX.Element => {
 
     return (
-        <div className='project-found'>
-            {member.name}
-            <button onClick={() => {
-                const settings = JSON.parse(window.sessionStorage.getItem('settings'))
-                fetch('http://localhost:8000/members/add',
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': settings['user']['X-API-Key']
-                        },
-                        body: JSON.stringify({
-                            user_id: member.id,
-                            project_id: project_id
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => console.log(data))
-            }}>Присоединится</button>
+        <div className='current-members'>
+            <div className='current-member'>
+                <div className='member'>
+                    Nikita
+                </div>
+                <div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>
+            </div>
+            <div className='current-member'>
+                <div className='member'>
+                    Sergey
+                </div>
+                <div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>
+            </div>
         </div>
     )
 }
 
+
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     const [members, setMembers] = useState<Member[]>([])
     const [search, setSearch] = useState('')
-    console.log(members)
+
+    useEffect(()=>{
+        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
+        fetch(`http://localhost:8000/members/get`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': settings['user']['X-API-Key']
+                },
+                body: JSON.stringify({ name: search })
+            })
+            .then(response => response.json())
+            .then(data => setMembers(data))
+    }, [])
+
     const membersArray = members.map((member) =>
-        <FoundMemberList member={member} project_id={project_id} key={member.id}/>
+        <FoundMemberList member={member} project_id={project_id} key={member.id} />
     )
-    console.log(membersArray)
     return (
         <div className='menu'>
             <div className='search'>
@@ -71,6 +83,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                 }}> Поиск</button>
             </div>
             {membersArray}
+            <CurrentMembers />
         </div>
     )
 }
