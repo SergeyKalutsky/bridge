@@ -1,7 +1,6 @@
 import { useState, useEffect, useReducer } from 'react'
 import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
-// import ProjectFind from './ProjectFind'
 import ProjectCreate from './ProjectsCreate'
 import ProjectMembers from './ProjectMembers'
 import ProjectFind from './ProjectFind'
@@ -18,6 +17,7 @@ type State = {
 }
 
 type Action =
+    | { type: 'memberFind', payload: number }
     | { type: string }
 
 function reducer(state: State, action: Action) {
@@ -27,7 +27,7 @@ function reducer(state: State, action: Action) {
         case 'createProject':
             return { page: <ProjectCreate /> }
         case 'memberFind':
-            return { page: <ProjectMembers /> }
+            return { page: <ProjectMembers project_id={action.payload} /> }
 
     }
 }

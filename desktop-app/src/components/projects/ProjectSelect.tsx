@@ -51,7 +51,7 @@ const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
             </Popup>
             {active &&
                 <div className='icons'>
-                    <UserIconButton name={project.name} id={project.id} dispatch={dispatch} />
+                    <UserIconButton id={project.id} dispatch={dispatch} />
                     <TrashIconButton name={project.name} id={project.id} />
                 </div>}
         </div>

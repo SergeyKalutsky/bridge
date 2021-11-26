@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import '../../assets/css/ProjectMembers.css'
 
-type Member = {
-    on?: boolean;
-    project_id?: number
+type Props = {
+    project_id: number
 }
 
-const ProjectMembers = ({ project_id }: Member): JSX.Element => {
+const ProjectMembers = ({ project_id }: Props): JSX.Element => {
+    console.log(project_id)
     const [search, setSearch] = useState('')
     return (
         <div className='menu'>

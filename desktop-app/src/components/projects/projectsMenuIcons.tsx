@@ -12,7 +12,6 @@ type TrashProps = {
 
 type UserProps = {
     id: number
-    name: string
     dispatch: React.Dispatch<any>
 }
 
@@ -57,11 +56,12 @@ const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
 }
 
 
-const UserIconButton = ({ name, id, dispatch }: UserProps): JSX.Element => {
+const UserIconButton = ({ id, dispatch }: UserProps): JSX.Element => {
+    
     return (
         <div className='icon'><FontAwesomeIcon icon={faUserEdit}
-            onClick={() => { dispatch({ type: 'memberFind' }) }}
-        /></div>
+            onClick={() => { dispatch({ type: 'memberFind', payload: id}) }}
+            /></div>
     )
 }
 
