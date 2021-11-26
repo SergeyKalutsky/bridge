@@ -21,17 +21,20 @@ async def add_member(member: Member,
     '''
     user_id = jwt.decode(
         x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
+    print(user_id)
     is_userowner = sess.query(t.Members.is_userowner).\
         filter(t.Members.user_id == user_id).\
         filter(t.Members.project_id == member.project_id).first()[0]
-    if is_userowner:
-        gapi.add_project_member(member)
+    is_classroom = sess.query(t.Projects.isclassroom).\
+        filter(t.Projects.id == member.project_id).first()[0]
+    if is_userowner and not is_classroom:
+        gapi.add_project_member(member, 'reporter')
         sess.add(t.Members(
             user_id=member.user_id,
             project_id=member.project_id,
             is_userowner=False,
             membership_accepted=False,
-            access=member.access
+            access='reporter'
         ))
         sess.commit()
         return {'status': 'success', 'res': 'user has been added'}

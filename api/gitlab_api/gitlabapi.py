@@ -37,10 +37,10 @@ def get_project_by_name(name):
     return gl.projects.list(search=name)[0]
 
 
-def add_project_member(member):
+def add_project_member(member, access):
     project = gl.projects.get(member.project_id)
     project.members.create({'user_id': member.user_id,
-                            'access_level': getattr(gitlab, f'{member.access.upper()}_ACCESS')})
+                            'access_level': getattr(gitlab, f'{access.upper()}_ACCESS')})
 
 
 def remove_member(member):
