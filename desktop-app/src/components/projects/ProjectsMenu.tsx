@@ -21,7 +21,6 @@ const useStyles = makeStyles(() => ({
     '& svg': {
       fontSize: 25
     },
-    // 'margin-left': '5px',
     'color': '#b3afb0',
     'justify-content': 'flex-end'
   }
