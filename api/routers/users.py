@@ -4,7 +4,7 @@ from ..database import sess, t
 from ..dependencies import verify_token
 from ..types import User
 from ..security import hashed_password
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 class ReturnUser(BaseModel):
@@ -14,16 +14,18 @@ class ReturnUser(BaseModel):
     class Config:
         orm_mode = True
 
+
 router = APIRouter(prefix="/users",
                    tags=['users'],
                    dependencies=[Depends(verify_token)])
 
 
-@router.post('/find', response_model=ReturnUser)
+@router.post('/find', response_model=List[ReturnUser])
 async def find(user: User):
     q = sess.query(t.Users).\
-        filter(t.Users.name.contains(f'%{user.name}%')).first()
+        filter(t.Users.name.contains(f'%{user.name}%')).all()
     return q
+
 
 
 @router.post('/create')

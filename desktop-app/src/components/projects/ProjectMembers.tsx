@@ -5,15 +5,20 @@ type Props = {
     project_id: number
 }
 
+interface Member {
+    id: number
+    name: string
+}
+
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
-    console.log(project_id)
+    const [members, setMembers] = useState<Member[]>()
     const [search, setSearch] = useState('')
     return (
         <div className='menu'>
             <div className='search'>
                 <input type="text"
                     placeholder='Введите имя пользователя'
-                    onChange={(e) => { setSearch(e.target.value); console.log(search) }} />
+                    onChange={(e) => { setSearch(e.target.value)}} />
                 <button onClick={() => {
                     const settings = JSON.parse(window.sessionStorage.getItem('settings'))
                     fetch(`http://localhost:8000/users/find`,
@@ -26,7 +31,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                             body: JSON.stringify({name: search})
                         })
                             .then(response => response.json())
-                            .then(data => console.log(data))
+                            .then(data => setMember(data))
                 }}> Поиск</button>
             </div>
         </div>
