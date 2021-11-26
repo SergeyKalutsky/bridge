@@ -31,7 +31,7 @@ ipcMain.on('git', (event, arg) => {
   if (!('active_project' in settings)) {
     project_git = arg['project']['name'].replace(/ /g, '-')
   } else {
-    project_git = settings.active_project
+    project_git = settings.active_project.name
   }
 
   if (arg['cmd'] === 'log') {
