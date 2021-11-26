@@ -43,9 +43,7 @@ const ProjectsMenu = ({ projects, dispatch }: Props): JSX.Element => {
   const classes = useStyles();
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
-      <ProjectSelect name={project.name}
-        id={project.id}
-        isclassroom={project.isclassroom} />
+      <ProjectSelect project={project} dispatch={dispatch} />
     </div>)
   return (
     <div className='left-menu'>

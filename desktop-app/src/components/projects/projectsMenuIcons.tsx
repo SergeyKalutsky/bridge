@@ -5,16 +5,19 @@ import Popup from 'reactjs-popup';
 import { ipcRenderer } from 'electron';
 
 
-type Project = {
-    id: number;
-    name: string;
-    setMember?: any
-    setActive?: React.Dispatch<React.SetStateAction<boolean>>
-    close?: any
+type TrashProps = {
+    id: number
+    name: string
+}
+
+type UserProps = {
+    id: number
+    name: string
+    dispatch: React.Dispatch<any>
 }
 
 
-const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
+const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
     return (
         <Popup
             trigger={<div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>}
@@ -39,11 +42,10 @@ const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
                             .then(data => data['stutus'] == 'sucesses' ?
                                 window.location.reload() : console.log(data));
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
-                        close
                     }}>
                         Удалить
                     </button>
-                    <button className="close" onClick={() => { setActive(false); close }}>
+                    <button className="close" onClick={() => { close }}>
                         Закрыть
                     </button>
                 </div>
@@ -55,10 +57,10 @@ const TrashIconButton = ({ name, id, setActive }: Project): JSX.Element => {
 }
 
 
-const UserIconButton = ({ name, id, setMember }: Project): JSX.Element => {
+const UserIconButton = ({ name, id, dispatch }: UserProps): JSX.Element => {
     return (
         <div className='icon'><FontAwesomeIcon icon={faUserEdit}
-        onClick={()=>{setMember({on: true, project_id: id})}}
+            onClick={() => { dispatch({ type: 'memberFind' }) }}
         /></div>
     )
 }

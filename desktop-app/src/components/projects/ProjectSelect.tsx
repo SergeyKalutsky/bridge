@@ -3,31 +3,29 @@ import { useState } from "react"
 import { ipcRenderer } from "electron"
 import { UserIconButton, TrashIconButton } from './projectsMenuIcons'
 
-interface Props {
-    name: string
-    id: number
-    isclassroom: number
-    setMember: React.Dispatch<React.SetStateAction<{
-        on: boolean;
-        project_name: string;
-    }>>
+type Project = {
+    id: number;
+    name: string;
+    isclassroom?: number
 }
 
-const ProjectSelect = ({ name,
-    id,
-    isclassroom,
-    setMember }: Props): JSX.Element => {
+interface Props {
+    project: Project
+    dispatch: React.Dispatch<any>
+}
+
+const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
     const [active, setActive] = useState(false)
     const settings = JSON.parse(window.sessionStorage.getItem('settings'))
     return (
         <div className={'active_project' in settings &&
-            settings['active_project']['id'] == id ? 'project active' : 'project'}
+            settings['active_project']['id'] == project.id ? 'project active' : 'project'}
             onMouseOver={() => { setActive(true) }}
             onMouseLeave={() => { setActive(false) }}>
             <Popup
-                trigger={<span className={active == true ? 'selected' : ''}>{name}</span>}
+                trigger={<span className={active == true ? 'selected' : ''}>{project.name}</span>}
                 position="right center"
-                key={name}
+                key={project.name}
                 modal>
                 {
                     <div className="modal">
@@ -38,9 +36,9 @@ const ProjectSelect = ({ name,
                                     cmd: 'set',
                                     data: {
                                         'active_project': {
-                                            'name': name,
-                                            'id': id,
-                                            'isclassroom': isclassroom
+                                            'name': project.name,
+                                            'id': project.id,
+                                            'isclassroom': project.isclassroom
                                         }
                                     }
                                 });
@@ -53,8 +51,8 @@ const ProjectSelect = ({ name,
             </Popup>
             {active &&
                 <div className='icons'>
-                    <UserIconButton name={name} id={id} setActive={setActive} setMember={setMember} />
-                    <TrashIconButton name={name} id={id} setActive={setActive} />
+                    <UserIconButton name={project.name} id={project.id} dispatch={dispatch} />
+                    <TrashIconButton name={project.name} id={project.id} />
                 </div>}
         </div>
     )
