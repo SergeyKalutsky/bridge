@@ -4,10 +4,20 @@ from .. import gitlab_api as gapi
 from ..database import sess, t
 from ..dependencies import verify_token
 from ..types import Member
+from typing import Optional, List
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/members",
                    tags=['members'],
                    dependencies=[Depends(verify_token)])
+
+class ReturnUser(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
 
 
 @router.post('/add')
@@ -39,6 +49,22 @@ async def add_member(member: Member,
         sess.commit()
         return {'status': 'success', 'res': 'user has been added'}
     return {'status': 'failed', 'error': 'you dont have rights to add memebers to that project'}
+
+
+@router.get('/list', response_model=List[ReturnUser])
+async def list_members(project_id: int,
+                       x_api_key: str = Header(None)):
+    user_id = jwt.decode(
+        x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
+    is_userowner = sess.query(t.Members.is_userowner).\
+        filter(t.Members.user_id == user_id).\
+        filter(t.Members.project_id == project_id).first()[0]
+    if is_userowner:
+        q = sess.query(t.Users).\
+            filter(t.Members.project_id == project_id).\
+            filter(t.Members.user_id == t.Users.id).\
+            filter(t.Members.is_userowner == False).all()
+        return q
 
 
 @router.post('/delete')

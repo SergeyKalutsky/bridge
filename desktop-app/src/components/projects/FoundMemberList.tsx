@@ -1,6 +1,7 @@
 interface Member {
     id: number
     name: string
+    iscurrent?: boolean
 }
 
 type FoundMemberListProps = {
@@ -29,7 +30,7 @@ const FoundMemberList = ({ member, project_id }: FoundMemberListProps): JSX.Elem
                     })
                     .then(response => response.json())
                     .then(data => console.log(data))
-            }}>Присоединится</button>
+            }}>Пригласить</button>
         </div>
     )
 }
