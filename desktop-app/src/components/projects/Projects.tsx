@@ -32,10 +32,11 @@ function reducer(state: State, action: Action) {
     }
 }
 
+const dummyProject = [{ id: 0, name: "", isclassroom: 0 }]
 
 const Projects = (): JSX.Element => {
     const [state, dispatch] = useReducer(reducer, { page: <ProjectCreate /> });
-    const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
+    const [projects, setProjects] = useState<Array<Project>>(dummyProject)
 
     useEffect(() => {
         const settings = JSON.parse(window.sessionStorage.getItem('settings'))
