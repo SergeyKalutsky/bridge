@@ -61,7 +61,6 @@ const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element =>
   useEffect(() => {
     const interval = setInterval(() => {
       const hashes = ipcRenderer.sendSync('git', { cmd: 'log', project: settings.active_project })
-      console.log(hashes)
       setHashList(hashes)
     }, 1000);
     return () => {

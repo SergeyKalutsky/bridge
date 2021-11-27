@@ -70,7 +70,19 @@ const WorkspaceTab = ({ setSplitView,
   gitDiff,
   setDiffViewOption, diffViewOption }: WorkspaceTabProp): JSX.Element => {
   const classes = useStyles()
-  const {settings, setSettings} = useContext(SettingsContext)
+  const { settings, setSettings } = useContext(SettingsContext)
+  const [autoUpdate, setAutoapdate] = useState(false)
+  useEffect(() => {
+    if (autoUpdate) {
+      const interval = setInterval(() => {
+        ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
+        ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
+      }, 1000);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [autoUpdate])
   return (
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
@@ -80,7 +92,9 @@ const WorkspaceTab = ({ setSplitView,
         <Button color="secondary" onClick={() => {
           ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
         }}>Push</Button>
-        <IconButton className={classes.menuIcon}>
+        <IconButton className={classes.menuIcon} onClick={() => {
+          setAutoapdate(autoUpdate == true ? false : true)
+        }} >
           <FontAwesomeIcon icon={faSync} />
         </IconButton>
         <DropDown gitDiff={gitDiff}
