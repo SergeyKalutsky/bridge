@@ -2,7 +2,7 @@ import Popup from 'reactjs-popup';
 import { useContext } from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { SettingsContext } from '../../App'
+import { SettingsContext } from '../../../App'
 
 
 interface Member {
@@ -19,7 +19,7 @@ interface CurrentMembersProp {
     setForceUpdate: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProjectCurrentMembers = ({ members, project_id, forceUpdate, setForceUpdate }: CurrentMembersProp): JSX.Element => {
+const CurrentMembers = ({ members, project_id, forceUpdate, setForceUpdate }: CurrentMembersProp): JSX.Element => {
     const {settings, setSettings} = useContext(SettingsContext)
     const membersArray = members.map((member) =>
         <div className='current-member' key={member.id}>
@@ -65,4 +65,4 @@ const ProjectCurrentMembers = ({ members, project_id, forceUpdate, setForceUpdat
     )
 }
 
-export default ProjectCurrentMembers
+export default CurrentMembers

@@ -3,7 +3,7 @@ import { SettingsContext } from '../../App'
 import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
-import ProjectMembers from './ProjectMembers'
+import ProjectMembers from './members/ProjectMembers'
 import ProjectFind from './ProjectFind'
 
 type Project = {
@@ -34,9 +34,8 @@ function reducer(state: State, action: Action) {
     }
 }
 
-
 const Projects = (): JSX.Element => {
-    const {settings, setSettings} = useContext(SettingsContext)
+    const { settings, setSettings } = useContext(SettingsContext)
     const [state, dispatch] = useReducer(reducer, { page: <ProjectCreate /> });
     const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
 

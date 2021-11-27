@@ -1,6 +1,7 @@
 import Popup from 'reactjs-popup';
 import { useContext, useState } from "react"
-import { UserIconButton, TrashIconButton } from './projectsMenuIcons'
+import UserIconButton from './icons/UserIconButton'
+import TrashIconButton from './icons/TrashIconButton'
 import { SettingsContext } from '../../App';
 
 type Project = {

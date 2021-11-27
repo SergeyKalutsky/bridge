@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
-import '../../assets/css/ProjectMembers.css'
-import FoundMemberList from './FoundMemberList'
-import ProjectCurrentMembers from './ProjectCurrentMembers'
-import { SettingsContext } from '../../App'
+import '../../../assets/css/ProjectMembers.css'
+import MembersList from './MembersList'
+import CurrentMembers from './CurrentMembers'
+import { SettingsContext } from '../../../App'
 
 type Props = {
     project_id: number
@@ -35,7 +35,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     }, [forceUpdate])
 
     const membersArray = membersFind.map((member) =>
-        <FoundMemberList member={member}
+        <MembersList member={member}
             project_id={project_id}
             key={member.id}
             forceUpdate={forceUpdate}
@@ -62,7 +62,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                 }}> Поиск</button>
             </div>
             {membersArray}
-            <ProjectCurrentMembers members={membersCurrent}
+            <CurrentMembers members={membersCurrent}
                 project_id={project_id}
                 setForceUpdate={setForceUpdate}
                 forceUpdate={forceUpdate} />

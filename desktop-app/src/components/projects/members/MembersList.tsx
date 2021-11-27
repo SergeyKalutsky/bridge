@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { SettingsContext } from '../../App'
+import { SettingsContext } from '../../../App'
 
 interface Member {
     id: number
@@ -14,7 +14,7 @@ type FoundMemberListProps = {
     setForceUpdate: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const FoundMemberList = ({ member,
+const MembersList = ({ member,
     project_id,
     forceUpdate,
     setForceUpdate }: FoundMemberListProps): JSX.Element => {
@@ -41,4 +41,4 @@ const FoundMemberList = ({ member,
     )
 }
 
-export default FoundMemberList
+export default MembersList
