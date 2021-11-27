@@ -1,4 +1,3 @@
-
 .content {
     display: flex;
     justify-content: center;
@@ -63,4 +62,14 @@ input:focus {
 
 .input-forms button:focus {
     outline: none;
+}
+
+.icon.icon-tabler.icon-tabler-user {
+    width: 44px;
+    height: 44px;
+    stroke: #515151;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
