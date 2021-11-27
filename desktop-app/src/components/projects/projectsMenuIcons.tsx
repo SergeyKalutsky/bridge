@@ -18,7 +18,7 @@ type UserProps = {
 
 
 const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
-    const {settings, setSettings} = useContext(SettingsContext)
+    const { settings, setSettings } = useContext(SettingsContext)
     return (
         <Popup
             trigger={<div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>}
@@ -39,11 +39,12 @@ const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
                                 body: JSON.stringify({ id: id, name: name })
                             })
                             .then(response => response.json())
-                            .then(data => data['stutus'] == 'sucesses' ?
-                                window.location.reload() : console.log(data));
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
-                        name == settings.active_project.name ? delete settings.active_project : null
-                        setSettings(settings)
+                        settings.active_project !== undefined ?
+                            name === settings.active_project.name ? delete settings.active_project : null : null
+                        console.log(settings)
+                        setSettings({ ...settings })
+                        window.location.reload()
                     }}>
                         Удалить
                     </button>
@@ -60,11 +61,11 @@ const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
 
 
 const UserIconButton = ({ id, dispatch }: UserProps): JSX.Element => {
-    
+
     return (
         <div className='icon'><FontAwesomeIcon icon={faUserEdit}
-            onClick={() => { dispatch({ type: 'memberFind', payload: id}) }}
-            /></div>
+            onClick={() => { dispatch({ type: 'memberFind', payload: id }) }}
+        /></div>
     )
 }
 
