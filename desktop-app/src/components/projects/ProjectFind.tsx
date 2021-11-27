@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import '../../assets/css/ProjectsFind.css'
+import {SettingsContext} from '../../App'
 
 type Project = {
     id: number
@@ -8,6 +9,7 @@ type Project = {
 
 
 const ProjectFind = (): JSX.Element => {
+    const settings = useContext(SettingsContext)
     const [key, setKey] = useState('')
     const [project, setProject] = useState<Project>({ id: 0, name: '' })
     return (
@@ -17,13 +19,11 @@ const ProjectFind = (): JSX.Element => {
                     placeholder='Введите ключ проекта'
                     onChange={(e) => { setKey(e.target.value) }} />
                 <button onClick={() => {
-                    const settings = JSON.parse(window.sessionStorage.getItem('settings'))
                     fetch(`http://localhost:8000/projects/get/${key}`,
                         {
                             headers: {
                                 'Content-Type': 'application/json',
-                                'api-key': settings['user']['api_key'],
-                                'user-id': settings['user']['id'],
+                                'api-key': settings['user']['X-API-Key'],
                             }
                         })
                             .then(response => response.json())
@@ -34,14 +34,12 @@ const ProjectFind = (): JSX.Element => {
                 <div className='project-found'>
                     {project.name}
                     <button onClick={() => {
-                        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
                         fetch('http://localhost:8000/projects/members/add',
                             {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'api-key': settings['user']['api_key'],
-                                    'user-id': settings['user']['id'],
+                                    'api-key': settings['user']['X-API-Key'],
                                 },
                                 body: JSON.stringify({ id: project.id })
                             })

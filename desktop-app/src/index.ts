@@ -72,7 +72,7 @@ ipcMain.on('user-settings', (event, arg) => {
     })
   }
   if (arg['cmd'] === 'get') {
-    storage.getAll(function (error: Error, data: any) {
+    storage.get('settings', (error: Error, data: any) => {
       event.returnValue = data
     });
 

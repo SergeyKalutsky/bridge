@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ipcRenderer } from 'electron'
 import '../../assets/css/ProjectsCreate.css'
+import { settings } from 'cluster'
+import { SettingsContext } from '../../App'
 
 type Project = {
     name: string,
@@ -9,8 +11,8 @@ type Project = {
 }
 
 const ProjectsCreate = (): JSX.Element => {
+    const settings = useContext(SettingsContext)
     const [checked, setChecked] = useState<number>(0)
-
     const [project, setProject] = useState<Project>({
         name: '',
         description: '',
@@ -48,7 +50,6 @@ const ProjectsCreate = (): JSX.Element => {
                 </div>
                 <div className='row'>
                     <button type='submit' onClick={() => {
-                        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
                         fetch('http://localhost:8000/projects/create',
                             {
                                 method: 'POST',

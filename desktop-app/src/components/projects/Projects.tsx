@@ -1,4 +1,5 @@
-import { useState, useEffect, useReducer } from 'react'
+import { useState, useEffect, useReducer, useContext } from 'react'
+import { SettingsContext } from '../../App'
 import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
@@ -35,11 +36,11 @@ function reducer(state: State, action: Action) {
 
 
 const Projects = (): JSX.Element => {
+    const settings = useContext(SettingsContext)
     const [state, dispatch] = useReducer(reducer, { page: <ProjectCreate /> });
     const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
 
     useEffect(() => {
-        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
         fetch('http://localhost:8000/projects/list', {
             headers: {
                 'Content-Type': 'application/json',

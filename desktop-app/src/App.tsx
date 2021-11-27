@@ -6,8 +6,28 @@ import Git from './components/git/Git'
 import { Projects } from './components/projects/Projects'
 import './assets/css/base.css'
 import { ipcRenderer } from 'electron';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
 
+
+interface Settings {
+  user?: {
+    name?: string
+    login?: string
+    password?: string
+    'X-API-Key'?: string
+  }
+  active_project?: {
+    id: number
+    name: string
+    isclassroom: number
+    isuserowner: number
+  }
+}
+
+
+
+const settings: Settings = ipcRenderer.sendSync('user-settings', { cmd: 'get' })
+const SettingsContext = createContext(settings)
 
 const AppContent = (): JSX.Element => {
 
@@ -22,11 +42,12 @@ const AppContent = (): JSX.Element => {
   )
 }
 
+
+
 export default hot(module)(function App() {
   const [islogin, setIslogin] = useState(false)
   const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
   useEffect(() => {
-    const settings = ipcRenderer.sendSync('user-settings', { cmd: 'get' })['settings']
     if (settings === undefined) {
       setIslogin(true)
     } else {
@@ -36,8 +57,10 @@ export default hot(module)(function App() {
   }, [])
 
   return (
-    <>
+    <SettingsContext.Provider value={settings}>
       {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
-    </>
+    </SettingsContext.Provider>
   )
 });
+
+export { SettingsContext }

@@ -1,3 +1,6 @@
+import { useContext } from 'react'
+import { SettingsContext } from '../../App'
+
 interface Member {
     id: number
     name: string
@@ -13,14 +16,13 @@ type FoundMemberListProps = {
 
 const FoundMemberList = ({ member,
     project_id,
-    forceUpdate, 
+    forceUpdate,
     setForceUpdate }: FoundMemberListProps): JSX.Element => {
-
+    const settings = useContext(SettingsContext)
     return (
         <div className='project-found'>
             {member.name}
             <button onClick={() => {
-                const settings = JSON.parse(window.sessionStorage.getItem('settings'))
                 fetch('http://localhost:8000/members/add',
                     {
                         method: 'POST',

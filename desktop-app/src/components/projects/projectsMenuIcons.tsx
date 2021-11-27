@@ -2,6 +2,8 @@ import { faTrashAlt, faUserEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Popup from 'reactjs-popup';
 import { ipcRenderer } from 'electron';
+import { useContext } from 'react';
+import { SettingsContext } from '../../App';
 
 
 type TrashProps = {
@@ -16,6 +18,7 @@ type UserProps = {
 
 
 const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
+    const settings = useContext(SettingsContext)
     return (
         <Popup
             trigger={<div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>}
@@ -26,7 +29,6 @@ const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
                 <div className="modal">
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                     <button className="close" onClick={() => {
-                        const settings = JSON.parse(window.sessionStorage.getItem('settings'))
                         fetch('http://localhost:8000/projects/delete',
                             {
                                 method: 'POST',

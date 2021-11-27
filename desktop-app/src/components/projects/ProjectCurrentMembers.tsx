@@ -1,6 +1,8 @@
 import Popup from 'reactjs-popup';
+import { useContext } from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { SettingsContext } from '../../App'
 
 
 interface Member {
@@ -18,7 +20,7 @@ interface CurrentMembersProp {
 }
 
 const ProjectCurrentMembers = ({ members, project_id, forceUpdate, setForceUpdate }: CurrentMembersProp): JSX.Element => {
-
+    const settings = useContext(SettingsContext)
     const membersArray = members.map((member) =>
         <div className='current-member' key={member.id}>
             <div className='member'>
@@ -33,7 +35,6 @@ const ProjectCurrentMembers = ({ members, project_id, forceUpdate, setForceUpdat
                     <div className="modal">
                         <div>Вы уверены, что хотите удалить участника?</div>
                         <button className="close" onClick={() => {
-                            const settings = JSON.parse(window.sessionStorage.getItem('settings'))
                             fetch('http://localhost:8000/members/delete',
                                 {
                                     method: 'POST',
