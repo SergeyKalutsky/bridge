@@ -44,7 +44,8 @@ const AppContent = (): JSX.Element => {
 
 
 export default hot(module)(function App() {
-  const [settings, setSettings] = useState(ipcRenderer.sendSync('user-settings', { cmd: 'get' }))
+  // Get stored settings on each change
+  const [settings, setSettings] = useState<Settings>(ipcRenderer.sendSync('user-settings', { cmd: 'get' }))
   const [islogin, setIslogin] = useState(false)
   const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
 
