@@ -7,7 +7,7 @@ interface Member {
     iscurrent?: boolean
 }
 
-type FoundMemberListProps = {
+type MemberListProps = {
     member: Member
     project_id: number
     forceUpdate: boolean
@@ -17,7 +17,7 @@ type FoundMemberListProps = {
 const MembersList = ({ member,
     project_id,
     forceUpdate,
-    setForceUpdate }: FoundMemberListProps): JSX.Element => {
+    setForceUpdate }: MemberListProps): JSX.Element => {
     const {settings, setSettings} = useContext(SettingsContext)
     return (
         <div className='project-found'>
