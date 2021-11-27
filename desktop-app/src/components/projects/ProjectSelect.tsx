@@ -1,7 +1,7 @@
 import Popup from 'reactjs-popup';
-import { useState } from "react"
-import { ipcRenderer } from "electron"
+import { useContext, useState } from "react"
 import { UserIconButton, TrashIconButton } from './projectsMenuIcons'
+import { SettingsContext } from '../../App';
 
 type Project = {
     id: number;
@@ -15,8 +15,8 @@ interface Props {
 }
 
 const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
+    const {settings, setSettings} = useContext(SettingsContext)
     const [active, setActive] = useState(false)
-    const settings = JSON.parse(window.sessionStorage.getItem('settings'))
     return (
         <div className={'active_project' in settings &&
             settings['active_project']['id'] == project.id ? 'project active' : 'project'}
@@ -31,18 +31,13 @@ const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
                     <div className="modal">
                         <div>Проект выбран как основной</div>
                         <button className="close" onClick={() => {
-                            ipcRenderer.send('user-settings',
-                                {
-                                    cmd: 'set',
-                                    data: {
-                                        'active_project': {
-                                            'name': project.name,
-                                            'id': project.id,
-                                            'isclassroom': project.isclassroom
-                                        }
-                                    }
-                                });
-                            window.location.reload()
+                            const active_project = {
+                                name: project.name,
+                                id: project.id,
+                                isclassroom: project.isclassroom,
+                                isuserowner: 1
+                            }
+                            setSettings({...settings, active_project})
                         }}>
                             ОК
                         </button>

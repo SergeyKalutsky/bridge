@@ -8,7 +8,7 @@ import fs from 'fs'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 const GITLAB = 'https://gitlab.bridgeacross.xyz'
-
+const BASEE_DIR = storage.getDataPath()
 
 // Projects ===========================================================
 ipcMain.on('projects', (event, arg) => {
@@ -26,58 +26,58 @@ ipcMain.on('projects', (event, arg) => {
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
-  const settings = storage.getSync('settings');
-  let project_git = ''
-  if (!('active_project' in settings)) {
-    project_git = arg['project']['name'].replace(/ /g, '-')
-  } else {
-    project_git = settings.active_project.name
-  }
+  event.returnValue = []
 
-  if (arg['cmd'] === 'log') {
-    git.cwd(project_git).log().then(result => {
-      event.returnValue = result
-    })
-      .catch(err => { event.returnValue = []; console.log(err) })
+  // const settings = storage.getSync('settings');
+  // let project_git = ''
+  // if (!('active_project' in settings)) {
+  //   project_git = arg['project']['name'].replace(/ /g, '-')
+  // } else {
+  //   project_git = settings.active_project.name
+  // }
 
-  } else if (arg['cmd'] === 'diff') {
-    git.show(arg['hash'])
-      .then(result => {
-        event.returnValue = parseGitDiff(result)
-      })
-      .catch(err => {
-        event.returnValue = undefined
-      });
+  // if (arg['cmd'] === 'log') {
+  //   git.cwd(project_git).log().then(result => {
+  //     event.returnValue = result
+  //   })
+  //     .catch(err => { event.returnValue = []; console.log(err) })
 
-  } else if (arg['cmd'] === 'pull') {
-    git.cwd(project_git).pull()
+  // } else if (arg['cmd'] === 'diff') {
+  //   git.show(arg['hash'])
+  //     .then(result => {
+  //       event.returnValue = parseGitDiff(result)
+  //     })
+  //     .catch(err => {
+  //       event.returnValue = undefined
+  //     });
 
-  } else if (arg['cmd'] === 'push') {
-    git.cwd(project_git).add('./*').commit('test').push()
+  // } else if (arg['cmd'] === 'pull') {
+  //   git.cwd(project_git).pull()
 
-  } else if (arg['cmd'] === 'clone') {
-    if (!fs.existsSync(join(storage.getDataPath(), project_git))) {
-      git.cwd(storage.getDataPath())
-        .clone(`${GITLAB}/${settings.user.login}/${project_git}.git`)
-    }
+  // } else if (arg['cmd'] === 'push') {
+  //   git.cwd(project_git).add('./*').commit('test').push()
 
-  }
+  // } else if (arg['cmd'] === 'clone') {
+  //   if (!fs.existsSync(join(storage.getDataPath(), project_git))) {
+  //     git.cwd(storage.getDataPath())
+  //       .clone(`${GITLAB}/${settings.user.login}/${project_git}.git`)
+  //   }
+
+  // }
 })
 
 // User Settings -------------------------------------------------------------------
 ipcMain.on('user-settings', (event, arg) => {
-  if (arg['cmd'] === 'set') {
-    storage.getAll(function (error: Error, data: any) {
-      storage.set('settings', { ...data['settings'], ...arg['data'] })
-    })
-  }
   if (arg['cmd'] === 'get') {
     storage.get('settings', (error: Error, data: any) => {
       event.returnValue = data
     });
-
+  } else if (arg['cmd'] == 'set') {
+    storage.set('settings', arg['settings'])
   }
 })
+
+
 
 // Usual Stuff ---------------------------------------------------------------------
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -93,6 +93,7 @@ const createWindow = (): void => {
       nodeIntegration: true,
       contextIsolation: false
     }
+
   });
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);

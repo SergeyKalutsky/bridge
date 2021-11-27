@@ -26,8 +26,7 @@ interface Settings {
 
 
 
-const settings: Settings = ipcRenderer.sendSync('user-settings', { cmd: 'get' })
-const SettingsContext = createContext(settings)
+const SettingsContext = createContext(null)
 
 const AppContent = (): JSX.Element => {
 
@@ -45,19 +44,19 @@ const AppContent = (): JSX.Element => {
 
 
 export default hot(module)(function App() {
+  const [settings, setSettings] = useState(ipcRenderer.sendSync('user-settings', { cmd: 'get' }))
   const [islogin, setIslogin] = useState(false)
   const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
-  useEffect(() => {
-    if (settings === undefined) {
-      setIslogin(true)
-    } else {
-      window.sessionStorage.setItem('settings', JSON.stringify(settings))
-    }
-    setUserSettingLoaded(true)
-  }, [])
 
+  useEffect(() => {
+    // Resave settings on each change
+    ipcRenderer.send('user-settings', { cmd: 'set', settings: settings })
+
+    'user' in settings ? setIslogin(false) : setIslogin(true)
+    setUserSettingLoaded(true)
+  }, [settings])
   return (
-    <SettingsContext.Provider value={settings}>
+    <SettingsContext.Provider value={{ settings, setSettings }}>
       {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
     </SettingsContext.Provider>
   )

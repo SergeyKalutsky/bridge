@@ -1,5 +1,5 @@
-import { ipcRenderer } from 'electron';
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { SettingsContext } from '../App';
 import '../assets/css/LoginPage.css'
 import img from '../assets/Logo.png';
 
@@ -18,12 +18,13 @@ type User = {
 
 
 const LoginPage = (): JSX.Element => {
+    const {settings, setSettings} = useContext(SettingsContext)
     const [loginData, setloginData] = useState<InputForms>({ login: '', password: '' })
+
     const handleData = (data: User) => {
         if (!('error' in data)) {
             data['password'] = loginData.password
-            ipcRenderer.send('user-settings', { cmd: 'set', data: { 'user': data } });
-            window.location.reload()
+            setSettings({user: data})
         }
     }
     return (

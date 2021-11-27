@@ -36,7 +36,7 @@ function reducer(state: State, action: Action) {
 
 
 const Projects = (): JSX.Element => {
-    const settings = useContext(SettingsContext)
+    const {settings, setSettings} = useContext(SettingsContext)
     const [state, dispatch] = useReducer(reducer, { page: <ProjectCreate /> });
     const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
 
