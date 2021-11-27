@@ -43,7 +43,7 @@ const HashElement = ({ hash,
     <div className={activeHashRow == hash ? 'git-hash active' : 'git-hash'}
       onClick={() => {
         setActiveHashRow(hash)
-        const gitDiff = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash, project: {'test': 2} })
+        const gitDiff = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
         setGitDiff(gitDiff)
         setDiffViewOption(0)
       }}
@@ -55,13 +55,13 @@ const HashElement = ({ hash,
 }
 
 const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element => {
-  const {settings, setSettings} = useContext(SettingsContext)
-  console.log(settings)
+  const { settings, setSettings } = useContext(SettingsContext)
   const [activeHashRow, setActiveHashRow] = useState<string>()
   const [hashList, setHashList] = useState<Array<Hash>>()
   useEffect(() => {
     const interval = setInterval(() => {
-      const hashes = ipcRenderer.sendSync('git', { cmd: 'log', project: settings.active_project })['all']
+      const hashes = ipcRenderer.sendSync('git', { cmd: 'log', project: settings.active_project })
+      console.log(hashes)
       setHashList(hashes)
     }, 1000);
     return () => {
@@ -80,12 +80,7 @@ const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element =>
   return (
     <div className='left-menu'>
       <div className='tab-header'>
-        <span className='tab-text-feed'
-          onClick={() => {
-            const hashes = ipcRenderer.sendSync('git', { cmd: 'log' })['all']
-            setHashList(hashes)
-          }}
-        >ЛЕНТА</span>
+        <span className='tab-text-feed'>ЛЕНТА</span>
       </div>
       <div className='git-hash-list'>
         {elements}

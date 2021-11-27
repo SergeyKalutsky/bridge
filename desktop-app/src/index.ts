@@ -13,37 +13,22 @@ const BASEE_DIR = storage.getDataPath()
 // Projects ===========================================================
 ipcMain.on('projects', (event, arg) => {
   if (arg['cmd'] === 'delete') {
-    const settings = storage.getSync('settings');
-    const dir = join(storage.getDataPath(), arg['project']['name'].replace(/ /g, '-'))
-
+    const dir = join(BASEE_DIR, arg.project.name.replace(/ /g, '-'))
     fs.rmdirSync(dir, { recursive: true });
-    if (settings.active_project !== undefined && settings.active_project.name === arg['project']['name']) {
-      delete settings.active_project
-      storage.set('settings', settings);
-    }
   }
 })
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
-  event.returnValue = []
-  if (arg.project !== undefined) {
 
+  if (arg.project !== undefined) {
     const project_dir = join(BASEE_DIR, arg.project.name.replace(/ /g, '-'))
+
     if (arg['cmd'] === 'log') {
       git.cwd(project_dir).log().then(result => {
-        event.returnValue = result
+        event.returnValue = result['all']
       })
         .catch(err => { event.returnValue = []; console.log(err) })
-
-    } else if (arg['cmd'] === 'diff') {
-      git.show(arg['hash'])
-        .then(result => {
-          event.returnValue = parseGitDiff(result)
-        })
-        .catch(err => {
-          event.returnValue = undefined
-        });
 
     } else if (arg['cmd'] === 'pull') {
       git.cwd(project_dir).pull()
@@ -58,6 +43,14 @@ ipcMain.on('git', (event, arg) => {
           .clone(`${GITLAB}/${arg.user.login}/${folder}.git`)
       }
     }
+  } else if (arg['cmd'] === 'diff') {
+    git.show(arg['hash'])
+      .then(result => {
+        event.returnValue = parseGitDiff(result)
+      })
+      .catch(err => {
+        event.returnValue = undefined
+      });
   }
 })
 
