@@ -42,6 +42,8 @@ const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
                             .then(data => data['stutus'] == 'sucesses' ?
                                 window.location.reload() : console.log(data));
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
+                        name == settings.active_project.name ? delete settings.active_project : null
+                        setSettings(settings)
                     }}>
                         Удалить
                     </button>

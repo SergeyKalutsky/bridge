@@ -18,8 +18,10 @@ const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
     return (
-        <div className={'active_project' in settings &&
-            settings['active_project']['id'] == project.id ? 'project active' : 'project'}
+        <div className={
+            settings !== null && settings !== undefined ?
+            'active_project' in settings &&
+            settings['active_project']['id'] == project.id ? 'project active' : 'project': null}
             onMouseOver={() => { setActive(true) }}
             onMouseLeave={() => { setActive(false) }}>
             <Popup

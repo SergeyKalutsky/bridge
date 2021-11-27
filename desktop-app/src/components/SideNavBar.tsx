@@ -26,19 +26,18 @@ type Setter = {
 }
 
 const GitLink = ({ setActiveProjectSet }: Setter): JSX.Element => {
-    const {settings, setSettings} = useContext(SettingsContext)
+    const { settings, setSettings } = useContext(SettingsContext)
     useEffect(() => {
-        settings !== null ? 'active_project' in settings && settings.active_project !== null ?
-            setActiveProjectSet(true) : setActiveProjectSet(false) : null
+        settings !== null && settings !== undefined ?
+            'active_project' in settings && settings.active_project !== null ?
+                setActiveProjectSet(true) : setActiveProjectSet(false) : null
     }, [settings])
     return (
         <Popup
             trigger={<div className='icon'><AccountTreeIcon /></div>}
             position="right center"
         >
-            {
-                <div>Чтобы использовать Git нужны выбрать или создать проект</div>
-            }
+            {<div>Чтобы использовать Git нужны выбрать или создать проект</div>}
         </Popup >
 
     )
