@@ -20,7 +20,7 @@ interface CurrentMembersProp {
 }
 
 const ProjectCurrentMembers = ({ members, project_id, forceUpdate, setForceUpdate }: CurrentMembersProp): JSX.Element => {
-    const settings = useContext(SettingsContext)
+    const {settings, setSettings} = useContext(SettingsContext)
     const membersArray = members.map((member) =>
         <div className='current-member' key={member.id}>
             <div className='member'>

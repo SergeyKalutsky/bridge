@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import '../../assets/css/ProjectMembers.css'
 import FoundMemberList from './FoundMemberList'
 import ProjectCurrentMembers from './ProjectCurrentMembers'
-import {SettingsContext} from '../../App'
+import { SettingsContext } from '../../App'
 
 type Props = {
     project_id: number
@@ -16,8 +16,8 @@ interface Member {
 
 
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
-    const settings = useContext(SettingsContext)
-    const [forceUpdate, setForceUpdate]     = useState(true)
+    const {settings, setSettings} = useContext(SettingsContext)
+    const [forceUpdate, setForceUpdate] = useState(true)
     const [membersFind, setMembersFind] = useState<Member[]>([])
     const [membersCurrent, setMembersCureent] = useState<Member[]>([])
     const [search, setSearch] = useState('')

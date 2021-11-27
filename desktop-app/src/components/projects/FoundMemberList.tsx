@@ -18,7 +18,7 @@ const FoundMemberList = ({ member,
     project_id,
     forceUpdate,
     setForceUpdate }: FoundMemberListProps): JSX.Element => {
-    const settings = useContext(SettingsContext)
+    const {settings, setSettings} = useContext(SettingsContext)
     return (
         <div className='project-found'>
             {member.name}

@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
-    const {settings, setSettings} = useContext(SettingsContext)
+    const { settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
     return (
         <div className={'active_project' in settings &&
@@ -27,7 +27,7 @@ const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
                 position="right center"
                 key={project.name}
                 modal>
-                {
+                {close => (
                     <div className="modal">
                         <div>Проект выбран как основной</div>
                         <button className="close" onClick={() => {
@@ -37,11 +37,14 @@ const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
                                 isclassroom: project.isclassroom,
                                 isuserowner: 1
                             }
-                            setSettings({...settings, active_project})
+                            setSettings({ ...settings, active_project })
+                            setActive(false)
+                            close()
                         }}>
                             ОК
                         </button>
                     </div>
+                )
                 }
             </Popup>
             {active &&
