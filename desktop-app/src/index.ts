@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import storage from 'electron-json-storage';
-import parseGitDiff from './git_api/parse'
-import { git } from './git_api/index'
+import parseGitDiff from './lib/git_api/parse'
+import { git } from './lib/git_api/index'
 import { join } from 'path'
 import fs from 'fs'
 
