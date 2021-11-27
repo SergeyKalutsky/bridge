@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react'
 import { ipcRenderer } from 'electron'
 import '../../assets/css/ProjectsCreate.css'
-import { settings } from 'cluster'
 import { SettingsContext } from '../../App'
 
 type Project = {
@@ -11,7 +10,7 @@ type Project = {
 }
 
 const ProjectsCreate = (): JSX.Element => {
-    const settings = useContext(SettingsContext)
+    const { settings, setSettings } = useContext(SettingsContext)
     const [checked, setChecked] = useState<number>(0)
     const [project, setProject] = useState<Project>({
         name: '',
@@ -19,8 +18,8 @@ const ProjectsCreate = (): JSX.Element => {
         isclassroom: 0
     })
 
-    const setNewProject = ()=> {
-        ipcRenderer.send('git', { cmd: 'clone', project: project })
+    const setNewProject = () => {
+        ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
         window.location.reload()
     }
     return (
@@ -61,7 +60,7 @@ const ProjectsCreate = (): JSX.Element => {
 
                             })
                             .then(response => response.json())
-                            .then(data => {data['status'] == 'created' ? setNewProject(): console.log(data)})
+                            .then(data => { data['status'] == 'created' ? setNewProject() : console.log(data) })
 
                     }}>Создать</button>
                 </div>

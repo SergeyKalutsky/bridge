@@ -18,7 +18,7 @@ type UserProps = {
 
 
 const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
-    const settings = useContext(SettingsContext)
+    const {settings, setSettings} = useContext(SettingsContext)
     return (
         <Popup
             trigger={<div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>}

@@ -1,6 +1,7 @@
 import '../../assets/css/leftMenu.css'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
+import { SettingsContext } from '../../App'
 
 type GitDiff = {
   filename: string
@@ -42,7 +43,7 @@ const HashElement = ({ hash,
     <div className={activeHashRow == hash ? 'git-hash active' : 'git-hash'}
       onClick={() => {
         setActiveHashRow(hash)
-        const gitDiff = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
+        const gitDiff = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash, project: {'test': 2} })
         setGitDiff(gitDiff)
         setDiffViewOption(0)
       }}
@@ -54,11 +55,13 @@ const HashElement = ({ hash,
 }
 
 const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element => {
+  const {settings, setSettings} = useContext(SettingsContext)
+  console.log(settings)
   const [activeHashRow, setActiveHashRow] = useState<string>()
   const [hashList, setHashList] = useState<Array<Hash>>()
   useEffect(() => {
     const interval = setInterval(() => {
-      const hashes = ipcRenderer.sendSync('git', { cmd: 'log' })['all']
+      const hashes = ipcRenderer.sendSync('git', { cmd: 'log', project: settings.active_project })['all']
       setHashList(hashes)
     }, 1000);
     return () => {

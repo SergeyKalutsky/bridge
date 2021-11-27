@@ -27,43 +27,38 @@ ipcMain.on('projects', (event, arg) => {
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
   event.returnValue = []
+  if (arg.project !== undefined) {
 
-  // const settings = storage.getSync('settings');
-  // let project_git = ''
-  // if (!('active_project' in settings)) {
-  //   project_git = arg['project']['name'].replace(/ /g, '-')
-  // } else {
-  //   project_git = settings.active_project.name
-  // }
+    const project_dir = join(BASEE_DIR, arg.project.name.replace(/ /g, '-'))
+    if (arg['cmd'] === 'log') {
+      git.cwd(project_dir).log().then(result => {
+        event.returnValue = result
+      })
+        .catch(err => { event.returnValue = []; console.log(err) })
 
-  // if (arg['cmd'] === 'log') {
-  //   git.cwd(project_git).log().then(result => {
-  //     event.returnValue = result
-  //   })
-  //     .catch(err => { event.returnValue = []; console.log(err) })
+    } else if (arg['cmd'] === 'diff') {
+      git.show(arg['hash'])
+        .then(result => {
+          event.returnValue = parseGitDiff(result)
+        })
+        .catch(err => {
+          event.returnValue = undefined
+        });
 
-  // } else if (arg['cmd'] === 'diff') {
-  //   git.show(arg['hash'])
-  //     .then(result => {
-  //       event.returnValue = parseGitDiff(result)
-  //     })
-  //     .catch(err => {
-  //       event.returnValue = undefined
-  //     });
+    } else if (arg['cmd'] === 'pull') {
+      git.cwd(project_dir).pull()
 
-  // } else if (arg['cmd'] === 'pull') {
-  //   git.cwd(project_git).pull()
+    } else if (arg['cmd'] === 'push') {
+      git.cwd(project_dir).add('./*').commit('test').push()
 
-  // } else if (arg['cmd'] === 'push') {
-  //   git.cwd(project_git).add('./*').commit('test').push()
-
-  // } else if (arg['cmd'] === 'clone') {
-  //   if (!fs.existsSync(join(storage.getDataPath(), project_git))) {
-  //     git.cwd(storage.getDataPath())
-  //       .clone(`${GITLAB}/${settings.user.login}/${project_git}.git`)
-  //   }
-
-  // }
+    } else if (arg['cmd'] === 'clone') {
+      if (!fs.existsSync(project_dir)) {
+        const folder = arg.project.name.replace(/ /g, '-')
+        git.cwd(BASEE_DIR)
+          .clone(`${GITLAB}/${arg.user.login}/${folder}.git`)
+      }
+    }
+  }
 })
 
 // User Settings -------------------------------------------------------------------

@@ -28,7 +28,7 @@ type Setter = {
 const GitLink = ({ setActiveProjectSet }: Setter): JSX.Element => {
     const {settings, setSettings} = useContext(SettingsContext)
     useEffect(() => {
-        'active_project' in settings && settings.active_project !== null ?
+        settings!== null && 'active_project' in settings && settings.active_project !== null ?
             setActiveProjectSet(true) : setActiveProjectSet(false)
     }, [settings])
     return (

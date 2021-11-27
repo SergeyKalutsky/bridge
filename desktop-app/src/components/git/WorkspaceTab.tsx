@@ -7,7 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import '../../assets/css/WorkspaceTab.css'
 import { ipcRenderer } from 'electron';
 import Switch from "react-switch";
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { SettingsContext } from '../../App';
 
 const colortheme = createMuiTheme({
   palette: {
@@ -69,14 +70,15 @@ const WorkspaceTab = ({ setSplitView,
   gitDiff,
   setDiffViewOption, diffViewOption }: WorkspaceTabProp): JSX.Element => {
   const classes = useStyles()
+  const {settings, setSettings} = useContext(SettingsContext)
   return (
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
         <Button color="primary" onClick={() => {
-          ipcRenderer.send('git', { cmd: 'pull' })
+          ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
         }}>Pull</Button>
         <Button color="secondary" onClick={() => {
-          ipcRenderer.send('git', { cmd: 'push' })
+          ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
         }}>Push</Button>
         <IconButton className={classes.menuIcon}>
           <FontAwesomeIcon icon={faSync} />

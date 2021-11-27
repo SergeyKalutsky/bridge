@@ -26,7 +26,7 @@ interface Settings {
 
 
 
-const SettingsContext = createContext(null)
+const SettingsContext = createContext(ipcRenderer.sendSync('user-settings', { cmd: 'get' }))
 
 const AppContent = (): JSX.Element => {
 
