@@ -6,7 +6,7 @@ import Git from './components/git/Git'
 import { Projects } from './components/projects/Projects'
 import './assets/css/base.css'
 import { ipcRenderer } from 'electron';
-import { useEffect, useState, createContext, useContext } from 'react';
+import { useEffect, useState, createContext } from 'react';
 
 
 interface Settings {
