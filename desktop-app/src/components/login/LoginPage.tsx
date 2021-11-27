@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react'
-import { SettingsContext } from '../App';
-import '../assets/css/LoginPage.css'
-import img from '../assets/Logo.png';
+import { SettingsContext } from '../../App';
+import { UserIcon, KeyIcon } from './Icons';
+import '../../assets/css/LoginPage.css'
+import img from '../../assets/Logo.png';
 
 type InputForms = {
     login: string
@@ -35,23 +36,12 @@ const LoginPage = (): JSX.Element => {
             <div className='input-forms'>
                 <img src={img} className='logo' />
                 <div className='inputContainer'>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24" >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <circle cx="12" cy="7" r="4" />
-                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                    </svg>
+                    <UserIcon />
                     <input className='inLog' type="text" placeholder='Логин'
                         onChange={(e) => { setloginData({ ...loginData, login: e.target.value }) }} />
                 </div>
                 <div className='inputContainer'>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user"
-                        viewBox="0 0 24 24">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <circle cx="8" cy="15" r="4" />
-                        <line x1="10.85" y1="12.15" x2="19" y2="4" />
-                        <line x1="18" y1="5" x2="20" y2="7" />
-                        <line x1="15" y1="8" x2="17" y2="10" />
-                    </svg>
+                    <KeyIcon />
                     <input className='inLog' type="password" placeholder='Пароль'
                         onChange={(e) => { setloginData({ ...loginData, password: e.target.value }) }} />
                 </div>

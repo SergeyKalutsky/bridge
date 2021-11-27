@@ -1,5 +1,5 @@
 import { hot } from 'react-hot-loader';
-import LoginPage from './components/LoginPage';
+import LoginPage from './components/login/LoginPage';
 import './assets/css/base.css'
 import { ipcRenderer } from 'electron';
 import { useEffect, useState, createContext } from 'react';
