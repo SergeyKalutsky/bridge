@@ -36,7 +36,6 @@ const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
                         settings.active_project !== undefined ?
                             name === settings.active_project.name ? delete settings.active_project : null : null
-                        console.log(settings)
                         setSettings({ ...settings })
                         window.location.reload()
                     }}>
