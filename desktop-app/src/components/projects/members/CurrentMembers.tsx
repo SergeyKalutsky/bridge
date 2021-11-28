@@ -1,5 +1,5 @@
 import Popup from 'reactjs-popup';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { SettingsContext } from '../../../App'
@@ -20,47 +20,51 @@ interface CurrentMembersProp {
 
 const CurrentMembers = ({ members, project_id, setMembersCureent }: CurrentMembersProp): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
+    const [open, setOpen] = useState(false)
     const membersArray = members.map((member) =>
         <div className='current-member' key={member.id}>
             <div className='member'>
                 {member.name}
             </div>
+            <div className='icon'
+                onClick={() => setOpen(true)}>
+                <FontAwesomeIcon icon={faTrashAlt} />
+            </div>
             <Popup
-                trigger={<div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>}
+                open={open}
+                onClose={() => setOpen(false)}
+                closeOnDocumentClick
                 position="right center"
                 modal
             >
-                {() => (
-                    <div className="modal">
-                        <div>Вы уверены, что хотите удалить участника?</div>
-                        <button className="close" onClick={() => {
-                            fetch('http://localhost:8000/members/delete',
-                                {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'x-api-key': settings['user']['X-API-Key'],
-                                    },
-                                    body: JSON.stringify({ project_id: project_id, user_id: member.id })
-                                })
-                            fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
-                                {
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'x-api-key': settings['user']['X-API-Key']
-                                    }
-                                })
-                                .then(response => response.json())
-                                .then(data => setMembersCureent(data))
-                        }}>
-                            Удалить
-                        </button>
-                        <button className="close" onClick={() => { close }}>
-                            Закрыть
-                        </button>
-                    </div>
-                )
-                }
+                <div className="modal">
+                    <div>Вы уверены, что хотите удалить участника?</div>
+                    <button className="close" onClick={() => {
+                        fetch('http://localhost:8000/members/delete',
+                            {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'x-api-key': settings['user']['X-API-Key'],
+                                },
+                                body: JSON.stringify({ project_id: project_id, user_id: member.id })
+                            })
+                        fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
+                            {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'x-api-key': settings['user']['X-API-Key']
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => setMembersCureent(data))
+                    }}>
+                        Удалить
+                    </button>
+                    <button className="close" onClick={() => { setOpen(false) }}>
+                        Закрыть
+                    </button>
+                </div>
             </Popup >
         </div>
     )

@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import '../../../assets/css/ProjectMembers.css'
 import { SettingsContext } from '../../../App'
 import CurrentMembers from './CurrentMembers'
-import MembersList from './MembersList'
-import Popup from 'reactjs-popup';
+import FindMembersPopUp from './FindMembersPopUp'
 
 type Props = {
     project_id: number
@@ -13,44 +12,6 @@ interface Member {
     id: number
     name: string
     iscurrent?: boolean
-}
-
-interface MembersPopUpProp {
-    membersFind: Member[]
-    project_id: number
-    setMembersCureent: React.Dispatch<React.SetStateAction<Member[]>>
-    open: boolean
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-
-const MembersPopUp = ({ membersFind,
-    project_id,
-    setMembersCureent,
-    open, setOpen }: MembersPopUpProp): JSX.Element => {
-    const membersArray = membersFind.map((member) =>
-        <MembersList member={member}
-            project_id={project_id}
-            key={member.id}
-            setMembersCureent={setMembersCureent} />
-    )
-    return (
-        <Popup
-            open={open}
-            onClose={() => setOpen(false)}
-            closeOnDocumentClick
-            position="right center"
-            modal>
-            <div className="modal">
-                {membersArray}
-                <button className="close" onClick={() => {
-                    setOpen(false)
-                }}>
-                    ОК
-                </button>
-            </div>
-        </Popup>
-    )
 }
 
 
@@ -93,7 +54,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                     setOpen(true)
                 }}> Поиск</button>
             </div>
-            <MembersPopUp membersFind={membersFind}
+            <FindMembersPopUp membersFind={membersFind}
                 project_id={project_id}
                 setMembersCureent={setMembersCureent}
                 open={open}
