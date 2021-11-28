@@ -28,7 +28,7 @@ const GitLink = (): JSX.Element => {
             trigger={<div className='icon'><AccountTreeIcon /></div>}
             position="right center"
         >
-            {<div>Чтобы использовать Git нужны выбрать или создать проект</div>}
+            {<div>Чтобы использовать Git нужно выбрать или создать проект</div>}
         </Popup >
 
     )
