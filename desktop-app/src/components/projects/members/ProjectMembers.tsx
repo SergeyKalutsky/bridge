@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
 import '../../../assets/css/ProjectMembers.css'
-import MembersList from './MembersList'
-import CurrentMembers from './CurrentMembers'
 import { SettingsContext } from '../../../App'
+import CurrentMembers from './CurrentMembers'
+import MembersList from './MembersList'
+import Popup from 'reactjs-popup';
 
 type Props = {
     project_id: number
@@ -14,10 +15,48 @@ interface Member {
     iscurrent?: boolean
 }
 
+interface MembersPopUpProp {
+    membersFind: Member[]
+    project_id: number
+    setMembersCureent: React.Dispatch<React.SetStateAction<Member[]>>
+    open: boolean
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+
+const MembersPopUp = ({ membersFind,
+    project_id,
+    setMembersCureent,
+    open, setOpen }: MembersPopUpProp): JSX.Element => {
+    const membersArray = membersFind.map((member) =>
+        <MembersList member={member}
+            project_id={project_id}
+            key={member.id}
+            setMembersCureent={setMembersCureent} />
+    )
+    return (
+        <Popup
+            open={open}
+            onClose={() => setOpen(false)}
+            closeOnDocumentClick
+            position="right center"
+            modal>
+            <div className="modal">
+                {membersArray}
+                <button className="close" onClick={() => {
+                    setOpen(false)
+                }}>
+                    ОК
+                </button>
+            </div>
+        </Popup>
+    )
+}
+
 
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
-    const {settings, setSettings} = useContext(SettingsContext)
-    const [forceUpdate, setForceUpdate] = useState(true)
+    const { settings, setSettings } = useContext(SettingsContext)
+    const [open, setOpen] = useState(false)
     const [membersFind, setMembersFind] = useState<Member[]>([])
     const [membersCurrent, setMembersCureent] = useState<Member[]>([])
     const [search, setSearch] = useState('')
@@ -32,15 +71,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             })
             .then(response => response.json())
             .then(data => setMembersCureent(data))
-    }, [forceUpdate])
-
-    const membersArray = membersFind.map((member) =>
-        <MembersList member={member}
-            project_id={project_id}
-            key={member.id}
-            forceUpdate={forceUpdate}
-            setForceUpdate={setForceUpdate} />
-    )
+    }, [])
     return (
         <div className='menu'>
             <div className='search'>
@@ -59,13 +90,18 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                         })
                         .then(response => response.json())
                         .then(data => setMembersFind(data))
+                    setOpen(true)
                 }}> Поиск</button>
             </div>
-            {membersArray}
+            <MembersPopUp membersFind={membersFind}
+                project_id={project_id}
+                setMembersCureent={setMembersCureent}
+                open={open}
+                setOpen={setOpen} />
             <CurrentMembers members={membersCurrent}
                 project_id={project_id}
-                setForceUpdate={setForceUpdate}
-                forceUpdate={forceUpdate} />
+                setMembersCureent={setMembersCureent}
+            />
         </div>
     )
 }

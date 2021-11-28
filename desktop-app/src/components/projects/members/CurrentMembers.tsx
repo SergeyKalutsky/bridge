@@ -15,12 +15,11 @@ interface Member {
 interface CurrentMembersProp {
     members: Member[]
     project_id: number
-    forceUpdate: boolean
-    setForceUpdate: React.Dispatch<React.SetStateAction<boolean>>
+    setMembersCureent: React.Dispatch<React.SetStateAction<Member[]>>
 }
 
-const CurrentMembers = ({ members, project_id, forceUpdate, setForceUpdate }: CurrentMembersProp): JSX.Element => {
-    const {settings, setSettings} = useContext(SettingsContext)
+const CurrentMembers = ({ members, project_id, setMembersCureent }: CurrentMembersProp): JSX.Element => {
+    const { settings, setSettings } = useContext(SettingsContext)
     const membersArray = members.map((member) =>
         <div className='current-member' key={member.id}>
             <div className='member'>
@@ -44,7 +43,15 @@ const CurrentMembers = ({ members, project_id, forceUpdate, setForceUpdate }: Cu
                                     },
                                     body: JSON.stringify({ project_id: project_id, user_id: member.id })
                                 })
-                            setForceUpdate(forceUpdate == true ? false : true)
+                            fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
+                                {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'x-api-key': settings['user']['X-API-Key']
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => setMembersCureent(data))
                         }}>
                             Удалить
                         </button>

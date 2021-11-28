@@ -10,15 +10,13 @@ interface Member {
 type MemberListProps = {
     member: Member
     project_id: number
-    forceUpdate: boolean
-    setForceUpdate: React.Dispatch<React.SetStateAction<boolean>>
+    setMembersCureent: React.Dispatch<React.SetStateAction<Member[]>>
 }
 
 const MembersList = ({ member,
     project_id,
-    forceUpdate,
-    setForceUpdate }: MemberListProps): JSX.Element => {
-    const {settings, setSettings} = useContext(SettingsContext)
+    setMembersCureent }: MemberListProps): JSX.Element => {
+    const { settings, setSettings } = useContext(SettingsContext)
     return (
         <div className='project-found'>
             {member.name}
@@ -35,7 +33,15 @@ const MembersList = ({ member,
                             project_id: project_id
                         })
                     })
-                setForceUpdate(forceUpdate == true ? false : true)
+                fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-api-key': settings['user']['X-API-Key']
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => setMembersCureent(data))
             }}>Пригласить</button>
         </div>
     )
