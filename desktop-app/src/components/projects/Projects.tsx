@@ -20,14 +20,20 @@ type State = {
 type Action =
     | { type: 'memberFind', payload: number }
     | { type: 'findProject' }
-    | { type: 'createProject' }
+    | {
+        type: 'createProject', payload: {
+            setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
+        }
+    }
 
 function reducer(state: State, action: Action) {
     switch (action.type) {
         case 'findProject':
             return { page: <ProjectFind /> }
         case 'createProject':
-            return { page: <ProjectCreate /> }
+            return {
+                page: <ProjectCreate setProjects={action.payload.setProjects} />
+            }
         case 'memberFind':
             return { page: <ProjectMembers project_id={action.payload} /> }
 
@@ -36,9 +42,10 @@ function reducer(state: State, action: Action) {
 
 const Projects = (): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
-    const [state, dispatch] = useReducer(reducer, { page: <ProjectCreate /> });
     const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
-
+    const [state, dispatch] = useReducer(reducer, {
+        page: <ProjectCreate setProjects={setProjects}/>
+    });
     useEffect(() => {
         fetch('http://localhost:8000/projects/list', {
             headers: {
@@ -49,9 +56,10 @@ const Projects = (): JSX.Element => {
             .then(response => response.json())
             .then(data => setProjects(data['projects']))
     }, [])
+
     return (
         <>
-            <ProjectsMenu projects={projects} dispatch={dispatch} />
+            <ProjectsMenu projects={projects} setProjects={setProjects} dispatch={dispatch} />
             <div className='workspace'>
                 <div className='workspace-background'>
                     {state.page}

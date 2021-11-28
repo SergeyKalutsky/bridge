@@ -9,7 +9,11 @@ type Project = {
     isclassroom: number
 }
 
-const ProjectsCreate = (): JSX.Element => {
+interface Prop {
+    setProjects: React.Dispatch<React.SetStateAction<Project[]>>
+}
+
+const ProjectsCreate = ({ setProjects }: Prop): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [checked, setChecked] = useState<number>(0)
     const [project, setProject] = useState<Project>({
@@ -20,7 +24,14 @@ const ProjectsCreate = (): JSX.Element => {
 
     const setNewProject = () => {
         ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
-        window.location.reload()
+        fetch('http://localhost:8000/projects/list', {
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': settings['user']['X-API-Key'],
+            }
+        })
+            .then(response => response.json())
+            .then(data => setProjects(data['projects']))
     }
     return (
         <div className='menu'>

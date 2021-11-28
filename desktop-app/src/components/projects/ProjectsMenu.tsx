@@ -28,8 +28,9 @@ const useStyles = makeStyles(() => ({
 );
 
 interface Props {
-  dispatch: React.Dispatch<any>
   projects: Project[]
+  dispatch: React.Dispatch<any>
+  setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
 }
 
 type Project = {
@@ -39,9 +40,8 @@ type Project = {
 }
 
 
-const ProjectsMenu = ({ projects, dispatch }: Props): JSX.Element => {
+const ProjectsMenu = ({ projects, setProjects, dispatch }: Props): JSX.Element => {
   const classes = useStyles()
-
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
       <ProjectSelect project={project} dispatch={dispatch} />
@@ -53,7 +53,13 @@ const ProjectsMenu = ({ projects, dispatch }: Props): JSX.Element => {
         <span className='tab-text'>ПРОЕКТЫ</span>
 
         <IconButton className={classes.menuIcon}
-          onClick={() => { dispatch({ type: 'createProject' }) }}>
+          onClick={() => {
+            dispatch({
+              type: 'createProject', payload: {
+                setProjects: setProjects
+              }
+            })
+          }}>
           <AddCircleOutlineIcon />
         </IconButton >
 
