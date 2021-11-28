@@ -16,6 +16,7 @@ interface Props {
 }
 
 const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
+    const [open, setOpen] = useState(false)
     const { settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
     return (
@@ -23,30 +24,32 @@ const ProjectSelect = ({ project, dispatch }: Props): JSX.Element => {
             settings.active_project.id == project.id ? 'project active' : 'project'}
             onMouseOver={() => { setActive(true) }}
             onMouseLeave={() => { setActive(false) }}>
+            <span className={active == true ? 'selected' : ''}
+            onClick={() => setOpen(true)}
+            >{project.name}</span>
             <Popup
-                trigger={<span className={active == true ? 'selected' : ''}>{project.name}</span>}
+                open={open}
+                onClose={() => setOpen(false)}
+                closeOnDocumentClick
                 position="right center"
                 key={project.name}
                 modal>
-                {close => (
-                    <div className="modal">
-                        <div>Проект выбран как основной</div>
-                        <button className="close" onClick={() => {
-                            const active_project = {
-                                name: project.name,
-                                id: project.id,
-                                isclassroom: project.isclassroom,
-                                isuserowner: 1
-                            }
-                            setSettings({ ...settings, active_project })
-                            setActive(false)
-                            close()
-                        }}>
-                            ОК
-                        </button>
-                    </div>
-                )
-                }
+                <div className="modal">
+                    <div>Проект выбран как основной</div>
+                    <button className="close" onClick={() => {
+                        const active_project = {
+                            name: project.name,
+                            id: project.id,
+                            isclassroom: project.isclassroom,
+                            isuserowner: 1
+                        }
+                        setSettings({ ...settings, active_project })
+                        setActive(false)
+                        setOpen(false)
+                    }}>
+                        ОК
+                    </button>
+                </div>
             </Popup>
             {active &&
                 <div className='icons'>
