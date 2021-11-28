@@ -21,16 +21,8 @@ const useStyles = makeStyles((theme) => ({
 })
 );
 
-type Setter = {
-    setActiveProjectSet: React.Dispatch<React.SetStateAction<boolean>>
-}
 
-const GitLink = ({ setActiveProjectSet }: Setter): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
-    useEffect(() => {
-        settings !== null && settings !== undefined ? 'active_project' in settings ?
-            setActiveProjectSet(true) : setActiveProjectSet(false) : null
-    }, [settings])
+const GitLink = (): JSX.Element => {
     return (
         <Popup
             trigger={<div className='icon'><AccountTreeIcon /></div>}
@@ -44,9 +36,8 @@ const GitLink = ({ setActiveProjectSet }: Setter): JSX.Element => {
 
 
 const SideNavBar = (): JSX.Element => {
-    const [activeProjectSet, setActiveProjectSet] = useState(false)
+    const { settings, setSettings } = useContext(SettingsContext)
     const classes = useStyles();
-
     return (
         <div className='icon-nav-bar'>
             <IconButton className={classes.menuIcon}>
@@ -56,9 +47,9 @@ const SideNavBar = (): JSX.Element => {
                 <FileCopyIcon />
             </IconButton>
             <IconButton className={classes.menuIcon}>
-                {activeProjectSet == true ?
+                {'active_project' in settings ?
                     <Link to="/git" replace><AccountTreeIcon /></Link> :
-                    <GitLink setActiveProjectSet={setActiveProjectSet} />}
+                    <GitLink />}
             </IconButton>
             <IconButton className={classes.menuIcon}>
                 <Link to="/" replace><ClassIcon /></Link>

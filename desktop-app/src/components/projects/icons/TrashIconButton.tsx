@@ -6,12 +6,19 @@ import { useContext } from 'react';
 import { SettingsContext } from '../../../App';
 
 
-type TrashProps = {
+type Project = {
     id: number
     name: string
+    isclassroom: number
 }
 
-const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
+type Props = {
+    id: number
+    name: string
+    setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
+}
+
+const TrashIconButton = ({ name, id, setProjects }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     return (
         <Popup
@@ -34,10 +41,15 @@ const TrashIconButton = ({ name, id }: TrashProps): JSX.Element => {
                             })
                             .then(response => response.json())
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
-                        settings.active_project !== undefined ?
-                            name === settings.active_project.name ? delete settings.active_project : null : null
-                        setSettings({ ...settings })
-                        window.location.reload()
+                        setSettings({ user: settings.user })
+                        fetch('http://localhost:8000/projects/list', {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-api-key': settings['user']['X-API-Key'],
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => setProjects(data['projects']))
                     }}>
                         Удалить
                     </button>
