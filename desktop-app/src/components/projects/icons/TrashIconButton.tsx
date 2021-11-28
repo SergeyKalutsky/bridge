@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import Popup from 'reactjs-popup';
 import { ipcRenderer } from 'electron';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { SettingsContext } from '../../../App';
 
 
@@ -15,18 +15,29 @@ type Project = {
 type Props = {
     id: number
     name: string
+    setActive: React.Dispatch<React.SetStateAction<boolean>>
     setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
 }
 
-const TrashIconButton = ({ name, id, setProjects }: Props): JSX.Element => {
+const TrashIconButton = ({ name, id, setProjects, setActive }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
+    const [open, setOpen] = useState(false)
     return (
-        <Popup
-            trigger={<div className='icon'><FontAwesomeIcon icon={faTrashAlt} /></div>}
-            position="right center"
-            modal
-        >
-            {() => (
+        <>
+            <div className='icon' onClick={() => {
+                setOpen(true)
+            }}>
+                <FontAwesomeIcon icon={faTrashAlt} /></div>
+            <Popup
+                open={open}
+                position="right center"
+                modal
+                closeOnDocumentClick
+                onClose={() => {
+                    setOpen(false)
+                    setActive(false)
+                }}
+            >
                 <div className="modal">
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                     <button className="close" onClick={() => {
@@ -40,8 +51,10 @@ const TrashIconButton = ({ name, id, setProjects }: Props): JSX.Element => {
                                 body: JSON.stringify({ id: id, name: name })
                             })
                             .then(response => response.json())
+
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
                         setSettings({ user: settings.user })
+
                         fetch('http://localhost:8000/projects/list', {
                             headers: {
                                 'Content-Type': 'application/json',
@@ -53,13 +66,12 @@ const TrashIconButton = ({ name, id, setProjects }: Props): JSX.Element => {
                     }}>
                         Удалить
                     </button>
-                    <button className="close" onClick={() => { close }}>
+                    <button className="close" onClick={() => { setOpen(false) }}>
                         Закрыть
                     </button>
                 </div>
-            )
-            }
-        </Popup >
+            </Popup >
+        </>
 
     )
 }

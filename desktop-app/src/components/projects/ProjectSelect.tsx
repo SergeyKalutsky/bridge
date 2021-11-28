@@ -55,7 +55,7 @@ const ProjectSelect = ({ project, setProjects, dispatch }: Props): JSX.Element =
             {active &&
                 <div className='icons'>
                     <UserIconButton id={project.id} dispatch={dispatch} />
-                    <TrashIconButton name={project.name} id={project.id} setProjects={setProjects} />
+                    <TrashIconButton name={project.name} id={project.id} setProjects={setProjects} setActive={setActive}/>
                 </div>}
         </div>
     )
