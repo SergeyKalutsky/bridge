@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ClassIcon from '@material-ui/icons/Class';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom'
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import Popup from 'reactjs-popup';
 import '../assets/css/SideNavBar.css'
 import { SettingsContext } from '../App';
