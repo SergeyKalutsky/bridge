@@ -60,7 +60,7 @@ const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
 
                             })
                             .then(response => response.json())
-                            .then(data => { data['status'] == 'created' ? setNewProject(project) : console.log(data) })
+                            .then(data => { data['status'] == 'created' ? setNewProject(data['project']) : console.log(data) })
 
                     }}>Создать</button>
                 </div>
