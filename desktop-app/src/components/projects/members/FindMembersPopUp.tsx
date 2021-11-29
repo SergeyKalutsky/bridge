@@ -10,7 +10,7 @@ interface Member {
 interface Props {
     membersFind: Member[]
     project_id: number
-    setMembersCurrent: React.Dispatch<React.SetStateAction<Member[]>>
+    addMember: (member: Member) => void
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -18,13 +18,13 @@ interface Props {
 
 const FindMembersPopUp = ({ membersFind,
     project_id,
-    setMembersCurrent,
+    addMember,
     open, setOpen }: Props): JSX.Element => {
     const membersArray = membersFind.map((member) =>
         <MembersList member={member}
             project_id={project_id}
             key={member.id}
-            setMembersCurrent={setMembersCurrent} />
+            addMember={addMember} />
     )
     return (
         <Popup

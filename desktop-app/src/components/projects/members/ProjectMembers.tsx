@@ -22,7 +22,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     const [membersCurrent, setMembersCurrent] = useState<Member[]>([])
     const [search, setSearch] = useState('')
 
-    useEffect(() => {
+    const updateCurrentProjectMembers = () => {
         fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
             {
                 headers: {
@@ -32,6 +32,12 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             })
             .then(response => response.json())
             .then(data => setMembersCurrent(data))
+    }
+
+    const addMember = (member: Member) => { setMembersCurrent([...membersCurrent, member]) }
+
+    useEffect(() => {
+        updateCurrentProjectMembers()
     }, [])
     return (
         <div className='menu'>
@@ -56,12 +62,12 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             </div>
             <FindMembersPopUp membersFind={membersFind}
                 project_id={project_id}
-                setMembersCurrent={setMembersCurrent}
+                addMember={addMember}
                 open={open}
                 setOpen={setOpen} />
             <CurrentMembers members={membersCurrent}
                 project_id={project_id}
-                setMembersCurrent={setMembersCurrent}
+                updateCurrentProjectMembers={updateCurrentProjectMembers}
             />
         </div>
     )

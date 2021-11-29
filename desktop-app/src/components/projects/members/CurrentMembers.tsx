@@ -15,11 +15,23 @@ interface Member {
 interface CurrentMembersProp {
     members: Member[]
     project_id: number
-    setMembersCurrent: React.Dispatch<React.SetStateAction<Member[]>>
+    updateCurrentProjectMembers: () => void
 }
 
-const CurrentMembers = ({ members, project_id, setMembersCurrent }: CurrentMembersProp): JSX.Element => {
+const CurrentMembers = ({ members, project_id, updateCurrentProjectMembers }: CurrentMembersProp): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
+    const deleteMember = (project_id: number, user_id: number) => {
+        fetch('http://localhost:8000/members/delete',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': settings['user']['X-API-Key'],
+                },
+                body: JSON.stringify({ project_id: project_id, user_id: user_id })
+            })
+    }
+
     const membersArray = members.map((member) =>
         <div className='current-member' key={member.id}>
             <div className='member'>
@@ -34,24 +46,7 @@ const CurrentMembers = ({ members, project_id, setMembersCurrent }: CurrentMembe
                     <div className="modal">
                         <div>Вы уверены, что хотите удалить участника?</div>
                         <button className="close" onClick={() => {
-                            fetch('http://localhost:8000/members/delete',
-                                {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'x-api-key': settings['user']['X-API-Key'],
-                                    },
-                                    body: JSON.stringify({ project_id: project_id, user_id: member.id })
-                                })
-                            fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
-                                {
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'x-api-key': settings['user']['X-API-Key']
-                                    }
-                                })
-                                .then(response => response.json())
-                                .then(data => setMembersCurrent(data))
+                            deleteMember(project_id, member.id)
                         }}>
                             Удалить
                         </button>

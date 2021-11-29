@@ -10,12 +10,12 @@ interface Member {
 type MemberListProps = {
     member: Member
     project_id: number
-    setMembersCurrent: React.Dispatch<React.SetStateAction<Member[]>>
+    addMember: (member: Member) => void
 }
 
 const MembersList = ({ member,
     project_id,
-    setMembersCurrent }: MemberListProps): JSX.Element => {
+    addMember }: MemberListProps): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     return (
         <div className='project-found'>
@@ -33,15 +33,7 @@ const MembersList = ({ member,
                             project_id: project_id
                         })
                     })
-                fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': settings['user']['X-API-Key']
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => setMembersCurrent(data))
+                    addMember(member)
             }}>Пригласить</button>
         </div>
     )
