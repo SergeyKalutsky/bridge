@@ -22,22 +22,28 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     const [membersCurrent, setMembersCurrent] = useState<Member[]>([])
     const [search, setSearch] = useState('')
 
-    const updateCurrentProjectMembers = () => {
-        fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': settings['user']['X-API-Key']
-                }
-            })
-            .then(response => response.json())
-            .then(data => setMembersCurrent(data))
-    }
-
     const addMember = (member: Member) => { setMembersCurrent([...membersCurrent, member]) }
-
+    const removeMember = (member: Member) => {
+        const newMemberList = []
+        for (const oldMember of membersCurrent) {
+            if (oldMember.id !== member.id) {
+                newMemberList.push(oldMember)
+            }
+        }
+        setMembersCurrent(newMemberList)
+    }
     useEffect(() => {
-        updateCurrentProjectMembers()
+        () => {
+            fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': settings['user']['X-API-Key']
+                    }
+                })
+                .then(response => response.json())
+                .then(data => setMembersCurrent(data))
+        }
     }, [])
     return (
         <div className='menu'>
@@ -67,7 +73,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                 setOpen={setOpen} />
             <CurrentMembers members={membersCurrent}
                 project_id={project_id}
-                updateCurrentProjectMembers={updateCurrentProjectMembers}
+                removeMember={removeMember}
             />
         </div>
     )

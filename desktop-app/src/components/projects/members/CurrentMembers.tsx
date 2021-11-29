@@ -15,10 +15,10 @@ interface Member {
 interface CurrentMembersProp {
     members: Member[]
     project_id: number
-    updateCurrentProjectMembers: () => void
+    removeMember: (member: Member) => void
 }
 
-const CurrentMembers = ({ members, project_id, updateCurrentProjectMembers }: CurrentMembersProp): JSX.Element => {
+const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersProp): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const deleteMember = (project_id: number, user_id: number) => {
         fetch('http://localhost:8000/members/delete',
@@ -47,6 +47,7 @@ const CurrentMembers = ({ members, project_id, updateCurrentProjectMembers }: Cu
                         <div>Вы уверены, что хотите удалить участника?</div>
                         <button className="close" onClick={() => {
                             deleteMember(project_id, member.id)
+                            removeMember(member)
                         }}>
                             Удалить
                         </button>
