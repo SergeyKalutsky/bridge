@@ -36,12 +36,20 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
         membersFound.map((member, index) => {
             if (membersCurrent.length === 0)  {
                 membersFound[index] = {...member, iscurrent: false}
+                return
             }
             for (const memberCurrent of membersCurrent) {
-                member.iscurrent = memberCurrent.id === member.id ? true : false
-                membersFound[index] = member
+                if (memberCurrent.id === member.id) {
+                    member.iscurrent = true
+                    membersFound[index] = member
+                    return 
+                }
             }
+            member.iscurrent = false
+            membersFound[index] = member
         })
+        console.log(membersFound)
+        console.log(membersCurrent)
         setMembersFind(membersFound)
     }
     useEffect(() => {

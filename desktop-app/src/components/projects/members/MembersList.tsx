@@ -35,7 +35,7 @@ const MembersList = ({ member,
                         })
                     })
                 setlocalMember({...localMember, iscurrent: true})
-                addMember(localMember)
+                addMember(member)
             }}>Пригласить</button>
         </div>
     )
