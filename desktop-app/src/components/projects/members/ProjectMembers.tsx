@@ -19,7 +19,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [open, setOpen] = useState(false)
     const [membersFind, setMembersFind] = useState<Member[]>([])
-    const [membersCurrent, setMembersCureent] = useState<Member[]>([])
+    const [membersCurrent, setMembersCurrent] = useState<Member[]>([])
     const [search, setSearch] = useState('')
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                 }
             })
             .then(response => response.json())
-            .then(data => setMembersCureent(data))
+            .then(data => setMembersCurrent(data))
     }, [])
     return (
         <div className='menu'>
@@ -56,12 +56,12 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             </div>
             <FindMembersPopUp membersFind={membersFind}
                 project_id={project_id}
-                setMembersCureent={setMembersCureent}
+                setMembersCurrent={setMembersCurrent}
                 open={open}
                 setOpen={setOpen} />
             <CurrentMembers members={membersCurrent}
                 project_id={project_id}
-                setMembersCureent={setMembersCureent}
+                setMembersCurrent={setMembersCurrent}
             />
         </div>
     )

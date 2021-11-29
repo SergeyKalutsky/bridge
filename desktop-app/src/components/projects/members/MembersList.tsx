@@ -10,12 +10,12 @@ interface Member {
 type MemberListProps = {
     member: Member
     project_id: number
-    setMembersCureent: React.Dispatch<React.SetStateAction<Member[]>>
+    setMembersCurrent: React.Dispatch<React.SetStateAction<Member[]>>
 }
 
 const MembersList = ({ member,
     project_id,
-    setMembersCureent }: MemberListProps): JSX.Element => {
+    setMembersCurrent }: MemberListProps): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     return (
         <div className='project-found'>
@@ -41,7 +41,7 @@ const MembersList = ({ member,
                         }
                     })
                     .then(response => response.json())
-                    .then(data => setMembersCureent(data))
+                    .then(data => setMembersCurrent(data))
             }}>Пригласить</button>
         </div>
     )
