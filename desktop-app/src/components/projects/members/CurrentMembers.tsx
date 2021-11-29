@@ -38,10 +38,9 @@ const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersPro
             <div className='member'>
                 {member.name}
             </div>
-            <div className='icon' onClick={() => {
-                setOpen(true)
-            }}
-            ><FontAwesomeIcon icon={faTrashAlt} /></div>
+            <div className='icon' onClick={() => { setOpen(true) }}>
+                <FontAwesomeIcon icon={faTrashAlt} />
+            </div>
             <Popup
                 open={open}
                 onClose={() => setOpen(false)}
@@ -61,7 +60,6 @@ const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersPro
             </Popup >
         </div>
     )
-
     return (
         <div className='current-members'>
             {membersArray}
