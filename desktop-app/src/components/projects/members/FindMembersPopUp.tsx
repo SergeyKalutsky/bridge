@@ -8,10 +8,10 @@ interface Member {
 }
 
 interface Props {
-    membersFind: Member[]
-    project_id: number
-    addMember: (member: Member) => void
     open: boolean
+    project_id: number
+    membersFind: Member[]
+    addMember: (member: Member) => void
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
