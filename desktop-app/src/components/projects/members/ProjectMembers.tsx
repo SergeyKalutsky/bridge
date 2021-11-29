@@ -33,17 +33,15 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
         setMembersCurrent(newMemberList)
     }
     useEffect(() => {
-        () => {
-            fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': settings['user']['X-API-Key']
-                    }
-                })
-                .then(response => response.json())
-                .then(data => setMembersCurrent(data))
-        }
+        fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': settings['user']['X-API-Key']
+                }
+            })
+            .then(response => response.json())
+            .then(data => setMembersCurrent(data))
     }, [])
     return (
         <div className='menu'>
