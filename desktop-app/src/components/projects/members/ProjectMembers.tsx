@@ -48,8 +48,6 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             member.iscurrent = false
             membersFound[index] = member
         })
-        console.log(membersFound)
-        console.log(membersCurrent)
         setMembersFind(membersFound)
     }
     useEffect(() => {
