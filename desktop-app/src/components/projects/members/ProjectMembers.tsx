@@ -34,10 +34,6 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     }
     const mapProjectMembership = (membersFound: Member[]) => {
         membersFound.map((member, index) => {
-            if (membersCurrent.length === 0)  {
-                membersFound[index] = {...member, iscurrent: false}
-                return
-            }
             for (const memberCurrent of membersCurrent) {
                 if (memberCurrent.id === member.id) {
                     member.iscurrent = true
