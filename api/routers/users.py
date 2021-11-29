@@ -7,6 +7,7 @@ from ..security import hashed_password
 from typing import Optional, List
 from pydantic import BaseModel
 
+
 class ReturnUser(BaseModel):
     id: int
     name: str
@@ -27,7 +28,6 @@ async def find(user: User):
     return q
 
 
-
 @router.post('/create')
 async def create_user(user: User):
     user_id = gapi.create_user(user)
@@ -39,4 +39,3 @@ async def create_user(user: User):
     ))
     sess.commit()
     return {'status': 'success'}
-

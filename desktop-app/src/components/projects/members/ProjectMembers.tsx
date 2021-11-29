@@ -32,6 +32,18 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
         }
         setMembersCurrent(newMemberList)
     }
+    const mapProjectMembership = (membersFound: Member[]) => {
+        membersFound.map((member, index) => {
+            if (membersCurrent.length === 0)  {
+                membersFound[index] = {...member, iscurrent: false}
+            }
+            for (const memberCurrent of membersCurrent) {
+                member.iscurrent = memberCurrent.id === member.id ? true : false
+                membersFound[index] = member
+            }
+        })
+        setMembersFind(membersFound)
+    }
     useEffect(() => {
         fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
             {
@@ -60,7 +72,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                             body: JSON.stringify({ name: search })
                         })
                         .then(response => response.json())
-                        .then(data => setMembersFind(data))
+                        .then(data => mapProjectMembership(data))
                     setOpen(true)
                 }}> Поиск</button>
             </div>

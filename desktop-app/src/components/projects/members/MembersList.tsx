@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { SettingsContext } from '../../../App'
 
 interface Member {
@@ -16,11 +16,12 @@ type MemberListProps = {
 const MembersList = ({ member,
     project_id,
     addMember }: MemberListProps): JSX.Element => {
+    const [localMember, setlocalMember] = useState<Member>(member)
     const { settings, setSettings } = useContext(SettingsContext)
     return (
         <div className='project-found'>
-            {member.name}
-            <button onClick={() => {
+            {localMember.name}
+            <button disabled={localMember.iscurrent == false ? false : true} onClick={() => {
                 fetch('http://localhost:8000/members/add',
                     {
                         method: 'POST',
@@ -33,7 +34,8 @@ const MembersList = ({ member,
                             project_id: project_id
                         })
                     })
-                    addMember(member)
+                setlocalMember({...localMember, iscurrent: true})
+                addMember(localMember)
             }}>Пригласить</button>
         </div>
     )

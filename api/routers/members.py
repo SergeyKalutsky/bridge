@@ -11,7 +11,7 @@ router = APIRouter(prefix="/members",
                    tags=['members'],
                    dependencies=[Depends(verify_token)])
 
-class ReturnUser(BaseModel):
+class ReturnMember(BaseModel):
     id: int
     name: str
 
@@ -51,7 +51,7 @@ async def add_member(member: Member,
     return {'status': 'failed', 'error': 'you dont have rights to add memebers to that project'}
 
 
-@router.get('/list', response_model=List[ReturnUser])
+@router.get('/list', response_model=List[ReturnMember])
 async def list_members(project_id: int,
                        x_api_key: str = Header(None)):
     user_id = jwt.decode(
