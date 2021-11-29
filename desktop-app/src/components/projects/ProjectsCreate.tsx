@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react'
-import { ipcRenderer } from 'electron'
 import '../../assets/css/ProjectsCreate.css'
 import { SettingsContext } from '../../App'
 
@@ -10,10 +9,10 @@ type Project = {
 }
 
 interface Prop {
-    setProjects: React.Dispatch<React.SetStateAction<Project[]>>
+    setNewProject: (project: Project) => void
 }
 
-const ProjectsCreate = ({ setProjects }: Prop): JSX.Element => {
+const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [checked, setChecked] = useState<number>(0)
     const [project, setProject] = useState<Project>({
@@ -22,17 +21,7 @@ const ProjectsCreate = ({ setProjects }: Prop): JSX.Element => {
         isclassroom: 0
     })
 
-    const setNewProject = () => {
-        ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
-        fetch('http://localhost:8000/projects/list', {
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': settings['user']['X-API-Key'],
-            }
-        })
-            .then(response => response.json())
-            .then(data => setProjects(data['projects']))
-    }
+
     return (
         <div className='menu'>
             <div className='crete-inputs row'>
@@ -71,7 +60,7 @@ const ProjectsCreate = ({ setProjects }: Prop): JSX.Element => {
 
                             })
                             .then(response => response.json())
-                            .then(data => { data['status'] == 'created' ? setNewProject() : console.log(data) })
+                            .then(data => { data['status'] == 'created' ? setNewProject(project) : console.log(data) })
 
                     }}>Создать</button>
                 </div>

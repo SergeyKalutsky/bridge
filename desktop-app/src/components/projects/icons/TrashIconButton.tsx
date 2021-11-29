@@ -16,10 +16,10 @@ type Props = {
     id: number
     name: string
     setActive: React.Dispatch<React.SetStateAction<boolean>>
-    setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
+    removeByProjectID: (project_id: number) => void
 }
 
-const TrashIconButton = ({ name, id, setProjects, setActive }: Props): JSX.Element => {
+const TrashIconButton = ({ name, id, removeByProjectID, setActive }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [open, setOpen] = useState(false)
     return (
@@ -53,16 +53,8 @@ const TrashIconButton = ({ name, id, setProjects, setActive }: Props): JSX.Eleme
                             .then(response => response.json())
 
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
+                        removeByProjectID(id)
                         setSettings({ user: settings.user })
-
-                        fetch('http://localhost:8000/projects/list', {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'x-api-key': settings['user']['X-API-Key'],
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(data => setProjects(data['projects']))
                     }}>
                         Удалить
                     </button>

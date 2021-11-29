@@ -1,4 +1,5 @@
 import { useState, useEffect, useReducer, useContext } from 'react'
+import { ipcRenderer } from 'electron'
 import { SettingsContext } from '../../App'
 import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
@@ -22,7 +23,7 @@ type Action =
     | { type: 'findProject' }
     | {
         type: 'createProject', payload: {
-            setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
+            setNewProject:  (project: Project) => void
         }
     }
 
@@ -32,7 +33,7 @@ function reducer(state: State, action: Action) {
             return { page: <ProjectFind /> }
         case 'createProject':
             return {
-                page: <ProjectCreate setProjects={action.payload.setProjects} />
+                page: <ProjectCreate setNewProject={action.payload.setNewProject} />
             }
         case 'memberFind':
             return { page: <ProjectMembers project_id={action.payload} /> }
@@ -44,8 +45,24 @@ const Projects = (): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
     const [state, dispatch] = useReducer(reducer, {
-        page: <ProjectCreate setProjects={setProjects}/>
+        page: <ProjectCreate setNewProject={null} />
     });
+
+    const removeByProjectID = (project_id: number) => {
+        const newProjects = []
+        for (const project of projects) {
+            if (project.id !== project_id) {
+                newProjects.push(project)
+            }
+        }
+        setProjects(newProjects)
+    }
+
+    const setNewProject = (project: Project) => {
+        ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
+        setProjects([...projects, project])
+    }
+
     useEffect(() => {
         fetch('http://localhost:8000/projects/list', {
             headers: {
@@ -59,7 +76,9 @@ const Projects = (): JSX.Element => {
 
     return (
         <>
-            <ProjectsMenu projects={projects} setProjects={setProjects} dispatch={dispatch} />
+            <ProjectsMenu projects={projects}
+                projectFuncs={{ removeByProjectID, setNewProject }}
+                dispatch={dispatch} />
             <div className='workspace'>
                 <div className='workspace-background'>
                     {state.page}

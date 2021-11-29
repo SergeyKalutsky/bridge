@@ -30,7 +30,10 @@ const useStyles = makeStyles(() => ({
 interface Props {
   projects: Project[]
   dispatch: React.Dispatch<any>
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
+  projectFuncs: {
+    removeByProjectID:  (project_id: number) => void
+    setNewProject:  (project: Project) => void
+  }
 }
 
 type Project = {
@@ -40,11 +43,11 @@ type Project = {
 }
 
 
-const ProjectsMenu = ({ projects, setProjects, dispatch }: Props): JSX.Element => {
+const ProjectsMenu = ({ projects, projectFuncs, dispatch }: Props): JSX.Element => {
   const classes = useStyles()
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
-      <ProjectSelect project={project} dispatch={dispatch} setProjects={setProjects}/>
+      <ProjectSelect project={project} dispatch={dispatch} removeByProjectID={projectFuncs.removeByProjectID}/>
     </div>)
 
   return (
@@ -56,7 +59,7 @@ const ProjectsMenu = ({ projects, setProjects, dispatch }: Props): JSX.Element =
           onClick={() => {
             dispatch({
               type: 'createProject', payload: {
-                setProjects: setProjects
+                setNewProject: projectFuncs.setNewProject
               }
             })
           }}>

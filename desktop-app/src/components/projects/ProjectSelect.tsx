@@ -13,10 +13,10 @@ type Project = {
 interface Props {
     project: Project
     dispatch: React.Dispatch<any>
-    setProjects: React.Dispatch<React.SetStateAction<Project[]>>
+    removeByProjectID: (project_id: number) => void
 }
 
-const ProjectSelect = ({ project, setProjects, dispatch }: Props): JSX.Element => {
+const ProjectSelect = ({ project, removeByProjectID, dispatch }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const { settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
@@ -55,7 +55,7 @@ const ProjectSelect = ({ project, setProjects, dispatch }: Props): JSX.Element =
             {active &&
                 <div className='icons'>
                     <UserIconButton id={project.id} dispatch={dispatch} />
-                    <TrashIconButton name={project.name} id={project.id} setProjects={setProjects} setActive={setActive}/>
+                    <TrashIconButton name={project.name} id={project.id} removeByProjectID={removeByProjectID} setActive={setActive}/>
                 </div>}
         </div>
     )
