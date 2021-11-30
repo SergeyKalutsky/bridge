@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+import jwt
+from fastapi import APIRouter, Depends, Header
 from .. import gitlab_api as gapi
 from ..database import sess, t
 from ..dependencies import verify_token
@@ -22,9 +23,12 @@ router = APIRouter(prefix="/users",
 
 
 @router.post('/find', response_model=List[ReturnUser])
-async def find(user: User):
+async def find(user: User, x_api_key: str = Header(None)):
+    user_id = jwt.decode(
+        x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
     q = sess.query(t.Users).\
-        filter(t.Users.name.contains(f'%{user.name}%')).all()
+        filter(t.Users.name.contains(f'%{user.name}%')).\
+        filter(t.Users.id != user_id).all()
     return q
 
 

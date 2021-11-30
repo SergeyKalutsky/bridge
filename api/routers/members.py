@@ -54,6 +54,7 @@ async def add_member(member: Member,
 @router.get('/list', response_model=List[ReturnMember])
 async def list_members(project_id: int,
                        x_api_key: str = Header(None)):
+    '''Lists members of a particular project yoursel excluded'''
     user_id = jwt.decode(
         x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
     is_userowner = sess.query(t.Members.is_userowner).\
