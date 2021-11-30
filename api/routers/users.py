@@ -27,7 +27,7 @@ async def find(user: User, x_api_key: str = Header(None)):
     user_id = jwt.decode(
         x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
     q = sess.query(t.Users).\
-        filter(t.Users.name.contains(f'%{user.name}%')).\
+        filter(t.Users.name.contains(f'{user.name}%')).\
         filter(t.Users.id != user_id).all()
     return q
 
