@@ -19,10 +19,6 @@
     font-size: 20px;
 }
 
-.active {
-    border-left: solid;
-    border-color: beige;
-}
 
 .modal button {
     font-size: 15px;
@@ -39,34 +35,49 @@
     height: 80%;
 }
 
+.active {
+    border-left: solid;
+    border-color: beige;
+    display: flex;
+}
+
 .project .icon {
     margin-left: 15px;
 }
 
+.project .icon:hover {
+    color: rgb(33, 10, 54);
+}
+
 .project span.selected {
-    margin-left: 30px;
+    margin-left: 120px;
 }
 
 .project {
-    height: 50px;
+    height: 60px;
     line-height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 28px;
+    font-size: 26px;
 }
 
 .project:hover {
-    background-color: beige;
+    background-color: rgb(70, 65, 80);
 }
 
 .project span {
-    color: rgb(102, 167, 228);
+    color: rgb(232, 225, 241);
     cursor: pointer;
+    font-family: Sans-serif;
 }
 
+
 .icons {
+    margin-left: 60px;
+    margin-right: 10px;
     display: flex;
     flex-direction: row;
     cursor: pointer;
+    color: rgb(255, 255, 255);
 }

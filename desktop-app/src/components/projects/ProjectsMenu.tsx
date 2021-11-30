@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import ProjectSelect from './ProjectSelect';
+import ProjectItem from './ProjectItem';
 import 'reactjs-popup/dist/index.css';
 import '../../assets/css/ProjectsMenu.css'
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
     '& svg': {
       fontSize: 30
     },
-    'margin-left': '30px',
+    'margin-left': '40px',
     'color': '#b3afb0',
     'justify-content': 'flex-end'
 
@@ -30,10 +30,8 @@ const useStyles = makeStyles(() => ({
 interface Props {
   projects: Project[]
   dispatch: React.Dispatch<any>
-  projectFuncs: {
-    removeByProjectID:  (project_id: number) => void
-    setNewProject:  (project: Project) => void
-  }
+  removeByProjectID: (project_id: number) => void
+  setNewProject: (project: Project) => void
 }
 
 type Project = {
@@ -43,11 +41,11 @@ type Project = {
 }
 
 
-const ProjectsMenu = ({ projects, projectFuncs, dispatch }: Props): JSX.Element => {
+const ProjectsMenu = ({ projects, setNewProject, removeByProjectID, dispatch }: Props): JSX.Element => {
   const classes = useStyles()
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
-      <ProjectSelect project={project} dispatch={dispatch} removeByProjectID={projectFuncs.removeByProjectID}/>
+      <ProjectItem project={project} dispatch={dispatch} removeByProjectID={removeByProjectID} />
     </div>)
 
   return (
@@ -59,17 +57,17 @@ const ProjectsMenu = ({ projects, projectFuncs, dispatch }: Props): JSX.Element 
           onClick={() => {
             dispatch({
               type: 'createProject', payload: {
-                setNewProject: projectFuncs.setNewProject
+                setNewProject: setNewProject
               }
             })
           }}>
           <AddCircleOutlineIcon />
         </IconButton >
 
-        <IconButton className={classes.menuIconSerach}
+        {/* <IconButton className={classes.menuIconSerach}
           onClick={() => { dispatch({ type: 'findProject' }) }}>
           <FontAwesomeIcon icon={faSearch} />
-        </IconButton >
+        </IconButton > */}
 
       </div>
       <div className='projects' >

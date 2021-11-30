@@ -18,7 +18,6 @@ interface Member {
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [open, setOpen] = useState(false)
-    const [membersFind, setMembersFind] = useState<Member[]>([])
     const [membersCurrent, setMembersCurrent] = useState<Member[]>([])
     const [search, setSearch] = useState('')
 
@@ -32,20 +31,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
         }
         setMembersCurrent(newMemberList)
     }
-    const mapProjectMembership = (membersFound: Member[]) => {
-        membersFound.map((member, index) => {
-            for (const memberCurrent of membersCurrent) {
-                if (memberCurrent.id === member.id) {
-                    member.iscurrent = true
-                    membersFound[index] = member
-                    return 
-                }
-            }
-            member.iscurrent = false
-            membersFound[index] = member
-        })
-        setMembersFind(membersFound)
-    }
+    
     useEffect(() => {
         fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
             {
@@ -64,21 +50,11 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                     placeholder='Введите имя пользователя'
                     onChange={(e) => { setSearch(e.target.value) }} />
                 <button onClick={() => {
-                    fetch(`http://localhost:8000/users/find`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'x-api-key': settings['user']['X-API-Key']
-                            },
-                            body: JSON.stringify({ name: search })
-                        })
-                        .then(response => response.json())
-                        .then(data => mapProjectMembership(data))
                     setOpen(true)
                 }}> Поиск</button>
             </div>
-            <FindMembersPopUp membersFind={membersFind}
+            <FindMembersPopUp membersCurrent={membersCurrent}
+                search={search}
                 project_id={project_id}
                 addMember={addMember}
                 open={open}
