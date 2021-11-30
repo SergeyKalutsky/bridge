@@ -6,12 +6,6 @@ import { useContext, useState } from 'react';
 import { SettingsContext } from '../../../App';
 
 
-type Project = {
-    id: number
-    name: string
-    isclassroom: number
-}
-
 type Props = {
     id: number
     name: string
