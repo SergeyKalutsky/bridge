@@ -24,8 +24,9 @@ const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
     const [project, setProject] = useState<Project>(dummyProject)
 
     return (
-        <div className='menu'>
-            <div className='crete-inputs row'>
+        <div className='project-create'>
+            <div className='crete-inputs'>
+                <h1>Создание проекта</h1>
                 <div className='row'>
                     <input type="text" placeholder='Название проекта'
                         onChange={(e) => { setProject({ ...project, name: e.target.value }) }} />
@@ -49,7 +50,7 @@ const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
                     </div>
                 </div>
                 <div className='row'>
-                    <button type='submit' onClick={() => {
+                    <button className='sumbit-form' type='submit' onClick={() => {
                         fetch('http://localhost:8000/projects/create',
                             {
                                 method: 'POST',
