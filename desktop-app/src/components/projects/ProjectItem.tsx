@@ -16,7 +16,7 @@ interface Props {
     removeByProjectID: (project_id: number) => void
 }
 
-const ProjectSelect = ({ project, removeByProjectID, dispatch }: Props): JSX.Element => {
+const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const { settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
@@ -61,4 +61,4 @@ const ProjectSelect = ({ project, removeByProjectID, dispatch }: Props): JSX.Ele
     )
 }
 
-export default ProjectSelect
+export default ProjectItem

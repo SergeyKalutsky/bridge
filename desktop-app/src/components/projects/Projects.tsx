@@ -1,11 +1,11 @@
 import { useState, useEffect, useReducer, useContext } from 'react'
 import { ipcRenderer } from 'electron'
 import { SettingsContext } from '../../App'
-import '../../assets/css/Projects.css'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import ProjectMembers from './members/ProjectMembers'
 import ProjectFind from './ProjectFind'
+import '../../assets/css/Projects.css'
 
 type Project = {
     id: number

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import ProjectSelect from './ProjectSelect';
+import ProjectItem from './ProjectItem';
 import 'reactjs-popup/dist/index.css';
 import '../../assets/css/ProjectsMenu.css'
 
@@ -47,7 +47,7 @@ const ProjectsMenu = ({ projects, projectFuncs, dispatch }: Props): JSX.Element 
   const classes = useStyles()
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
-      <ProjectSelect project={project} dispatch={dispatch} removeByProjectID={projectFuncs.removeByProjectID}/>
+      <ProjectItem project={project} dispatch={dispatch} removeByProjectID={projectFuncs.removeByProjectID}/>
     </div>)
 
   return (

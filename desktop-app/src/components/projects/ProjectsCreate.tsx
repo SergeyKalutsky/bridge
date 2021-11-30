@@ -20,8 +20,6 @@ const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
         description: '',
         isclassroom: 0
     })
-
-
     return (
         <div className='menu'>
             <div className='crete-inputs row'>
