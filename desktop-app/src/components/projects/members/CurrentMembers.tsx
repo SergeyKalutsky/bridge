@@ -18,22 +18,20 @@ interface CurrentMembersProp {
     removeMember: (member: Member) => void
 }
 
-const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersProp): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
-    const [open, setOpen] = useState(false)
-    const deleteMember = (project_id: number, user_id: number) => {
-        fetch('http://localhost:8000/members/delete',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': settings['user']['X-API-Key'],
-                },
-                body: JSON.stringify({ project_id: project_id, user_id: user_id })
-            })
-    }
+interface CurrentMemberRowProps {
+    member: Member
+    project_id: number
+    removeMember: (member: Member) => void
+    deleteMember: (project_id: number, user_id: number) => void
+}
 
-    const membersArray = members.map((member) =>
+const CurrentMemberRow = ({ member,
+    project_id,
+    removeMember,
+    deleteMember }: CurrentMemberRowProps) => {
+
+    const [open, setOpen] = useState(false)
+    return (
         <div className='current-member' key={member.id}>
             <div className='member'>
                 {member.name}
@@ -45,7 +43,6 @@ const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersPro
                 open={open}
                 onClose={() => setOpen(false)}
                 closeOnDocumentClick
-                position="right center"
                 modal
             >
                 <div className="modal">
@@ -59,6 +56,30 @@ const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersPro
                 </div>
             </Popup >
         </div>
+    )
+}
+
+
+const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersProp): JSX.Element => {
+    const { settings, setSettings } = useContext(SettingsContext)
+    const deleteMember = (project_id: number, user_id: number) => {
+        fetch('http://localhost:8000/members/delete',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': settings['user']['X-API-Key'],
+                },
+                body: JSON.stringify({ project_id: project_id, user_id: user_id })
+            })
+    }
+
+    const membersArray = members.map((member, indx) =>
+        <CurrentMemberRow member={member}
+            deleteMember={deleteMember}
+            removeMember={removeMember}
+            key={indx}
+            project_id={project_id} />
     )
     return (
         <div className='current-members'>
