@@ -52,6 +52,10 @@
     margin-left: 15px;
 }
 
+.project .icon:hover {
+    color: rgb(33, 10, 54);
+}
+
 .project span.selected {
     margin-left: 120px;
 }
