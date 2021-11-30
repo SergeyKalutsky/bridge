@@ -64,10 +64,10 @@ const ProjectsMenu = ({ projects, setNewProject, removeByProjectID, dispatch }: 
           <AddCircleOutlineIcon />
         </IconButton >
 
-        <IconButton className={classes.menuIconSerach}
+        {/* <IconButton className={classes.menuIconSerach}
           onClick={() => { dispatch({ type: 'findProject' }) }}>
           <FontAwesomeIcon icon={faSearch} />
-        </IconButton >
+        </IconButton > */}
 
       </div>
       <div className='projects' >

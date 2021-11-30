@@ -84,4 +84,9 @@ label {
 
 .sumbit-form:hover {
     background-color: #594369;
+    cursor: pointer;
+}
+
+.sumbit-form:focus {
+    border: none;
 }
