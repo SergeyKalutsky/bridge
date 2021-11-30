@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import '../../assets/css/WorkspaceTab.css'
 import { ipcRenderer } from 'electron';
 import Switch from "react-switch";
+import { Arrow, Refresh } from '../Icons';
 import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../App';
 
@@ -86,20 +87,30 @@ const WorkspaceTab = ({ setSplitView,
   return (
     <MuiThemeProvider theme={colortheme}>
       <div className='workspace-tab'>
-        <Button color="primary" onClick={() => {
-          ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
-        }}>Pull</Button>
-        <Button color="secondary" onClick={() => {
-          ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
-        }}>Push</Button>
-        <IconButton className={classes.menuIcon} onClick={() => {
+        <Button className={classes.menuIcon} onClick={() => {
           setAutoapdate(autoUpdate == true ? false : true)
         }} >
-          <FontAwesomeIcon icon={faSync} />
-        </IconButton>
+          {/* <FontAwesomeIcon icon={faSync} /> */}
+          <span>ОБНОВИТЬ</span>
+          <Refresh/>
+        </Button>
         <DropDown gitDiff={gitDiff}
           diffViewOption={diffViewOption}
           setDiffViewOption={setDiffViewOption} />
+        <Button className="BttnP" color="primary" onClick={() => {
+          ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
+        }}>
+          <span>PULL</span>
+          <Arrow/>
+        </Button>
+        <Button className="BttnP" color="secondary" onClick={() => {
+          ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
+        }}>
+          <span>PUSH</span>
+          <div className="ArrUp">
+            <Arrow/>
+          </div>
+        </Button>
         <Switch className='switch'
           onChange={() => {
             splitView == true ? setSplitView(false) : setSplitView(true)

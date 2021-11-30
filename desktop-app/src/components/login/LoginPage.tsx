@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { SettingsContext } from '../../App';
-import { UserIcon, KeyIcon } from './Icons';
+import { UserIcon, KeyIcon } from '../Icons';
 import '../../assets/css/LoginPage.css'
 import img from '../../assets/Logo.png';
 

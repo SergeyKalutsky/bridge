@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react'
 import '../../assets/css/ProjectsFind.css'
 import {SettingsContext} from '../../App'
+import { KeyIcon } from '../Icons';
 
 type Project = {
     id: number
@@ -14,6 +15,7 @@ const ProjectFind = (): JSX.Element => {
     const [project, setProject] = useState<Project>({ id: 0, name: '' })
     return (
         <div className='menu'>
+            <span className="AddFr">Пригласить друга в проект</span>
             <div className='search'>
                 <input type="text"
                     placeholder='Введите ключ проекта'
@@ -28,7 +30,9 @@ const ProjectFind = (): JSX.Element => {
                         })
                             .then(response => response.json())
                             .then(data => setProject(data))
-                }}>Поиск</button>
+                }}>
+                    <KeyIcon />
+                </button>
             </div>
             {project.name != '' ?
                 <div className='project-found'>

@@ -1,21 +1,57 @@
 .workspace-tab {
     position: absolute;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
     top: 0;
     width: 100%;
-    height: 50px;
+    height: 70px;
     background-color: #31302d;
 }
+
 .react-switch-bg {
-    margin-left: 20px;
-    background: rgb(119, 7, 54) !important
+    background: #00569F !important
 }
 
-.switch {
-    margin-top: 10px;
-    margin-left: 5%;
+span.MuiButton-label{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 23px;
 }
+
+.MuiButton-label {
+    display: flex !important;
+    justify-content: space-around !important;
+    color: white;
+    width: 169px !important;
+    height: 44px;
+    border-radius: 5px;
+}
+
+.BttnP {
+    width: 109px !important;
+}
+
+.makeStyles-menuIcon-2,
+.MuiButton-textSecondary,
+.MuiButton-textPrimary{
+    height: 44px;
+}
+
+.ArrUp{
+    height: 15px;
+    transform: rotate(180deg)
+}
+
+.IconWTab {
+    height: 18px;
+    width: 20px;
+    fill: none;
+}
+
 .react-switch-handle {
     background: rgb(199, 195, 195) !important
 }
@@ -24,15 +60,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
-    margin-left: 5%;
+    width: 300px;
+    height: 44px;
+    border-radius: 5px;
 }
 .dropdown select{
-    color: white;
-    background: #504747;
+    color: black;
+    background: white;
     border: none;
     width: 100%;
-    height: 70%
+    height: 70%;
+    border-radius: 5px;
 }
 
 .dropdown select:focus{

@@ -1,28 +1,12 @@
-.left-menu {
-    left            : 0;
-    width           : 25%;
-    height          : 100%;
-    background-color: #242321
-}
-
-.tab-header {
-    display         : flex;
-    justify-content : center;
-    width           : 100%;
-    height          : 50px;
-    background-color: #010818a9
-}
 
 .tab-text-feed {
-    height         : 100%;
-    display        : flex;
-    align-items    : center;
-    justify-content: center;
     color          : white;
+    font-size: 30px;
+    font-style: normal;
 }
 
 .git-hash-list {
-    height: 100%;
+    height: calc(100%-70px);
 }
 
 .git-hash {

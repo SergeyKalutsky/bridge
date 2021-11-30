@@ -1,9 +1,3 @@
-.workspace {
-    right: 0;
-    width: 75%;
-    height: 100%;
-}
-
 .workspace-background {
     display: flex;
     position: relative;

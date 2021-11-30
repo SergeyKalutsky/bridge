@@ -2,6 +2,7 @@
     right: 0;
     width: 75%;
     height: 100%;
+    border-left: 1px solid #FFFFFF;
 }
 
 .workspace-background {
@@ -20,9 +21,9 @@
     justify-content: center;
     top: 0;
     width: 100%;
-    padding-top: 50px;
-    height: calc(100% - 50px);
-    background-color: #030200;
+    padding-top: 70px;
+    height: calc(100% - 70px);
+    background-color: #303030;
 }
 
 .code::-webkit-scrollbar {

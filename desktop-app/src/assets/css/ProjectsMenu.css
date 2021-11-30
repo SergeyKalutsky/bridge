@@ -1,19 +1,17 @@
 .left-menu {
-    left: 0;
     width: 25%;
     height: 100%;
-    background-color: #242321
+    background-color: #242321;
 }
 
 .tab-header {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     width: 100%;
-    height: 50px;
-    background-color: #010818a9
+    height: 70px;
+    background-color: #303030;
 }
-
 
 .modal {
     align-content: center;
@@ -32,14 +30,9 @@
 }
 
 .tab-text {
-    display: flex;
-    margin-left: 25%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
     color: white;
-    height: 100%;
-    font-size: 22px;
+    font-size: 30px;
+    font-style: normal;
 }
 
 .projects {

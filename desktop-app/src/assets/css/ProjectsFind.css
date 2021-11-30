@@ -1,12 +1,23 @@
+.AddFr{
+    margin-top: 5%;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 35px;
+    color:white;
+}
+
 .search {
-    margin-top: 20%;
+    display: flex;
+    justify-content: center;
+    margin-top: 7%;
 }
 
 .search input {
     margin-right: 5px;
     height: 30px;
-    width: 300px;
-    /* font-size: 34px; */
+    width: 600px;
 }
 
 .search input:focus {
