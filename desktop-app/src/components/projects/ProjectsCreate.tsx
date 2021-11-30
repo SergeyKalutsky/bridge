@@ -9,17 +9,20 @@ type Project = {
 }
 
 interface Prop {
-    setNewProject: (project: Project) => void
+    setNewProject: React.Dispatch<React.SetStateAction<Project[]>>
+}
+
+const dummyProject: Project = {
+    name: '',
+    description: '',
+    isclassroom: 0
 }
 
 const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [checked, setChecked] = useState<number>(0)
-    const [project, setProject] = useState<Project>({
-        name: '',
-        description: '',
-        isclassroom: 0
-    })
+    const [project, setProject] = useState<Project>(dummyProject)
+
     return (
         <div className='menu'>
             <div className='crete-inputs row'>

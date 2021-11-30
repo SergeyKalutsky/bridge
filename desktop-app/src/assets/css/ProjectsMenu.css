@@ -82,6 +82,7 @@
 
 .icons {
     margin-left: 60px;
+    margin-right: 10px;
     display: flex;
     flex-direction: row;
     cursor: pointer;
