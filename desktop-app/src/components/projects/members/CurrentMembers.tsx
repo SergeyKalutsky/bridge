@@ -1,8 +1,6 @@
-import Popup from 'reactjs-popup';
-import { useContext, useState } from 'react';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useContext } from 'react';
 import { SettingsContext } from '../../../App'
+import CurrentMemberRow from './CurrentMemberRow'
 
 
 interface Member {
@@ -18,46 +16,6 @@ interface CurrentMembersProp {
     removeMember: (member: Member) => void
 }
 
-interface CurrentMemberRowProps {
-    member: Member
-    project_id: number
-    removeMember: (member: Member) => void
-    deleteMember: (project_id: number, user_id: number) => void
-}
-
-const CurrentMemberRow = ({ member,
-    project_id,
-    removeMember,
-    deleteMember }: CurrentMemberRowProps) => {
-
-    const [open, setOpen] = useState(false)
-    return (
-        <div className='current-member' key={member.id}>
-            <div className='member'>
-                {member.name}
-            </div>
-            <div className='icon' onClick={() => { setOpen(true) }}>
-                <FontAwesomeIcon icon={faTrashAlt} />
-            </div>
-            <Popup
-                open={open}
-                onClose={() => setOpen(false)}
-                closeOnDocumentClick
-                modal
-            >
-                <div className="modal">
-                    <div>Вы уверены, что хотите удалить участника(у него больше не будет доступа к проекту)?</div>
-                    <button className="close" onClick={() => {
-                        deleteMember(project_id, member.id)
-                        removeMember(member)
-                    }}>
-                        Удалить
-                    </button>
-                </div>
-            </Popup >
-        </div>
-    )
-}
 
 
 const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersProp): JSX.Element => {
