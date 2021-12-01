@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const GitLink = (): JSX.Element => {
     return (
         <Popup
-            trigger={<div className='icon'><AccountTreeIcon /></div>}
+            trigger={<div className='icon'><GitIcon /></div>}
             position="right center"
         >
             {<div>Чтобы использовать Git нужно выбрать проект</div>}
