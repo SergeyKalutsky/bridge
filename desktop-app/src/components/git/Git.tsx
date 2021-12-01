@@ -20,4 +20,4 @@ const Git = (): JSX.Element => {
   )
 }
 
-export default Git
+export {Git, GitDiff}

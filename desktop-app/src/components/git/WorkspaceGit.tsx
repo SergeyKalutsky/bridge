@@ -3,13 +3,8 @@ import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
 import '../../assets/css/Workspace.css'
 import darkModeStyle from './DiffViewerStyles'
+import { GitDiff } from './Git'
 
-
-type GitDiff = {
-  filename: string
-  newFile: string
-  oldFile: string
-}
 
 type Props = {
   gitDiffs: GitDiff[]

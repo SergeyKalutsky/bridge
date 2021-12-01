@@ -1,6 +1,6 @@
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import SideNavBar from './SideNavBar'
-import Git from './git/Git'
+import { Git } from './git/Git'
 import { Projects } from './projects/Projects'
 
 
