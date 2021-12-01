@@ -9,7 +9,7 @@ type GitDiff = {
 }
 
 
-const Git = () => {
+const Git = (): JSX.Element => {
   const [diffViewOption, setDiffViewOption] = useState(0)
   const [gitDiff, setGitDiff] = useState<GitDiff[]>([{ filename: '', newFile: '', oldFile: '' }])
   return (
