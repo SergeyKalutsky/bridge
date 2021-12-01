@@ -17,6 +17,7 @@ const Editor = (): JSX.Element => {
             onChange={onChange}
             name="UNIQUE_ID_OF_DIV"
             editorProps={{ $blockScrolling: true }}
+            fontSize={18}
         />
     )
 }
