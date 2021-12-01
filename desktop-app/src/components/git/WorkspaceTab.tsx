@@ -1,15 +1,10 @@
 import { Button } from '@material-ui/core';
-import { faSync } from '@fortawesome/free-solid-svg-icons'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-import '../../assets/css/WorkspaceTab.css'
 import { ipcRenderer } from 'electron';
-import Switch from "react-switch";
 import { Arrow, Refresh } from '../Icons';
 import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../App';
+import '../../assets/css/WorkspaceTab.css'
 
 const colortheme = createMuiTheme({
   palette: {
@@ -18,61 +13,17 @@ const colortheme = createMuiTheme({
   }
 });
 
-const useStyles = makeStyles((theme) => ({
-  menuIcon: {
-    '& svg': {
-      fontSize: 30
-    },
-    'padding-left': 10,
-    'color': '#b3afb0'
-  }
-})
-);
 
-type GitDiff = {
-  filename: string
-  newFile: string
-  oldFile: string
+type Props = {
+  switchBtn: JSX.Element
+  dropDown: JSX.Element
 }
 
-type WorkspaceTabProp = {
-  setDiffViewOption?: React.Dispatch<React.SetStateAction<number>>
-  setSplitView?: React.Dispatch<React.SetStateAction<boolean>>
-  diffViewOption: number
-  splitView?: boolean
-  gitDiff: GitDiff[]
-}
 
-const DropDown = ({ gitDiff,
-  setDiffViewOption,
-  diffViewOption }: WorkspaceTabProp) => {
-  const [selectedClient, setSelectedClient] = useState(diffViewOption);
-  const options = gitDiff.map((diff, indx) =>
-    <option value={indx}
-      key={diff.filename}>{diff.filename}</option>
-  )
-  useEffect(() => { setSelectedClient(diffViewOption) })
-  return (
-    <div className='dropdown'>
-      <select name="select" value={selectedClient}
-        onChange={(e) => {
-          const index = Number(e.target.value);
-          setSelectedClient(index)
-          setDiffViewOption(index);
-        }}>
-        {options}
-      </select>
-    </div>
-  )
-}
-
-const WorkspaceTab = ({ setSplitView,
-  splitView,
-  gitDiff,
-  setDiffViewOption, diffViewOption }: WorkspaceTabProp): JSX.Element => {
-  const classes = useStyles()
+const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
   const { settings, setSettings } = useContext(SettingsContext)
   const [autoUpdate, setAutoapdate] = useState(false)
+
   useEffect(() => {
     if (autoUpdate) {
       const interval = setInterval(() => {
@@ -84,38 +35,34 @@ const WorkspaceTab = ({ setSplitView,
       };
     }
   }, [autoUpdate])
+
   return (
     <MuiThemeProvider theme={colortheme}>
-      <div className='workspace-tab'>
-        <Button className={classes.menuIcon} onClick={() => {
-          setAutoapdate(autoUpdate == true ? false : true)
-        }} >
-          {/* <FontAwesomeIcon icon={faSync} /> */}
-          <span>ОБНОВИТЬ</span>
-          <Refresh/>
-        </Button>
-        <DropDown gitDiff={gitDiff}
-          diffViewOption={diffViewOption}
-          setDiffViewOption={setDiffViewOption} />
-        <Button className="BttnP" color="primary" onClick={() => {
-          ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
-        }}>
-          <span>PULL</span>
-          <Arrow/>
-        </Button>
-        <Button className="BttnP" color="secondary" onClick={() => {
-          ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
-        }}>
-          <span>PUSH</span>
-          <div className="ArrUp">
-            <Arrow/>
-          </div>
-        </Button>
-        <Switch className='switch'
-          onChange={() => {
-            splitView == true ? setSplitView(false) : setSplitView(true)
-          }}
-          checked={splitView} />
+      <div className='tab'>
+        <div className='workspace-tab'>
+          <Button className="BttnP" color="primary" onClick={() => {
+            ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
+          }}>
+            <span>PULL</span>
+            <Arrow />
+          </Button>
+          <Button className="BttnP" color="secondary" onClick={() => {
+            ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
+          }}>
+            <span>PUSH</span>
+            <div className="ArrUp">
+              <Arrow />
+            </div>
+          </Button>
+          <Button className={autoUpdate == true ? 'auto-update auto-update-on' : 'auto-update'}
+            onClick={() => {
+              setAutoapdate(autoUpdate == true ? false : true)
+            }} >
+            <Refresh />
+          </Button>
+          {dropDown}
+          {switchBtn}
+        </div>
       </div>
     </MuiThemeProvider>
   )

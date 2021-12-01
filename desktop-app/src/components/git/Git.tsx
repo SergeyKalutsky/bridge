@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import GitMenu from './GitMenu'
-import WorkspaceGit from './Workspace'
+import WorkspaceGit from './WorkspaceGit'
 
 type GitDiff = {
   filename: string
@@ -8,18 +8,16 @@ type GitDiff = {
   oldFile: string
 }
 
+const emptyDiff = [{ filename: '', newFile: '', oldFile: '' }]
 
-const Git = () => {
-  const [diffViewOption, setDiffViewOption] = useState(0)
-  const [gitDiff, setGitDiff] = useState<GitDiff[]>([{ filename: '', newFile: '', oldFile: '' }])
+const Git = (): JSX.Element => {
+  const [gitDiffs, setGitDiff] = useState<GitDiff[]>(emptyDiff)
   return (
     <>
-      <GitMenu  setGitDiff={setGitDiff} setDiffViewOption={setDiffViewOption}/>
-      <WorkspaceGit gitDiff={gitDiff} 
-                    diffViewOption={diffViewOption} 
-                    setDiffViewOption={setDiffViewOption}/>
+      <GitMenu setGitDiff={setGitDiff}/>
+      <WorkspaceGit gitDiffs={gitDiffs}/>
     </>
   )
 }
 
-export default Git
+export {Git, GitDiff}
