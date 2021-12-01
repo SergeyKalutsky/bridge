@@ -1,19 +1,18 @@
 import { Button } from '@material-ui/core';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createTheme , MuiThemeProvider } from '@material-ui/core/styles';
 import { ipcRenderer } from 'electron';
 import { Arrow, Refresh } from '../Icons';
 import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../App';
 import '../../assets/css/WorkspaceTab.css'
 
-const colortheme = createMuiTheme({
+const colortheme = createTheme({
   palette: {
     primary: { main: "#e91e63", contrastText: "#fff" },
     secondary: { main: "#005ff7", contrastText: "#fff" }
   }
 });
 
-<<<<<<< HEAD
 
 type Props = {
   switchBtn: JSX.Element
@@ -21,15 +20,6 @@ type Props = {
 }
 
 
-=======
-
-type Props = {
-  switchBtn: JSX.Element
-  dropDown: JSX.Element
-}
-
-
->>>>>>> f3cf730f6cf62171344a76b204c0ae7f8d66bbb4
 const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
   const { settings, setSettings } = useContext(SettingsContext)
   const [autoUpdate, setAutoapdate] = useState(false)

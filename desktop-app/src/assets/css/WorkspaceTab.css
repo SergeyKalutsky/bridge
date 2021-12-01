@@ -76,11 +76,7 @@ span.MuiButton-label {
     border-radius: 5px;
 }
 
-<<<<<<< HEAD
 .dropdown select{
-=======
-.dropdown select {
->>>>>>> f3cf730f6cf62171344a76b204c0ae7f8d66bbb4
     color: black;
     background: white;
     border: none;
@@ -89,14 +85,9 @@ span.MuiButton-label {
     border-radius: 5px;
 }
 
-<<<<<<< HEAD
 .dropdown select:focus{
     border: none;
     outline: none;
-=======
-.dropdown select:focus {
-    border: none
->>>>>>> f3cf730f6cf62171344a76b204c0ae7f8d66bbb4
 }
 
 .hidden {

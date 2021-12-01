@@ -45,8 +45,4 @@ const Git = (): JSX.Element => {
   )
 }
 
-<<<<<<< HEAD
-export {Git, GitDiff}
-=======
 export {Git, GitDiff, Commit}
->>>>>>> f3cf730f6cf62171344a76b204c0ae7f8d66bbb4
