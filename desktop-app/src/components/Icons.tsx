@@ -74,7 +74,7 @@ const ProjectIcon = (): JSX.Element => {
 const Arrow = (): JSX.Element => {
     return (
         <svg className="IconWTab" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.33333 1.77943L6.33333 14.2206M6.33333 14.2206L1 8.88869M6.33333 14.2206L11.6667 8.88869" stroke="white" stroke-width="2" strokeLinecap="round" />
+            <path d="M6.33333 1.77943L6.33333 14.2206M6.33333 14.2206L1 8.88869M6.33333 14.2206L11.6667 8.88869" stroke="white" strokeWidth="2" strokeLinecap="round" />
         </svg>
     )
 }
