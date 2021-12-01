@@ -10,23 +10,18 @@ interface Props {
 
 const DropDown = ({ gitDiffs,
     setDiffViewFileIndex,
-    diffViewFileIndex }: Props) => {
-    const [selectedClient, setSelectedClient] = useState(diffViewFileIndex);
+    diffViewFileIndex }: Props): JSX.Element => {
 
     const options = gitDiffs.map((diff, indx) =>
         <option value={indx} key={diff.filename}>
             {diff.filename}
         </option>
     )
-
-    useEffect(() => { setSelectedClient(diffViewFileIndex) })
     return (
         <div className='dropdown'>
-            <select name="select" value={selectedClient}
+            <select name="select" value={diffViewFileIndex}
                 onChange={(e) => {
-                    const index = Number(e.target.value);
-                    setSelectedClient(index)
-                    setDiffViewFileIndex(index);
+                    setDiffViewFileIndex(Number(e.target.value));
                 }}>
                 {options}
             </select>

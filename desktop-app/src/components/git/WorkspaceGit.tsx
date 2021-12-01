@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
 import '../../assets/css/Workspace.css'
@@ -17,6 +17,10 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
   const [diffViewFileIndex, setDiffViewFileIndex] = useState(0)
   const [splitView, setSplitView] = useState(true)
 
+  useEffect(() => {
+    setDiffViewFileIndex(0)
+    console.log('here')
+  }, [gitDiffs])
 
   const diff = gitDiffs[diffViewFileIndex]
   const switchBtn = (
