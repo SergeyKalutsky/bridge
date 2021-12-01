@@ -22,7 +22,7 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
   const switchBtn = (
     <Switch className='switch'
       onChange={() => {
-        splitView == true ? setSplitView(false) : setSplitView(true)
+        setSplitView(splitView == true ? false : true)
       }}
       checked={splitView} />
   )
@@ -34,12 +34,10 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
   return (
     <div className='workspace'>
       <div className='workspace-background'>
-        {/* Tab */}
         <WorkspaceTab
           switchBtn={switchBtn}
           dropDown={dropDown} />
 
-        {/* Diff View */}
         <div className='code'>
           <ReactDiffViewer styles={darkModeStyle}
             oldValue={diff.oldFile}
