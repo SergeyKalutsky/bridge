@@ -6,7 +6,8 @@
     background-color: #130d01;
 }
 
-.code {
+.workspace-background .code {
+    padding-top: 0;
     overflow: scroll;
     overflow-y: scroll;
     overflow-x: hidden;
