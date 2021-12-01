@@ -14,7 +14,7 @@ const Git = (): JSX.Element => {
   const [gitDiff, setGitDiff] = useState<GitDiff[]>([{ filename: '', newFile: '', oldFile: '' }])
   return (
     <>
-      <GitMenu  setGitDiff={setGitDiff} setDiffViewOption={setDiffViewOption}/>
+      <GitMenu  setGitDiff={setGitDiff}/>
       <WorkspaceGit gitDiff={gitDiff} 
                     diffViewOption={diffViewOption} 
                     setDiffViewOption={setDiffViewOption}/>

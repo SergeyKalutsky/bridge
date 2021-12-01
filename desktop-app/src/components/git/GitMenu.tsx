@@ -25,27 +25,23 @@ type HashElementProp = {
   activeHashRow: string
   setActiveHashRow: React.Dispatch<React.SetStateAction<string>>
   setGitDiff: React.Dispatch<React.SetStateAction<GitDiff[]>>
-  setDiffViewOption: React.Dispatch<React.SetStateAction<number>>
 }
 
 type GitMenuProp = {
   setGitDiff: React.Dispatch<React.SetStateAction<GitDiff[]>>
-  setDiffViewOption: React.Dispatch<React.SetStateAction<number>>
 }
 
 
 const HashElement = ({ hash,
   setGitDiff,
   activeHashRow,
-  setActiveHashRow,
-  setDiffViewOption }: HashElementProp): JSX.Element => {
+  setActiveHashRow }: HashElementProp): JSX.Element => {
   return (
     <div className={activeHashRow == hash ? 'git-hash active' : 'git-hash'}
       onClick={() => {
         setActiveHashRow(hash)
         const gitDiff = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
         setGitDiff(gitDiff)
-        setDiffViewOption(0)
       }}
     >
       <span className='commit'>commit</span>
@@ -54,10 +50,11 @@ const HashElement = ({ hash,
   )
 }
 
-const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element => {
+const GitMenu = ({ setGitDiff }: GitMenuProp): JSX.Element => {
   const { settings, setSettings } = useContext(SettingsContext)
   const [activeHashRow, setActiveHashRow] = useState<string>()
   const [hashList, setHashList] = useState<Array<Hash>>()
+
   useEffect(() => {
     const interval = setInterval(() => {
       const hashes = ipcRenderer.sendSync('git', { cmd: 'log', project: settings.active_project })
@@ -67,15 +64,16 @@ const GitMenu = ({ setGitDiff, setDiffViewOption }: GitMenuProp): JSX.Element =>
       clearInterval(interval);
     };
   }, [])
+
   const elements = hashList !== undefined ? hashList.map((hash) =>
     <HashElement hash={hash.hash}
       key={hash.hash}
       setGitDiff={setGitDiff}
       activeHashRow={activeHashRow}
       setActiveHashRow={setActiveHashRow}
-      setDiffViewOption={setDiffViewOption}
     />
   ) : null
+
   return (
     <div className='left-menu'>
       <div className='tab-header'>
