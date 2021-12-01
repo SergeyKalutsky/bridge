@@ -99,5 +99,9 @@ span.MuiButton-label {
 }
 
 span.MuiButton-label:hover {
-    background-color: darkslateblue;
+    background-color: #00569F;
+}
+
+.auto-update-on span.MuiButton-label{
+    background-color: #00569F !important;
 }

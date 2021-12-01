@@ -99,7 +99,8 @@ const WorkspaceTab = ({ setSplitView,
               <Arrow />
             </div>
           </Button>
-          <Button className="auto-update" onClick={() => {
+          <Button className={autoUpdate == true ? 'auto-update auto-update-on': 'auto-update'}
+              onClick={() => {
             setAutoapdate(autoUpdate == true ? false : true)
           }} >
             <Refresh />
