@@ -1,7 +1,6 @@
 import { Button } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { ipcRenderer } from 'electron';
-import Switch from "react-switch";
 import { Arrow, Refresh } from '../Icons';
 import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../App';
@@ -15,50 +14,13 @@ const colortheme = createMuiTheme({
 });
 
 
-type GitDiff = {
-  filename: string
-  newFile: string
-  oldFile: string
+type Props = {
+  switchBtn: JSX.Element
+  dropDown: JSX.Element
 }
 
-type WorkspaceTabProp = {
-  setDiffViewFileIndex?: React.Dispatch<React.SetStateAction<number>>
-  setSplitView?: React.Dispatch<React.SetStateAction<boolean>>
-  diffViewFileIndex: number
-  splitView?: boolean
-  gitDiff: GitDiff[]
-}
 
-const DropDown = ({ gitDiff,
-  setDiffViewFileIndex,
-  diffViewFileIndex }: WorkspaceTabProp) => {
-  const [selectedClient, setSelectedClient] = useState(diffViewFileIndex);
-
-  const options = gitDiff.map((diff, indx) =>
-    <option value={indx} key={diff.filename}>
-      {diff.filename}
-    </option>
-  )
-  
-  useEffect(() => { setSelectedClient(diffViewFileIndex) })
-  return (
-    <div className='dropdown'>
-      <select name="select" value={selectedClient}
-        onChange={(e) => {
-          const index = Number(e.target.value);
-          setSelectedClient(index)
-          setDiffViewFileIndex(index);
-        }}>
-        {options}
-      </select>
-    </div>
-  )
-}
-
-const WorkspaceTab = ({ setSplitView,
-  splitView,
-  gitDiff,
-  setDiffViewFileIndex, diffViewFileIndex }: WorkspaceTabProp): JSX.Element => {
+const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
   const { settings, setSettings } = useContext(SettingsContext)
   const [autoUpdate, setAutoapdate] = useState(false)
 
@@ -98,14 +60,8 @@ const WorkspaceTab = ({ setSplitView,
             }} >
             <Refresh />
           </Button>
-          <DropDown gitDiff={gitDiff}
-            diffViewFileIndex={diffViewFileIndex}
-            setDiffViewFileIndex={setDiffViewFileIndex} />
-          <Switch className='switch'
-            onChange={() => {
-              splitView == true ? setSplitView(false) : setSplitView(true)
-            }}
-            checked={splitView} />
+          {dropDown}
+          {switchBtn}
         </div>
       </div>
     </MuiThemeProvider>

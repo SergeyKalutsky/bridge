@@ -4,6 +4,8 @@ import WorkspaceTab from './WorkspaceTab'
 import '../../assets/css/Workspace.css'
 import darkModeStyle from './DiffViewerStyles'
 import { GitDiff } from './Git'
+import Switch from "react-switch";
+import DropDown from './DropDown';
 
 
 type Props = {
@@ -17,15 +19,25 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
 
 
   const diff = gitDiffs[diffViewFileIndex]
+  const switchBtn = (
+    <Switch className='switch'
+      onChange={() => {
+        splitView == true ? setSplitView(false) : setSplitView(true)
+      }}
+      checked={splitView} />
+  )
+  const dropDown = (
+    <DropDown gitDiffs={gitDiffs}
+      diffViewFileIndex={diffViewFileIndex}
+      setDiffViewFileIndex={setDiffViewFileIndex} />
+  )
   return (
     <div className='workspace'>
       <div className='workspace-background'>
         {/* Tab */}
-        <WorkspaceTab setSplitView={setSplitView}
-          splitView={splitView}
-          gitDiff={gitDiffs}
-          setDiffViewFileIndex={setDiffViewFileIndex}
-          diffViewFileIndex={diffViewFileIndex} />
+        <WorkspaceTab
+          switchBtn={switchBtn}
+          dropDown={dropDown} />
 
         {/* Diff View */}
         <div className='code'>
