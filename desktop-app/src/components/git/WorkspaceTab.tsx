@@ -15,16 +15,6 @@ const colortheme = createMuiTheme({
   }
 });
 
-const useStyles = makeStyles((theme) => ({
-  menuIcon: {
-    '& svg': {
-      fontSize: 100
-    },
-    'padding-left': 10,
-    'color': '#b3afb0'
-  }
-})
-);
 
 type GitDiff = {
   filename: string
@@ -46,7 +36,8 @@ const DropDown = ({ gitDiff,
   const [selectedClient, setSelectedClient] = useState(diffViewOption);
   const options = gitDiff.map((diff, indx) =>
     <option value={indx}
-      key={diff.filename}>{diff.filename}</option>
+      key={diff.filename}>{diff.filename}
+      </option>
   )
   useEffect(() => { setSelectedClient(diffViewOption) })
   return (
@@ -67,9 +58,9 @@ const WorkspaceTab = ({ setSplitView,
   splitView,
   gitDiff,
   setDiffViewOption, diffViewOption }: WorkspaceTabProp): JSX.Element => {
-  const classes = useStyles()
   const { settings, setSettings } = useContext(SettingsContext)
   const [autoUpdate, setAutoapdate] = useState(false)
+
   useEffect(() => {
     if (autoUpdate) {
       const interval = setInterval(() => {
@@ -81,6 +72,7 @@ const WorkspaceTab = ({ setSplitView,
       };
     }
   }, [autoUpdate])
+
   return (
     <MuiThemeProvider theme={colortheme}>
       <div className='tab'>

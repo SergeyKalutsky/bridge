@@ -13,8 +13,6 @@ type GitDiff = {
 
 type WorkspaceGitProp = {
   gitDiff: GitDiff[]
-  diffViewOption: number
-  setDiffViewOption: React.Dispatch<React.SetStateAction<number>>
 }
 
 type CodeSnipetsProp = {
@@ -38,7 +36,8 @@ const CodeSnipets = ({ diff, splitView, diffViewOption, index }: CodeSnipetsProp
 }
 
 
-const WorkspaceGit = ({ gitDiff, diffViewOption, setDiffViewOption }: WorkspaceGitProp): JSX.Element => {
+const WorkspaceGit = ({ gitDiff }: WorkspaceGitProp): JSX.Element => {
+  const [diffViewOption, setDiffViewOption] = useState(0)
   const [splitView, setSplitView] = useState(true)
   const gitDiffDisplays = gitDiff.map((diff, index) =>
     <CodeSnipets key={diff.filename}
