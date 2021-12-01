@@ -13,16 +13,46 @@
     background-color: #303030;
 }
 
-.modal {
-    align-content: center;
-    text-align: center;
-    font-size: 20px;
+.popup-content {
+    background: rgba(255, 255, 255, 0.055);
+    backdrop-filter: blur(10px);
+    border: none;
+    height: 400px;
+    width: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
 
+.modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 130px;
+    font-size: 35px;
+    color: white;
+    font-weight: 300;
+}
 
 .modal button {
-    font-size: 15px;
-    margin-left: 2%;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border-color: white;
+    border-radius: 10px;
+    height: 45px;
+    width: 150px;
+    transition: 0.5s;
+}
+
+.modal button:hover {
+    background-color: #29272C;
+}
+
+.modal button:focus {
+    outline: none;
 }
 
 .tab-text {
@@ -38,28 +68,24 @@
 .active {
     border-left: solid;
     border-color: beige;
-    display: flex;
-}
-
-.project .icon {
-    margin-left: 15px;
 }
 
 .project .icon:hover {
-    color: rgb(33, 10, 54);
-}
+    color: #00569F;
+}   
 
-.project span.selected {
-    margin-left: 120px;
+.project span {
+    margin-left: 10px;
 }
 
 .project {
     height: 60px;
     line-height: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     font-size: 26px;
+    cursor: pointer;
 }
 
 .project:hover {
@@ -68,16 +94,15 @@
 
 .project span {
     color: rgb(232, 225, 241);
-    cursor: pointer;
-    font-family: Sans-serif;
 }
 
 
 .icons {
-    margin-left: 60px;
     margin-right: 10px;
+    width: 65px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     cursor: pointer;
     color: rgb(255, 255, 255);
 }

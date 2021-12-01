@@ -24,9 +24,10 @@ const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Eleme
         <div className={'active_project' in settings &&
             settings.active_project.id == project.id ? 'project active' : 'project'}
             onMouseOver={() => { setActive(true) }}
-            onMouseLeave={() => { setActive(false) }}>
+            onMouseLeave={() => { setActive(false) }}
+            onClick={() => setOpen(true)}>
             <span className={active == true ? 'selected' : ''}
-            onClick={() => setOpen(true)}
+            // onClick={() => setOpen(true)}
             >{project.name}</span>
             <Popup
                 open={open}

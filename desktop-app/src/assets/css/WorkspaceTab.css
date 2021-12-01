@@ -39,6 +39,7 @@ span.MuiButton-label{
 .MuiButton-textSecondary,
 .MuiButton-textPrimary{
     height: 44px;
+    margin: 0 !important;
 }
 
 .ArrUp{
