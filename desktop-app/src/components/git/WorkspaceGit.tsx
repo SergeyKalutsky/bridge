@@ -11,52 +11,35 @@ type GitDiff = {
   oldFile: string
 }
 
-type WorkspaceGitProp = {
-  gitDiff: GitDiff[]
-}
-
-type CodeSnipetsProp = {
-  diff: GitDiff
-  splitView: boolean
-  diffViewOption: number
-  index: number
+type Props = {
+  gitDiffs: GitDiff[]
 }
 
 
-const CodeSnipets = ({ diff, splitView, diffViewOption, index }: CodeSnipetsProp) => {
-  const activeOption = diffViewOption === undefined ? 0 : diffViewOption
-  return (
-    <div className={activeOption === index ? 'code-snippet' : 'code-snippet hidden'}>
-      <ReactDiffViewer styles={darkModeStyle}
-        oldValue={diff.oldFile}
-        newValue={diff.newFile}
-        splitView={splitView} />
-    </div>
-  )
-}
-
-
-const WorkspaceGit = ({ gitDiff }: WorkspaceGitProp): JSX.Element => {
-  const [diffViewOption, setDiffViewOption] = useState(0)
+const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
+  const [diffViewFileIndex, setDiffViewFileIndex] = useState(0)
   const [splitView, setSplitView] = useState(true)
-  const gitDiffDisplays = gitDiff.map((diff, index) =>
-    <CodeSnipets key={diff.filename}
-      splitView={splitView}
-      diff={diff}
-      index={index}
-      diffViewOption={diffViewOption} />
-  )
+
+
+  const diff = gitDiffs[diffViewFileIndex]
   return (
     <div className='workspace'>
       <div className='workspace-background'>
+        {/* Tab */}
         <WorkspaceTab setSplitView={setSplitView}
           splitView={splitView}
-          gitDiff={gitDiff}
-          setDiffViewOption={setDiffViewOption} 
-          diffViewOption={diffViewOption}/>
+          gitDiff={gitDiffs}
+          setDiffViewFileIndex={setDiffViewFileIndex}
+          diffViewFileIndex={diffViewFileIndex} />
+
+        {/* Diff View */}
         <div className='code'>
-          {gitDiffDisplays}
+          <ReactDiffViewer styles={darkModeStyle}
+            oldValue={diff.oldFile}
+            newValue={diff.newFile}
+            splitView={splitView} />
         </div>
+
       </div>
     </div>
   )

@@ -1,12 +1,11 @@
 import { Button } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/core/styles';
-import '../../assets/css/WorkspaceTab.css'
 import { ipcRenderer } from 'electron';
 import Switch from "react-switch";
 import { Arrow, Refresh } from '../Icons';
 import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../App';
+import '../../assets/css/WorkspaceTab.css'
 
 const colortheme = createMuiTheme({
   palette: {
@@ -23,30 +22,32 @@ type GitDiff = {
 }
 
 type WorkspaceTabProp = {
-  setDiffViewOption?: React.Dispatch<React.SetStateAction<number>>
+  setDiffViewFileIndex?: React.Dispatch<React.SetStateAction<number>>
   setSplitView?: React.Dispatch<React.SetStateAction<boolean>>
-  diffViewOption: number
+  diffViewFileIndex: number
   splitView?: boolean
   gitDiff: GitDiff[]
 }
 
 const DropDown = ({ gitDiff,
-  setDiffViewOption,
-  diffViewOption }: WorkspaceTabProp) => {
-  const [selectedClient, setSelectedClient] = useState(diffViewOption);
+  setDiffViewFileIndex,
+  diffViewFileIndex }: WorkspaceTabProp) => {
+  const [selectedClient, setSelectedClient] = useState(diffViewFileIndex);
+
   const options = gitDiff.map((diff, indx) =>
-    <option value={indx}
-      key={diff.filename}>{diff.filename}
-      </option>
+    <option value={indx} key={diff.filename}>
+      {diff.filename}
+    </option>
   )
-  useEffect(() => { setSelectedClient(diffViewOption) })
+  
+  useEffect(() => { setSelectedClient(diffViewFileIndex) })
   return (
     <div className='dropdown'>
       <select name="select" value={selectedClient}
         onChange={(e) => {
           const index = Number(e.target.value);
           setSelectedClient(index)
-          setDiffViewOption(index);
+          setDiffViewFileIndex(index);
         }}>
         {options}
       </select>
@@ -57,7 +58,7 @@ const DropDown = ({ gitDiff,
 const WorkspaceTab = ({ setSplitView,
   splitView,
   gitDiff,
-  setDiffViewOption, diffViewOption }: WorkspaceTabProp): JSX.Element => {
+  setDiffViewFileIndex, diffViewFileIndex }: WorkspaceTabProp): JSX.Element => {
   const { settings, setSettings } = useContext(SettingsContext)
   const [autoUpdate, setAutoapdate] = useState(false)
 
@@ -91,15 +92,15 @@ const WorkspaceTab = ({ setSplitView,
               <Arrow />
             </div>
           </Button>
-          <Button className={autoUpdate == true ? 'auto-update auto-update-on': 'auto-update'}
-              onClick={() => {
-            setAutoapdate(autoUpdate == true ? false : true)
-          }} >
+          <Button className={autoUpdate == true ? 'auto-update auto-update-on' : 'auto-update'}
+            onClick={() => {
+              setAutoapdate(autoUpdate == true ? false : true)
+            }} >
             <Refresh />
           </Button>
           <DropDown gitDiff={gitDiff}
-            diffViewOption={diffViewOption}
-            setDiffViewOption={setDiffViewOption} />
+            diffViewFileIndex={diffViewFileIndex}
+            setDiffViewFileIndex={setDiffViewFileIndex} />
           <Switch className='switch'
             onChange={() => {
               splitView == true ? setSplitView(false) : setSplitView(true)

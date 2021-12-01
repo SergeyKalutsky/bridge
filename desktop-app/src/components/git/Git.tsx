@@ -11,11 +11,11 @@ type GitDiff = {
 const emptyDiff = [{ filename: '', newFile: '', oldFile: '' }]
 
 const Git = (): JSX.Element => {
-  const [gitDiff, setGitDiff] = useState<GitDiff[]>(emptyDiff)
+  const [gitDiffs, setGitDiff] = useState<GitDiff[]>(emptyDiff)
   return (
     <>
       <GitMenu setGitDiff={setGitDiff}/>
-      <WorkspaceGit gitDiff={gitDiff}/>
+      <WorkspaceGit gitDiffs={gitDiffs}/>
     </>
   )
 }
