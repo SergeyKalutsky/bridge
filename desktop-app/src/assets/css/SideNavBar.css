@@ -3,6 +3,7 @@
     height: calc(100%-30px);
     width: 90px;
     background-color: #303030;
+    border-right: 1px solid #242321;
     vertical-align: middle;
     text-align: center;
 }

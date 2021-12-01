@@ -36,13 +36,13 @@ const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
                         onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                 </div>
                 <div className='row checkbox'>
-                    <div>
+                    <div className="check">
                         <input type="checkbox"
                             checked={checked == 0}
                             onChange={() => { setChecked(0); setProject({ ...project, isclassroom: 0 }) }} />
                         <label>Личный проект</label>
                     </div>
-                    <div>
+                    <div className="check">
                         <input type="checkbox"
                             checked={checked == 1}
                             onChange={() => { setChecked(1); setProject({ ...project, isclassroom: 1 }) }} />

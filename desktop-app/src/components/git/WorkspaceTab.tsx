@@ -40,27 +40,31 @@ const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
     <MuiThemeProvider theme={colortheme}>
       <div className='tab'>
         <div className='workspace-tab'>
-          <Button className="BttnP" color="primary" onClick={() => {
-            ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
-          }}>
-            <span>PULL</span>
-            <Arrow />
-          </Button>
-          <Button className="BttnP" color="secondary" onClick={() => {
-            ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
-          }}>
-            <span>PUSH</span>
-            <div className="ArrUp">
+          <div>
+            <Button className="BttnP" color="primary" onClick={() => {
+              ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
+            }}>
+              <span>PULL</span>
               <Arrow />
-            </div>
-          </Button>
-          <Button className={autoUpdate == true ? 'auto-update auto-update-on' : 'auto-update'}
-            onClick={() => {
-              setAutoapdate(autoUpdate == true ? false : true)
-            }} >
-            <Refresh />
-          </Button>
-          {dropDown}
+            </Button>
+            <Button className="BttnP" color="secondary" onClick={() => {
+              ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
+            }}>
+              <span>PUSH</span>
+              <div className="ArrUp">
+                <Arrow />
+              </div>
+            </Button>
+          </div>
+          <div className="ReDrop">
+            <Button className={autoUpdate == true ? 'auto-update auto-update-on' : 'auto-update'}
+              onClick={() => {
+                setAutoapdate(autoUpdate == true ? false : true)
+              }} >
+              <Refresh />
+            </Button>
+            {dropDown}
+          </div>
           {switchBtn}
         </div>
       </div>

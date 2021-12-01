@@ -49,6 +49,7 @@
 
 .modal button:hover {
     background-color: #29272C;
+    cursor: pointer;
 }
 
 .modal button:focus {
@@ -70,12 +71,17 @@
     border-color: beige;
 }
 
+.project .icon {
+    transition: 0.5s;
+} 
+
 .project .icon:hover {
-    color: #00569F;
+    color: white;
 }   
 
 .project span {
     margin-left: 10px;
+    font-weight: 300;
 }
 
 .project {
@@ -96,7 +102,6 @@
     color: rgb(232, 225, 241);
 }
 
-
 .icons {
     margin-right: 10px;
     width: 65px;
@@ -104,5 +109,5 @@
     flex-direction: row;
     justify-content: space-between;
     cursor: pointer;
-    color: rgb(255, 255, 255);
+    color: #525252;
 }
