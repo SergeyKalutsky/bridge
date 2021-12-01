@@ -13,6 +13,7 @@ const colortheme = createMuiTheme({
   }
 });
 
+<<<<<<< HEAD
 
 type Props = {
   switchBtn: JSX.Element
@@ -20,6 +21,15 @@ type Props = {
 }
 
 
+=======
+
+type Props = {
+  switchBtn: JSX.Element
+  dropDown: JSX.Element
+}
+
+
+>>>>>>> f3cf730f6cf62171344a76b204c0ae7f8d66bbb4
 const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
   const { settings, setSettings } = useContext(SettingsContext)
   const [autoUpdate, setAutoapdate] = useState(false)
@@ -40,31 +50,29 @@ const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
     <MuiThemeProvider theme={colortheme}>
       <div className='tab'>
         <div className='workspace-tab'>
-          <div>
-            <Button className="BttnP" color="primary" onClick={() => {
+          <Button className="BttnP" color="primary"
+            onClick={() => {
               ipcRenderer.send('git', { cmd: 'pull', project: settings.active_project })
             }}>
-              <span>PULL</span>
-              <Arrow />
-            </Button>
-            <Button className="BttnP" color="secondary" onClick={() => {
+            <span>PULL</span>
+            <Arrow />
+          </Button>
+          <Button className="BttnP" color="secondary"
+            onClick={() => {
               ipcRenderer.send('git', { cmd: 'push', project: settings.active_project })
             }}>
-              <span>PUSH</span>
-              <div className="ArrUp">
-                <Arrow />
-              </div>
-            </Button>
-          </div>
-          <div className="ReDrop">
-            <Button className={autoUpdate == true ? 'auto-update auto-update-on' : 'auto-update'}
-              onClick={() => {
-                setAutoapdate(autoUpdate == true ? false : true)
-              }} >
-              <Refresh />
-            </Button>
-            {dropDown}
-          </div>
+            <span>PUSH</span>
+            <div className="ArrUp">
+              <Arrow />
+            </div>
+          </Button>
+          <Button className={autoUpdate == true ? 'auto-update auto-update-on' : 'auto-update'}
+            onClick={() => {
+              setAutoapdate(autoUpdate == true ? false : true)
+            }} >
+            <Refresh />
+          </Button>
+          {dropDown}
           {switchBtn}
         </div>
       </div>

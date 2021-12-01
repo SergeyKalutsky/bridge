@@ -40,7 +40,7 @@ const SideNavBar = (): JSX.Element => {
                 <CupIcon />
             </IconButton>
             <IconButton className={classes.menuIcon}>
-                <FileIcon />
+                <Link to="/editor" replace><FileIcon /></Link>
             </IconButton>
             <IconButton className={classes.menuIcon}>
                 {'active_project' in settings ?

@@ -1,49 +1,22 @@
 import '../../assets/css/leftMenu.css'
-import { useContext, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ipcRenderer } from 'electron'
-import { SettingsContext } from '../../App'
 import CommitRow from './CommitRow'
+import {GitDiff, Commit} from './Git'
 
-type GitDiff = {
-  filename: string
-  newFile: string
-  oldFile: string
-}
-
-type Commit = {
-  author_email?: string,
-  author_name?: string,
-  body?: string,
-  date?: string,
-  hash?: string,
-  message?: string,
-  refs?: string,
-  activeHashRow?: string,
-}
 
 type Props = {
-  setGitDiff: React.Dispatch<React.SetStateAction<GitDiff[]>>
+  setGitDiffs: React.Dispatch<React.SetStateAction<GitDiff[]>>
+  commitList: Commit[]
 }
 
 
-const GitMenu = ({ setGitDiff }: Props): JSX.Element => {
-  const { settings, setSettings } = useContext(SettingsContext)
+const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
   const [activeHashRow, setActiveHashRow] = useState<string>()
-  const [commitList, setHashList] = useState<Array<Commit>>()
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const hashes = ipcRenderer.sendSync('git', { cmd: 'log', project: settings.active_project })
-      setHashList(hashes)
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [])
 
   const onClickCallback = (hash: string) => {
-    const gitDiff = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
-    setGitDiff(gitDiff)
+    const gitDiffs = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
+    setGitDiffs(gitDiffs)
     setActiveHashRow(hash)
   }
 
