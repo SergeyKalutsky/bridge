@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { GitDiff } from './Git'
 
 interface Props {
@@ -6,7 +5,6 @@ interface Props {
     setDiffViewFileIndex?: React.Dispatch<React.SetStateAction<number>>
     diffViewFileIndex: number
 }
-
 
 const DropDown = ({ gitDiffs,
     setDiffViewFileIndex,

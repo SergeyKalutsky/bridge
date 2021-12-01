@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
-import '../../assets/css/Workspace.css'
 import darkModeStyle from './DiffViewerStyles'
 import { GitDiff } from './Git'
 import Switch from "react-switch";
 import DropDown from './DropDown';
+import '../../assets/css/Workspace.css'
 
 
 type Props = {
@@ -19,7 +19,6 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
 
   useEffect(() => {
     setDiffViewFileIndex(0)
-    console.log('here')
   }, [gitDiffs])
 
   const diff = gitDiffs[diffViewFileIndex]
@@ -44,8 +43,8 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
 
         <div className='code'>
           <ReactDiffViewer styles={darkModeStyle}
-            oldValue={diff.oldFile}
-            newValue={diff.newFile}
+            oldValue={diff !== undefined ? diff.oldFile: ''}
+            newValue={diff !== undefined ? diff.newFile: ''}
             splitView={splitView} />
         </div>
 
