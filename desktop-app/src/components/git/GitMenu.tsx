@@ -2,6 +2,7 @@ import '../../assets/css/leftMenu.css'
 import { useContext, useEffect, useState } from 'react'
 import { ipcRenderer } from 'electron'
 import { SettingsContext } from '../../App'
+import CommitRow from './CommitRow'
 
 type GitDiff = {
   filename: string
@@ -9,7 +10,7 @@ type GitDiff = {
   oldFile: string
 }
 
-type Hash = {
+type Commit = {
   author_email?: string,
   author_name?: string,
   body?: string,
@@ -20,40 +21,15 @@ type Hash = {
   activeHashRow?: string,
 }
 
-type HashElementProp = {
-  hash: string
-  activeHashRow: string
-  setActiveHashRow: React.Dispatch<React.SetStateAction<string>>
-  setGitDiff: React.Dispatch<React.SetStateAction<GitDiff[]>>
-}
-
-type GitMenuProp = {
+type Props = {
   setGitDiff: React.Dispatch<React.SetStateAction<GitDiff[]>>
 }
 
 
-const HashElement = ({ hash,
-  setGitDiff,
-  activeHashRow,
-  setActiveHashRow }: HashElementProp): JSX.Element => {
-  return (
-    <div className={activeHashRow == hash ? 'git-hash active' : 'git-hash'}
-      onClick={() => {
-        setActiveHashRow(hash)
-        const gitDiff = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
-        setGitDiff(gitDiff)
-      }}
-    >
-      <span className='commit'>commit</span>
-      <span className='hash'>{hash.substr(0, 8)}</span>
-    </div>
-  )
-}
-
-const GitMenu = ({ setGitDiff }: GitMenuProp): JSX.Element => {
+const GitMenu = ({ setGitDiff }: Props): JSX.Element => {
   const { settings, setSettings } = useContext(SettingsContext)
   const [activeHashRow, setActiveHashRow] = useState<string>()
-  const [hashList, setHashList] = useState<Array<Hash>>()
+  const [commitList, setHashList] = useState<Array<Commit>>()
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -65,12 +41,17 @@ const GitMenu = ({ setGitDiff }: GitMenuProp): JSX.Element => {
     };
   }, [])
 
-  const elements = hashList !== undefined ? hashList.map((hash) =>
-    <HashElement hash={hash.hash}
-      key={hash.hash}
-      setGitDiff={setGitDiff}
-      activeHashRow={activeHashRow}
-      setActiveHashRow={setActiveHashRow}
+  const onClickCallback = (hash: string) => {
+    const gitDiff = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
+    setGitDiff(gitDiff)
+    setActiveHashRow(hash)
+  }
+
+  const elements = commitList !== undefined ? commitList.map((commit) =>
+    <CommitRow hash={commit.hash}
+      key={commit.hash}
+      active={activeHashRow === commit.hash}
+      onClickCallback={onClickCallback}
     />
   ) : null
 
