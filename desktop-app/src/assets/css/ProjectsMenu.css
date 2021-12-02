@@ -81,6 +81,7 @@
 }
 
 .project {
+    margin-top: 5px;
     height: 60px;
     line-height: 50px;
     display: flex;
@@ -91,11 +92,11 @@
 }
 
 .project:hover {
-    background-color: rgb(70, 65, 80);
+    background-color: rgb(115, 112, 122);
 }
 
 .project span {
-    color: rgb(232, 225, 241);
+    color: rgb(172, 172, 172);
     width: 100%;
 }
 
@@ -106,5 +107,5 @@
     flex-direction: row;
     justify-content: space-between;
     cursor: pointer;
-    color: #525252;
+    color: #131010;
 }
