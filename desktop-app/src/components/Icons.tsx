@@ -123,7 +123,7 @@ const Refresh = (): JSX.Element => {
 const Adding = (): JSX.Element => {
     return (
         <svg width="24" height="24"xmlns="http://www.w3.org/2000/svg">
-            <path d="M11.9995 1V12M11.9995 23V12M11.9995 12H0.999999H23" stroke="white" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
+            <path d="M11.9995 1V12M11.9995 23V12M11.9995 12H0.999999H23" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
 
     )

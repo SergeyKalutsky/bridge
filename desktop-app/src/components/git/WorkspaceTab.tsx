@@ -1,17 +1,9 @@
 import { Button } from '@material-ui/core';
-import { createTheme , MuiThemeProvider } from '@material-ui/core/styles';
 import { ipcRenderer } from 'electron';
 import { Arrow, Refresh } from '../Icons';
 import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../App';
 import '../../assets/css/WorkspaceTab.css'
-
-const colortheme = createTheme({
-  palette: {
-    primary: { main: "#e91e63", contrastText: "#fff" },
-    secondary: { main: "#005ff7", contrastText: "#fff" }
-  }
-});
 
 
 type Props = {
@@ -37,7 +29,6 @@ const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
   }, [autoUpdate])
 
   return (
-    <MuiThemeProvider theme={colortheme}>
       <div className='tab'>
         <div className='workspace-tab'>
           <Button className="BttnP" color="primary"
@@ -66,7 +57,6 @@ const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
           {switchBtn}
         </div>
       </div>
-    </MuiThemeProvider>
   )
 }
 
