@@ -1,12 +1,12 @@
 import { Button } from '@material-ui/core';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createTheme , MuiThemeProvider } from '@material-ui/core/styles';
 import { ipcRenderer } from 'electron';
 import { Arrow, Refresh } from '../Icons';
 import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../App';
 import '../../assets/css/WorkspaceTab.css'
 
-const colortheme = createMuiTheme({
+const colortheme = createTheme({
   palette: {
     primary: { main: "#e91e63", contrastText: "#fff" },
     secondary: { main: "#005ff7", contrastText: "#fff" }

@@ -1,13 +1,4 @@
-.workspace-background {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    background-color: #130d01;
-}
-
-.workspace-background .code {
-    padding-top: 0;
+.code {
     overflow: scroll;
     overflow-y: scroll;
     overflow-x: hidden;

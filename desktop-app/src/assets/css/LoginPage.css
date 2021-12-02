@@ -11,11 +11,13 @@
     font-size: 70px;
     margin-bottom: 2%;
     color: white;
-    font-family: 'Raleway', sans-serif;
+    font-family: Raleway;
+    font-weight: 300;
 }
 
 .logo {
     height: 160px;
+    width: 270px;
 }
 
 .input-forms {

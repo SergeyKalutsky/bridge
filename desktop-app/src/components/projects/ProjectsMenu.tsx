@@ -6,13 +6,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import ProjectItem from './ProjectItem';
 import 'reactjs-popup/dist/index.css';
 import '../../assets/css/ProjectsMenu.css'
+import { Adding } from '../Icons';
 
 const useStyles = makeStyles(() => ({
   menuIcon: {
     '& svg': {
       fontSize: 30
     },
-    'margin-left': '40px',
     'color': '#b3afb0',
     'justify-content': 'flex-end'
 
@@ -61,7 +61,7 @@ const ProjectsMenu = ({ projects, setNewProject, removeByProjectID, dispatch }: 
               }
             })
           }}>
-          <AddCircleOutlineIcon />
+          <Adding />
         </IconButton >
 
         {/* <IconButton className={classes.menuIconSerach}

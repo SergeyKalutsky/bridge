@@ -1,8 +1,7 @@
 import { useContext, useState } from 'react'
 import { SettingsContext } from '../../App';
-import { UserIcon, KeyIcon } from '../Icons';
+import { LogoIcon, UserIcon, KeyIcon } from '../Icons';
 import '../../assets/css/LoginPage.css'
-import img from '../../assets/Logo.png';
 
 type InputForms = {
     login: string
@@ -34,7 +33,7 @@ const LoginPage = (): JSX.Element => {
                 Добро пожаловать!
             </div>
             <div className='input-forms'>
-                <img src={img} className='logo' />
+                <LogoIcon/>
                 <div className='inputContainer'>
                     <UserIcon />
                     <input className='inLog' type="text" placeholder='Логин'

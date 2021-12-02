@@ -1,3 +1,35 @@
+const LogoIcon = (): JSX.Element => {
+    return (
+        <svg className="logo" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M273.025 115.998V104.635C215.397 101.794 163.706 53.9063 163.706 0.336731H154.731C154.731 22.3277 148.597 40.5953 137.586 55.3684C126.737 40.8271 120.353 22.6581 120.026 0.336731H109.881C109.881 56.0001 53.5741 104.635 0.712463 104.635V115.998H109.881H120.026H154.731H163.706H273.025ZM154.731 104.635H121.145V85.5193C127.418 80.7383 132.98 75.4877 138.107 69.4896C143.166 75.0784 148.919 80.8758 154.731 86.1123V104.635ZM109.881 104.635H87.5601C95.8886 100.934 103.256 97.1833 109.881 93.1639V104.635ZM121.145 44.9781V72.2131C121.323 72.0718 121.5 71.93 121.676 71.7878C125.346 68.8249 128.747 65.6529 131.861 62.2682C125.419 54.4349 121.145 47.8214 121.145 44.9781ZM163.706 104.635H184.554C179.362 104.387 171.806 99.9999 163.706 93.6785V104.635ZM109.881 80.0525V44.9781C109.881 62.946 90.849 83.3841 65.2442 97.707C82.0719 93.6631 97.1311 87.8111 109.881 80.0525ZM143.589 62.5708C147.469 57.2987 151.136 51.482 154.731 44.9781V72.7891C157.582 75.0243 160.578 77.1289 163.706 79.1069V44.9781C163.706 57.2139 185.271 82.0992 214.857 98.9153C195.743 94.7964 178.286 88.3273 163.706 79.1069C160.578 77.1289 157.582 75.0243 154.731 72.7891C150.72 69.6451 146.995 66.2426 143.589 62.5708Z" fill="#00569F"/>
+            <path d="M163.706 160.837H154.731V124.989H163.706V160.837Z" fill="#00569F"/>
+            <path d="M120.026 160.837H109.881V124.989H120.026V160.837Z" fill="#00569F"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M163.706 55.3685L154.731 49.4679V72.7891C157.582 75.0243 160.578 77.1289 163.706 79.1069V55.3685ZM152.907 48.2078L145.594 42.2688C143.317 46.9073 140.639 51.2722 137.586 55.3685C139.457 57.8763 141.461 60.2762 143.589 62.5708C146.816 58.1871 149.894 53.4267 152.907 48.2078Z" fill="url(#paint0_linear_1118_294)"/>
+            <path d="M109.878 93.2851V80.0215L98.8081 86.0051L99.5061 99.0692L109.878 93.2851Z" fill="url(#paint1_linear_1118_294)"/>
+            <path d="M138.11 69.4961L131.859 62.2672L125.863 68.2077L133.58 74.5151C135.413 72.5866 136.414 71.4878 138.11 69.4961Z" fill="url(#paint2_linear_1118_294)"/>
+            <path d="M121.146 85.5208V72.2144C123.088 70.639 124.166 69.8122 126.031 68.0204L129.947 78.2038C126.559 81.2111 124.566 82.8951 121.146 85.5208Z" fill="url(#paint3_linear_1118_294)"/>
+            <defs>
+                <linearGradient id="paint0_linear_1118_294" x1="144.779" y1="78.8569" x2="161.374" y2="63.8897" gradientUnits="userSpaceOnUse">
+                    <stop/>
+                    <stop offset="1" stopOpacity="0"/>
+                </linearGradient>
+                <linearGradient id="paint1_linear_1118_294" x1="113.866" y1="88.2988" x2="101.6" y2="89.5454" gradientUnits="userSpaceOnUse">
+                    <stop/>
+                    <stop offset="1" stopOpacity="0"/>
+                </linearGradient>
+                <linearGradient id="paint2_linear_1118_294" x1="137.287" y1="63.5028" x2="130.826" y2="69.3496" gradientUnits="userSpaceOnUse">
+                    <stop/>
+                    <stop offset="1" stopOpacity="0"/>
+                </linearGradient>
+                <linearGradient id="paint3_linear_1118_294" x1="117.076" y1="78.2428" x2="127.397" y2="76.3996" gradientUnits="userSpaceOnUse">
+                    <stop/>
+                    <stop offset="1" stopOpacity="0"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    )
+}
+
 const UserIcon = (): JSX.Element => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24" >
@@ -88,7 +120,17 @@ const Refresh = (): JSX.Element => {
     )
 }
 
+const Adding = (): JSX.Element => {
+    return (
+        <svg width="24" height="24"xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.9995 1V12M11.9995 23V12M11.9995 12H0.999999H23" stroke="white" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
+        </svg>
+
+    )
+}
+
 export {
+    LogoIcon,
     UserIcon,
     KeyIcon, 
     CupIcon, 
@@ -96,5 +138,6 @@ export {
     GitIcon, 
     ProjectIcon, 
     Arrow, 
-    Refresh
+    Refresh,
+    Adding
 }

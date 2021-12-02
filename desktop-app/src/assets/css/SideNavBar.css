@@ -1,8 +1,9 @@
 .icon-nav-bar {
-    padding-top: 40px;
-    height: calc(100%-40px);
+    padding-top: 30px;
+    height: calc(100%-30px);
     width: 90px;
-    background-color: #0f1311;
+    background-color: #303030;
+    border-right: 1px solid #242321;
     vertical-align: middle;
     text-align: center;
 }
