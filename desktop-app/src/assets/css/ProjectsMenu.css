@@ -30,7 +30,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 130px;
+    height: 50px;
     font-size: 35px;
     color: white;
     font-weight: 300;
@@ -100,11 +100,12 @@
 
 .project span {
     color: rgb(232, 225, 241);
+    width: 100%;
 }
 
 .icons {
     margin-right: 10px;
-    width: 65px;
+    width: 80px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
