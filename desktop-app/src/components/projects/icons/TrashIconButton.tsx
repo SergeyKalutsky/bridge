@@ -34,7 +34,7 @@ const TrashIconButton = ({ name, id, removeByProjectID, setActive }: Props): JSX
             >
                 <div className="modal">
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
-                    <button className="close" onClick={() => {
+                    <button className="close danger" onClick={() => {
                         fetch('http://localhost:8000/projects/delete',
                             {
                                 method: 'POST',
@@ -49,11 +49,9 @@ const TrashIconButton = ({ name, id, removeByProjectID, setActive }: Props): JSX
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
                         removeByProjectID(id)
                         setSettings({ user: settings.user })
+                        setOpen(false)
                     }}>
                         Удалить
-                    </button>
-                    <button className="close" onClick={() => { setOpen(false) }}>
-                        Закрыть
                     </button>
                 </div>
             </Popup >
