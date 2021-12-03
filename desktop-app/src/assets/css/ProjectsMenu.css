@@ -74,6 +74,7 @@
 
 .project .non-active::after {
     content: "🔥";
+    color: rgb(255, 255, 255, 1);
 }
 
 .project .icon {
