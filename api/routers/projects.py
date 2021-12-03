@@ -1,15 +1,25 @@
-from os import access
 import jwt
 from api import gitlab_api as gapi
 from fastapi import APIRouter, Header, Depends
 from ..database import sess, t
 from ..dependencies import verify_token
 from ..types import Project
-
+from typing import Optional, List
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/projects",
                    tags=['projects'],
                    dependencies=[Depends(verify_token)])
+
+
+class ReturnProjects(BaseModel):
+    id: int
+    name: str
+    isclassroom: int
+    http: str
+
+    class Config:
+        orm_mode = True
 
 
 def project_already_exists(name):
@@ -35,15 +45,13 @@ def add_project_record(project, user_id, membership_accepted, access):
     sess.commit()
 
 
-@router.get('/list')
+@router.get('/list', response_model=List[ReturnProjects])
 async def list_projects(x_api_key: str = Header(None)):
     user_id = jwt.decode(x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
-    projects = sess.query(t.Projects.id,
-                          t.Projects.name,
-                          t.Projects.isclassroom).\
+    projects = sess.query(t.Projects).\
         filter(t.Members.project_id == t.Projects.id).\
         filter(t.Members.user_id == user_id).all()
-    return {'projects': [{'id': p.id, 'name': p.name, 'isclassroom': p.isclassroom} for p in projects]}
+    return projects
 
 
 @router.post('/create')

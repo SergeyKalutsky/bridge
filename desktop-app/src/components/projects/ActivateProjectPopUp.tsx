@@ -1,5 +1,8 @@
+import { ipcRenderer } from 'electron';
+import { useContext } from 'react';
 import Popup from 'reactjs-popup';
 import Project from './Projects'
+import { SettingsContext } from '../../App'
 
 interface Props {
     open: boolean
@@ -8,6 +11,7 @@ interface Props {
 }
 
 const ActiveteProjectPopUp = ({ open, setOpen, project }: Props): JSX.Element => {
+    const { settings, setSettings } = useContext(SettingsContext)
     return (
         <Popup
             open={open}
@@ -18,7 +22,13 @@ const ActiveteProjectPopUp = ({ open, setOpen, project }: Props): JSX.Element =>
             modal>
             <div className="modal">
                 <div>Проект отсутствует локально</div>
-                <button className="close">
+                <button className="close"
+                    onClick={() => {
+                        console.log(project)
+                        ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
+                        setOpen(false)
+                    }}
+                >
                     Скачать
                 </button>
                 <button className="close">

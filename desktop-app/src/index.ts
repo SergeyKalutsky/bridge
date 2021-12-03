@@ -47,8 +47,12 @@ ipcMain.on('git', (event, arg) => {
     } else if (arg['cmd'] === 'clone') {
       if (!fs.existsSync(project_dir)) {
         const folder = arg.project.name.replace(/ /g, '-')
+        const http = arg.project.http === undefined ?
+          `${GITLAB}/${arg.user.login}/${folder}.git` :
+          arg.project.http
+        console.log(http)
         git.cwd(BASE_DIR)
-          .clone(`${GITLAB}/${arg.user.login}/${folder}.git`)
+          .clone(http)
       }
     }
   } else if (arg['cmd'] === 'diff') {

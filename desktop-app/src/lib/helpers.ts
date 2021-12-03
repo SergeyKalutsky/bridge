@@ -8,6 +8,7 @@ type Project = {
     name: string
     isclassroom: number
     islocal: boolean
+    http: string
 }
 
 

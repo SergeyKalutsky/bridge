@@ -21,6 +21,7 @@ class Projects(Base):
     id = Column(Integer, primary_key=True, index=True)
     isclassroom = Column(Boolean)
     name = Column(String, unique=True)
+    http = Column(String)
 
 
 class Members(Base):

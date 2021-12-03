@@ -34,7 +34,7 @@ const fetchProjects = (settings: Settings,
         }
     })
         .then(response => response.json())
-        .then(data => setProjects(data['projects']))
+        .then(data => setProjects(data))
 
 }
 
