@@ -12,7 +12,7 @@ type Project = {
     id: number
     name: string
     isclassroom: number
-    setMember?: any
+    islocal: boolean
 }
 
 type State = {
@@ -46,9 +46,8 @@ function reducer(state: State, action: Action) {
 
 const Projects = (): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
-    const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0 }])
+    const [projects, setProjects] = useState<Array<Project>>([{ id: 0, name: "", isclassroom: 0, islocal: false }])
     const [state, dispatch] = useReducer(reducer, { page: null });
-
     const removeByProjectID = (project_id: number) => {
         const newProjects = []
         for (const project of projects) {

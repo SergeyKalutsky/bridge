@@ -34,6 +34,7 @@ interface Props {
 type Project = {
   id: number;
   name: string;
+  islocal: boolean
   isclassroom?: number
 }
 
@@ -60,11 +61,6 @@ const ProjectsMenu = ({ projects, setNewProject, removeByProjectID, dispatch }: 
           }}>
           <Adding />
         </IconButton >
-
-        {/* <IconButton className={classes.menuIconSerach}
-          onClick={() => { dispatch({ type: 'findProject' }) }}>
-          <FontAwesomeIcon icon={faSearch} />
-        </IconButton > */}
 
       </div>
       <div className='projects' >

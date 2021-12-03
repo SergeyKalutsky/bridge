@@ -1,6 +1,4 @@
 import React from 'react'
-import { ipcRenderer } from 'electron'
-import fs from 'fs'
 
 interface Settings {
     user?: {
@@ -27,22 +25,6 @@ type Project = {
 const BASE_URL = 'http://localhost:8000'
 
 
-const mapLocalProjects = (projects: Project[]) => {
-    const basedir = ipcRenderer.sendSync('projects', { cmd: 'getbasedir' })
-    fs.readdir(basedir, function (err: Error, files: []) {
-        projects.map((project, indx) => {
-            if (files.includes(project.name)) {
-                project.islocal = true
-                projects[indx] = project
-                return
-            }
-            project.islocal = false
-            projects[indx] = project
-        })
-    });
-    return projects
-}
-
 const fetchProjects = (settings: Settings,
     setProjects: React.Dispatch<React.SetStateAction<Project[]>>): void => {
     fetch(`${BASE_URL}/projects/list`, {
@@ -52,8 +34,7 @@ const fetchProjects = (settings: Settings,
         }
     })
         .then(response => response.json())
-        .then(data => setProjects(mapLocalProjects(data['projects'])))
-
+        .then(data => setProjects(data['projects']))
 
 }
 

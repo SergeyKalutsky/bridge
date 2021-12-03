@@ -3,11 +3,13 @@ import { useContext, useState } from "react"
 import UserIconButton from './icons/UserIconButton'
 import TrashIconButton from './icons/TrashIconButton'
 import { SettingsContext } from '../../App';
+import {mapLocalProject} from '../../lib/helpers'
 
 type Project = {
     id: number;
     name: string;
-    isclassroom?: number
+    islocal: boolean
+    isclassroom: number
 }
 
 interface Props {
@@ -17,16 +19,26 @@ interface Props {
 }
 
 const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Element => {
+    
     const [open, setOpen] = useState(false)
     const {settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
+    
+    project = mapLocalProject(project)
+    const buildSpanClassName = (project: Project) => {
+        let baseClass = ''
+        baseClass += project.islocal == false ? 'non-active ' : ''
+        baseClass += active == true ? 'selected' : ''
+        return baseClass
+    }
     return (
         <div className={'active_project' in settings &&
             settings.active_project.id == project.id ? 'project active' : 'project'}
             onMouseOver={() => { setActive(true) }}
             onMouseLeave={() => { setActive(false) }}>
-            <span className={active == true ? 'selected' : ''}
-                onClick={() => setOpen(true)}
+            <span className={buildSpanClassName(project)}
+                // onClick={() => setOpen(true)}
+                onClick={(e) => (console.log(e.target.className))}
             >{project.name}</span>
             <Popup
                 open={open}
@@ -55,7 +67,7 @@ const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Eleme
             {active &&
                 <div className='icons'>
                     <UserIconButton id={project.id} dispatch={dispatch} />
-                    <TrashIconButton name={project.name} id={project.id} removeByProjectID={removeByProjectID} setActive={setActive}/>
+                    <TrashIconButton name={project.name} id={project.id} removeByProjectID={removeByProjectID} setActive={setActive} />
                 </div>}
         </div>
     )

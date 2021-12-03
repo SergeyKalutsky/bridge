@@ -68,6 +68,14 @@
     border-color: beige;
 }
 
+.project .non-active {
+    color: rgb(255, 255, 255, 0.3);
+}
+
+.project .non-active::after {
+    content: "🔥";
+}
+
 .project .icon {
     transition: 0.5s;
 } 
