@@ -18,7 +18,7 @@ interface Props {
 
 const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
-    const { settings, setSettings } = useContext(SettingsContext)
+    const {settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
     return (
         <div className={'active_project' in settings &&

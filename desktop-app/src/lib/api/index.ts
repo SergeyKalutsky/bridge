@@ -40,7 +40,6 @@ const mapLocalProjects = (projects: Project[]) => {
             projects[indx] = project
         })
     });
-    console.log(projects)
     return projects
 }
 
