@@ -4,7 +4,7 @@ from .. import gitlab_api as gapi
 from ..database import sess, t
 from ..dependencies import verify_token
 from ..types import Member
-from typing import Optional, List
+from typing import  List
 from pydantic import BaseModel
 
 router = APIRouter(prefix="/members",
