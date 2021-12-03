@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { makeBaseDir } from './helpers';
+import { makeBaseDir } from './lib/helpers';
 import storage from 'electron-json-storage';
 import parseGitDiff from './lib/git_api/parse'
 import { git } from './lib/git_api/index'
@@ -9,7 +9,7 @@ import fs from 'fs'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 const GITLAB = 'https://gitlab.bridgeacross.xyz'
-let BASE_DIR = makeBaseDir(storage)
+let BASE_DIR = makeBaseDir()
 
 // Projects ===========================================================
 ipcMain.on('projects', (event, arg) => {
@@ -20,6 +20,9 @@ ipcMain.on('projects', (event, arg) => {
   if (arg['cmd'] === 'mkbasedir') {
     BASE_DIR = join(BASE_DIR, arg.settings.user.login)
     fs.mkdirSync(BASE_DIR, { recursive: true })
+  }
+  if (arg['cmd'] === 'getbasedir') {
+    event.returnValue = BASE_DIR
   }
 })
 
