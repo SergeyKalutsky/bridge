@@ -38,5 +38,18 @@ const fetchProjects = (settings: Settings,
 
 }
 
+const deleteMember = (settings: Settings,
+    project_id: number,
+    user_id: number): void => {
+    fetch(`${BASE_URL}/members/delete`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': settings['user']['X-API-Key'],
+        },
+        body: JSON.stringify({ project_id: project_id, user_id: user_id })
+    })
+}
 
-export { fetchProjects }
+
+export { fetchProjects, deleteMember }

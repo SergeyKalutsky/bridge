@@ -79,6 +79,13 @@ async def remove_member(member: Member,
         filter(t.Members.project_id == member.project_id).first()[0]
     if is_userowner and member.user_id == user_id:
         return {'status': 'failed', 'error': 'cant remove yourself'}
+    elif member.user_id == user_id:
+        gapi.remove_member(member)
+        sess.query(t.Members).\
+            filter(t.Members.project_id == member.project_id).\
+            filter(t.Members.user_id == member.user_id).delete()
+        sess.commit()
+        return {'status': 'success', 'res': 'user has been removed'}
     elif not is_userowner:
         return {'status': 'failed', 'error': 'you dont have rights to remove users'}
     else:

@@ -3,14 +3,16 @@ import { useContext } from 'react';
 import Popup from 'reactjs-popup';
 import Project from './Projects'
 import { SettingsContext } from '../../App'
+import { deleteMember } from '../../lib/api/index'
 
 interface Props {
     open: boolean
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
     project: Project
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setProject: React.Dispatch<React.SetStateAction<Project>>
 }
 
-const ActiveteProjectPopUp = ({ open, setOpen, project }: Props): JSX.Element => {
+const ActivateProjectPopUp = ({ open, setOpen, project, setProject }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     return (
         <Popup
@@ -24,14 +26,20 @@ const ActiveteProjectPopUp = ({ open, setOpen, project }: Props): JSX.Element =>
                 <div>Проект отсутствует локально</div>
                 <button className="close"
                     onClick={() => {
-                        console.log(project)
                         ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
                         setOpen(false)
+                        setProject({ ...project, islocal: true })
                     }}
                 >
                     Скачать
                 </button>
-                <button className="close">
+                <button className="close"
+                    onClick={() => {
+                        console.log(project.id, settings.user.id)
+                        deleteMember(settings, project.id, settings.user.id)
+                        setOpen(false)
+                    }}
+                >
                     Удалить
                 </button>
             </div>
@@ -39,4 +47,4 @@ const ActiveteProjectPopUp = ({ open, setOpen, project }: Props): JSX.Element =>
     )
 }
 
-export default ActiveteProjectPopUp
+export default ActivateProjectPopUp

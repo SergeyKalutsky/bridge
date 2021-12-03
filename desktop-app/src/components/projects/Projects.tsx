@@ -66,7 +66,6 @@ const Projects = (): JSX.Element => {
         dispatch({ type: 'home' })
     }
 
-
     useEffect(() => {
         fetchProjects(settings, setProjects)
     }, [])

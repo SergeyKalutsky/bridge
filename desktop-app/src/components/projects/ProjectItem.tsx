@@ -1,10 +1,10 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import UserIconButton from './icons/UserIconButton'
 import TrashIconButton from './icons/TrashIconButton'
 import { SettingsContext } from '../../App';
 import { mapLocalProject } from '../../lib/helpers'
 import SelectActiveProjectPopUp from './SelectActiveProjectPopUp'
-import ActiveteProjectPopUp from './ActivateProjectPopUp'
+import ActivateProjectPopUp from './ActivateProjectPopUp'
 import { Project } from './Projects'
 
 interface Props {
@@ -15,16 +15,15 @@ interface Props {
 
 
 const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Element => {
-
+    const [localProject, setProject] = useState(mapLocalProject(project))
     const [open, setOpen] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
     const { settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
 
-    project = mapLocalProject(project)
-    const buildSpanClassName = (project: Project) => {
+    const buildSpanClassName = () => {
         let baseClass = ''
-        baseClass += project.islocal == false ? 'non-active ' : ''
+        baseClass += localProject.islocal == false ? 'non-active ' : ''
         baseClass += active == true ? 'selected' : ''
         return baseClass
     }
@@ -36,32 +35,33 @@ const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Eleme
     return (
         <div className={'active_project' in settings &&
             settings.active_project.id == project.id ? 'project active' : 'project'}
-            onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
-            onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
+            onMouseOver={() => { localProject.islocal == true ? setActive(true) : null }}
+            onMouseLeave={() => { localProject.islocal == true ? setActive(false) : null }}>
 
-            <span className={buildSpanClassName(project)}
+            <span className={buildSpanClassName()}
                 onClick={(e) => {
                     e.target.className.includes('non-active') == true ?
                         setOpenActivate(true) :
                         setOpen(true)
                 }}
             >
-                {project.name}
+                {localProject.name}
             </span>
             <SelectActiveProjectPopUp
-                project={project}
+                project={localProject}
                 setOpen={setOpen}
                 open={open}
                 setPopUp={setPopUp} />
-            <ActiveteProjectPopUp
-                project={project}
+            <ActivateProjectPopUp
+                project={localProject}
                 setOpen={setOpenActivate}
-                open={openActivate} />
+                open={openActivate} 
+                setProject={setProject}/>
             {active &&
                 <div className='icons'>
-                    <UserIconButton id={project.id} dispatch={dispatch} />
-                    <TrashIconButton name={project.name}
-                        id={project.id}
+                    <UserIconButton id={localProject.id} dispatch={dispatch} />
+                    <TrashIconButton name={localProject.name}
+                        id={localProject.id}
                         removeByProjectID={removeByProjectID}
                         setActive={setActive} />
                 </div>}
