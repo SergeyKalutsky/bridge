@@ -34,6 +34,7 @@ def add_project_record(project, user_id, membership_accepted, access):
         id=project.id,
         isclassroom=project.isclassroom,
         name=project.name,
+        http=project.http
     ))
     sess.add(t.Members(
         user_id=user_id,
@@ -62,7 +63,7 @@ async def create_project(project: Project,
         return 'Exists'
     if project.isclassroom:
         project.name += '_teacher'
-    project.id = gapi.create_project(payload['sub'], project)
+    project.id, project.http = gapi.create_project(payload['sub'], project)
     add_project_record(project,
                        payload['sub'],
                        membership_accepted=True,

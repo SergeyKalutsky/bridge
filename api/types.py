@@ -24,3 +24,4 @@ class Project(BaseModel):
     name: Optional[str]
     isclassroom: Optional[bool] = None
     description: Optional[str] = ''
+    http: Optional[str] = ''

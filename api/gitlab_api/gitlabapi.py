@@ -9,7 +9,7 @@ def create_project(user_id, project):
     user = gl.users.get(user_id)
     project = user.projects.create({'name': project.name,
                                     'description': project.description})
-    return project.id
+    return project.id, project.http_url_to_repo
 
 
 def delete_user_project(user_id, project_name):
