@@ -1,13 +1,8 @@
 import { useContext, useState } from 'react'
 import { SettingsContext } from '../../../App'
+import {Member} from './ProjectMembers'
 
-interface Member {
-    id: number
-    name: string
-    iscurrent?: boolean
-}
-
-type MemberListProps = {
+type Props = {
     member: Member
     project_id: number
     addMember: (member: Member) => void
@@ -15,7 +10,7 @@ type MemberListProps = {
 
 const MembersList = ({ member,
     project_id,
-    addMember }: MemberListProps): JSX.Element => {
+    addMember }: Props): JSX.Element => {
     const [localMember, setlocalMember] = useState<Member>(member)
     const { settings, setSettings } = useContext(SettingsContext)
     return (

@@ -68,4 +68,4 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
 }
 
 
-export default ProjectMembers
+export {ProjectMembers, Member}

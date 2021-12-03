@@ -1,12 +1,8 @@
 import { useContext, useState } from 'react'
 import '../../assets/css/ProjectsCreate.css'
 import { SettingsContext } from '../../App'
-
-type Project = {
-    name: string,
-    description?: string,
-    isclassroom: number
-}
+import { createProject } from '../../lib/api/index'
+import { Project } from './Projects'
 
 interface Prop {
     setNewProject: React.Dispatch<React.SetStateAction<Project[]>>
@@ -51,19 +47,7 @@ const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
                 </div>
                 <div className='row'>
                     <button className='sumbit-form' type='submit' onClick={() => {
-                        fetch('http://localhost:8000/projects/create',
-                            {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'x-api-key': settings['user']['X-API-Key'],
-                                },
-                                body: JSON.stringify(project)
-
-                            })
-                            .then(response => response.json())
-                            .then(data => { data['status'] == 'created' ? setNewProject(data['project']) : console.log(data) })
-
+                        createProject(settings, project, setNewProject)
                     }}>Создать</button>
                 </div>
             </div>

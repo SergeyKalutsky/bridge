@@ -10,9 +10,10 @@ import '../../assets/css/Projects.css'
 type Project = {
     id: number
     name: string
-    isclassroom: number
+    isclassroom?: number
     islocal: boolean
     http: string
+    description?: string
 }
 
 type State = {

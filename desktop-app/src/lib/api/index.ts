@@ -20,6 +20,8 @@ type Project = {
     name: string
     isclassroom: number
     islocal: boolean
+    http: string
+    description?: string
 }
 
 const BASE_URL = 'http://localhost:8000'
@@ -51,6 +53,29 @@ const deleteMember = (settings: Settings,
     })
 }
 
+const createProject = (settings: Settings,
+    project: Project,
+    setNewProject: React.Dispatch<React.SetStateAction<Project[]>>): void => {
+    fetch(`${BASE_URL}/projects/create`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': settings['user']['X-API-Key'],
+            },
+            body: JSON.stringify(project)
+
+        })
+        .then(response => response.json())
+        .then(data => {
+            data['status'] == 'created' ?
+                setNewProject(data['project']) : console.log(data)
+        })
+}
 
 
-export { fetchProjects, deleteMember }
+export {
+    fetchProjects,
+    deleteMember,
+    createProject
+}
