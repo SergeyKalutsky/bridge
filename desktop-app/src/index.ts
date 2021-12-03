@@ -8,7 +8,6 @@ import fs from 'fs'
 
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
-const GITLAB = 'https://gitlab.bridgeacross.xyz'
 let BASE_DIR = makeBaseDir()
 
 // Projects ===========================================================

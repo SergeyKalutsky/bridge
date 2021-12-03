@@ -4,7 +4,7 @@ from fastapi import APIRouter, Header, Depends
 from ..database import sess, t
 from ..dependencies import verify_token
 from ..types import Project
-from typing import Optional, List
+from typing import List
 from pydantic import BaseModel
 
 router = APIRouter(prefix="/projects",
