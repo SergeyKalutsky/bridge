@@ -5,6 +5,7 @@ import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import ProjectMembers from './members/ProjectMembers'
 import ProjectFind from './ProjectFind'
+import { fetchProjects } from '../../lib/api/index'
 import '../../assets/css/Projects.css'
 
 type Project = {
@@ -26,7 +27,7 @@ type Action =
             setNewProject: React.Dispatch<React.SetStateAction<Project[]>>
         }
     }
-    | {type: 'home'}
+    | { type: 'home' }
 
 function reducer(state: State, action: Action) {
     switch (action.type) {
@@ -34,7 +35,7 @@ function reducer(state: State, action: Action) {
             return { page: <ProjectFind /> }
         case 'createProject':
             return {
-                page: <ProjectCreate setNewProject={action.payload.setNewProject}/>
+                page: <ProjectCreate setNewProject={action.payload.setNewProject} />
             }
         case 'memberFind':
             return { page: <ProjectMembers project_id={action.payload} /> }
@@ -61,19 +62,12 @@ const Projects = (): JSX.Element => {
     const setNewProject = (project: Project) => {
         ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
         setProjects([...projects, project])
-        dispatch({type: 'home'})
+        dispatch({ type: 'home' })
     }
 
 
     useEffect(() => {
-        fetch('http://localhost:8000/projects/list', {
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': settings['user']['X-API-Key'],
-            }
-        })
-            .then(response => response.json())
-            .then(data => setProjects(data['projects']))
+        fetchProjects(settings, setProjects)
     }, [])
 
     return (
