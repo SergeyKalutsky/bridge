@@ -4,13 +4,8 @@ import TrashIconButton from './icons/TrashIconButton'
 import { SettingsContext } from '../../App';
 import { mapLocalProject } from '../../lib/helpers'
 import SelectActiveProjectPopUp from './SelectActiveProjectPopUp'
-
-type Project = {
-    id: number;
-    name: string;
-    islocal: boolean
-    isclassroom: number
-}
+import ActiveteProjectPopUp from './ActivateProjectPopUp'
+import { Project } from './Projects'
 
 interface Props {
     project: Project
@@ -19,11 +14,10 @@ interface Props {
 }
 
 
-
-
 const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Element => {
 
     const [open, setOpen] = useState(false)
+    const [openActivate, setOpenActivate] = useState(false)
     const { settings, setSettings } = useContext(SettingsContext)
     const [active, setActive] = useState(false)
 
@@ -44,15 +38,25 @@ const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Eleme
             settings.active_project.id == project.id ? 'project active' : 'project'}
             onMouseOver={() => { setActive(true) }}
             onMouseLeave={() => { setActive(false) }}>
+
             <span className={buildSpanClassName(project)}
-                onClick={() => setOpen(true)}
-            // onClick={(e) => (console.log(e.target.className))}
-            >{project.name}</span>
+                onClick={(e) => {
+                    e.target.className.includes('non-active') == true ?
+                        setOpenActivate(true) :
+                        setOpen(true)
+                }}
+            >
+                {project.name}
+            </span>
             <SelectActiveProjectPopUp
                 project={project}
                 setOpen={setOpen}
                 open={open}
                 setPopUp={setPopUp} />
+            <ActiveteProjectPopUp
+                project={project}
+                setOpen={setOpenActivate}
+                open={openActivate} />
             {active &&
                 <div className='icons'>
                     <UserIconButton id={project.id} dispatch={dispatch} />

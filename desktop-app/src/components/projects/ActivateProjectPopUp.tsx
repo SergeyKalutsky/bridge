@@ -5,11 +5,9 @@ interface Props {
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
     project: Project
-    setPopUp: (active_project: Project) => void
-
 }
 
-const ActiveteProjectPopUp = ({ open, setOpen, project, setPopUp }: Props): JSX.Element => {
+const ActiveteProjectPopUp = ({ open, setOpen, project }: Props): JSX.Element => {
     return (
         <Popup
             open={open}
@@ -20,28 +18,10 @@ const ActiveteProjectPopUp = ({ open, setOpen, project, setPopUp }: Props): JSX.
             modal>
             <div className="modal">
                 <div>Проект отсутствует локально</div>
-                <button className="close" onClick={() => {
-                    const active_project = {
-                        name: project.name,
-                        id: project.id,
-                        isclassroom: project.isclassroom,
-                        isuserowner: 1,
-                        islocal: true
-                    }
-                    setPopUp(active_project)
-                }}>
+                <button className="close">
                     Скачать
                 </button>
-                <button className="close" onClick={() => {
-                    const active_project = {
-                        name: project.name,
-                        id: project.id,
-                        isclassroom: project.isclassroom,
-                        isuserowner: 1,
-                        islocal: true
-                    }
-                    setPopUp(active_project)
-                }}>
+                <button className="close">
                     Удалить
                 </button>
             </div>
