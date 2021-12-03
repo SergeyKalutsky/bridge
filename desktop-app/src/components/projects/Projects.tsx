@@ -4,7 +4,6 @@ import { SettingsContext } from '../../App'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import ProjectMembers from './members/ProjectMembers'
-import ProjectFind from './ProjectFind'
 import { fetchProjects } from '../../lib/api/index'
 import '../../assets/css/Projects.css'
 
