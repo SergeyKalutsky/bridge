@@ -36,8 +36,8 @@ const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Eleme
     return (
         <div className={'active_project' in settings &&
             settings.active_project.id == project.id ? 'project active' : 'project'}
-            onMouseOver={() => { setActive(true) }}
-            onMouseLeave={() => { setActive(false) }}>
+            onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
+            onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
 
             <span className={buildSpanClassName(project)}
                 onClick={(e) => {
