@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
+import { makeBaseDir } from './helpers';
 import storage from 'electron-json-storage';
 import parseGitDiff from './lib/git_api/parse'
 import { git } from './lib/git_api/index'
@@ -8,13 +9,17 @@ import fs from 'fs'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 const GITLAB = 'https://gitlab.bridgeacross.xyz'
-const BASEE_DIR = storage.getDataPath()
+let BASE_DIR = makeBaseDir(storage)
 
 // Projects ===========================================================
 ipcMain.on('projects', (event, arg) => {
   if (arg['cmd'] === 'delete') {
-    const dir = join(BASEE_DIR, arg.project.name.replace(/ /g, '-'))
+    const dir = join(BASE_DIR, arg.project.name.replace(/ /g, '-'))
     fs.rmdirSync(dir, { recursive: true });
+  }
+  if (arg['cmd'] === 'mkbasedir') {
+    BASE_DIR = join(BASE_DIR, arg.settings.user.login)
+    fs.mkdirSync(BASE_DIR, { recursive: true })
   }
 })
 
@@ -22,7 +27,7 @@ ipcMain.on('projects', (event, arg) => {
 ipcMain.on('git', (event, arg) => {
 
   if (arg.project !== undefined) {
-    const project_dir = join(BASEE_DIR, arg.project.name.replace(/ /g, '-'))
+    const project_dir = join(BASE_DIR, arg.project.name.replace(/ /g, '-'))
 
     if (arg['cmd'] === 'log') {
       git.cwd(project_dir).log().then(result => {
@@ -39,7 +44,7 @@ ipcMain.on('git', (event, arg) => {
     } else if (arg['cmd'] === 'clone') {
       if (!fs.existsSync(project_dir)) {
         const folder = arg.project.name.replace(/ /g, '-')
-        git.cwd(BASEE_DIR)
+        git.cwd(BASE_DIR)
           .clone(`${GITLAB}/${arg.user.login}/${folder}.git`)
       }
     }

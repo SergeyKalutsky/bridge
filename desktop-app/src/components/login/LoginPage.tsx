@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import { useContext, useState } from 'react'
 import { SettingsContext } from '../../App';
 import { LogoIcon, UserIcon, KeyIcon } from '../Icons';
@@ -26,6 +27,7 @@ const LoginPage = (): JSX.Element => {
             data['password'] = loginData.password
             setSettings({ user: data })
         }
+        ipcRenderer.send('projects', { cmd: 'mkbasedir', settings: { user: data } })
     }
     return (
         <div className='content'>
@@ -33,7 +35,7 @@ const LoginPage = (): JSX.Element => {
                 Добро пожаловать!
             </div>
             <div className='input-forms'>
-                <LogoIcon/>
+                <LogoIcon />
                 <div className='inputContainer'>
                     <UserIcon />
                     <input className='inLog' type="text" placeholder='Логин'
