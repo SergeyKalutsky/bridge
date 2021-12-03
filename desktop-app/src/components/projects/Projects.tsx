@@ -86,4 +86,4 @@ const Projects = (): JSX.Element => {
 }
 
 
-export { Projects }
+export { Projects, Project }

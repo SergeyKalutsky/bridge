@@ -4,6 +4,7 @@ import ProjectItem from './ProjectItem';
 import 'reactjs-popup/dist/index.css';
 import '../../assets/css/ProjectsMenu.css'
 import { Adding } from '../Icons';
+import { Project } from './Projects'
 
 const useStyles = makeStyles(() => ({
   menuIcon: {
@@ -13,13 +14,6 @@ const useStyles = makeStyles(() => ({
     'color': '#b3afb0',
     'justify-content': 'flex-end'
 
-  },
-  menuIconSerach: {
-    '& svg': {
-      fontSize: 25
-    },
-    'color': '#b3afb0',
-    'justify-content': 'flex-end'
   }
 })
 );
@@ -29,13 +23,6 @@ interface Props {
   dispatch: React.Dispatch<any>
   removeByProjectID: (project_id: number) => void
   setNewProject: (project: Project) => void
-}
-
-type Project = {
-  id: number;
-  name: string;
-  islocal: boolean
-  isclassroom?: number
 }
 
 
