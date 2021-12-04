@@ -46,10 +46,8 @@ const deleteMember = (settings: Settings,
     })
 }
 
-const createProject = (settings: Settings,
-    project: Project,
-    setNewProject: React.Dispatch<React.SetStateAction<Project[]>>): void => {
-    fetch(`${BASE_URL}/projects/create`,
+const createProject = (settings: Settings, project: Project): Promise<Response> => {
+    return fetch(`${BASE_URL}/projects/create`,
         {
             method: 'POST',
             headers: {
@@ -58,11 +56,6 @@ const createProject = (settings: Settings,
             },
             body: JSON.stringify(project)
 
-        })
-        .then(response => response.json())
-        .then(data => {
-            data['status'] == 'created' ?
-                setNewProject(data['project']) : console.log(data)
         })
 }
 
