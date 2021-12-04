@@ -41,7 +41,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                 }
             })
             .then(response => response.json())
-            .then(data => setMembersCurrent(data))
+            .then(data => data !== null ? setMembersCurrent(data) : null)
     }, [])
     return (
         <div className='menu'>
