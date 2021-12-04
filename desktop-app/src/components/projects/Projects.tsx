@@ -32,8 +32,6 @@ type Action =
 
 function reducer(state: State, action: Action) {
     switch (action.type) {
-        case 'findProject':
-            return { page: <ProjectFind /> }
         case 'createProject':
             return {
                 page: <ProjectCreate setNewProject={action.payload.setNewProject} />
