@@ -3,23 +3,12 @@ from api import gitlab_api as gapi
 from fastapi import APIRouter, Header, Depends
 from ..database import sess, t
 from ..dependencies import verify_token
-from ..types import Project
+from ..schemas import Project, ReturnProjects
 from typing import List
-from pydantic import BaseModel
 
 router = APIRouter(prefix="/projects",
                    tags=['projects'],
                    dependencies=[Depends(verify_token)])
-
-
-class ReturnProjects(BaseModel):
-    id: int
-    name: str
-    isclassroom: int
-    http: str
-
-    class Config:
-        orm_mode = True
 
 
 def project_already_exists(name):

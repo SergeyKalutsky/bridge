@@ -3,21 +3,12 @@ from fastapi import APIRouter, Depends, Header
 from .. import gitlab_api as gapi
 from ..database import sess, t
 from ..dependencies import verify_token
-from ..types import Member
+from ..schemas import Member, ReturnMember
 from typing import  List
-from pydantic import BaseModel
 
 router = APIRouter(prefix="/members",
                    tags=['members'],
                    dependencies=[Depends(verify_token)])
-
-class ReturnMember(BaseModel):
-    id: int
-    name: str
-
-    class Config:
-        orm_mode = True
-
 
 
 @router.post('/add')

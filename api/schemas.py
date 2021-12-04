@@ -2,6 +2,32 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+class ReturnMember(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class ReturnProjects(BaseModel):
+    id: int
+    name: str
+    isclassroom: int
+    http: str
+
+    class Config:
+        orm_mode = True
+
+
+class ReturnUser(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
 class Member(BaseModel):
     user_id: Optional[int] = None
     project_id: Optional[int] = None

@@ -3,19 +3,9 @@ from fastapi import APIRouter, Depends, Header
 from .. import gitlab_api as gapi
 from ..database import sess, t
 from ..dependencies import verify_token
-from ..types import User
+from ..schemas import User, ReturnUser
 from ..security import hashed_password
-from typing import Optional, List
-from pydantic import BaseModel
-
-
-class ReturnUser(BaseModel):
-    id: int
-    name: str
-
-    class Config:
-        orm_mode = True
-
+from typing import List
 
 router = APIRouter(prefix="/users",
                    tags=['users'],
