@@ -3,6 +3,7 @@ import { SettingsContext } from '../../../App'
 import MembersList from './MembersList'
 import Popup from 'reactjs-popup';
 import { Member } from './ProjectMembers'
+import { findUser } from '../../../lib/api/index'
 
 interface Props {
     search: string
@@ -37,16 +38,7 @@ const FindMembersPopUp = ({ membersCurrent,
         setMembersFind(membersFound)
     }
     useEffect(() => {
-        fetch(`http://localhost:8000/users/find`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': settings['user']['X-API-Key']
-                },
-                body: JSON.stringify({ name: search })
-            })
-            .then(response => response.json())
+        findUser(settings, search)
             .then(data => mapProjectMembership(data))
     }, [search, membersCurrent])
 

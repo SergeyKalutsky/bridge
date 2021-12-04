@@ -66,10 +66,42 @@ const listProjectMembers = (settings: Settings, project_id: number): Promise<any
         .then(response => response.json())
 }
 
+const addProjectMember = (settings: Settings,
+    member_id: number,
+    project_id: number) => {
+    fetch('http://localhost:8000/members/add',
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': settings['user']['X-API-Key']
+            },
+            body: JSON.stringify({
+                user_id: member_id,
+                project_id: project_id
+            })
+        })
+}
+
+
+const findUser = (settings: Settings, search: string) => {
+    return fetch(`http://localhost:8000/users/find`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': settings['user']['X-API-Key']
+            },
+            body: JSON.stringify({ name: search })
+        })
+        .then(response => response.json())
+}
 
 export {
     fetchProjects,
     deleteMember,
     createProject,
-    listProjectMembers
+    listProjectMembers,
+    addProjectMember,
+    findUser
 }
