@@ -3,7 +3,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import projects, users, members
-from .types import User
+from .schemas import User
 from .database import sess, t
 from .security import encode_auth_token, check_password
 
