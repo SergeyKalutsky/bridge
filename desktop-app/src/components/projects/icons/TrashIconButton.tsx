@@ -10,10 +10,10 @@ type Props = {
     id: number
     name: string
     setActive: React.Dispatch<React.SetStateAction<boolean>>
-    removeByProjectID: (project_id: number) => void
+    removeProject: (project_id: number) => void
 }
 
-const TrashIconButton = ({ name, id, removeByProjectID, setActive }: Props): JSX.Element => {
+const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [open, setOpen] = useState(false)
     return (
@@ -47,7 +47,7 @@ const TrashIconButton = ({ name, id, removeByProjectID, setActive }: Props): JSX
                             .then(response => response.json())
 
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
-                        removeByProjectID(id)
+                        removeProject(id)
                         setSettings({ user: settings.user })
                         setOpen(false)
                     }}>

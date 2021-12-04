@@ -5,6 +5,7 @@ import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import ProjectMembers from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
+import { mapLocalProject } from '../../lib/helpers'
 import '../../assets/css/Projects.css'
 
 type Project = {
@@ -25,7 +26,7 @@ type Action =
     | { type: 'findProject' }
     | {
         type: 'createProject', payload: {
-            setNewProject: React.Dispatch<React.SetStateAction<Project[]>>
+            addProject: React.Dispatch<React.SetStateAction<Project[]>>
         }
     }
     | { type: 'home' }
@@ -34,7 +35,7 @@ function reducer(state: State, action: Action) {
     switch (action.type) {
         case 'createProject':
             return {
-                page: <ProjectCreate setNewProject={action.payload.setNewProject} />
+                page: <ProjectCreate addProject={action.payload.addProject} />
             }
         case 'memberFind':
             return { page: <ProjectMembers project_id={action.payload} /> }
@@ -48,7 +49,8 @@ const Projects = (): JSX.Element => {
     const defaultObj = [{ id: 0, name: "", isclassroom: 0, islocal: false, http: '' }]
     const [projects, setProjects] = useState<Array<Project>>(defaultObj)
     const [state, dispatch] = useReducer(reducer, { page: null });
-    const removeByProjectID = (project_id: number) => {
+
+    const removeProject = (project_id: number) => {
         const newProjects = []
         for (const project of projects) {
             if (project.id !== project_id) {
@@ -58,22 +60,42 @@ const Projects = (): JSX.Element => {
         setProjects(newProjects)
     }
 
-    const setNewProject = (project: Project) => {
+    const addProject = (project: Project) => {
         ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
         setProjects([...projects, project])
         dispatch({ type: 'home' })
     }
 
+    const updateProjects = (project: Project) => {
+        const newProjects = []
+        for (const oldProject of projects) {
+            if (oldProject.id === project.id){
+                newProjects.push(project)
+            } else {
+                newProjects.push(oldProject)
+            }
+        }
+        setProjects(newProjects)
+    }
+
+
     useEffect(() => {
-        fetchProjects(settings, setProjects)
+        fetchProjects(settings)
+        .then(response => response.json())
+        .then(data => {
+            const projects = data.map(project => mapLocalProject(project))
+            setProjects(projects)
+        })
     }, [])
 
     return (
         <>
             <ProjectsMenu projects={projects}
-                removeByProjectID={removeByProjectID}
-                setNewProject={setNewProject}
+                removeProject={removeProject}
+                updateProjects={updateProjects}
+                addProject={addProject}
                 dispatch={dispatch} />
+
             <div className='workspace'>
                 <div className='workspace-background'>
                     {state.page}

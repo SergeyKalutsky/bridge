@@ -21,16 +21,24 @@ const useStyles = makeStyles(() => ({
 interface Props {
   projects: Project[]
   dispatch: React.Dispatch<any>
-  removeByProjectID: (project_id: number) => void
-  setNewProject: (project: Project) => void
+  updateProjects: (project: Project) => void
+  removeProject: (project_id: number) => void
+  addProject: (project: Project) => void
 }
 
 
-const ProjectsMenu = ({ projects, setNewProject, removeByProjectID, dispatch }: Props): JSX.Element => {
+const ProjectsMenu = ({ projects,
+  addProject,
+  removeProject,
+  dispatch,
+  updateProjects }: Props): JSX.Element => {
   const classes = useStyles()
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
-      <ProjectItem project={project} dispatch={dispatch} removeByProjectID={removeByProjectID} />
+      <ProjectItem project={project}
+        dispatch={dispatch}
+        removeProject={removeProject}
+        updateProjects={updateProjects} />
     </div>)
 
   return (
@@ -42,7 +50,7 @@ const ProjectsMenu = ({ projects, setNewProject, removeByProjectID, dispatch }: 
           onClick={() => {
             dispatch({
               type: 'createProject', payload: {
-                setNewProject: setNewProject
+                addProject: addProject
               }
             })
           }}>

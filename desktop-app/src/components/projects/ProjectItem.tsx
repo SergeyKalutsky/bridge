@@ -1,21 +1,23 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import UserIconButton from './icons/UserIconButton'
 import TrashIconButton from './icons/TrashIconButton'
 import { SettingsContext } from '../../App';
-import { mapLocalProject } from '../../lib/helpers'
 import SelectActiveProjectPopUp from './SelectActiveProjectPopUp'
 import ActivateProjectPopUp from './ActivateProjectPopUp'
 import { Project } from './Projects'
 
-interface Props {
+type Props = {
     project: Project
     dispatch: React.Dispatch<any>
-    removeByProjectID: (project_id: number) => void
+    removeProject: (project_id: number) => void
+    updateProjects: (project: Project) => void
 }
 
 
-const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Element => {
-    const [localProject, setProject] = useState(mapLocalProject(project))
+const ProjectItem = ({ project,
+    removeProject,
+    dispatch,
+    updateProjects }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
     const { settings, setSettings } = useContext(SettingsContext)
@@ -23,7 +25,7 @@ const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Eleme
 
     const buildSpanClassName = () => {
         let baseClass = ''
-        baseClass += localProject.islocal == false ? 'non-active ' : ''
+        baseClass += project.islocal == false ? 'non-active ' : ''
         baseClass += active == true ? 'selected' : ''
         return baseClass
     }
@@ -35,8 +37,8 @@ const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Eleme
     return (
         <div className={'active_project' in settings &&
             settings.active_project.id == project.id ? 'project active' : 'project'}
-            onMouseOver={() => { localProject.islocal == true ? setActive(true) : null }}
-            onMouseLeave={() => { localProject.islocal == true ? setActive(false) : null }}>
+            onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
+            onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
 
             <span className={buildSpanClassName()}
                 onClick={(e) => {
@@ -45,24 +47,24 @@ const ProjectItem = ({ project, removeByProjectID, dispatch }: Props): JSX.Eleme
                         setOpen(true)
                 }}
             >
-                {localProject.name}
+                {project.name}
             </span>
             <SelectActiveProjectPopUp
-                project={localProject}
+                project={project}
                 setOpen={setOpen}
                 open={open}
                 setPopUp={setPopUp} />
             <ActivateProjectPopUp
-                project={localProject}
+                project={project}
                 setOpen={setOpenActivate}
-                open={openActivate} 
-                setProject={setProject}/>
+                open={openActivate}
+                updateProjects={updateProjects} />
             {active &&
                 <div className='icons'>
-                    <UserIconButton id={localProject.id} dispatch={dispatch} />
-                    <TrashIconButton name={localProject.name}
-                        id={localProject.id}
-                        removeByProjectID={removeByProjectID}
+                    <UserIconButton id={project.id} dispatch={dispatch} />
+                    <TrashIconButton name={project.name}
+                        id={project.id}
+                        removeProject={removeProject}
                         setActive={setActive} />
                 </div>}
         </div>

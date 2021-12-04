@@ -5,16 +5,19 @@ import { createProject } from '../../lib/api/index'
 import { Project } from './Projects'
 
 interface Prop {
-    setNewProject: React.Dispatch<React.SetStateAction<Project[]>>
+    addProject: React.Dispatch<React.SetStateAction<Project[]>>
 }
 
 const dummyProject: Project = {
+    id: null,
+    islocal: true,
     name: '',
     description: '',
-    isclassroom: 0
+    isclassroom: 0,
+    http: ''
 }
 
-const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
+const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     const [checked, setChecked] = useState<number>(0)
     const [project, setProject] = useState<Project>(dummyProject)
@@ -49,7 +52,7 @@ const ProjectsCreate = ({ setNewProject }: Prop): JSX.Element => {
                     <button className='sumbit-form' type='submit' onClick={() => {
                         createProject(settings, project)
                         .then(response => response.json())
-                        .then(data => setNewProject(data['project']))
+                        .then(data => addProject(data['project']))
                     }}>Создать</button>
                 </div>
             </div>

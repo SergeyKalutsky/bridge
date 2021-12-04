@@ -1,4 +1,3 @@
-import React from 'react'
 import { Project } from '../../components/projects/Projects'
 
 interface Settings {
@@ -20,17 +19,13 @@ interface Settings {
 const BASE_URL = 'http://localhost:8000'
 
 
-const fetchProjects = (settings: Settings,
-    setProjects: React.Dispatch<React.SetStateAction<Project[]>>): void => {
-    fetch(`${BASE_URL}/projects/list`, {
+const fetchProjects = (settings: Settings): Promise<Response> => {
+    return fetch(`${BASE_URL}/projects/list`, {
         headers: {
             'Content-Type': 'application/json',
             'x-api-key': settings['user']['X-API-Key'],
         }
     })
-        .then(response => response.json())
-        .then(data => setProjects(data))
-
 }
 
 const deleteMember = (settings: Settings,
@@ -55,7 +50,6 @@ const createProject = (settings: Settings, project: Project): Promise<Response> 
                 'x-api-key': settings['user']['X-API-Key'],
             },
             body: JSON.stringify(project)
-
         })
 }
 

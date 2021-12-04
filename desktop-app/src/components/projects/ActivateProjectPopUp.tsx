@@ -9,10 +9,10 @@ interface Props {
     open: boolean
     project: Project
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
-    setProject: React.Dispatch<React.SetStateAction<Project>>
+    updateProjects: (project: Project) => void
 }
 
-const ActivateProjectPopUp = ({ open, setOpen, project, setProject }: Props): JSX.Element => {
+const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
     return (
         <Popup
@@ -28,14 +28,13 @@ const ActivateProjectPopUp = ({ open, setOpen, project, setProject }: Props): JS
                     onClick={() => {
                         ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
                         setOpen(false)
-                        setProject({ ...project, islocal: true })
+                        updateProjects({ ...project, islocal: true })
                     }}
                 >
                     Скачать
                 </button>
                 <button className="close"
                     onClick={() => {
-                        console.log(project.id, settings.user.id)
                         deleteMember(settings, project.id, settings.user.id)
                         setOpen(false)
                     }}
