@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron'
 import { SettingsContext } from '../../App'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
-import ProjectMembers from './members/ProjectMembers'
+import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
 import { mapLocalProject } from '../../lib/helpers'
 import '../../assets/css/Projects.css'
@@ -69,7 +69,7 @@ const Projects = (): JSX.Element => {
     const updateProjects = (project: Project) => {
         const newProjects = []
         for (const oldProject of projects) {
-            if (oldProject.id === project.id){
+            if (oldProject.id === project.id) {
                 newProjects.push(project)
             } else {
                 newProjects.push(oldProject)
@@ -81,11 +81,11 @@ const Projects = (): JSX.Element => {
 
     useEffect(() => {
         fetchProjects(settings)
-        .then(response => response.json())
-        .then(data => {
-            const projects = data.map(project => mapLocalProject(project))
-            setProjects(projects)
-        })
+            .then(response => response.json())
+            .then(data => {
+                const projects = data.map(project => mapLocalProject(project))
+                setProjects(projects)
+            })
     }, [])
 
     return (

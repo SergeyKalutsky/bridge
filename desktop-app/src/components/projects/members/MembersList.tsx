@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { SettingsContext } from '../../../App'
-import {Member} from './ProjectMembers'
+import { Member } from './ProjectMembers'
 
 type Props = {
     member: Member
@@ -29,7 +29,7 @@ const MembersList = ({ member,
                             project_id: project_id
                         })
                     })
-                setlocalMember({...localMember, iscurrent: true})
+                setlocalMember({ ...localMember, iscurrent: true })
                 addMember(member)
             }}>Пригласить</button>
         </div>

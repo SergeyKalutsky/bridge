@@ -2,12 +2,7 @@ import { useEffect, useState, useContext } from 'react'
 import { SettingsContext } from '../../../App'
 import MembersList from './MembersList'
 import Popup from 'reactjs-popup';
-
-interface Member {
-    id: number
-    name: string
-    iscurrent?: boolean
-}
+import { Member } from './ProjectMembers'
 
 interface Props {
     search: string

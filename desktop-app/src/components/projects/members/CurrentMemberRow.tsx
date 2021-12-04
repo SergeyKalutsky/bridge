@@ -3,15 +3,11 @@ import { useState, useContext } from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { SettingsContext } from '../../../App'
-import {deleteMember} from '../../../lib/api/index'
+import { deleteMember } from '../../../lib/api/index'
+import { Member } from './ProjectMembers'
 
-interface Member {
-    id: number
-    name: string
-    iscurrent?: boolean
-}
 
-interface CurrentMemberRowProps {
+interface Props {
     member: Member
     project_id: number
     removeMember: (member: Member) => void
@@ -19,7 +15,7 @@ interface CurrentMemberRowProps {
 
 const CurrentMemberRow = ({ member,
     project_id,
-    removeMember }: CurrentMemberRowProps): JSX.Element => {
+    removeMember }: Props): JSX.Element => {
 
     const [open, setOpen] = useState(false)
     const { settings, setSettings } = useContext(SettingsContext)

@@ -1,24 +1,13 @@
-import { useContext } from 'react';
 import CurrentMemberRow from './CurrentMemberRow'
+import { Member } from './ProjectMembers'
 
-
-
-interface Member {
-    id: number
-    name: string
-    iscurrent?: boolean
-}
-
-
-interface CurrentMembersProp {
+interface Props {
     members: Member[]
     project_id: number
     removeMember: (member: Member) => void
 }
 
-
-
-const CurrentMembers = ({ members, project_id, removeMember }: CurrentMembersProp): JSX.Element => {
+const CurrentMembers = ({ members, project_id, removeMember }: Props): JSX.Element => {
 
     const membersArray = members.map((member, indx) =>
         <CurrentMemberRow member={member}
