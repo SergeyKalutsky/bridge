@@ -81,7 +81,6 @@ const Projects = (): JSX.Element => {
 
     useEffect(() => {
         fetchProjects(settings)
-            .then(response => response.json())
             .then(data => {
                 const projects = data.map(project => mapLocalProject(project))
                 setProjects(projects)

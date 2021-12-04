@@ -51,8 +51,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                 <div className='row'>
                     <button className='sumbit-form' type='submit' onClick={() => {
                         createProject(settings, project)
-                        .then(response => response.json())
-                        .then(data => addProject(data['project']))
+                            .then(data => addProject(data['project']))
                     }}>Создать</button>
                 </div>
             </div>

@@ -3,6 +3,7 @@ import '../../../assets/css/ProjectMembers.css'
 import { SettingsContext } from '../../../App'
 import CurrentMembers from './CurrentMembers'
 import FindMembersPopUp from './FindMembersPopUp'
+import { listProjectMembers } from '../../../lib/api/index'
 
 type Props = {
     project_id: number
@@ -31,16 +32,9 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
         }
         setMembersCurrent(newMemberList)
     }
-    
+
     useEffect(() => {
-        fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': settings['user']['X-API-Key']
-                }
-            })
-            .then(response => response.json())
+        listProjectMembers(settings, project_id)
             .then(data => data !== null ? setMembersCurrent(data) : null)
     }, [])
     return (
@@ -68,4 +62,4 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
 }
 
 
-export {ProjectMembers, Member}
+export { ProjectMembers, Member }

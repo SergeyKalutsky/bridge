@@ -19,13 +19,13 @@ interface Settings {
 const BASE_URL = 'http://localhost:8000'
 
 
-const fetchProjects = (settings: Settings): Promise<Response> => {
+const fetchProjects = (settings: Settings): Promise<any> => {
     return fetch(`${BASE_URL}/projects/list`, {
         headers: {
             'Content-Type': 'application/json',
             'x-api-key': settings['user']['X-API-Key'],
         }
-    })
+    }).then(response => response.json())
 }
 
 const deleteMember = (settings: Settings,
@@ -41,7 +41,7 @@ const deleteMember = (settings: Settings,
     })
 }
 
-const createProject = (settings: Settings, project: Project): Promise<Response> => {
+const createProject = (settings: Settings, project: Project): Promise<any> => {
     return fetch(`${BASE_URL}/projects/create`,
         {
             method: 'POST',
@@ -51,11 +51,25 @@ const createProject = (settings: Settings, project: Project): Promise<Response> 
             },
             body: JSON.stringify(project)
         })
+        .then(response => response.json())
+}
+
+
+const listProjectMembers = (settings: Settings, project_id: number): Promise<any> => {
+    return fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': settings['user']['X-API-Key']
+            }
+        })
+        .then(response => response.json())
 }
 
 
 export {
     fetchProjects,
     deleteMember,
-    createProject
+    createProject,
+    listProjectMembers
 }
