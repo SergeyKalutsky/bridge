@@ -1,4 +1,5 @@
 import React from 'react'
+import { Project } from '../../components/projects/Projects'
 
 interface Settings {
     user?: {
@@ -15,14 +16,6 @@ interface Settings {
     }
 }
 
-type Project = {
-    id: number
-    name: string
-    isclassroom: number
-    islocal: boolean
-    http: string
-    description?: string
-}
 
 const BASE_URL = 'http://localhost:8000'
 
