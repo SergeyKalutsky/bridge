@@ -1,6 +1,6 @@
 #!python -m uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import projects, users, members
 from .schemas import User
@@ -31,4 +31,4 @@ async def login_user(user: User):
         user_data['password'] = user.password
         user_data.update({'X-API-Key': encode_auth_token(db_user.id)})
         return user_data
-    return {'status': 'auth failed', 'error': 'Неверный логин или пароль'}
+    raise HTTPException(status_code=400, detail='Invalid login or passswod')
