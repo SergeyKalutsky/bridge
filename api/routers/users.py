@@ -1,8 +1,7 @@
-import jwt
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 from .. import gitlab_api as gapi
 from ..queries import find_user_by_name, add_new_user
-from ..dependencies import verify_token
+from ..dependencies import verify_token, extract_user_id
 from ..schemas import User, ReturnUser
 from typing import List
 
@@ -11,12 +10,8 @@ router = APIRouter(prefix="/users",
                    dependencies=[Depends(verify_token)])
 
 
-async def extract_user_id(x_api_key: str = Header(None)):
-    return jwt.decode(x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
-
-
 @router.post('/find', response_model=List[ReturnUser])
-async def find(user: User, user_id = Depends(extract_user_id)):
+async def find(user: User, user_id=Depends(extract_user_id)):
     res = find_user_by_name(user.name, user_id)
     return res
 

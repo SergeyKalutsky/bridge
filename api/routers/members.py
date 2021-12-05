@@ -1,10 +1,9 @@
-import jwt
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 from .. import gitlab_api as gapi
-from ..database import sess, t
-from ..dependencies import verify_token
+from .. import queries as q
+from ..dependencies import extract_user_id, verify_token
 from ..schemas import Member, ReturnMember
-from typing import  List
+from typing import List
 
 router = APIRouter(prefix="/members",
                    tags=['members'],
@@ -13,89 +12,56 @@ router = APIRouter(prefix="/members",
 
 @router.post('/add')
 async def add_member(member: Member,
-                     x_api_key: str = Header(None)):
+                     user_id=Depends(extract_user_id)):
     '''
     access levels: DEVELOPER_ACCESS read/write, 
                    GUEST_ACCESS view, 
                    REPORTER_ACCESS read
                    MAINTAINER_ACCESS read/write/delete
     '''
-    user_id = jwt.decode(
-        x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
-    print(user_id)
-    is_userowner = sess.query(t.Members.is_userowner).\
-        filter(t.Members.user_id == user_id).\
-        filter(t.Members.project_id == member.project_id).first()[0]
-    is_classroom = sess.query(t.Projects.isclassroom).\
-        filter(t.Projects.id == member.project_id).first()[0]
+    is_userowner = q.get_is_userowner(user_id, member.project_id)
+    is_classroom = q.get_is_classroom(member.project_id)
     if is_userowner and not is_classroom:
         gapi.add_project_member(member, 'reporter')
-        sess.add(t.Members(
-            user_id=member.user_id,
-            project_id=member.project_id,
-            is_userowner=False,
-            membership_accepted=False,
-            access='reporter'
-        ))
-        sess.commit()
+        q.add_project_member(member.user_id,
+                             member.project_id,
+                             is_userowner=False,
+                             membership_accepted=False,
+                             access='developer')
         return {'status': 'success', 'res': 'user has been added'}
     return {'status': 'failed', 'error': 'you dont have rights to add memebers to that project'}
 
 
 @router.get('/list', response_model=List[ReturnMember])
 async def list_members(project_id: int,
-                       x_api_key: str = Header(None)):
+                       user_id=Depends(extract_user_id)):
     '''Lists members of a particular project yoursel excluded'''
-    user_id = jwt.decode(
-        x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
-    is_userowner = sess.query(t.Members.is_userowner).\
-        filter(t.Members.user_id == user_id).\
-        filter(t.Members.project_id == project_id).first()[0]
+    is_userowner = q.get_is_userowner(user_id, project_id)
     if is_userowner:
-        q = sess.query(t.Users).\
-            filter(t.Members.project_id == project_id).\
-            filter(t.Members.user_id == t.Users.id).\
-            filter(t.Members.is_userowner == False).all()
-        return q
+        return q.list_project_members(project_id)
 
 
 @router.post('/delete')
 async def remove_member(member: Member,
-                        x_api_key: str = Header(None)):
+                        user_id=Depends(extract_user_id)):
     '''Removes a member'''
-    user_id = jwt.decode(
-        x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
-    is_userowner = sess.query(t.Members.is_userowner).\
-        filter(t.Members.user_id == user_id).\
-        filter(t.Members.project_id == member.project_id).first()[0]
+    is_userowner = q.get_is_userowner(user_id, member.project_id)
     if is_userowner and member.user_id == user_id:
         return {'status': 'failed', 'error': 'cant remove yourself'}
     elif member.user_id == user_id:
         gapi.remove_member(member)
-        sess.query(t.Members).\
-            filter(t.Members.project_id == member.project_id).\
-            filter(t.Members.user_id == member.user_id).delete()
-        sess.commit()
+        q.delete_member(member)
         return {'status': 'success', 'res': 'user has been removed'}
     elif not is_userowner:
         return {'status': 'failed', 'error': 'you dont have rights to remove users'}
     else:
         gapi.remove_member(member)
-        sess.query(t.Members).\
-            filter(t.Members.project_id == member.project_id).\
-            filter(t.Members.user_id == member.user_id).delete()
-        sess.commit()
+        q.delete_member(member)
         return {'status': 'success', 'res': 'user has been removed'}
 
 
 @router.post('/membership')
 async def memberships(member: Member,
-                      x_api_key: str = Header(None)):
-    user_id = jwt.decode(
-        x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
-    sess.query(t.Members).\
-        filter(t.Members.user_id == user_id).\
-        filter(t.Members.project_id == member.project_id).\
-        update({'membership_accepted': member.membership_accepted})
-    sess.commit()
+                      user_id=Depends(extract_user_id)):
+    q.change_membership_status(user_id, member)
     return {'status': 'success', 'res': 'user accepted membership'}
