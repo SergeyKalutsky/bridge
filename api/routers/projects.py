@@ -1,4 +1,3 @@
-import jwt
 from api import gitlab_api as gapi
 from fastapi import APIRouter, Depends
 from .. import queries as q
@@ -36,5 +35,6 @@ async def delete_project(project: Project, user_id=Depends(extract_user_id)):
     if is_userowner:
         gapi.gl.projects.delete(project.id)
         q.delete_project(project.id)
-        return {'stutus': 'sucesses', 'res': 'deleted'}
-    return {'stutus': 'failed', 'error': 'user doesnt have rights to delete'}
+        return {'stutus': 'sucesses', 'res': 'deleted project'}
+    q.delete_member(project.id, user_id)
+    return {'stutus': 'sucesses', 'res': 'remooved member'}

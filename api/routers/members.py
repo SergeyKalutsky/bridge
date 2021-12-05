@@ -22,7 +22,7 @@ async def add_member(member: Member,
     is_userowner = q.get_is_userowner(user_id, member.project_id)
     is_classroom = q.get_is_classroom(member.project_id)
     if is_userowner and not is_classroom:
-        gapi.add_project_member(member, 'reporter')
+        gapi.add_project_member(member, 'developer')
         q.add_project_member(member.user_id,
                              member.project_id,
                              is_userowner=False,
@@ -35,7 +35,7 @@ async def add_member(member: Member,
 @router.get('/list', response_model=List[ReturnMember])
 async def list_members(project_id: int,
                        user_id=Depends(extract_user_id)):
-    '''Lists members of a particular project yoursel excluded'''
+    '''Lists members of a particular project yourself excluded'''
     is_userowner = q.get_is_userowner(user_id, project_id)
     if is_userowner:
         return q.list_project_members(project_id)
@@ -48,10 +48,6 @@ async def remove_member(member: Member,
     is_userowner = q.get_is_userowner(user_id, member.project_id)
     if is_userowner and member.user_id == user_id:
         return {'status': 'failed', 'error': 'cant remove yourself'}
-    elif member.user_id == user_id:
-        gapi.remove_member(member)
-        q.delete_member(member)
-        return {'status': 'success', 'res': 'user has been removed'}
     elif not is_userowner:
         return {'status': 'failed', 'error': 'you dont have rights to remove users'}
     else:
@@ -64,4 +60,4 @@ async def remove_member(member: Member,
 async def memberships(member: Member,
                       user_id=Depends(extract_user_id)):
     q.change_membership_status(user_id, member)
-    return {'status': 'success', 'res': 'user accepted membership'}
+    return {'status': 'success', 'res': 'membeship status changed'}

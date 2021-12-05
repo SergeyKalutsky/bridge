@@ -3,10 +3,10 @@ from .schemas import Member, Project, User
 from .security import hashed_password
 
 
-def delete_member(member: Member):
+def delete_member(project_id: int, user_id: int):
     sess.query(t.Members).\
-        filter(t.Members.project_id == member.project_id).\
-        filter(t.Members.user_id == member.user_id).delete()
+        filter(t.Members.project_id == project_id).\
+        filter(t.Members.user_id == user_id).delete()
     sess.commit()
 
 
