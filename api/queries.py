@@ -1,6 +1,6 @@
-from database import sess, t
-from schemas import User
-from security import hashed_password
+from .database import sess, t
+from .schemas import User
+from .security import hashed_password
 
 
 def find_user_by_name(user_name_to_search: str,

@@ -11,10 +11,12 @@ router = APIRouter(prefix="/users",
                    dependencies=[Depends(verify_token)])
 
 
+async def extract_user_id(x_api_key: str = Header(None)):
+    return jwt.decode(x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
+
+
 @router.post('/find', response_model=List[ReturnUser])
-async def find(user: User, x_api_key: str = Header(None)):
-    user_id = jwt.decode(
-        x_api_key, 'SECRET_KEY', algorithms=['HS256'])['sub']
+async def find(user: User, user_id = Depends(extract_user_id)):
     res = find_user_by_name(user.name, user_id)
     return res
 
