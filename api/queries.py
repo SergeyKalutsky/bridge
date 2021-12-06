@@ -89,8 +89,8 @@ def add_new_project(project: Project,
 def find_user_by_name(user_name_to_search: str,
                       searching_user_id: int):
     return sess.query(t.Users).\
-        filter(t.Users.name.contains(f'{user_name_to_search}%')).\
-        filter(t.Users.id != searching_user_id).all()
+        filter(t.Users.name == user_name_to_search).\
+        filter(t.Users.id != searching_user_id).first()
 
 
 def add_new_user(user: User):

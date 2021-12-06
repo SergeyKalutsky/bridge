@@ -21,33 +21,13 @@ const FindMembersPopUp = ({ membersCurrent,
     addMember,
     open, setOpen }: Props): JSX.Element => {
     const { settings, setSettings } = useContext(SettingsContext)
-    const [membersFind, setMembersFind] = useState<Member[]>([])
+    const [memberFound, setmemberFound] = useState<Member>(null)
 
-    const mapProjectMembership = (membersFound: Member[]) => {
-        membersFound.map((member, index) => {
-            for (const memberCurrent of membersCurrent) {
-                if (memberCurrent.id === member.id) {
-                    member.iscurrent = true
-                    membersFound[index] = member
-                    return
-                }
-            }
-            member.iscurrent = false
-            membersFound[index] = member
-        })
-        setMembersFind(membersFound)
-    }
     useEffect(() => {
         findUser(settings, search)
-            .then(data => mapProjectMembership(data))
+            .then(data => setmemberFound(data))
     }, [search, membersCurrent])
 
-    const membersArray = membersFind.map((member) =>
-        <MembersList member={member}
-            project_id={project_id}
-            key={member.id}
-            addMember={addMember} />
-    )
     return (
         <Popup
             open={open}
@@ -56,18 +36,20 @@ const FindMembersPopUp = ({ membersCurrent,
             position="right center"
             modal>
             <div className="modal">
-                <div className='menu'>
-                    <div className='search'>
-                        {membersArray}
-                        <button className="close" onClick={() => {
-                            setOpen(false)
-                        }}>
-                            ОК
-                        </button>
-                    </div>
+                <div className='search'>
+                    {memberFound !== null ?
+                        memberFound.name :
+                        <div className='not-found'>
+                            <span>К сожалению с таким ником никто не найден</span>
+                            < button className="close" onClick={() => {
+                                setOpen(false)
+                            }}>
+                                ОК
+                            </button>
+                        </div>}
                 </div>
             </div>
-        </Popup>
+        </Popup >
     )
 }
 
