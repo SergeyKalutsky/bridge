@@ -25,6 +25,7 @@ const FindMembersPopUp = ({ membersCurrent,
     const [memberFound, setmemberFound] = useState<Member>(null)
 
     const setMemberCurrent = (member: Member) => {
+        if (member === null) { return member}
         for (const memberCurrent of membersCurrent) {
             if (memberCurrent.id === member.id) {
                 member.iscurrent = true
@@ -54,7 +55,6 @@ const FindMembersPopUp = ({ membersCurrent,
                             <span>{memberFound.name}</span>
                             <button disabled={memberFound.iscurrent == false ? false : true}
                                 onClick={() => {
-                                    console.log('here')
                                     addProjectMember(settings, memberFound.id, project_id)
                                     addMember(memberFound)
                                 }}>Пригласить</button>

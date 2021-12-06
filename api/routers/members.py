@@ -52,7 +52,7 @@ async def remove_member(member: Member,
         return {'status': 'failed', 'error': 'you dont have rights to remove users'}
     else:
         gapi.remove_member(member)
-        q.delete_member(member)
+        q.delete_member(member.project_id, member.user_id)
         return {'status': 'success', 'res': 'user has been removed'}
 
 
