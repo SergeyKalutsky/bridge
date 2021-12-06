@@ -21,29 +21,31 @@ const CurrentMemberRow = ({ member,
     const { settings, setSettings } = useContext(SettingsContext)
     return (
         <div className='current-member' key={member.id}>
-            <div className='member'>
-                {member.name}
-            </div>
-            <div className='icon' onClick={() => { setOpen(true) }}>
-                <FontAwesomeIcon icon={faTrashAlt} />
-            </div>
-            <Popup
-                open={open}
-                onClose={() => setOpen(false)}
-                closeOnDocumentClick
-                modal
-            >
-                <div className="modal">
-                    <div>Вы уверены, что хотите удалить участника(у него больше не будет доступа к проекту)?</div>
-                    <button className="close" onClick={() => {
-                        deleteMember(settings, project_id, member.id)
-                        removeMember(member)
-                        setOpen(false)
-                    }}>
-                        Удалить
-                    </button>
+            <div className='member-row'>
+                <div className='member'>
+                    {member.name}
                 </div>
-            </Popup >
+                <div className='icon' onClick={() => { setOpen(true) }}>
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                </div>
+                <Popup
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    closeOnDocumentClick
+                    modal
+                >
+                    <div className="modal">
+                        <div>Вы уверены, что хотите удалить участника(у него больше не будет доступа к проекту)?</div>
+                        <button className="close" onClick={() => {
+                            deleteMember(settings, project_id, member.id)
+                            removeMember(member)
+                            setOpen(false)
+                        }}>
+                            Удалить
+                        </button>
+                    </div>
+                </Popup >
+            </div>
         </div>
     )
 }

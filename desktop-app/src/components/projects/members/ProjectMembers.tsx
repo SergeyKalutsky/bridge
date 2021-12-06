@@ -42,7 +42,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             <h1>Пригласить друга в проект</h1>
             <div className='search'>
                 <input type="text"
-                    placeholder='Введите имя пользователя'
+                    placeholder='Введите ник пользователя'
                     onChange={(e) => { setSearch(e.target.value) }} />
                 <button onClick={() => {
                     setOpen(true)
