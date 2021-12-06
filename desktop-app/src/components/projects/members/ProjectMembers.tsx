@@ -38,7 +38,8 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             .then(data => data !== null ? setMembersCurrent(data) : null)
     }, [])
     return (
-        <div className='menu'>
+        <div className='project-members'>
+            <h1>Пригласить друга в проект</h1>
             <div className='search'>
                 <input type="text"
                     placeholder='Введите имя пользователя'
