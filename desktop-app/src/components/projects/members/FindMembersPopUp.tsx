@@ -1,9 +1,10 @@
 import { useEffect, useState, useContext } from 'react'
 import { SettingsContext } from '../../../App'
-import MembersList from './MembersList'
 import Popup from 'reactjs-popup';
 import { Member } from './ProjectMembers'
 import { findUser } from '../../../lib/api/index'
+import { addProjectMember } from '../../../lib/api/index'
+
 
 interface Props {
     search: string
@@ -23,9 +24,20 @@ const FindMembersPopUp = ({ membersCurrent,
     const { settings, setSettings } = useContext(SettingsContext)
     const [memberFound, setmemberFound] = useState<Member>(null)
 
+    const setMemberCurrent = (member: Member) => {
+        for (const memberCurrent of membersCurrent) {
+            if (memberCurrent.id === member.id) {
+                member.iscurrent = true
+                return member
+            }
+        }
+        member.iscurrent = false
+        return member
+    }
+
     useEffect(() => {
         findUser(settings, search)
-            .then(data => setmemberFound(data))
+            .then(data => setmemberFound(setMemberCurrent(data)))
     }, [search, membersCurrent])
 
     return (
@@ -38,7 +50,15 @@ const FindMembersPopUp = ({ membersCurrent,
             <div className="modal">
                 <div className='search'>
                     {memberFound !== null ?
-                        memberFound.name :
+                        <div className='user-found'>
+                            <span>{memberFound.name}</span>
+                            <button disabled={memberFound.iscurrent == false ? false : true}
+                                onClick={() => {
+                                    console.log('here')
+                                    addProjectMember(settings, memberFound.id, project_id)
+                                    addMember(memberFound)
+                                }}>Пригласить</button>
+                        </div> :
                         <div className='not-found'>
                             <span>К сожалению с таким ником никто не найден</span>
                             < button className="close" onClick={() => {

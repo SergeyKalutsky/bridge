@@ -43,9 +43,9 @@
     margin-bottom  : 5px;
     padding-top    : 2px;
     padding-bottom : 2px;
-    display: flex;
+    display        : flex;
     justify-content: center;
-    align-items: center;
+    align-items    : center;
 }
 
 .current-member:hover {
@@ -70,16 +70,27 @@
 }
 
 .member-row {
-    width: 60%;
+    width          : 60%;
     display        : flex;
     justify-content: space-between;
     align-items    : center;
-    flex-direction: row;
+    flex-direction : row;
 }
 
 .not-found {
-    display: flex;
-    align-items: center;
+    display        : flex;
+    align-items    : center;
     justify-content: center;
-    flex-direction: column;
+    flex-direction : column;
+}
+
+.user-found {
+    font-size: 30px;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    flex-direction : column;
+}
+.user-found span {
+    margin-bottom: 4%;
 }
