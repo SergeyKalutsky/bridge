@@ -1,5 +1,5 @@
 import Popup from 'reactjs-popup';
-import Project from './Projects'
+import { Project } from './Projects'
 
 interface Props {
     open: boolean
