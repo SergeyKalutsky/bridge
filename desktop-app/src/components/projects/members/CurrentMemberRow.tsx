@@ -35,7 +35,7 @@ const CurrentMemberRow = ({ member,
                     modal
                 >
                     <div className="modal">
-                        <div>Вы уверены, что хотите удалить участника(у него больше не будет доступа к проекту)?</div>
+                        <div>Вы уверены, что хотите удалить участника?</div>
                         <button className="close" onClick={() => {
                             deleteMember(settings, project_id, member.id)
                             removeMember(member)
