@@ -62,6 +62,7 @@ const Projects = (): JSX.Element => {
 
     const addProject = (project: Project) => {
         ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
+        project.islocal = true
         setProjects([...projects, project])
         dispatch({ type: 'home' })
     }
