@@ -4,7 +4,7 @@ import Popup from 'reactjs-popup';
 import { ipcRenderer } from 'electron';
 import { useContext, useState } from 'react';
 import { SettingsContext } from '../../../App';
-
+import { deleteProject } from '../../../lib/api/index'
 
 type Props = {
     id: number
@@ -35,17 +35,7 @@ const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Ele
                 <div className="modal">
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                     <button className="close danger" onClick={() => {
-                        fetch('http://localhost:8000/projects/delete',
-                            {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'x-api-key': settings['user']['X-API-Key'],
-                                },
-                                body: JSON.stringify({ id: id, name: name })
-                            })
-                            .then(response => response.json())
-
+                        deleteProject(settings, id)
                         ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
                         removeProject(id)
                         setSettings({ user: settings.user })

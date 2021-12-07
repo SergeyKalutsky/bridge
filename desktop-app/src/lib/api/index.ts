@@ -56,7 +56,7 @@ const createProject = (settings: Settings, project: Project): Promise<any> => {
 
 
 const listProjectMembers = (settings: Settings, project_id: number): Promise<any> => {
-    return fetch(`http://localhost:8000/members/list?project_id=${project_id}`,
+    return fetch(`${BASE_URL}/members/list?project_id=${project_id}`,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -68,8 +68,8 @@ const listProjectMembers = (settings: Settings, project_id: number): Promise<any
 
 const addProjectMember = (settings: Settings,
     member_id: number,
-    project_id: number) => {
-    fetch('http://localhost:8000/members/add',
+    project_id: number): void => {
+    fetch(`${BASE_URL}/members/add`,
         {
             method: 'POST',
             headers: {
@@ -84,8 +84,8 @@ const addProjectMember = (settings: Settings,
 }
 
 
-const findUser = (settings: Settings, search: string) => {
-    return fetch(`http://localhost:8000/users/find`,
+const findUser = (settings: Settings, search: string): Promise<any> => {
+    return fetch(`${BASE_URL}/users/find`,
         {
             method: 'POST',
             headers: {
@@ -97,7 +97,22 @@ const findUser = (settings: Settings, search: string) => {
         .then(response => response.json())
 }
 
+
+const deleteProject = (settings: Settings, project_id: number): void => {
+    fetch(`${BASE_URL}/projects/delete`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': settings['user']['X-API-Key'],
+            },
+            body: JSON.stringify({ id: project_id })
+        })
+}
+
+
 export {
+    deleteProject,
     fetchProjects,
     deleteMember,
     createProject,
