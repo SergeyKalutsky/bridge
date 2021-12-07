@@ -6,14 +6,14 @@ interface Props {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
     project: Project
     setPopUp: (active_project: Project) => void
-
+    setActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const SelectActiveProjectPopUp = ({ open, setOpen, project, setPopUp }: Props): JSX.Element => {
+const SelectActiveProjectPopUp = ({ open, setOpen, project, setPopUp, setActive }: Props): JSX.Element => {
     return (
         <Popup
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={() => {setOpen(false); setActive(false)}}
             closeOnDocumentClick
             position="right center"
             key={project.name}

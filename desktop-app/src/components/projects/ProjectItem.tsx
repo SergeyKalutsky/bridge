@@ -44,7 +44,8 @@ const ProjectItem = ({ project,
                 onClick={(e) => {
                     e.target.className.includes('non-active') == true ?
                         setOpenActivate(true) :
-                        setOpen(true)
+                        setOpen(true);
+                    setActive(false)
                 }}
             >
                 {project.name}
@@ -53,11 +54,13 @@ const ProjectItem = ({ project,
                 project={project}
                 setOpen={setOpen}
                 open={open}
+                setActive={setActive}
                 setPopUp={setPopUp} />
             <ActivateProjectPopUp
                 project={project}
                 setOpen={setOpenActivate}
                 open={openActivate}
+                setActive={setActive}
                 updateProjects={updateProjects} />
             {active &&
                 <div className='icons'>
