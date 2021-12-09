@@ -1,7 +1,7 @@
 module.exports = [
     // Add support for native node modules
     {
-        test: /\.node$/,
+        test: /native_modules\/.+\.node$/,
         use: 'node-loader',
     }, {
         test: /\.(m?js|node)$/,

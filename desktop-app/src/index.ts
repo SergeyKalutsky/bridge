@@ -5,7 +5,25 @@ import parseGitDiff from './lib/git_api/parse'
 import { git } from './lib/git_api/index'
 import { join } from 'path'
 import fs from 'fs'
+const os = require('os');
+const pty = require('node-pty');
 
+const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
+const ptyProcess = pty.spawn(shell, [], {
+  name: 'xterm-color',
+  cols: 80,
+  rows: 30,
+  cwd: process.env.HOME,
+  env: process.env
+});
+
+ptyProcess.on('data', function(data: any) {
+  process.stdout.write(data);
+});
+
+ptyProcess.write('ls\r');
+ptyProcess.resize(100, 40);
+ptyProcess.write('ls\r')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 let BASE_DIR = makeBaseDir()
