@@ -35,17 +35,12 @@ export default function App(): JSX.Element {
         'user' in settings ? setIslogin(false) : setIslogin(true)
         setUserSettingLoaded(true)
     }, [settings])
+    
     return (
-    <SettingsContext.Provider value={{ settings, setSettings }}>
-        <LoginPage />
-         {/* {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null} */}
-    </SettingsContext.Provider>
+        <SettingsContext.Provider value={{ settings, setSettings }}>
+            {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
+        </SettingsContext.Provider>
     )
-    // return (
-    //     <SettingsContext.Provider value={{ settings, setSettings }}>
-    //         {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
-    //     </SettingsContext.Provider>
-    // )
 }
 
 export { SettingsContext }

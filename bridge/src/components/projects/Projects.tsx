@@ -1,5 +1,4 @@
 import { useState, useEffect, useReducer, useContext } from 'react'
-const { ipcRenderer } = window.require('electron');
 import { SettingsContext } from '../../App'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
@@ -7,6 +6,7 @@ import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
 import { mapLocalProject } from '../../lib/helpers'
 import '../../assets/css/Projects.css'
+const { ipcRenderer } = window.require('electron');
 
 type Project = {
     id: number
@@ -80,13 +80,13 @@ const Projects = (): JSX.Element => {
     }
 
 
-    useEffect(() => {
-        fetchProjects(settings)
-            .then(data => {
-                const projects = data.map(project => mapLocalProject(project))
-                setProjects(projects)
-            })
-    }, [])
+    // useEffect(() => {
+    //     fetchProjects(settings)
+    //         .then(data => {
+    //             const projects = data.map(project => mapLocalProject(project))
+    //             setProjects(projects)
+    //         })
+    // }, [])
 
     return (
         <>

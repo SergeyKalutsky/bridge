@@ -6,7 +6,6 @@ import { join } from 'path'
 import fs from 'fs'
 const storage = require('electron-json-storage')
 
-
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 let BASE_DIR = makeBaseDir()
 
