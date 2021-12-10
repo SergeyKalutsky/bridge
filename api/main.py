@@ -24,10 +24,12 @@ app.add_middleware(
 
 @app.post('/auth')
 async def login_user(user: User):
+    print(user)
     db_user = sess.query(t.Users).\
         filter(t.Users.login == user.login).first()
+    print(db_user.password)
     if check_password(user.password, db_user.password):
-        user_data = db_user.__dict__
+        user_data = db_user.__dict__.copy()
         user_data['password'] = user.password
         user_data.update({'X-API-Key': encode_auth_token(db_user.id)})
         return user_data

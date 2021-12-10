@@ -23,6 +23,7 @@ const LoginPage = (): JSX.Element => {
     const [loginData, setloginData] = useState<InputForms>({ login: '', password: '' })
 
     const handleData = (data: User) => {
+        console.log(data)
         if (!('error' in data)) {
             data['password'] = loginData.password
             setSettings({ user: data })
