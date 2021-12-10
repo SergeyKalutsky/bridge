@@ -1,5 +1,4 @@
 import { join } from 'path'
-import { ipcRenderer } from 'electron'
 import fs from 'fs'
 const storage = require('electron-json-storage')
 
@@ -22,12 +21,12 @@ const makeBaseDir = (): string => {
 }
 
 const mapLocalProject = (project: Project): Project => {
-    const basedir = ipcRenderer.sendSync('projects', { cmd: 'getbasedir' })
-    const files: string[] | Buffer[] | fs.Dirent[] = fs.readdirSync(basedir)
-    if (files.includes(project.name)) {
-        project.islocal = true
-        return project
-    }
+    // const basedir = ipcRenderer.sendSync('projects', { cmd: 'getbasedir' })
+    // const files: string[] | Buffer[] | fs.Dirent[] = fs.readdirSync(basedir)
+    // if (files.includes(project.name)) {
+    //     project.islocal = true
+    //     return project
+    // }
     project.islocal = false
     return project
 }
