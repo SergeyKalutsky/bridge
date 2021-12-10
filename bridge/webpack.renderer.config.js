@@ -12,6 +12,10 @@ module.exports = {
   },
   plugins: plugins,
   resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css']
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
+    fallback: {
+      "fs": false,
+      "path": require.resolve("path-browserify")
+    }
   },
 };
