@@ -1,13 +1,13 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, session } from 'electron';
 import { makeBaseDir } from './lib/helpers';
 import parseGitDiff from './lib/git_api/parse'
 import { git } from './lib/git_api/index'
 import { join } from 'path'
 import fs from 'fs'
-
 const storage = require('electron-json-storage')
 
-declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
+
+declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 let BASE_DIR = makeBaseDir()
 
 // Projects ===========================================================
@@ -87,11 +87,22 @@ const createWindow = (): void => {
       contextIsolation: false
     }
 
+
   });
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   mainWindow.webContents.openDevTools();
+
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': ["script-src 'self' 'unsafe-eval'; object-src 'self'"]
+      }
+    })
+  })
+
 };
 
 app.on('ready', createWindow);

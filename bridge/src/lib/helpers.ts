@@ -1,5 +1,5 @@
 import { join } from 'path'
-const { ipcRenderer } = window.require('electron');
+import { ipcRenderer } from 'electron'
 import fs from 'fs'
 const storage = require('electron-json-storage')
 

@@ -3,5 +3,7 @@ pytest
 bcrypt
 uvicorn
 fastapi
+requests
 sqlalchemy
 python-gitlab
+sqlalchemy
