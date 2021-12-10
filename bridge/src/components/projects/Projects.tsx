@@ -4,7 +4,7 @@ import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
-import { mapLocalProject } from '../../lib/helpers'
+import fs from 'fs'
 import '../../assets/css/Projects.css'
 const { ipcRenderer } = window.require('electron');
 
