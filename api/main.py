@@ -24,7 +24,6 @@ app.add_middleware(
 
 @app.post('/auth')
 async def login_user(user: User):
-    print(user)
     db_user = sess.query(t.Users).\
         filter(t.Users.login == user.login).first()
     print(db_user.password)
