@@ -26,7 +26,8 @@ const SelectActiveProjectPopUp = ({ open, setOpen, project, setPopUp, setActive 
                         id: project.id,
                         isclassroom: project.isclassroom,
                         isuserowner: 1,
-                        islocal: true
+                        islocal: true,
+                        http: ''
                     }
                     setPopUp(active_project)
                 }}>

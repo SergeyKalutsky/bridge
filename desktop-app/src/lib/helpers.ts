@@ -1,6 +1,6 @@
 import { join } from 'path'
 import storage from 'electron-json-storage';
-import { ipcRenderer } from 'electron'
+const { ipcRenderer } = window.require('electron');
 import fs from 'fs'
 
 type Project = {

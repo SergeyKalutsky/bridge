@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, useContext } from 'react'
-import { ipcRenderer } from 'electron'
+const { ipcRenderer } = window.require('electron');
 import { SettingsContext } from '../../App'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'

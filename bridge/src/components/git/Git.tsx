@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { ipcRenderer } from 'electron'
+const { ipcRenderer } = window.require('electron');
 import GitMenu from './GitMenu'
 import WorkspaceGit from './WorkspaceGit'
 import { SettingsContext } from '../../App'

@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron'
+const { ipcRenderer } = window.require('electron');
 import { useContext, useState } from 'react'
 import { SettingsContext } from '../../App';
 import { LogoIcon, UserIcon, KeyIcon } from '../Icons';

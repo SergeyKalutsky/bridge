@@ -1,6 +1,6 @@
 import '../../assets/css/leftMenu.css'
 import { useState } from 'react'
-import { ipcRenderer } from 'electron'
+const { ipcRenderer } = window.require('electron');
 import CommitRow from './CommitRow'
 import {GitDiff, Commit} from './Git'
 

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import Popup from 'reactjs-popup';
-import { ipcRenderer } from 'electron';
+const { ipcRenderer } = window.require('electron');
 import { useContext, useState } from 'react';
 import { SettingsContext } from '../../../App';
 import { deleteProject } from '../../../lib/api/index'

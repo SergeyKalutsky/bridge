@@ -42,7 +42,7 @@ const ProjectItem = ({ project,
 
             <span className={buildSpanClassName()}
                 onClick={(e) => {
-                    e.target.className.includes('non-active') == true ?
+                    e.currentTarget.className.includes('non-active') == true ?
                         setOpenActivate(true) :
                         setOpen(true);
                     setActive(false)

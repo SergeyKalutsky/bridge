@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
+const { ipcRenderer } = window.require('electron');
 import { Arrow, Refresh } from '../Icons';
 import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../App';

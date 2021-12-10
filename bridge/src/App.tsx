@@ -1,6 +1,6 @@
 import LoginPage from './components/login/LoginPage';
 import './assets/css/base.css'
-import { ipcRenderer } from 'electron';
+const { ipcRenderer } = window.require('electron');
 import { useEffect, useState, createContext } from 'react';
 import AppContent from './components/AppContent'
 
@@ -36,10 +36,16 @@ export default function App(): JSX.Element {
         setUserSettingLoaded(true)
     }, [settings])
     return (
-        <SettingsContext.Provider value={{ settings, setSettings }}>
-            {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
-        </SettingsContext.Provider>
+    <SettingsContext.Provider value={{ settings, setSettings }}>
+        <LoginPage />
+         {/* {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null} */}
+    </SettingsContext.Provider>
     )
+    // return (
+    //     <SettingsContext.Provider value={{ settings, setSettings }}>
+    //         {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
+    //     </SettingsContext.Provider>
+    // )
 }
 
 export { SettingsContext }

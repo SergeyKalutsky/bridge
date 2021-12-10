@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+const { ipcRenderer } = window.require('electron');
 import { useContext } from 'react';
 import Popup from 'reactjs-popup';
 import { Project } from './Projects'

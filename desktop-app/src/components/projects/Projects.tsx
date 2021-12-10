@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, useContext } from 'react'
-import { ipcRenderer } from 'electron'
+const { ipcRenderer } = window.require('electron');
 import { SettingsContext } from '../../App'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
@@ -7,6 +7,7 @@ import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
 import { mapLocalProject } from '../../lib/helpers'
 import '../../assets/css/Projects.css'
+import { any } from 'prop-types'
 
 type Project = {
     id: number

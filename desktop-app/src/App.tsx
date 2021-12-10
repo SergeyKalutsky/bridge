@@ -1,7 +1,7 @@
 import { hot } from 'react-hot-loader';
 import LoginPage from './components/login/LoginPage';
 import './assets/css/base.css'
-import { ipcRenderer } from 'electron';
+const { ipcRenderer } = window.require('electron');
 import { useEffect, useState, createContext } from 'react';
 import  AppContent  from './components/AppContent'
 
