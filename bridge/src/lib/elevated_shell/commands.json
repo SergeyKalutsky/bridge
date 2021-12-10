@@ -1,0 +1,17 @@
+{
+    "git": {
+        "linux": "sudo apt install git",
+        "win32": "choco install -y git"
+    },
+    "vscode": {
+        "linux": "sudo snap install --classic code",
+        "win32": "choco install -y vscode"
+    },
+    "python": {
+        "linux": "sudo apt-get install python3.8",
+        "win32": "choco install -y python"
+    },
+    "chocolotey":{
+        "win32": "-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1''));"
+    }
+}
