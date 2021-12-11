@@ -3,21 +3,6 @@ import LoginPage from './components/login/LoginPage';
 import AppContent from './components/AppContent'
 import './assets/css/base.css'
 
-interface Settings {
-    user?: {
-        name?: string
-        login?: string
-        password?: string
-        'X-API-Key'?: string
-    }
-    active_project?: {
-        id: number
-        name: string
-        isclassroom: number
-        isuserowner: number
-    }
-}
-
 declare global {
     interface Window {
         settings: {
@@ -31,11 +16,10 @@ declare global {
 }
 
 
-
 export default function App(): JSX.Element {
     const [islogin, setIslogin] = useState(false)
     const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
-    
+
     useEffect(() => {
         const settings = window.settings.get()
         setUserSettingLoaded(true);
@@ -44,7 +28,7 @@ export default function App(): JSX.Element {
 
     return (
         <>
-        {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage setIslogin={setIslogin}/> : null}
+            {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage setIslogin={setIslogin} /> : null}
         </>
     )
 }
