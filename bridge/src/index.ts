@@ -22,15 +22,14 @@ ipcMain.on('projects:getlocalprojectsnames', (event) => {
   event.returnValue = fs.readdirSync(path)
 })
 
-ipcMain.on('projects:delete', (event, project) => {
-  const dir = join(BASE_DIR, project.name.replace(/ /g, '-'))
-  fs.rmdirSync(dir, { recursive: true });
+ipcMain.on('projects:delete', (event, project_name) => {
+  const path = join(BASE_DIR, settings.user.login, project_name.replace(/ /g, '-'))
+  fs.rmdirSync(path, { recursive: true });
 })
 
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git:clone', (event, project) => {
-  console.log(project)
   const project_name = project.name.replace(/ /g, '-')
   const project_dir = join(BASE_DIR, settings.user.login, project_name)
   if (!fs.existsSync(project_dir)) {
@@ -38,38 +37,39 @@ ipcMain.on('git:clone', (event, project) => {
   }
 })
 
-ipcMain.on('git', (event, arg) => {
-  
-  if (arg.project !== undefined) {
-    const project_dir = join(BASE_DIR, arg.project.name.replace(/ /g, '-'))
 
-    if (arg['cmd'] === 'log') {
-      git.cwd(project_dir).log().then(result => {
-        event.returnValue = result['all']
-      })
-        .catch(err => { event.returnValue = []; console.log(err) })
+// ipcMain.on('git', (event, arg) => {
 
-    } else if (arg['cmd'] === 'pull') {
-      git.cwd(project_dir).pull()
+//   if (arg.project !== undefined) {
+//     const project_dir = join(BASE_DIR, arg.project.name.replace(/ /g, '-'))
 
-    } else if (arg['cmd'] === 'push') {
-      git.cwd(project_dir).add('./*').commit('test').push()
+//     if (arg['cmd'] === 'log') {
+//       git.cwd(project_dir).log().then(result => {
+//         event.returnValue = result['all']
+//       })
+//         .catch(err => { event.returnValue = []; console.log(err) })
 
-    } else if (arg['cmd'] === 'clone') {
-      if (!fs.existsSync(project_dir)) {
-        git.cwd(BASE_DIR).clone(arg.project.http)
-      }
-    }
-  } else if (arg['cmd'] === 'diff') {
-    git.show(arg['hash'])
-      .then(result => {
-        event.returnValue = parseGitDiff(result)
-      })
-      .catch(err => {
-        event.returnValue = undefined
-      });
-  }
-})
+//     } else if (arg['cmd'] === 'pull') {
+//       git.cwd(project_dir).pull()
+
+//     } else if (arg['cmd'] === 'push') {
+//       git.cwd(project_dir).add('./*').commit('test').push()
+
+//     } else if (arg['cmd'] === 'clone') {
+//       if (!fs.existsSync(project_dir)) {
+//         git.cwd(BASE_DIR).clone(arg.project.http)
+//       }
+//     }
+//   } else if (arg['cmd'] === 'diff') {
+//     git.show(arg['hash'])
+//       .then(result => {
+//         event.returnValue = parseGitDiff(result)
+//       })
+//       .catch(err => {
+//         event.returnValue = undefined
+//       });
+//   }
+// })
 
 // User Settings -------------------------------------------------------------------
 ipcMain.on('settings:get', (event) => {

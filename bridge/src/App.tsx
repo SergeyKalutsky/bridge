@@ -13,6 +13,7 @@ declare global {
         projects: {
             mkbasedir(data: any): Promise<any>
             getLocalProjectsNames(): string[]
+            delete(name: string): void
         },
         git: {
             clone(project: Project): void

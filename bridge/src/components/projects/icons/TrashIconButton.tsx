@@ -12,7 +12,6 @@ type Props = {
 }
 
 const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Element => {
-    const [ settings, setSettings ] = useState()
     const [open, setOpen] = useState(false)
     return (
         <>
@@ -33,10 +32,9 @@ const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Ele
                 <div className="modal">
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                     <button className="close danger" onClick={() => {
-                        deleteProject(settings, id)
-                        // ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
+                        deleteProject(window.settings.get(), id)
+                        window.projects.delete(name)
                         removeProject(id)
-                        // setSettings({ user: settings.user })
                         setOpen(false)
                     }}>
                         Удалить
