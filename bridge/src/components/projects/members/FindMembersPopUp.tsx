@@ -20,7 +20,6 @@ const FindMembersPopUp = ({ membersCurrent,
     project_id,
     addMember,
     open, setOpen }: Props): JSX.Element => {
-    const [ settings, setSettings ] = useState()
     const [memberFound, setmemberFound] = useState<Member>(null)
 
     const setMemberCurrent = (member: Member) => {
@@ -36,7 +35,7 @@ const FindMembersPopUp = ({ membersCurrent,
     }
 
     useEffect(() => {
-        findUser(settings, search)
+        findUser(window.settings.get(), search)
             .then(data => setmemberFound(setMemberCurrent(data)))
     }, [search, membersCurrent])
 
@@ -54,7 +53,7 @@ const FindMembersPopUp = ({ membersCurrent,
                             <span>{memberFound.name}</span>
                             <button disabled={memberFound.iscurrent == false ? false : true}
                                 onClick={() => {
-                                    addProjectMember(settings, memberFound.id, project_id)
+                                    addProjectMember(window.settings.get(), memberFound.id, project_id)
                                     addMember(memberFound)
                                 }}>Пригласить</button>
                         </div> :

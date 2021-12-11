@@ -16,7 +16,6 @@ interface Member {
 
 
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
-    const [ settings, setSettings ] = useState()
     const [open, setOpen] = useState(false)
     const [membersCurrent, setMembersCurrent] = useState<Member[]>([])
     const [search, setSearch] = useState('')
@@ -33,7 +32,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     }
 
     useEffect(() => {
-        listProjectMembers(settings, project_id)
+        listProjectMembers(window.settings.get(), project_id)
             .then(data => data !== null ? setMembersCurrent(data) : null)
     }, [])
     return (

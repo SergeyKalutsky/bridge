@@ -17,7 +17,6 @@ const CurrentMemberRow = ({ member,
     removeMember }: Props): JSX.Element => {
 
     const [open, setOpen] = useState(false)
-    const [ settings, setSettings ] = useState()
     return (
         <div className='current-member' key={member.id}>
             <div className='member-row'>
@@ -36,7 +35,7 @@ const CurrentMemberRow = ({ member,
                     <div className="modal">
                         <div>Вы уверены, что хотите удалить участника?</div>
                         <button className="close" onClick={() => {
-                            deleteMember(settings, project_id, member.id)
+                            deleteMember(window.settings.get(), project_id, member.id)
                             removeMember(member)
                             setOpen(false)
                         }}>

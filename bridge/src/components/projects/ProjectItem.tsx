@@ -42,7 +42,7 @@ const ProjectItem = ({ project,
                 onClick={(e) => {
                     e.currentTarget.className.includes('non-active') == true ?
                         setOpenActivate(true) :
-                        setOpen(true);
+                        setOpen(true)
                     setActive(false)
                 }}
             >
