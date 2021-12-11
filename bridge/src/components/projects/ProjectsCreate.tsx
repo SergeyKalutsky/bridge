@@ -4,7 +4,7 @@ import { createProject } from '../../lib/api/index'
 import '../../assets/css/ProjectsCreate.css'
 
 interface Prop {
-    addProject: React.Dispatch<React.SetStateAction<Project[]>>
+    addProject: (project: Project) => void
 }
 
 const dummyProject: Project = {

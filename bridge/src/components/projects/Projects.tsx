@@ -1,9 +1,26 @@
 import { useState, useEffect, useReducer } from 'react'
+import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import ProjectItem from './ProjectItem';
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
+import { Adding } from '../Icons';
 import '../../assets/css/Projects.css'
+
+const useStyles = makeStyles(() => ({
+    menuIcon: {
+        '& svg': {
+            fontSize: 30
+        },
+        'color': '#b3afb0',
+        'justify-content': 'flex-end'
+
+    }
+})
+);
+
 
 type Project = {
     id: number
@@ -20,12 +37,7 @@ type State = {
 
 type Action =
     | { type: 'memberFind', payload: number }
-    | { type: 'findProject' }
-    | {
-        type: 'createProject', payload: {
-            addProject: React.Dispatch<React.SetStateAction<Project[]>>
-        }
-    }
+    | { type: 'createProject', payload: { addProject: (project: Project) => void } }
     | { type: 'home' }
 
 function reducer(state: State, action: Action) {
@@ -45,6 +57,7 @@ const Projects = (): JSX.Element => {
     const defaultObj = [{ id: 0, name: "", isclassroom: 0, islocal: false, http: '' }]
     const [projects, setProjects] = useState<Array<Project>>(defaultObj)
     const [state, dispatch] = useReducer(reducer, { page: null });
+    const classes = useStyles()
 
     const removeProject = (project_id: number) => {
         const newProjects = []
@@ -61,6 +74,19 @@ const Projects = (): JSX.Element => {
         project.islocal = true
         setProjects([...projects, project])
         dispatch({ type: 'home' })
+    }
+
+    const setActiveProject = (project_id: number) => {
+        const newProjects = []
+        for (const project of projects) {
+            if (project.id === project_id) {
+                project.islocal = true
+            } else {
+                project.islocal = false
+            }
+            newProjects.push(project)
+        }
+        setProjects(newProjects)
     }
 
     const updateProjects = (project: Project) => {
@@ -88,13 +114,30 @@ const Projects = (): JSX.Element => {
             })
     }, [])
 
+    const projects_list = projects.map((project) =>
+        <div className='project-item' key={project.id}>
+            <ProjectItem project={project}
+                dispatch={dispatch}
+                removeProject={removeProject}
+                updateProjects={updateProjects} />
+        </div>)
+
+
+    const addProjectBtn = (<IconButton className={classes.menuIcon}
+        onClick={() => {
+            dispatch({
+                type: 'createProject', payload: {
+                    addProject: addProject
+                }
+            })
+        }}>
+        <Adding />
+    </IconButton >
+    )
     return (
         <>
-            <ProjectsMenu projects={projects}
-                removeProject={removeProject}
-                updateProjects={updateProjects}
-                addProject={addProject}
-                dispatch={dispatch} />
+            <ProjectsMenu projects_list={projects_list}
+                addProjectBtn={addProjectBtn} />
 
             <div className='workspace'>
                 <div className='workspace-background'>
