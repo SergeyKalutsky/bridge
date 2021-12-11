@@ -7,6 +7,7 @@ import fs from 'fs'
 const storage = require('electron-json-storage')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 let BASE_DIR = makeBaseDir()
 
 // Projects ===========================================================
@@ -59,17 +60,25 @@ ipcMain.on('git', (event, arg) => {
 })
 
 // User Settings -------------------------------------------------------------------
-ipcMain.on('user-settings', (event, arg) => {
-  if (arg['cmd'] === 'get') {
-    storage.get('settings', (error: Error, data: any) => {
-      event.returnValue = data
-    });
-  } else if (arg['cmd'] == 'set') {
-    storage.set('settings', arg['settings'])
-  }
+// ipcMain.on('user-settings', (event, arg) => {
+//   if (arg['cmd'] === 'get') {
+//     storage.get('settings', (error: Error, data: any) => {
+//       event.returnValue = data
+//     });
+//   } else if (arg['cmd'] == 'set') {
+//     storage.set('settings', arg['settings'])
+//   }
+// })
+
+ipcMain.handle('settings:get', () => {
+  storage.get('settings', (data: any) => {
+    return data
+  });
 })
 
-
+ipcMain.handle('settings:set', (event, settings) => {
+  storage.set('settings', settings)
+})
 
 // Usual Stuff ---------------------------------------------------------------------
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -82,8 +91,9 @@ const createWindow = (): void => {
     height: 1200,
     width: 1500,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
     }
 
 

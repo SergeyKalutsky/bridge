@@ -1,8 +1,7 @@
-import LoginPage from './components/login/LoginPage';
-import './assets/css/base.css'
-const { ipcRenderer } = window.require('electron');
 import { useEffect, useState, createContext } from 'react';
 import AppContent from './components/AppContent'
+import LoginPage from './components/login/LoginPage';
+import './assets/css/base.css'
 
 interface Settings {
     user?: {
@@ -19,27 +18,39 @@ interface Settings {
     }
 }
 
+declare global {
+    interface Window {
+        settings: {
+            set(): any;
+            get(): any
+        }
+    }
+}
+
 const SettingsContext = createContext(null)
 
 
-export default function App(): JSX.Element {
+export default  function App(): JSX.Element {
     // Get stored settings on each change
-    const [settings, setSettings] = useState<Settings>(ipcRenderer.sendSync('user-settings', { cmd: 'get' }))
+    const defaultSettings = window.settings.get()
+    const [settings, setSettings] = useState<Settings>(defaultSettings)
+    console.log(settings)
     const [islogin, setIslogin] = useState(false)
     const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
 
-    useEffect(() => {
-        // Resave settings on each change
-        ipcRenderer.send('user-settings', { cmd: 'set', settings: settings })
+    // useEffect(() => {
+    //     // Resave settings on each change
+    //     ipcRenderer.send('user-settings', { cmd: 'set', settings: settings })
 
-        'user' in settings ? setIslogin(false) : setIslogin(true)
-        setUserSettingLoaded(true)
-    }, [settings])
+    //     'user' in settings ? setIslogin(false) : setIslogin(true)
+    //     setUserSettingLoaded(true)
+    // }, [settings])
     
     return (
-        <SettingsContext.Provider value={{ settings, setSettings }}>
-            {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
-        </SettingsContext.Provider>
+        <>defaultSettings</>
+        // <SettingsContext.Provider value={{ settings, setSettings }}>
+        //     {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
+        // </SettingsContext.Provider>
     )
 }
 
