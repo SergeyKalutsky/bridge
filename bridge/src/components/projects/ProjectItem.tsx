@@ -17,7 +17,7 @@ const ProjectItem = ({ project,
     removeProject,
     dispatch,
     updateProjects }: Props): JSX.Element => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpenSelect] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
     const [active, setActive] = useState(false)
 
@@ -30,7 +30,7 @@ const ProjectItem = ({ project,
     const setPopUp = (active_project: Project) => {
         window.settings.set({ ...settings, active_project })
         setActive(false)
-        setOpen(false)
+        setOpenSelect(false)
     }
     const settings = window.settings.get()
     return (
@@ -42,7 +42,7 @@ const ProjectItem = ({ project,
                 onClick={(e) => {
                     e.currentTarget.className.includes('non-active') == true ?
                         setOpenActivate(true) :
-                        setOpen(true)
+                        setOpenSelect(true)
                     setActive(false)
                 }}
             >
@@ -50,7 +50,7 @@ const ProjectItem = ({ project,
             </span>
             <SelectActiveProjectPopUp
                 project={project}
-                setOpen={setOpen}
+                setOpen={setOpenSelect}
                 open={open}
                 setActive={setActive}
                 setPopUp={setPopUp} />
