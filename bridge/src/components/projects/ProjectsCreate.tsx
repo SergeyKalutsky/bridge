@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import '../../assets/css/ProjectsCreate.css'
-import { createProject } from '../../lib/api/index'
 import { Project } from './Projects'
+import { createProject } from '../../lib/api/index'
+import '../../assets/css/ProjectsCreate.css'
 
 interface Prop {
     addProject: React.Dispatch<React.SetStateAction<Project[]>>
@@ -17,7 +17,6 @@ const dummyProject: Project = {
 }
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
-    const [ settings, setSettings ] = useState()
     const [checked, setChecked] = useState<number>(0)
     const [project, setProject] = useState<Project>(dummyProject)
 
@@ -49,7 +48,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                 </div>
                 <div className='row'>
                     <button className='sumbit-form' type='submit' onClick={() => {
-                        createProject(settings, project)
+                        createProject(window.settings.get(), project)
                             .then(data => addProject(data['project']))
                     }}>Создать</button>
                 </div>

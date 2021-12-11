@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import LoginPage from './components/login/LoginPage';
 import AppContent from './components/AppContent'
+import { Project } from './components/projects/Projects'
 import './assets/css/base.css'
 
 declare global {
@@ -11,6 +12,10 @@ declare global {
         },
         projects: {
             mkbasedir(data: any): Promise<any>
+            getLocalProjectsNames(): string[]
+        },
+        git: {
+            clone(project: Project): void
         }
     }
 }

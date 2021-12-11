@@ -57,7 +57,7 @@ const Projects = (): JSX.Element => {
     }
 
     const addProject = (project: Project) => {
-        // ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
+        window.git.clone(project)
         project.islocal = true
         setProjects([...projects, project])
         dispatch({ type: 'home' })
@@ -77,10 +77,13 @@ const Projects = (): JSX.Element => {
 
 
     useEffect(() => {
+        const localProjects = window.projects.getLocalProjectsNames()
         fetchProjects(window.settings.get())
             .then(data => {
-                const projects = data.map(project => project)
-                console.log(projects)
+                const projects = data.map((project: Project) => {
+                    project.islocal = localProjects.includes(project.name)
+                    return project
+                })
                 setProjects(projects)
             })
     }, [])

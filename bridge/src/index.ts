@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
-import { makeBaseDir } from './lib/helpers';
 import parseGitDiff from './lib/git_api/parse'
 import { git } from './lib/git_api/index'
 import { join } from 'path'
@@ -10,13 +9,17 @@ const storage = require('electron-json-storage')
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 let settings = storage.getSync('settings')
-
-let BASE_DIR = makeBaseDir()
+const BASE_DIR = storage.getDataPath()
 
 // Projects ===========================================================
 ipcMain.on('projects:mkbasedir', (event, arg) => {
-  BASE_DIR = join(BASE_DIR, arg.user.login)
-  fs.mkdirSync(BASE_DIR, { recursive: true })
+  const path = join(BASE_DIR, arg.user.login)
+  fs.mkdirSync(path, { recursive: true })
+})
+
+ipcMain.on('projects:getlocalprojectsnames', (event) => {
+  const path = join(BASE_DIR, settings.user.login)
+  event.returnValue = fs.readdirSync(path)
 })
 
 ipcMain.on('projects:delete', (event, project) => {
@@ -26,8 +29,17 @@ ipcMain.on('projects:delete', (event, project) => {
 
 
 // GIT ---------------------------------------------------------------
-ipcMain.on('git', (event, arg) => {
+ipcMain.on('git:clone', (event, project) => {
+  console.log(project)
+  const project_name = project.name.replace(/ /g, '-')
+  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  if (!fs.existsSync(project_dir)) {
+    git.cwd(join(BASE_DIR, settings.user.login)).clone(project.http)
+  }
+})
 
+ipcMain.on('git', (event, arg) => {
+  
   if (arg.project !== undefined) {
     const project_dir = join(BASE_DIR, arg.project.name.replace(/ /g, '-'))
 
@@ -65,7 +77,7 @@ ipcMain.on('settings:get', (event) => {
 })
 
 ipcMain.handle('settings:set', (event, new_settings) => {
-  settings = {...settings, ...new_settings}
+  settings = { ...settings, ...new_settings }
   storage.set('settings', new_settings)
 })
 

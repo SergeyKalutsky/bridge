@@ -20,7 +20,7 @@ const ProjectItem = ({ project,
     const [open, setOpen] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
     const [active, setActive] = useState(false)
-    
+
     const buildSpanClassName = () => {
         let baseClass = ''
         baseClass += project.islocal == false ? 'non-active ' : ''

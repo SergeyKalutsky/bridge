@@ -6,5 +6,10 @@ contextBridge.exposeInMainWorld('settings', {
 })
 
 contextBridge.exposeInMainWorld('projects',  {
-    mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data })
+    mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),
+    getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames')
+})
+
+contextBridge.exposeInMainWorld('git', {
+    clone: (project) => ipcRenderer.send('git:clone', project)
 })
