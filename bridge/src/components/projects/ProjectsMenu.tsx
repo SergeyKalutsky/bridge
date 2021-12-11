@@ -33,10 +33,13 @@ const ProjectsMenu = ({ projects,
   dispatch,
   updateProjects }: Props): JSX.Element => {
   const classes = useStyles()
+  const settings = window.settings.get()
   const projects_list = projects.map((project) =>
     <div className='project-item' key={project.name}>
       <ProjectItem project={project}
         dispatch={dispatch}
+        activeProject={'active_project' in settings &&
+          settings.active_project.id == project.id}
         removeProject={removeProject}
         updateProjects={updateProjects} />
     </div>)
