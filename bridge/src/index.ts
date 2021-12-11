@@ -4,6 +4,7 @@ import parseGitDiff from './lib/git_api/parse'
 import { git } from './lib/git_api/index'
 import { join } from 'path'
 import fs from 'fs'
+
 const storage = require('electron-json-storage')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -11,19 +12,16 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 let BASE_DIR = makeBaseDir()
 
 // Projects ===========================================================
-ipcMain.on('projects', (event, arg) => {
-  if (arg['cmd'] === 'delete') {
-    const dir = join(BASE_DIR, arg.project.name.replace(/ /g, '-'))
-    fs.rmdirSync(dir, { recursive: true });
-  }
-  if (arg['cmd'] === 'mkbasedir') {
-    BASE_DIR = join(BASE_DIR, arg.settings.user.login)
-    fs.mkdirSync(BASE_DIR, { recursive: true })
-  }
-  if (arg['cmd'] === 'getbasedir') {
-    event.returnValue = BASE_DIR
-  }
+ipcMain.on('projects:mkbasedir', (event, user) => {
+  BASE_DIR = join(BASE_DIR, user.login)
+  fs.mkdirSync(BASE_DIR, { recursive: true })
 })
+
+ipcMain.on('projects:delete', (event, project) => {
+  const dir = join(BASE_DIR, project.name.replace(/ /g, '-'))
+  fs.rmdirSync(dir, { recursive: true });
+})
+
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git', (event, arg) => {
@@ -60,20 +58,9 @@ ipcMain.on('git', (event, arg) => {
 })
 
 // User Settings -------------------------------------------------------------------
-// ipcMain.on('user-settings', (event, arg) => {
-//   if (arg['cmd'] === 'get') {
-//     storage.get('settings', (error: Error, data: any) => {
-//       event.returnValue = data
-//     });
-//   } else if (arg['cmd'] == 'set') {
-//     storage.set('settings', arg['settings'])
-//   }
-// })
-
 ipcMain.handle('settings:get', () => {
-  storage.get('settings', (data: any) => {
-    return data
-  });
+  const settings = storage.getSync('settings')
+  return settings
 })
 
 ipcMain.handle('settings:set', (event, settings) => {

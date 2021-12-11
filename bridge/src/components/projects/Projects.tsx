@@ -1,10 +1,8 @@
 import { useState, useEffect, useReducer, useContext } from 'react'
-import { SettingsContext } from '../../App'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
-import fs from 'fs'
 import '../../assets/css/Projects.css'
 const { ipcRenderer } = window.require('electron');
 
@@ -45,7 +43,6 @@ function reducer(state: State, action: Action) {
 }
 
 const Projects = (): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
     const defaultObj = [{ id: 0, name: "", isclassroom: 0, islocal: false, http: '' }]
     const [projects, setProjects] = useState<Array<Project>>(defaultObj)
     const [state, dispatch] = useReducer(reducer, { page: null });

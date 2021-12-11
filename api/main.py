@@ -26,7 +26,6 @@ app.add_middleware(
 async def login_user(user: User):
     db_user = sess.query(t.Users).\
         filter(t.Users.login == user.login).first()
-    print(db_user.password)
     if check_password(user.password, db_user.password):
         user_data = db_user.__dict__.copy()
         user_data['password'] = user.password

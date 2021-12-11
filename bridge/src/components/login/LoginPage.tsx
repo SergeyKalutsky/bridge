@@ -1,6 +1,5 @@
-const { ipcRenderer } = window.require('electron');
-import { useContext, useState } from 'react'
-import { SettingsContext } from '../../App';
+import { useState } from 'react'
+import { authUser } from '../../lib/api/index'
 import { LogoIcon, UserIcon, KeyIcon } from '../Icons';
 import '../../assets/css/LoginPage.css'
 
@@ -19,15 +18,14 @@ type User = {
 
 
 const LoginPage = (): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
     const [loginData, setloginData] = useState<InputForms>({ login: '', password: '' })
 
     const handleData = (data: User) => {
         if (!('error' in data)) {
             data['password'] = loginData.password
-            setSettings({ user: data })
+            window.settings.set({ user: data })
         }
-        ipcRenderer.send('projects', { cmd: 'mkbasedir', settings: { user: data } })
+        window.projects.mkbasedir(data)
     }
     return (
         <div className='content'>
@@ -48,12 +46,7 @@ const LoginPage = (): JSX.Element => {
                 </div>
                 <button
                     onClick={() => {
-                        fetch('http://localhost:8000/auth',
-                            {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(loginData)
-                            })
+                        authUser(loginData)
                             .then(response => response.json())
                             .then(data => handleData(data))
                     }}

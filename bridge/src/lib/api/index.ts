@@ -19,6 +19,17 @@ interface Settings {
 const BASE_URL = 'http://localhost:8000'
 
 
+
+const authUser = (loginData: any): Promise<any> => {
+    return fetch(`${BASE_URL}/auth`,
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(loginData)
+        })
+}
+
+
 const fetchProjects = (settings: Settings): Promise<any> => {
     return fetch(`${BASE_URL}/projects/list`, {
         headers: {
@@ -118,5 +129,6 @@ export {
     createProject,
     listProjectMembers,
     addProjectMember,
-    findUser
+    findUser,
+    authUser
 }

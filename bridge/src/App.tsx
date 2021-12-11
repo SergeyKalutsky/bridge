@@ -1,5 +1,4 @@
-import { useEffect, useState, createContext } from 'react';
-import AppContent from './components/AppContent'
+import { useEffect, useState } from 'react';
 import LoginPage from './components/login/LoginPage';
 import './assets/css/base.css'
 
@@ -21,37 +20,36 @@ interface Settings {
 declare global {
     interface Window {
         settings: {
-            set(): any;
+            set(settings: any): Promise<any>;
             get(): any
+        },
+        projects: {
+            mkbasedir(data: any): Promise<any>
         }
     }
 }
 
-const SettingsContext = createContext(null)
 
 
-export default  function App(): JSX.Element {
-    // Get stored settings on each change
-    const defaultSettings = window.settings.get()
-    const [settings, setSettings] = useState<Settings>(defaultSettings)
-    console.log(settings)
+export default function App(): JSX.Element {
+    const [settings, setSettings] = useState<Settings>({})
     const [islogin, setIslogin] = useState(false)
     const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
 
-    // useEffect(() => {
-    //     // Resave settings on each change
-    //     ipcRenderer.send('user-settings', { cmd: 'set', settings: settings })
 
-    //     'user' in settings ? setIslogin(false) : setIslogin(true)
-    //     setUserSettingLoaded(true)
-    // }, [settings])
-    
+    useEffect(() => {
+        // Resave settings on each change
+        window.settings.get()
+            .then(settings => {
+                setSettings(settings);
+                setUserSettingLoaded(true);
+                'user' in settings ? setIslogin(false) : setIslogin(true)
+            })
+    }, [])
+
     return (
-        <>defaultSettings</>
-        // <SettingsContext.Provider value={{ settings, setSettings }}>
-        //     {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage /> : null}
-        // </SettingsContext.Provider>
+        <>
+            {userSettingsLoaded == true ? islogin == false ? null : <LoginPage /> : null}
+        </>
     )
 }
-
-export { SettingsContext }
