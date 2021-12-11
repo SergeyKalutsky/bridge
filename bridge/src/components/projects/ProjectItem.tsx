@@ -19,9 +19,8 @@ const ProjectItem = ({ project,
     updateProjects }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
-    const [ settings, setSettings ] = useState()
     const [active, setActive] = useState(false)
-
+    
     const buildSpanClassName = () => {
         let baseClass = ''
         baseClass += project.islocal == false ? 'non-active ' : ''
@@ -29,16 +28,16 @@ const ProjectItem = ({ project,
         return baseClass
     }
     const setPopUp = (active_project: Project) => {
-        // setSettings({ ...settings, active_project })
+        window.settings.set({ ...settings, active_project })
         setActive(false)
         setOpen(false)
     }
+    const settings = window.settings.get()
     return (
-        // <div className={'active_project' in settings &&
-        //     settings.active_project.id == project.id ? 'project active' : 'project'}
-        //     onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
-        //     onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
-        <div>
+        <div className={'active_project' in settings &&
+            settings.active_project.id == project.id ? 'project active' : 'project'}
+            onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
+            onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
             <span className={buildSpanClassName()}
                 onClick={(e) => {
                     e.currentTarget.className.includes('non-active') == true ?

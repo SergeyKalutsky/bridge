@@ -9,6 +9,8 @@ const storage = require('electron-json-storage')
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
+let settings = storage.getSync('settings')
+
 let BASE_DIR = makeBaseDir()
 
 // Projects ===========================================================
@@ -59,11 +61,12 @@ ipcMain.on('git', (event, arg) => {
 
 // User Settings -------------------------------------------------------------------
 ipcMain.on('settings:get', (event) => {
-  event.returnValue = storage.getSync('settings')
+  event.returnValue = settings
 })
 
-ipcMain.handle('settings:set', (event, settings) => {
-  storage.set('settings', settings)
+ipcMain.handle('settings:set', (event, new_settings) => {
+  settings = {...settings, ...new_settings}
+  storage.set('settings', new_settings)
 })
 
 // Usual Stuff ---------------------------------------------------------------------

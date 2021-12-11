@@ -76,14 +76,14 @@ const Projects = (): JSX.Element => {
     }
 
 
-    // useEffect(() => {
-    //     fetchProjects(settings)
-    //         .then(data => {
-    //             const projects = data.map(project => project)
-    //             console.log(projects)
-    //             setProjects(projects)
-    //         })
-    // }, [])
+    useEffect(() => {
+        fetchProjects(window.settings.get())
+            .then(data => {
+                const projects = data.map(project => project)
+                console.log(projects)
+                setProjects(projects)
+            })
+    }, [])
 
     return (
         <>

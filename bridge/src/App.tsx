@@ -22,7 +22,7 @@ export default function App(): JSX.Element {
 
     useEffect(() => {
         const settings = window.settings.get()
-        setUserSettingLoaded(true);
+        setUserSettingLoaded(true)
         'user' in settings ? setIslogin(false) : setIslogin(true)
     }, [])
 

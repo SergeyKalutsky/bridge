@@ -1,10 +1,10 @@
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import ProjectItem from './ProjectItem';
-import 'reactjs-popup/dist/index.css';
-import '../../assets/css/ProjectsMenu.css'
 import { Adding } from '../Icons';
 import { Project } from './Projects'
+import 'reactjs-popup/dist/index.css';
+import '../../assets/css/ProjectsMenu.css'
 
 const useStyles = makeStyles(() => ({
   menuIcon: {
