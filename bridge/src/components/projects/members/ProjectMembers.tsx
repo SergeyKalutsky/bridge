@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
+import { useState, useEffect} from 'react'
 import '../../../assets/css/ProjectMembers.css'
-import { SettingsContext } from '../../../App'
 import CurrentMembers from './CurrentMembers'
 import FindMembersPopUp from './FindMembersPopUp'
 import { listProjectMembers } from '../../../lib/api/index'
@@ -17,7 +16,7 @@ interface Member {
 
 
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
+    const [ settings, setSettings ] = useState()
     const [open, setOpen] = useState(false)
     const [membersCurrent, setMembersCurrent] = useState<Member[]>([])
     const [search, setSearch] = useState('')

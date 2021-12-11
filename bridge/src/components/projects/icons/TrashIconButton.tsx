@@ -1,9 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import Popup from 'reactjs-popup';
-const { ipcRenderer } = window.require('electron');
-import { useContext, useState } from 'react';
-import { SettingsContext } from '../../../App';
+import { useState } from 'react';
 import { deleteProject } from '../../../lib/api/index'
 
 type Props = {
@@ -14,7 +12,7 @@ type Props = {
 }
 
 const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
+    const [ settings, setSettings ] = useState()
     const [open, setOpen] = useState(false)
     return (
         <>
@@ -36,9 +34,9 @@ const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Ele
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                     <button className="close danger" onClick={() => {
                         deleteProject(settings, id)
-                        ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
+                        // ipcRenderer.send('projects', { cmd: 'delete', project: { name: name, id: id } })
                         removeProject(id)
-                        setSettings({ user: settings.user })
+                        // setSettings({ user: settings.user })
                         setOpen(false)
                     }}>
                         Удалить

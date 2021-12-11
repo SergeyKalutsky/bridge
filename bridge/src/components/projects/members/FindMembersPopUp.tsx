@@ -1,5 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
-import { SettingsContext } from '../../../App'
+import { useEffect, useState } from 'react'
 import Popup from 'reactjs-popup';
 import { Member } from './ProjectMembers'
 import { findUser } from '../../../lib/api/index'
@@ -21,7 +20,7 @@ const FindMembersPopUp = ({ membersCurrent,
     project_id,
     addMember,
     open, setOpen }: Props): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
+    const [ settings, setSettings ] = useState()
     const [memberFound, setmemberFound] = useState<Member>(null)
 
     const setMemberCurrent = (member: Member) => {

@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from "electron"
 
 contextBridge.exposeInMainWorld('settings', {
     set: (settings: any): Promise<any> => ipcRenderer.invoke('settings:set', settings),
-    get: (): Promise<any> => ipcRenderer.invoke('settings:get')
+    get: (): any => ipcRenderer.sendSync('settings:get')
 })
 
 contextBridge.exposeInMainWorld('projects',  {

@@ -1,7 +1,6 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import UserIconButton from './icons/UserIconButton'
 import TrashIconButton from './icons/TrashIconButton'
-import { SettingsContext } from '../../App';
 import SelectActiveProjectPopUp from './SelectActiveProjectPopUp'
 import ActivateProjectPopUp from './ActivateProjectPopUp'
 import { Project } from './Projects'
@@ -20,7 +19,7 @@ const ProjectItem = ({ project,
     updateProjects }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
-    const { settings, setSettings } = useContext(SettingsContext)
+    const [ settings, setSettings ] = useState()
     const [active, setActive] = useState(false)
 
     const buildSpanClassName = () => {
@@ -30,16 +29,16 @@ const ProjectItem = ({ project,
         return baseClass
     }
     const setPopUp = (active_project: Project) => {
-        setSettings({ ...settings, active_project })
+        // setSettings({ ...settings, active_project })
         setActive(false)
         setOpen(false)
     }
     return (
-        <div className={'active_project' in settings &&
-            settings.active_project.id == project.id ? 'project active' : 'project'}
-            onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
-            onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
-
+        // <div className={'active_project' in settings &&
+        //     settings.active_project.id == project.id ? 'project active' : 'project'}
+        //     onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
+        //     onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
+        <div>
             <span className={buildSpanClassName()}
                 onClick={(e) => {
                     e.currentTarget.className.includes('non-active') == true ?

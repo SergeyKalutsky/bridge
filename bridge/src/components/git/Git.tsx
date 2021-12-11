@@ -1,8 +1,6 @@
-import { useState, useEffect, useContext } from 'react'
-const { ipcRenderer } = window.require('electron');
+import { useState, useEffect } from 'react'
 import GitMenu from './GitMenu'
 import WorkspaceGit from './WorkspaceGit'
-import { SettingsContext } from '../../App'
 
 type GitDiff = {
   filename: string
@@ -24,19 +22,18 @@ type Commit = {
 const emptyDiff = [{ filename: '', newFile: '', oldFile: '' }]
 
 const Git = (): JSX.Element => {
-  const { settings, setSettings } = useContext(SettingsContext)
   const [gitDiffs, setGitDiffs] = useState<GitDiff[]>(emptyDiff)
   const [commitList, setCommitList] = useState<Commit[]>()
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const commits = ipcRenderer.sendSync('git', { cmd: 'log', project: settings.active_project })
-      setCommitList(commits)
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [])
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     // const commits = ipcRenderer.sendSync('git', { cmd: 'log', project: window.settings.get().active_project })
+  //     // setCommitList(commits)
+  //   // }, 1000);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, [])
   return (
     <>
       <GitMenu setGitDiffs={setGitDiffs} commitList={commitList}/>

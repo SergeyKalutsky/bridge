@@ -1,6 +1,5 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import '../../assets/css/ProjectsCreate.css'
-import { SettingsContext } from '../../App'
 import { createProject } from '../../lib/api/index'
 import { Project } from './Projects'
 
@@ -18,7 +17,7 @@ const dummyProject: Project = {
 }
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
+    const [ settings, setSettings ] = useState()
     const [checked, setChecked] = useState<number>(0)
     const [project, setProject] = useState<Project>(dummyProject)
 

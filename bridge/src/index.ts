@@ -12,8 +12,8 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 let BASE_DIR = makeBaseDir()
 
 // Projects ===========================================================
-ipcMain.on('projects:mkbasedir', (event, user) => {
-  BASE_DIR = join(BASE_DIR, user.login)
+ipcMain.on('projects:mkbasedir', (event, arg) => {
+  BASE_DIR = join(BASE_DIR, arg.user.login)
   fs.mkdirSync(BASE_DIR, { recursive: true })
 })
 
@@ -58,9 +58,8 @@ ipcMain.on('git', (event, arg) => {
 })
 
 // User Settings -------------------------------------------------------------------
-ipcMain.handle('settings:get', () => {
-  const settings = storage.getSync('settings')
-  return settings
+ipcMain.on('settings:get', (event) => {
+  event.returnValue = storage.getSync('settings')
 })
 
 ipcMain.handle('settings:set', (event, settings) => {

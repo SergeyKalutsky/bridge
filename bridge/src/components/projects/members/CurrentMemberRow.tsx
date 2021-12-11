@@ -1,8 +1,7 @@
 import Popup from 'reactjs-popup';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { SettingsContext } from '../../../App'
 import { deleteMember } from '../../../lib/api/index'
 import { Member } from './ProjectMembers'
 
@@ -18,7 +17,7 @@ const CurrentMemberRow = ({ member,
     removeMember }: Props): JSX.Element => {
 
     const [open, setOpen] = useState(false)
-    const { settings, setSettings } = useContext(SettingsContext)
+    const [ settings, setSettings ] = useState()
     return (
         <div className='current-member' key={member.id}>
             <div className='member-row'>

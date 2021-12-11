@@ -1,10 +1,7 @@
-import { useContext } from 'react';
+import { useState } from 'react';
 import Popup from 'reactjs-popup';
 import { Project } from './Projects'
-import { SettingsContext } from '../../App'
 import { deleteMember } from '../../lib/api/index'
-
-const { ipcRenderer } = window.require('electron');
 
 interface Props {
     open: boolean
@@ -15,7 +12,6 @@ interface Props {
 }
 
 const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects, setActive }: Props): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
     return (
         <Popup
             open={open}
@@ -28,7 +24,7 @@ const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects, setActiv
                 <div>Проект отсутствует локально</div>
                 <button className="close"
                     onClick={() => {
-                        ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
+                        // ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
                         setOpen(false)
                         updateProjects({ ...project, islocal: true })
                     }}
@@ -37,7 +33,7 @@ const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects, setActiv
                 </button>
                 <button className="close"
                     onClick={() => {
-                        deleteMember(settings, project.id, settings.user.id)
+                        // deleteMember(settings, project.id, settings.user.id)
                         setOpen(false)
                     }}
                 >

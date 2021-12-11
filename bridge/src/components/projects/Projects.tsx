@@ -1,10 +1,9 @@
-import { useState, useEffect, useReducer, useContext } from 'react'
+import { useState, useEffect, useReducer } from 'react'
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
 import '../../assets/css/Projects.css'
-const { ipcRenderer } = window.require('electron');
 
 type Project = {
     id: number
@@ -58,7 +57,7 @@ const Projects = (): JSX.Element => {
     }
 
     const addProject = (project: Project) => {
-        ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
+        // ipcRenderer.send('git', { cmd: 'clone', project: project, user: settings.user })
         project.islocal = true
         setProjects([...projects, project])
         dispatch({ type: 'home' })
@@ -77,14 +76,14 @@ const Projects = (): JSX.Element => {
     }
 
 
-    useEffect(() => {
-        fetchProjects(settings)
-            .then(data => {
-                const projects = data.map(project => project)
-                console.log(projects)
-                setProjects(projects)
-            })
-    }, [])
+    // useEffect(() => {
+    //     fetchProjects(settings)
+    //         .then(data => {
+    //             const projects = data.map(project => project)
+    //             console.log(projects)
+    //             setProjects(projects)
+    //         })
+    // }, [])
 
     return (
         <>

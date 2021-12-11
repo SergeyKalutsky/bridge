@@ -15,15 +15,18 @@ type User = {
     password?: string
     login?: string
 }
+interface Props {
+    setIslogin: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-
-const LoginPage = (): JSX.Element => {
+const LoginPage = ({ setIslogin }: Props): JSX.Element => {
     const [loginData, setloginData] = useState<InputForms>({ login: '', password: '' })
 
     const handleData = (data: User) => {
         if (!('error' in data)) {
             data['password'] = loginData.password
             window.settings.set({ user: data })
+            setIslogin(false)
         }
         window.projects.mkbasedir(data)
     }

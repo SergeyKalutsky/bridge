@@ -1,6 +1,5 @@
 import '../../assets/css/leftMenu.css'
 import { useState } from 'react'
-const { ipcRenderer } = window.require('electron');
 import CommitRow from './CommitRow'
 import {GitDiff, Commit} from './Git'
 
@@ -15,8 +14,8 @@ const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
   const [activeHashRow, setActiveHashRow] = useState<string>()
 
   const onClickCallback = (hash: string) => {
-    const gitDiffs = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
-    setGitDiffs(gitDiffs)
+    // const gitDiffs = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
+    // setGitDiffs(gitDiffs)
     setActiveHashRow(hash)
   }
 

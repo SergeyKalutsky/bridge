@@ -1,5 +1,4 @@
-import { useContext, useState } from 'react'
-import { SettingsContext } from '../../../App'
+import { useState } from 'react'
 import { Member } from './ProjectMembers'
 import { addProjectMember } from '../../../lib/api/index'
 
@@ -14,7 +13,7 @@ const MembersList = ({ member,
     project_id,
     addMember }: Props): JSX.Element => {
     const [localMember, setlocalMember] = useState<Member>(member)
-    const { settings, setSettings } = useContext(SettingsContext)
+    const [ settings, setSettings ] = useState()
     return (
         <div className='project-found'>
             {localMember.name}

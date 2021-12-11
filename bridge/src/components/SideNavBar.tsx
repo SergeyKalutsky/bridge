@@ -1,11 +1,8 @@
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom'
-import { useContext } from 'react';
 import Popup from 'reactjs-popup';
 import '../assets/css/SideNavBar.css'
-import { SettingsContext } from '../App';
 import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './Icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +29,6 @@ const GitLink = (): JSX.Element => {
 }
 
 const SideNavBar = (): JSX.Element => {
-    const { settings, setSettings } = useContext(SettingsContext)
     const classes = useStyles();
     return (
         <div className='icon-nav-bar'>
@@ -43,7 +39,7 @@ const SideNavBar = (): JSX.Element => {
                 <Link to="/editor" replace><FileIcon /></Link>
             </IconButton>
             <IconButton className={classes.menuIcon}>
-                {'active_project' in settings ?
+                {'active_project' in window.settings.get() ?
                     <Link to="/git" replace><GitIcon /></Link> :
                     <GitLink />}
             </IconButton>
