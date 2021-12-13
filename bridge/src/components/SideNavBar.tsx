@@ -45,8 +45,8 @@ const SideNavBar = (): JSX.Element => {
             <Popup
                 open={open}
                 onClose={() => { setOpen(false) }}
-                // closeOnDocumentClick
                 position="right center"
+                modal={false}
             >
                 {<div>Чтобы использовать Git нужно выбрать проект</div>}
             </Popup >
