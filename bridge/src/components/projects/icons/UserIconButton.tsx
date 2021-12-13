@@ -10,7 +10,9 @@ const UserIconButton = ({ id, dispatch }: UserProps): JSX.Element => {
 
     return (
         <div className='icon'><FontAwesomeIcon icon={faUserEdit}
-            onClick={() => { dispatch({ type: 'memberFind', payload: id }) }}
+            onClick={() => { 
+                dispatch({ type: 'memberFind', payload: id }) 
+            }}
         /></div>
     )
 }

@@ -30,11 +30,10 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
         }
         setMembersCurrent(newMemberList)
     }
-
     useEffect(() => {
         listProjectMembers(window.settings.get(), project_id)
             .then(data => data !== null ? setMembersCurrent(data) : null)
-    }, [])
+    }, [project_id])
     return (
         <div className='project-members'>
             <h1>Пригласить друга в проект</h1>
