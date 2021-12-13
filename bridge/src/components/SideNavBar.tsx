@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Popup from 'reactjs-popup';
 import '../assets/css/SideNavBar.css'
 import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './Icons';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     menuIcon: {
@@ -29,6 +30,7 @@ const GitLink = (): JSX.Element => {
 }
 
 const SideNavBar = (): JSX.Element => {
+    const [link, setLink] = useState<JSX.Element>(<Link to="/git" replace><GitIcon /></Link>)
     const classes = useStyles();
     return (
         <div className='icon-nav-bar'>
@@ -38,10 +40,13 @@ const SideNavBar = (): JSX.Element => {
             <IconButton className={classes.menuIcon}>
                 <Link to="/editor" replace><FileIcon /></Link>
             </IconButton>
-            <IconButton className={classes.menuIcon}>
-                {'active_project' in window.settings.get() ?
-                    <Link to="/git" replace><GitIcon /></Link> :
-                    <GitLink />}
+            <IconButton className={classes.menuIcon}
+                onClick={() => {
+                    'active_project' in window.settings.get() ?
+                        setLink(<Link to="/git" replace><GitIcon /></Link>) :
+                        setLink(<GitLink />)
+                }}>
+                {link}
             </IconButton>
             <IconButton className={classes.menuIcon}>
                 <Link to="/" replace><ProjectIcon /></Link>
