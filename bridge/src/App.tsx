@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import LoginPage from './components/login/LoginPage';
 import AppContent from './components/AppContent'
 import { Project } from './components/projects/Projects'
+import { Commit } from './components/git/Git';
 import './assets/css/base.css'
 
 declare global {
@@ -17,6 +18,10 @@ declare global {
         },
         git: {
             clone(project: Project): void
+            pull(): void
+            push(): void
+            log(): Commit[]
+            diff(hash: string): void
         }
     }
 }

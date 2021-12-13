@@ -25,15 +25,15 @@ const Git = (): JSX.Element => {
   const [gitDiffs, setGitDiffs] = useState<GitDiff[]>(emptyDiff)
   const [commitList, setCommitList] = useState<Commit[]>()
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     // const commits = ipcRenderer.sendSync('git', { cmd: 'log', project: window.settings.get().active_project })
-  //     // setCommitList(commits)
-  //   // }, 1000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [])
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const commits = window.git.log()
+      setCommitList(commits)
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [])
   return (
     <>
       <GitMenu setGitDiffs={setGitDiffs} commitList={commitList}/>

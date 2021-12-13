@@ -37,39 +37,37 @@ ipcMain.on('git:clone', (event, project) => {
   }
 })
 
+ipcMain.on('git:log', (event) => {
+  const project_name = settings.active_project.name.replace(/ /g, '-')
+  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  git.cwd(project_dir).log().then(result => {
+    event.returnValue = result['all']
+  })
+    .catch(err => { event.returnValue = []; console.log(err) })
+})
 
-// ipcMain.on('git', (event, arg) => {
+ipcMain.on('git:pull', () => {
+  const project_name = settings.active_project.name.replace(/ /g, '-')
+  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  git.cwd(project_dir).pull()
+})
 
-//   if (arg.project !== undefined) {
-//     const project_dir = join(BASE_DIR, arg.project.name.replace(/ /g, '-'))
+ipcMain.on('git:push', () => {
+  const project_name = settings.active_project.name.replace(/ /g, '-')
+  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  git.cwd(project_dir).add('./*').commit('test').push()
+})
 
-//     if (arg['cmd'] === 'log') {
-//       git.cwd(project_dir).log().then(result => {
-//         event.returnValue = result['all']
-//       })
-//         .catch(err => { event.returnValue = []; console.log(err) })
 
-//     } else if (arg['cmd'] === 'pull') {
-//       git.cwd(project_dir).pull()
-
-//     } else if (arg['cmd'] === 'push') {
-//       git.cwd(project_dir).add('./*').commit('test').push()
-
-//     } else if (arg['cmd'] === 'clone') {
-//       if (!fs.existsSync(project_dir)) {
-//         git.cwd(BASE_DIR).clone(arg.project.http)
-//       }
-//     }
-//   } else if (arg['cmd'] === 'diff') {
-//     git.show(arg['hash'])
-//       .then(result => {
-//         event.returnValue = parseGitDiff(result)
-//       })
-//       .catch(err => {
-//         event.returnValue = undefined
-//       });
-//   }
-// })
+ipcMain.on('git:diff', (event, hash) => {
+  git.show(hash)
+      .then(result => {
+        event.returnValue = parseGitDiff(result)
+      })
+      .catch(err => {
+        event.returnValue = undefined
+      });
+})
 
 // User Settings -------------------------------------------------------------------
 ipcMain.on('settings:get', (event) => {
