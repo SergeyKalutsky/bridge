@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import { Link } from 'react-router-dom'
+import { Link , useHistory } from 'react-router-dom'
 import Popup from 'reactjs-popup';
 import '../assets/css/SideNavBar.css'
 import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './Icons';
@@ -17,20 +17,10 @@ const useStyles = makeStyles((theme) => ({
 );
 
 
-const GitLink = (): JSX.Element => {
-    return (
-        <Popup
-            trigger={<div className='icon'><GitIcon /></div>}
-            position="right center"
-        >
-            {<div>Чтобы использовать Git нужно выбрать проект</div>}
-        </Popup >
-
-    )
-}
 
 const SideNavBar = (): JSX.Element => {
-    const [link, setLink] = useState<JSX.Element>(<Link to="/git" replace><GitIcon /></Link>)
+    const history = useHistory()
+    const [open, setOpen] = useState(false)
     const classes = useStyles();
     return (
         <div className='icon-nav-bar'>
@@ -42,15 +32,25 @@ const SideNavBar = (): JSX.Element => {
             </IconButton>
             <IconButton className={classes.menuIcon}
                 onClick={() => {
-                    'active_project' in window.settings.get() ?
-                        setLink(<Link to="/git" replace><GitIcon /></Link>) :
-                        setLink(<GitLink />)
+                    const settigns = window.settings.get()
+                    'active_project' in settigns && settigns.active_project !== undefined ?
+                        history.push('/git') :
+                        setOpen(true)
                 }}>
-                {link}
+                <GitIcon />
             </IconButton>
             <IconButton className={classes.menuIcon}>
                 <Link to="/" replace><ProjectIcon /></Link>
             </IconButton>
+            <Popup
+                open={open}
+                onClose={() => { setOpen(false) }}
+                // closeOnDocumentClick
+                position="right center"
+            >
+                {<div>Чтобы использовать Git нужно выбрать проект</div>}
+            </Popup >
+
         </div>
     )
 }

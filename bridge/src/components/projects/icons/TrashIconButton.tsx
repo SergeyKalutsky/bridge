@@ -32,7 +32,13 @@ const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Ele
                 <div className="modal">
                     <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                     <button className="close danger" onClick={() => {
-                        deleteProject(window.settings.get(), id)
+                        const settings = window.settings.get()
+                        if (settings.active_project !== undefined && settings.active_project.id === id){
+                            settings.active_project = undefined;
+                            console.log(settings)
+                            window.settings.set(settings)
+                        }
+                        deleteProject(settings, id)
                         window.projects.delete(name)
                         removeProject(id)
                         setOpen(false)
