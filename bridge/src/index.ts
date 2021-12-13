@@ -78,7 +78,7 @@ ipcMain.on('settings:get', (event) => {
 
 ipcMain.handle('settings:set', (event, new_settings) => {
   settings = { ...settings, ...new_settings }
-  storage.set('settings', new_settings)
+  storage.set('settings', settings)
 })
 
 // Usual Stuff ---------------------------------------------------------------------
