@@ -22,5 +22,5 @@ contextBridge.exposeInMainWorld('git', {
     pull: () => ipcRenderer.send('git:pull'),
     push: () => ipcRenderer.send('git:push'),
     log: () => ipcRenderer.sendSync('git:log'),
-    diff: (hash: string): ParsedGitDiff => ipcRenderer.sendSync('git:diff', hash)
+    diff: (hash: string): ParsedGitDiff[] => ipcRenderer.sendSync('git:diff', hash)
 })
