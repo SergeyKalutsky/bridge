@@ -5,6 +5,13 @@ import { Project } from './components/projects/Projects'
 import { Commit } from './components/git/Git';
 import './assets/css/base.css'
 
+type ParsedGitDiff = {
+    filename: string
+    oldFile: string
+    newFile: string
+}
+
+
 declare global {
     interface Window {
         settings: {
@@ -21,7 +28,7 @@ declare global {
             pull(): void
             push(): void
             log(): Commit[]
-            diff(hash: string): void
+            diff(hash: string): ParsedGitDiff[]
         }
     }
 }

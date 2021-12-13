@@ -1,5 +1,11 @@
 import { contextBridge, ipcRenderer } from "electron"
 
+type ParsedGitDiff = {
+    filename: string
+    oldFile: string
+    newFile: string
+}
+
 contextBridge.exposeInMainWorld('settings', {
     set: (settings: any): Promise<any> => ipcRenderer.invoke('settings:set', settings),
     get: (): any => ipcRenderer.sendSync('settings:get')
@@ -16,5 +22,5 @@ contextBridge.exposeInMainWorld('git', {
     pull: () => ipcRenderer.send('git:pull'),
     push: () => ipcRenderer.send('git:push'),
     log: () => ipcRenderer.sendSync('git:log'),
-    diff: (hash: string) => ipcRenderer.send('git:diff', hash)
+    diff: (hash: string): ParsedGitDiff => ipcRenderer.sendSync('git:diff', hash)
 })

@@ -14,8 +14,8 @@ const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
   const [activeHashRow, setActiveHashRow] = useState<string>()
 
   const onClickCallback = (hash: string) => {
-    // const gitDiffs = ipcRenderer.sendSync('git', { cmd: 'diff', hash: hash })
-    // setGitDiffs(gitDiffs)
+    const gitDiffs = window.git.diff(hash)
+    setGitDiffs(gitDiffs)
     setActiveHashRow(hash)
   }
 
