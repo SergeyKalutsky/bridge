@@ -10,13 +10,15 @@ type Props = {
     dispatch: React.Dispatch<any>
     removeProject: (project_id: number) => void
     updateProjects: (project: Project) => void
+    setActiveProject: (project_id: number) => void
 }
 
 
 const ProjectItem = ({ project,
     removeProject,
     dispatch,
-    updateProjects }: Props): JSX.Element => {
+    updateProjects,
+    setActiveProject }: Props): JSX.Element => {
     const [open, setOpenSelectActive] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
     const [active, setActive] = useState(false)
@@ -31,10 +33,10 @@ const ProjectItem = ({ project,
         window.settings.set({ active_project: active_project })
         setActive(false)
         setOpenSelectActive(false)
+        setActiveProject(active_project.id)
     }
-    const activeProjectState = false
     return (
-        <div className={activeProjectState == false ? 'project active' : 'project'}
+        <div className={project.isactive == true ? 'project active' : 'project'}
             onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
             onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
             <span className={buildSpanClassName()}

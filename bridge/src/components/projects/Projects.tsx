@@ -29,6 +29,7 @@ type Project = {
     islocal: boolean
     http: string
     description?: string
+    isactive?: boolean
 }
 
 type State = {
@@ -80,9 +81,9 @@ const Projects = (): JSX.Element => {
         const newProjects = []
         for (const project of projects) {
             if (project.id === project_id) {
-                project.islocal = true
+                project.isactive = true
             } else {
-                project.islocal = false
+                project.isactive = false
             }
             newProjects.push(project)
         }
@@ -104,10 +105,12 @@ const Projects = (): JSX.Element => {
 
     useEffect(() => {
         const localProjects = window.projects.getLocalProjectsNames()
+        const settings = window.settings.get()
         fetchProjects(window.settings.get())
             .then(data => {
                 const projects = data.map((project: Project) => {
                     project.islocal = localProjects.includes(project.name)
+                    project.isactive = settings.active_project !== undefined && settings.active_project.id == project.id
                     return project
                 })
                 setProjects(projects)
@@ -119,7 +122,8 @@ const Projects = (): JSX.Element => {
             <ProjectItem project={project}
                 dispatch={dispatch}
                 removeProject={removeProject}
-                updateProjects={updateProjects} />
+                updateProjects={updateProjects}
+                setActiveProject={setActiveProject} />
         </div>)
 
 
