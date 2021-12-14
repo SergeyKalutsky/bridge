@@ -1,0 +1,27 @@
+.ide {
+    width: 100%;
+    display: flex;
+}
+
+.tree-view {
+    width: 15%;
+    height: 100%;
+    background-color: rgb(82, 73, 62);
+}
+
+.editor {
+    width: 100%;
+}
+
+#aceEditor {
+    width: 100% !important;
+
+}
+
+.xterm-screen{
+    width: 100% !important
+}
+
+.xterm-viewport {
+    width: 100% !important
+}
