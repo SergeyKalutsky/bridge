@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Terminal } from 'xterm';
+import 'xterm/css/xterm.css'
 import { FitAddon } from 'xterm-addon-fit';
 
 const XtermTerminal = (): JSX.Element => {
@@ -9,8 +10,8 @@ const XtermTerminal = (): JSX.Element => {
 
     useEffect(() => {
         term.open(document.getElementById('terminal'));
-        fitAddon.fit()
         term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
+        fitAddon.fit()
     })
     return (
         <div id='terminal'>

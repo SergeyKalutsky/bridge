@@ -17,15 +17,15 @@ const Editor = (): JSX.Element => {
             <div className="tree-view">
             </div>
             <div className="editor">
-            <AceEditor
-                mode="python"
-                theme="github"
-                onChange={onChange}
-                name="aceEditor"
-                editorProps={{ $blockScrolling: true }}
-                fontSize={18}
-            />
-            <XtermTerminal />
+                <AceEditor
+                    mode="python"
+                    theme="github"
+                    onChange={onChange}
+                    name="aceEditor"
+                    editorProps={{ $blockScrolling: true }}
+                    fontSize={18}
+                />
+                <XtermTerminal />
             </div>
         </div>
     )
