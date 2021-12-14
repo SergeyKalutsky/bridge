@@ -22,7 +22,7 @@ const StyledFile = styled.div`
     font-size: 18px;
   }
   &:hover {
-    background-color: #105b72c2;
+    background-color: #f3f0f7;
     cursor: pointer;
   }
 `;
@@ -37,7 +37,7 @@ const StyledFolder = styled.div`
       font-size: 20px;
     }
     &:hover {
-        background-color: #105b72c2;
+        background-color: #f3f0f7;
         cursor: pointer;
     }
   }
