@@ -55,6 +55,7 @@ const FindMembersPopUp = ({ membersCurrent,
                                 onClick={() => {
                                     addProjectMember(window.settings.get(), memberFound.id, project_id)
                                     addMember(memberFound)
+                                    setOpen(false)
                                 }}>Пригласить</button>
                         </div> :
                         <div className='not-found'>
