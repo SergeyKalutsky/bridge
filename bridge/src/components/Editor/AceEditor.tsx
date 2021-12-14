@@ -4,7 +4,7 @@ import FileTreeViewer from "./FileTreeView";
 import '../../assets/css/editor.css'
 
 import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/theme-monokai";
 
 
 const Editor = (): JSX.Element => {
@@ -21,7 +21,7 @@ const Editor = (): JSX.Element => {
             <div className="editor">
                 <AceEditor
                     mode="python"
-                    theme="github"
+                    theme="monokai"
                     onChange={onChange}
                     name="aceEditor"
                     editorProps={{ $blockScrolling: true }}
