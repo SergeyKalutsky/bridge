@@ -19,6 +19,7 @@ const StyledFile = styled.div`
   align-items: center;
   span {
     margin-left: 5px;
+    font-size: 18px;
   }
   &:hover {
     background-color: #105b72c2;
@@ -33,6 +34,7 @@ const StyledFolder = styled.div`
     align-items: center;
     span {
       margin-left: 5px;
+      font-size: 20px;
     }
     &:hover {
         background-color: #105b72c2;
