@@ -1,13 +1,18 @@
 import fs from 'fs'
 import path from 'path'
 
-function walkSync(dir) {
+interface Folder {
+    name: string
+    files: string[]
+}
+
+function walkSync(dir: string): string[] | Folder[] {
     const folderFiles = []
     const files = fs.readdirSync(dir, { withFileTypes: true });
     for (const file of files) {
         if (file.isDirectory()) {
             const innerFolderFiles = walkSync(path.join(dir, file.name))
-            folderFiles.push({dir: innerFolderFiles})
+            folderFiles.push({ name: file.name, files: innerFolderFiles })
         } else {
             folderFiles.push(file.name)
         }
@@ -15,5 +20,4 @@ function walkSync(dir) {
     return folderFiles
 }
 
-const files = walkSync(__dirname)
-console.log(files[1].dir)
+export default walkSync
