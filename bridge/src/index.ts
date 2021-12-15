@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import parseGitDiff from './lib/git_api/parse'
+import walkSync from './lib/api/dirFiles'
 import { git } from './lib/git_api/index'
 import { join } from 'path'
 import fs from 'fs'
@@ -27,6 +28,12 @@ ipcMain.on('projects:delete', (event, project_name) => {
   fs.rmdirSync(path, { recursive: true });
 })
 
+ipcMain.handle('projects:listfiles', async (event) => {
+  const project_name = settings.active_project.name.replace(/ /g, '-')
+  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  const result = walkSync(project_dir)
+  return result
+})
 
 // GIT ---------------------------------------------------------------
 ipcMain.on('git:clone', (event, project) => {
@@ -68,6 +75,18 @@ ipcMain.on('git:diff', (event, hash) => {
         event.returnValue = undefined
       });
 })
+
+ipcMain.on('git:diff', (event, hash) => {
+  git.show(hash)
+      .then(result => {
+        event.returnValue = parseGitDiff(result)
+      })
+      .catch(err => {
+        event.returnValue = undefined
+      });
+})
+
+
 
 // User Settings -------------------------------------------------------------------
 ipcMain.on('settings:get', (event) => {
