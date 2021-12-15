@@ -28,6 +28,15 @@ ipcMain.on('projects:delete', (event, project_name) => {
   fs.rmdirSync(path, { recursive: true });
 })
 
+ipcMain.on('projects:setactivefile', (event, filepath) => {
+  if (filepath === '') {
+    event.returnValue = ''
+  } else {
+    event.returnValue = fs.readFileSync(filepath, { 'encoding': 'utf-8' })
+  }
+})
+
+
 ipcMain.handle('projects:listfiles', async (event) => {
   const project_name = settings.active_project.name.replace(/ /g, '-')
   const project_dir = join(BASE_DIR, settings.user.login, project_name)
@@ -68,22 +77,22 @@ ipcMain.on('git:push', () => {
 
 ipcMain.on('git:diff', (event, hash) => {
   git.show(hash)
-      .then(result => {
-        event.returnValue = parseGitDiff(result)
-      })
-      .catch(err => {
-        event.returnValue = undefined
-      });
+    .then(result => {
+      event.returnValue = parseGitDiff(result)
+    })
+    .catch(err => {
+      event.returnValue = undefined
+    });
 })
 
 ipcMain.on('git:diff', (event, hash) => {
   git.show(hash)
-      .then(result => {
-        event.returnValue = parseGitDiff(result)
-      })
-      .catch(err => {
-        event.returnValue = undefined
-      });
+    .then(result => {
+      event.returnValue = parseGitDiff(result)
+    })
+    .catch(err => {
+      event.returnValue = undefined
+    });
 })
 
 

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import XtermTerminal from "./XtermTerminal";
 import FileTreeViewer from "./tree_viewer/FileTreeView";
@@ -8,20 +9,25 @@ import "ace-builds/src-noconflict/theme-monokai";
 
 
 const Editor = (): JSX.Element => {
+    const [activePath, setActivePath] = useState('')
+    const [editorValue, setEditorValue] = useState(null)
 
     const onChange = (newValue: string) => {
         console.log("change", newValue);
     }
-
+    useEffect(() => {
+        setEditorValue(window.projects.setActiveFile(activePath))
+    }, [activePath])
     return (
         <div className="ide">
             <div className="tree-view">
-                <FileTreeViewer />
+                <FileTreeViewer activePath={activePath} setActivePath={setActivePath} />
             </div>
             <div className="editor">
                 <AceEditor
                     mode="python"
                     theme="monokai"
+                    value={editorValue}
                     onChange={onChange}
                     name="aceEditor"
                     editorProps={{ $blockScrolling: true }}

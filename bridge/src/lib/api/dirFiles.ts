@@ -1,23 +1,34 @@
 import fs from 'fs'
 import path from 'path'
 
-interface Folder {
+interface FileObject {
     name: string
-    files: string[]
+    files?: string[]
+    path: string
+    isDirectory: boolean
 }
 
-function walkSync(dir: string): string[] | Folder[] {
+function walkSync(dir: string): FileObject[] {
     const folderFiles = []
     const files = fs.readdirSync(dir, { withFileTypes: true });
     for (const file of files) {
         if (file.isDirectory()) {
-            const innerFolderFiles = walkSync(path.join(dir, file.name))
-            folderFiles.push({ name: file.name, files: innerFolderFiles })
+            folderFiles.push({
+                name: file.name,
+                files: walkSync(path.join(dir, file.name)),
+                isDirectory: true,
+                path: path.join(dir, file.name)
+            })
         } else {
-            folderFiles.push(file.name)
+            folderFiles.push({
+                name: file.name,
+                isDirectory: false,
+                path: path.join(dir, file.name)
+            })
         }
     }
     return folderFiles
 }
+
 
 export default walkSync

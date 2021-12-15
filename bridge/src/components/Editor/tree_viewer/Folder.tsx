@@ -8,6 +8,7 @@ const StyledFolder = styled.div`
   .folder--label {
     display: flex;
     align-items: center;
+    background-color: ${p => (p.active ? "#f3f0f7" : "transparent")};
     span {
       margin-left: 5px;
       font-size: 20px;
@@ -25,24 +26,33 @@ const Collapsible = styled.div`
   overflow: hidden;
 `;
 
+interface Props {
+  children: JSX.Element[] | JSX.Element
+  name: string
+  path: string
+  activePath: string
+  setActivePath: React.Dispatch<React.SetStateAction<string>>
+}
 
-const Folder = ({ name, children }): JSX.Element => {
-    const [isOpen, setIsOpen] = useState(false);
 
-    const handleToggle = e => {
-        e.preventDefault();
-        setIsOpen(!isOpen);
-    };
+const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX.Element => {
+  const [isOpen, setIsOpen] = useState(false);
 
-    return (
-        <StyledFolder>
-            <div className="folder--label" onClick={handleToggle}>
-                <AiOutlineFolder />
-                <span>{name}</span>
-            </div>
-            <Collapsible isOpen={isOpen}>{children}</Collapsible>
-        </StyledFolder>
-    );
+  const handleToggle = e => {
+    e.preventDefault()
+    setIsOpen(!isOpen)
+    setActivePath(path)
+  };
+  return (
+    <StyledFolder active={path === activePath}>
+      <div className="folder--label" 
+      onClick={handleToggle}>
+        <AiOutlineFolder />
+        <span>{name}</span>
+      </div>
+      <Collapsible isOpen={isOpen}>{children}</Collapsible>
+    </StyledFolder>
+  );
 };
 
 export default Folder

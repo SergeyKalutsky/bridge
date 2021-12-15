@@ -14,22 +14,36 @@ const Tree = ({ children }) => {
 Tree.File = File;
 Tree.Folder = Folder;
 
-interface Folder {
+interface FileObject {
     name: string
-    files: string[]
+    files?: FileObject[]
+    path: string
+    isDirectory: boolean
 }
 
+interface Props {
+    activePath: string
+    setActivePath: React.Dispatch<React.SetStateAction<string>>
+  }
 
-const FileTreeViewer = (): JSX.Element => {
+const FileTreeViewer = ({activePath, setActivePath}: Props): JSX.Element => {
     const [fileTree, setFileTree] = useState<JSX.Element[]>(null)
 
-    const buildFileTree = (files: string[] | Folder[]): JSX.Element[] => {
+    const buildFileTree = (files: FileObject[]): JSX.Element[] => {
         const elements = []
         for (const file of files) {
-            if (typeof file === 'string') {
-                elements.push(<Tree.File name={file} key={file}/>)
+            if (!file.isDirectory) {
+                elements.push(<Tree.File name={file.name}
+                    path={file.path}
+                    activePath={activePath}
+                    setActivePath={setActivePath}
+                    key={file.path} />)
             } else {
-                elements.push(<Tree.Folder name={file.name} key={file.name}>
+                elements.push(<Tree.Folder name={file.name}
+                    key={file.path}
+                    activePath={activePath}
+                    setActivePath={setActivePath}
+                    path={file.path}>
                     {buildFileTree(file.files)}
                 </Tree.Folder>)
             }
@@ -41,9 +55,13 @@ const FileTreeViewer = (): JSX.Element => {
         window.projects.showFiles()
             .then(val => setFileTree(buildFileTree(val)))
     }, [])
+
+    
     return (
         <div className="App">
-            {fileTree}
+            <Tree>
+                {fileTree}
+            </Tree>
         </div>
     );
 }

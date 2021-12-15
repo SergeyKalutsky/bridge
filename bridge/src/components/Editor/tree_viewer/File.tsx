@@ -3,10 +3,10 @@ import { AiOutlineFile } from "react-icons/ai";
 import { DiJavascript1, DiCss3Full, DiHtml5, DiReact } from "react-icons/di";
 
 const FILE_ICONS = {
-    js: <DiJavascript1 />,
-    css: <DiCss3Full />,
-    html: <DiHtml5 />,
-    jsx: <DiReact />
+  js: <DiJavascript1 />,
+  css: <DiCss3Full />,
+  html: <DiHtml5 />,
+  jsx: <DiReact />
 };
 
 
@@ -14,6 +14,7 @@ const StyledFile = styled.div`
   padding-left: 20px;
   display: flex;
   align-items: center;
+  background-color: ${p => (p.active ? "#f3f0f7" : "transparent")};
   span {
     margin-left: 5px;
     font-size: 18px;
@@ -24,15 +25,21 @@ const StyledFile = styled.div`
   }
 `;
 
-const File = ({ name }) => {
-    const ext = name.split(".")[1];
+interface Props {
+  name: string
+  path: string
+  activePath: string
+  setActivePath: React.Dispatch<React.SetStateAction<string>>
+}
 
-    return (
-        <StyledFile>
-            {FILE_ICONS[ext] || <AiOutlineFile />}
-            <span>{name}</span>
-        </StyledFile>
-    );
+const File = ({ name, path, activePath, setActivePath }: Props): JSX.Element => {
+  const ext = name.split(".")[1];
+  return (
+    <StyledFile active={path === activePath} onClick={() => { setActivePath(path) }}>
+      {FILE_ICONS[ext] || <AiOutlineFile />}
+      <span>{name}</span>
+    </StyledFile>
+  );
 };
 
 export default File
