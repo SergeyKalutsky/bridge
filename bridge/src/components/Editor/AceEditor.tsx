@@ -1,6 +1,6 @@
 import AceEditor from "react-ace";
 import XtermTerminal from "./XtermTerminal";
-import FileTreeViewer from "./FileTreeView";
+import FileTreeViewer from "./tree_viewer/FileTreeView";
 import '../../assets/css/editor.css'
 
 import "ace-builds/src-noconflict/mode-python";
