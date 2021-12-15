@@ -33,7 +33,7 @@ const Editor = (): JSX.Element => {
                     editorProps={{ $blockScrolling: true }}
                     fontSize={18}
                 />
-                <XtermTerminal />
+            <XtermTerminal />
             </div>
         </div>
     )
