@@ -5,6 +5,9 @@ import { AiOutlineFolder } from "react-icons/ai";
 const StyledFolder = styled.div`
   padding-left: 20px;
 
+  .folder--label.active {
+    background-color: #f3f0f7;
+  }
   .folder--label {
     display: flex;
     align-items: center;
@@ -12,9 +15,7 @@ const StyledFolder = styled.div`
       margin-left: 5px;
       font-size: 20px;
     }
-  .folder--label .active {
-      background-color: "#f3f0f7"
-  }
+    
     &:hover {
         background-color: #f3f0f7;
         cursor: pointer;
