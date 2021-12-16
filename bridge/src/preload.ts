@@ -6,6 +6,11 @@ type ParsedGitDiff = {
     newFile: string
 }
 
+type FileChanges = {
+    filepath: string
+    fileContent: string
+}
+
 contextBridge.exposeInMainWorld('settings', {
     set: (settings: any): Promise<any> => ipcRenderer.invoke('settings:set', settings),
     get: (): any => ipcRenderer.sendSync('settings:get')
@@ -16,7 +21,8 @@ contextBridge.exposeInMainWorld('projects', {
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
     delete: (project_name): any => ipcRenderer.send('projects:delete', project_name),
     showFiles: (): Promise<any> => ipcRenderer.invoke('projects:listfiles'),
-    readActiveFile: (filepath: string): Promise<any> => ipcRenderer.invoke('projects:readactivefile', filepath)
+    readActiveFile: (filepath: string): Promise<any> => ipcRenderer.invoke('projects:readactivefile', filepath),
+    writeActiveFile: (fileChange: FileChanges): any => ipcRenderer.send('projects:writeactivefile', fileChange)
 })
 
 contextBridge.exposeInMainWorld('git', {

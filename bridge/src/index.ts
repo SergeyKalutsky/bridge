@@ -30,6 +30,12 @@ ipcMain.on('projects:delete', (event, project_name) => {
   fs.rmdirSync(path, { recursive: true });
 })
 
+ipcMain.on('projects:writeactivefile', (event, data) => {
+  fs.writeFile(data.filepath, data.fileContent, (err) => {
+    if (err) return console.log(err);
+  })
+})
+
 ipcMain.handle('projects:readactivefile', async (event, filepath) => {
   if (filepath === '') {
     return ''
@@ -38,7 +44,6 @@ ipcMain.handle('projects:readactivefile', async (event, filepath) => {
     return fileContent
   }
 })
-
 
 ipcMain.handle('projects:listfiles', async (event) => {
   const project_name = settings.active_project.name.replace(/ /g, '-')

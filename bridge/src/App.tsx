@@ -11,6 +11,11 @@ type ParsedGitDiff = {
     newFile: string
 }
 
+type FileChanges = {
+    filepath: string
+    fileContent: string
+}
+
 
 declare global {
     interface Window {
@@ -24,6 +29,7 @@ declare global {
             delete(name: string): void
             showFiles(): Promise<any>
             readActiveFile(filepath: string): Promise<any>
+            writeActiveFile(fileChange: FileChanges): any
         },
         git: {
             clone(project: Project): void

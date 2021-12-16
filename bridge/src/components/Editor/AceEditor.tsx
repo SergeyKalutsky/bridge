@@ -18,7 +18,7 @@ const Editor = (): JSX.Element => {
     const [editorValue, setEditorValue] = useState(null)
 
     const onChange = (newValue: string) => {
-        console.log("change", newValue);
+        window.projects.writeActiveFile({filepath: activePath.path, fileContent: newValue})
     }
     useEffect(() => {
         if (activePath !== null && !activePath.isDirectory) {
