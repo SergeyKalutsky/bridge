@@ -41,7 +41,7 @@ const File = ({ name, path, activePath, setActivePath }: Props): JSX.Element => 
   const ext = name.split(".")[1];
   return (
     <StyledFile active={activePath !== null && path === activePath.path}
-      onClick={() => { setActivePath({ path: path, isDirectory: false }) }}>
+      onClick={() => { setActivePath({ path: path, isDirectory: false }); console.log(activePath) }}>
       {FILE_ICONS[ext] || <AiOutlineFile />}
       <span>{name}</span>
     </StyledFile>

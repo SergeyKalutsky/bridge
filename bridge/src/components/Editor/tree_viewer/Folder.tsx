@@ -8,11 +8,13 @@ const StyledFolder = styled.div`
   .folder--label {
     display: flex;
     align-items: center;
-    background-color: ${p => (p.active ? "#f3f0f7" : "transparent")};
     span {
       margin-left: 5px;
       font-size: 20px;
     }
+  .folder--label .active {
+      background-color: "#f3f0f7"
+  }
     &:hover {
         background-color: #f3f0f7;
         cursor: pointer;
@@ -45,14 +47,14 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = e => {
+    setActivePath({ path: path, isDirectory: true })
     e.preventDefault()
     setIsOpen(!isOpen)
-    setActivePath({path: path, isDirectory: true})
   };
   return (
-    <StyledFolder active={activePath !== null && path === activePath.path}>
-      <div className="folder--label" 
-      onClick={handleToggle}>
+    <StyledFolder>
+      <div className={activePath !== null && path === activePath.path ? "folder--label active" : "folder--label"}
+        onClick={handleToggle}>
         <AiOutlineFolder />
         <span>{name}</span>
       </div>

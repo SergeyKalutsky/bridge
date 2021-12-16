@@ -34,7 +34,6 @@ interface Props {
 
 const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
     const [fileTree, setFileTree] = useState<JSX.Element[]>(null)
-
     const buildFileTree = (files: FileObject[]): JSX.Element[] => {
         const elements = []
         for (const file of files) {
