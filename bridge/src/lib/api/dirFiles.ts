@@ -12,6 +12,7 @@ function walkSync(dir: string): FileObject[] {
     const folderFiles = []
     const files = fs.readdirSync(dir, { withFileTypes: true });
     for (const file of files) {
+        if (file.name === '.git') { continue }
         if (file.isDirectory()) {
             folderFiles.push({
                 name: file.name,
