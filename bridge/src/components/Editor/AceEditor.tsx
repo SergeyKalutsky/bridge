@@ -22,7 +22,6 @@ const Editor = (): JSX.Element => {
     }
     useEffect(() => {
         if (activePath !== null && !activePath.isDirectory) {
-            console.log('here')
             setEditorValue(window.projects.setActiveFile(activePath.path))
         }
     }, [activePath])
