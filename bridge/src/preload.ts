@@ -16,7 +16,7 @@ contextBridge.exposeInMainWorld('projects', {
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
     delete: (project_name): any => ipcRenderer.send('projects:delete', project_name),
     showFiles: (): Promise<any> => ipcRenderer.invoke('projects:listfiles'),
-    setActiveFile: (filepath: string): string => ipcRenderer.sendSync('projects:setactivefile', filepath)
+    readActiveFile: (filepath: string): Promise<any> => ipcRenderer.invoke('projects:readactivefile', filepath)
 })
 
 contextBridge.exposeInMainWorld('git', {

@@ -23,7 +23,7 @@ declare global {
             getLocalProjectsNames(): string[]
             delete(name: string): void
             showFiles(): Promise<any>
-            setActiveFile(filepath: string): string
+            readActiveFile(filepath: string): Promise<any>
         },
         git: {
             clone(project: Project): void

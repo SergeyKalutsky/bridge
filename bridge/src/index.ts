@@ -2,11 +2,13 @@ import { app, BrowserWindow, ipcMain, session } from 'electron';
 import parseGitDiff from './lib/git_api/parse'
 import walkSync from './lib/api/dirFiles'
 import { git } from './lib/git_api/index'
+import util from 'util'
 import { join } from 'path'
 import fs from 'fs'
 
 const storage = require('electron-json-storage')
 
+const readFileAsync = util.promisify(fs.readFile)
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 let settings = storage.getSync('settings')
@@ -28,11 +30,12 @@ ipcMain.on('projects:delete', (event, project_name) => {
   fs.rmdirSync(path, { recursive: true });
 })
 
-ipcMain.on('projects:setactivefile', (event, filepath) => {
+ipcMain.handle('projects:readactivefile', async (event, filepath) => {
   if (filepath === '') {
-    event.returnValue = ''
+    return ''
   } else {
-    event.returnValue = fs.readFileSync(filepath, { 'encoding': 'utf-8' })
+    const fileContent = await readFileAsync(filepath, 'utf-8')
+    return fileContent
   }
 })
 
