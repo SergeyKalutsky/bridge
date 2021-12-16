@@ -8,15 +8,23 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-monokai";
 
 
+interface ActivePath {
+    path: string
+    isDirectory: boolean
+}
+
 const Editor = (): JSX.Element => {
-    const [activePath, setActivePath] = useState('')
+    const [activePath, setActivePath] = useState<ActivePath>(null)
     const [editorValue, setEditorValue] = useState(null)
 
     const onChange = (newValue: string) => {
         console.log("change", newValue);
     }
     useEffect(() => {
-        setEditorValue(window.projects.setActiveFile(activePath))
+        if (activePath !== null && !activePath.isDirectory) {
+            console.log('here')
+            setEditorValue(window.projects.setActiveFile(activePath.path))
+        }
     }, [activePath])
     return (
         <div className="ide">
@@ -33,7 +41,7 @@ const Editor = (): JSX.Element => {
                     editorProps={{ $blockScrolling: true }}
                     fontSize={18}
                 />
-            <XtermTerminal />
+                <XtermTerminal />
             </div>
         </div>
     )

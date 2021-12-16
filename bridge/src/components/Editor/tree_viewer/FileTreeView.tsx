@@ -21,9 +21,14 @@ interface FileObject {
     isDirectory: boolean
 }
 
+interface ActivePath {
+    path: string
+    isDirectory: boolean
+}
+
 interface Props {
-    activePath: string
-    setActivePath: React.Dispatch<React.SetStateAction<string>>
+    activePath: ActivePath
+    setActivePath: React.Dispatch<React.SetStateAction<ActivePath>>
   }
 
 const FileTreeViewer = ({activePath, setActivePath}: Props): JSX.Element => {

@@ -25,17 +25,23 @@ const StyledFile = styled.div`
   }
 `;
 
+interface ActivePath {
+  path: string
+  isDirectory: boolean
+}
+
 interface Props {
   name: string
   path: string
-  activePath: string
-  setActivePath: React.Dispatch<React.SetStateAction<string>>
+  activePath: ActivePath
+  setActivePath: React.Dispatch<React.SetStateAction<ActivePath>>
 }
 
 const File = ({ name, path, activePath, setActivePath }: Props): JSX.Element => {
   const ext = name.split(".")[1];
   return (
-    <StyledFile active={path === activePath} onClick={() => { setActivePath(path) }}>
+    <StyledFile active={activePath !== null && path === activePath.path}
+      onClick={() => { setActivePath({ path: path, isDirectory: false }) }}>
       {FILE_ICONS[ext] || <AiOutlineFile />}
       <span>{name}</span>
     </StyledFile>

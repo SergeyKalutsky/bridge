@@ -26,12 +26,18 @@ const Collapsible = styled.div`
   overflow: hidden;
 `;
 
+
+interface ActivePath {
+  path: string
+  isDirectory: boolean
+}
+
 interface Props {
   children: JSX.Element[] | JSX.Element
   name: string
   path: string
-  activePath: string
-  setActivePath: React.Dispatch<React.SetStateAction<string>>
+  activePath: ActivePath
+  setActivePath: React.Dispatch<React.SetStateAction<ActivePath>>
 }
 
 
@@ -41,10 +47,10 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
   const handleToggle = e => {
     e.preventDefault()
     setIsOpen(!isOpen)
-    setActivePath(path)
+    setActivePath({path: path, isDirectory: true})
   };
   return (
-    <StyledFolder active={path === activePath}>
+    <StyledFolder active={activePath !== null && path === activePath.path}>
       <div className="folder--label" 
       onClick={handleToggle}>
         <AiOutlineFolder />
