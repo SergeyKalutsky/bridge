@@ -4,11 +4,16 @@ import { AiOutlineFileAdd, AiOutlineFolderAdd, AiFillDelete } from "react-icons/
 const TreeTab = (): JSX.Element => {
     return (
         <div className="tree-tab">
-            <IconContext.Provider value={{ color: 'navy', size: '25', className:'file-icon' }}>
-                <AiOutlineFileAdd />
-                <AiOutlineFolderAdd />
-                <AiFillDelete />
-            </IconContext.Provider>
+            <div className="project-name">
+                XXXXX
+            </div>
+            <div className="file-icons">
+                <IconContext.Provider value={{ color: 'navy', size: '25', className: 'file-icon' }}>
+                    <AiOutlineFileAdd />
+                    <AiOutlineFolderAdd />
+                    <AiFillDelete />
+                </IconContext.Provider>
+            </div>
         </div>
     )
 }
