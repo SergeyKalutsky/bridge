@@ -36,6 +36,21 @@ ipcMain.on('projects:writeactivefile', (event, data) => {
   })
 })
 
+ipcMain.on('projects:createfolder', (event, data) => {
+  if (data.activePath === null) {
+    const project_name = settings.active_project.name.replace(/ /g, '-')
+    const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+    const folderPath = path.join(project_dir, data.name)
+    fs.mkdirSync(folderPath)
+  } else if (data.activePath.isDirectory) {
+    const folderPath = path.join(data.activePath.path, data.name)
+    fs.mkdirSync(folderPath)
+  } else {
+    const folderPath = path.join(path.dirname(data.activePath.path), data.name)
+    fs.mkdirSync(folderPath)
+  }
+})
+
 ipcMain.on('projects:createfile', (event, data) => {
   if (data.activePath === null) {
     const project_name = settings.active_project.name.replace(/ /g, '-')
@@ -50,7 +65,6 @@ ipcMain.on('projects:createfile', (event, data) => {
     fs.closeSync(fs.openSync(filePath, 'w'))
   }
 })
-
 
 ipcMain.handle('projects:readactivefile', async (event, filepath) => {
   if (filepath === '') {

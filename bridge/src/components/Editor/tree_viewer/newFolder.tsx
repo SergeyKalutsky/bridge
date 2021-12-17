@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AiOutlineFileAdd } from "react-icons/ai";
+import { AiOutlineFolderAdd } from "react-icons/ai";
 import Popup from 'reactjs-popup';
 
 interface ActivePath {
@@ -12,12 +12,12 @@ interface Props {
 }
 
 
-const NewFile = ({ activePath }: Props): JSX.Element => {
-    const [filename, setFilename] = useState('')
+const NewFolder = ({ activePath }: Props): JSX.Element => {
+    const [foldername, setfoldername] = useState('')
     const [open, setOpen] = useState(false)
     return (
         <>
-            <AiOutlineFileAdd onClick={() => { setOpen(true) }} />
+            <AiOutlineFolderAdd onClick={() => { setOpen(true) }} />
             <Popup
                 open={open}
                 onClose={() => { setOpen(false) }}
@@ -25,10 +25,10 @@ const NewFile = ({ activePath }: Props): JSX.Element => {
                 position="right center"
                 modal>
                 <div className="modal">
-                    <div>Введите название файла</div>
-                    <input type="text" onChange={(e) => { setFilename(e.target.value) }} />
+                    <div>Введите название директории</div>
+                    <input type="text" onChange={(e) => { setfoldername(e.target.value) }} />
                     <button className="close" onClick={() => {
-                        window.projects.createFile({ activePath: activePath, name: filename });
+                        window.projects.createFolder({ activePath: activePath, name: foldername });
                         setOpen(false)
                     }}>
                         ОК
@@ -39,4 +39,4 @@ const NewFile = ({ activePath }: Props): JSX.Element => {
     )
 }
 
-export default NewFile
+export default NewFolder

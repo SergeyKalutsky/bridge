@@ -42,6 +42,7 @@ declare global {
             readActiveFile(filepath: string): Promise<any>
             writeActiveFile(fileChange: FileChanges): any
             createFile(createInfo: CreateInfo): any
+            createFolder(createInfo: CreateInfo): any
         },
         git: {
             clone(project: Project): void
