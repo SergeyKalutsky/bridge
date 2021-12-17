@@ -33,6 +33,7 @@ interface Props {
 }
 
 const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
+    const [update, setUpdate] = useState(false)
     const [fileTree, setFileTree] = useState<JSX.Element[]>(null)
     const buildFileTree = (files: FileObject[]): JSX.Element[] => {
         const elements = []
@@ -54,6 +55,10 @@ const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
             }
         }
         return elements
+    }
+
+    const forceUpdate = () => {
+        setUpdate(!update)
     }
 
     const updateFileTree = (fileTree: JSX.Element[]): JSX.Element[] => {
@@ -82,7 +87,7 @@ const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
     useEffect(() => {
         window.projects.showFiles()
             .then(val => setFileTree(buildFileTree(val)))
-    }, [])
+    }, [update])
 
     // updates active selected path
     useEffect(() => {
@@ -94,7 +99,7 @@ const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
 
     return (
         <>
-            <TreeTab activePath={activePath} />
+            <TreeTab activePath={activePath} forceUpdate={forceUpdate} />
             <div className="tree">
                 <Tree>
                     {fileTree}

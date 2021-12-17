@@ -9,10 +9,11 @@ interface ActivePath {
 
 interface Props {
     activePath: ActivePath
+    forceUpdate: () => void
 }
 
 
-const NewFolder = ({ activePath }: Props): JSX.Element => {
+const NewFolder = ({ activePath, forceUpdate }: Props): JSX.Element => {
     const [foldername, setfoldername] = useState('')
     const [open, setOpen] = useState(false)
     return (
@@ -29,6 +30,7 @@ const NewFolder = ({ activePath }: Props): JSX.Element => {
                     <input type="text" onChange={(e) => { setfoldername(e.target.value) }} />
                     <button className="close" onClick={() => {
                         window.projects.createFolder({ activePath: activePath, name: foldername });
+                        forceUpdate()
                         setOpen(false)
                     }}>
                         ОК

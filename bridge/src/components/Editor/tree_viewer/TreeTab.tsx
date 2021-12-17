@@ -10,9 +10,10 @@ interface ActivePath {
 
 interface Props {
     activePath: ActivePath
+    forceUpdate: () => void
 }
 
-const TreeTab = ({ activePath }: Props): JSX.Element => {
+const TreeTab = ({ activePath, forceUpdate }: Props): JSX.Element => {
     return (
         <div className="tree-tab">
             <div className="project-name">
@@ -20,8 +21,8 @@ const TreeTab = ({ activePath }: Props): JSX.Element => {
             </div>
             <div className="file-icons">
                 <IconContext.Provider value={{ color: 'navy', size: '25', className: 'file-icon' }}>
-                    <NewFile activePath={activePath} />
-                    <NewFolder activePath={activePath} />
+                    <NewFile activePath={activePath} forceUpdate={forceUpdate}/>
+                    <NewFolder activePath={activePath} forceUpdate={forceUpdate}/>
                     <AiFillDelete />
                 </IconContext.Provider>
             </div>

@@ -9,10 +9,11 @@ interface ActivePath {
 
 interface Props {
     activePath: ActivePath
+    forceUpdate: () => void
 }
 
 
-const NewFile = ({ activePath }: Props): JSX.Element => {
+const NewFile = ({ activePath, forceUpdate }: Props): JSX.Element => {
     const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
     return (
@@ -29,6 +30,7 @@ const NewFile = ({ activePath }: Props): JSX.Element => {
                     <input type="text" onChange={(e) => { setFilename(e.target.value) }} />
                     <button className="close" onClick={() => {
                         window.projects.createFile({ activePath: activePath, name: filename });
+                        forceUpdate()
                         setOpen(false)
                     }}>
                         ОК
