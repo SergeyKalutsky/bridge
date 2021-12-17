@@ -43,6 +43,7 @@ declare global {
             writeActiveFile(fileChange: FileChanges): any
             createFile(createInfo: CreateInfo): any
             createFolder(createInfo: CreateInfo): any
+            deleteTreeElement(activePath: ActivePath): any
         },
         git: {
             clone(project: Project): void

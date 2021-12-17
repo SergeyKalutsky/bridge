@@ -1,7 +1,7 @@
 import { IconContext } from "react-icons";
-import { AiFillDelete } from "react-icons/ai";
 import NewFile from "./NewFile";
 import NewFolder from './newFolder'
+import DeleteTreeElement from './deleteTreeElement'
 
 interface ActivePath {
     path: string
@@ -24,7 +24,7 @@ const TreeTab = ({ activePath, forceUpdate }: Props): JSX.Element => {
                 <IconContext.Provider value={{ color: 'navy', size: '25', className: 'file-icon' }}>
                     <NewFile activePath={activePath} forceUpdate={forceUpdate} />
                     <NewFolder activePath={activePath} forceUpdate={forceUpdate} />
-                    <AiFillDelete />
+                    <DeleteTreeElement activePath={activePath} forceUpdate={forceUpdate} />
                 </IconContext.Provider>
             </div>
         </div>

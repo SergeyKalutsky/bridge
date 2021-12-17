@@ -34,7 +34,8 @@ contextBridge.exposeInMainWorld('projects', {
     readActiveFile: (filepath: string): Promise<any> => ipcRenderer.invoke('projects:readactivefile', filepath),
     writeActiveFile: (fileChange: FileChanges): any => ipcRenderer.send('projects:writeactivefile', fileChange),
     createFile: (createInfo: CreateInfo): any => ipcRenderer.send('projects:createfile', createInfo),
-    createFolder: (createInfo: CreateInfo): any => ipcRenderer.send('projects:createfolder', createInfo)
+    createFolder: (createInfo: CreateInfo): any => ipcRenderer.send('projects:createfolder', createInfo),
+    deleteTreeElement: (activePath: ActivePath): any => ipcRenderer.send('projects:deletetreeelement', activePath)
 })
 
 contextBridge.exposeInMainWorld('git', {

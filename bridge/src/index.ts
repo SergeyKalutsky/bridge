@@ -30,6 +30,14 @@ ipcMain.on('projects:delete', (event, project_name) => {
   fs.rmdirSync(filePath, { recursive: true });
 })
 
+ipcMain.on('projects:deletetreeelement', (event, activePath) => {
+  if (activePath.isDirectory){
+    fs.rmdirSync(activePath.path, { recursive: true });
+  } else {
+    fs.unlinkSync(activePath.path)
+  }
+})
+
 ipcMain.on('projects:writeactivefile', (event, data) => {
   fs.writeFile(data.filepath, data.fileContent, (err) => {
     if (err) return console.log(err);
