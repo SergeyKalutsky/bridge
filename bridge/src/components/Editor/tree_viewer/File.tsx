@@ -1,12 +1,23 @@
 import styled from "styled-components";
 import { AiOutlineFile } from "react-icons/ai";
-import { DiJavascript1, DiCss3Full, DiHtml5, DiReact } from "react-icons/di";
+import {
+  DiJavascript1,
+  DiCss3Full, 
+  DiHtml5, 
+  DiReact, 
+  DiPython, 
+  DiDocker,
+  DiMarkdown
+} from "react-icons/di";
 
 const FILE_ICONS = {
   js: <DiJavascript1 />,
   css: <DiCss3Full />,
   html: <DiHtml5 />,
-  jsx: <DiReact />
+  jsx: <DiReact />,
+  py: <DiPython />,
+  yml: <DiDocker />,
+  md: <DiMarkdown />
 };
 
 
@@ -41,7 +52,7 @@ const File = ({ name, path, activePath, setActivePath }: Props): JSX.Element => 
   const ext = name.split(".")[1];
   return (
     <StyledFile active={activePath !== null && path === activePath.path}
-      onClick={() => { setActivePath({ path: path, isDirectory: false })}}>
+      onClick={() => { setActivePath({ path: path, isDirectory: false }) }}>
       {FILE_ICONS[ext] || <AiOutlineFile />}
       <span>{name}</span>
     </StyledFile>

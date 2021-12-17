@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Folder from "./Folder";
 import File from "./File"
+import TreeTab from "./TreeTab";
 import { useEffect, useState } from "react";
-import { elementTypeAcceptingRef } from "@mui/utils";
 
 const StyledTree = styled.div`
   line-height: 1.5;
@@ -58,24 +58,24 @@ const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
 
     const updateFileTree = (fileTree: JSX.Element[]): JSX.Element[] => {
         const elements = []
-            for (const file of fileTree) {
-                if (file.props.children === undefined) {
-                    elements.push(<Tree.File name={file.props.name}
-                        path={file.props.path}
-                        activePath={activePath}
-                        setActivePath={setActivePath}
-                        key={file.props.path} />)
-                } else {
-                    elements.push(<Tree.Folder name={file.props.name}
-                        key={file.props.path}
-                        activePath={activePath}
-                        setActivePath={setActivePath}
-                        path={file.props.path}>
-                        {updateFileTree(file.props.children)}
-                    </Tree.Folder>)
-                }
+        for (const file of fileTree) {
+            if (file.props.children === undefined) {
+                elements.push(<Tree.File name={file.props.name}
+                    path={file.props.path}
+                    activePath={activePath}
+                    setActivePath={setActivePath}
+                    key={file.props.path} />)
+            } else {
+                elements.push(<Tree.Folder name={file.props.name}
+                    key={file.props.path}
+                    activePath={activePath}
+                    setActivePath={setActivePath}
+                    path={file.props.path}>
+                    {updateFileTree(file.props.children)}
+                </Tree.Folder>)
             }
-            return elements
+        }
+        return elements
     }
 
     // sets initial file structure
@@ -93,11 +93,14 @@ const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
 
 
     return (
-        <div className="tree">
-            <Tree>
-                {fileTree}
-            </Tree>
-        </div>
+        <>
+            <TreeTab />
+            <div className="tree">
+                <Tree>
+                    {fileTree}
+                </Tree>
+            </div>
+        </>
     );
 }
 

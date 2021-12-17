@@ -11,6 +11,10 @@
     overflow: scroll;
 }
 
+.tree-tab {
+    height: 30px;
+    width: 100%
+}
 
 .editor {
     width: 100%;
