@@ -17,6 +17,17 @@ type FileChanges = {
 }
 
 
+interface ActivePath {
+    path: string
+    isDirectory: boolean
+}
+
+interface CreateInfo {
+    name: string
+    activePath: ActivePath
+}
+
+
 declare global {
     interface Window {
         settings: {
@@ -30,6 +41,7 @@ declare global {
             showFiles(): Promise<any>
             readActiveFile(filepath: string): Promise<any>
             writeActiveFile(fileChange: FileChanges): any
+            createFile(createInfo: CreateInfo): any
         },
         git: {
             clone(project: Project): void

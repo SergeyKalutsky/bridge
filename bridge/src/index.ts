@@ -3,7 +3,7 @@ import parseGitDiff from './lib/git_api/parse'
 import walkSync from './lib/api/dirFiles'
 import { git } from './lib/git_api/index'
 import util from 'util'
-import { join } from 'path'
+import path from 'path'
 import fs from 'fs'
 
 const storage = require('electron-json-storage')
@@ -16,18 +16,18 @@ const BASE_DIR = storage.getDataPath()
 
 // Projects ===========================================================
 ipcMain.on('projects:mkbasedir', (event, arg) => {
-  const path = join(BASE_DIR, arg.user.login)
-  fs.mkdirSync(path, { recursive: true })
+  const filePath = path.join(BASE_DIR, arg.user.login)
+  fs.mkdirSync(filePath, { recursive: true })
 })
 
 ipcMain.on('projects:getlocalprojectsnames', (event) => {
-  const path = join(BASE_DIR, settings.user.login)
-  event.returnValue = fs.readdirSync(path)
+  const filePath = path.join(BASE_DIR, settings.user.login)
+  event.returnValue = fs.readdirSync(filePath)
 })
 
 ipcMain.on('projects:delete', (event, project_name) => {
-  const path = join(BASE_DIR, settings.user.login, project_name.replace(/ /g, '-'))
-  fs.rmdirSync(path, { recursive: true });
+  const filePath = path.join(BASE_DIR, settings.user.login, project_name.replace(/ /g, '-'))
+  fs.rmdirSync(filePath, { recursive: true });
 })
 
 ipcMain.on('projects:writeactivefile', (event, data) => {
@@ -35,6 +35,22 @@ ipcMain.on('projects:writeactivefile', (event, data) => {
     if (err) return console.log(err);
   })
 })
+
+ipcMain.on('projects:createfile', (event, data) => {
+  if (data.activePath === null) {
+    const project_name = settings.active_project.name.replace(/ /g, '-')
+    const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+    const filePath = path.join(project_dir, data.name)
+    fs.closeSync(fs.openSync(filePath, 'w'))
+  } else if (data.activePath.isDirectory) {
+    const filePath = path.join(data.activePath.path, data.name)
+    fs.closeSync(fs.openSync(filePath, 'w'))
+  } else {
+    const filePath = path.join(path.dirname(data.activePath.path), data.name)
+    fs.closeSync(fs.openSync(filePath, 'w'))
+  }
+})
+
 
 ipcMain.handle('projects:readactivefile', async (event, filepath) => {
   if (filepath === '') {
@@ -47,7 +63,7 @@ ipcMain.handle('projects:readactivefile', async (event, filepath) => {
 
 ipcMain.handle('projects:listfiles', async (event) => {
   const project_name = settings.active_project.name.replace(/ /g, '-')
-  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
   const result = walkSync(project_dir)
   return result
 })
@@ -55,15 +71,15 @@ ipcMain.handle('projects:listfiles', async (event) => {
 // GIT ---------------------------------------------------------------
 ipcMain.on('git:clone', (event, project) => {
   const project_name = project.name.replace(/ /g, '-')
-  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
   if (!fs.existsSync(project_dir)) {
-    git.cwd(join(BASE_DIR, settings.user.login)).clone(project.http)
+    git.cwd(path.join(BASE_DIR, settings.user.login)).clone(project.http)
   }
 })
 
 ipcMain.on('git:log', (event) => {
   const project_name = settings.active_project.name.replace(/ /g, '-')
-  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
   git.cwd(project_dir).log().then(result => {
     event.returnValue = result['all']
   })
@@ -72,13 +88,13 @@ ipcMain.on('git:log', (event) => {
 
 ipcMain.on('git:pull', () => {
   const project_name = settings.active_project.name.replace(/ /g, '-')
-  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
   git.cwd(project_dir).pull()
 })
 
 ipcMain.on('git:push', () => {
   const project_name = settings.active_project.name.replace(/ /g, '-')
-  const project_dir = join(BASE_DIR, settings.user.login, project_name)
+  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
   git.cwd(project_dir).add('./*').commit('test').push()
 })
 

@@ -11,6 +11,16 @@ type FileChanges = {
     fileContent: string
 }
 
+interface ActivePath {
+    path: string
+    isDirectory: boolean
+}
+
+interface CreateInfo {
+    name: string
+    activePath: ActivePath
+}
+
 contextBridge.exposeInMainWorld('settings', {
     set: (settings: any): Promise<any> => ipcRenderer.invoke('settings:set', settings),
     get: (): any => ipcRenderer.sendSync('settings:get')
@@ -22,7 +32,8 @@ contextBridge.exposeInMainWorld('projects', {
     delete: (project_name): any => ipcRenderer.send('projects:delete', project_name),
     showFiles: (): Promise<any> => ipcRenderer.invoke('projects:listfiles'),
     readActiveFile: (filepath: string): Promise<any> => ipcRenderer.invoke('projects:readactivefile', filepath),
-    writeActiveFile: (fileChange: FileChanges): any => ipcRenderer.send('projects:writeactivefile', fileChange)
+    writeActiveFile: (fileChange: FileChanges): any => ipcRenderer.send('projects:writeactivefile', fileChange),
+    createFile: (createInfo: CreateInfo): any => ipcRenderer.send('projects:createfile', createInfo)
 })
 
 contextBridge.exposeInMainWorld('git', {

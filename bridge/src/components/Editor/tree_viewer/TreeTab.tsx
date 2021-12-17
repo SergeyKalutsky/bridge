@@ -2,7 +2,16 @@ import { IconContext } from "react-icons";
 import { AiOutlineFolderAdd, AiFillDelete } from "react-icons/ai";
 import NewFile from "./NewFile";
 
-const TreeTab = (): JSX.Element => {
+interface ActivePath {
+    path: string
+    isDirectory: boolean
+}
+
+interface Props {
+    activePath: ActivePath
+}
+
+const TreeTab = ({ activePath }: Props): JSX.Element => {
     return (
         <div className="tree-tab">
             <div className="project-name">
@@ -10,7 +19,7 @@ const TreeTab = (): JSX.Element => {
             </div>
             <div className="file-icons">
                 <IconContext.Provider value={{ color: 'navy', size: '25', className: 'file-icon' }}>
-                    <NewFile />
+                    <NewFile activePath={activePath}/>
                     <AiOutlineFolderAdd />
                     <AiFillDelete />
                 </IconContext.Provider>

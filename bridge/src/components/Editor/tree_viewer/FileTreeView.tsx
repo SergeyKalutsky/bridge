@@ -94,7 +94,7 @@ const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
 
     return (
         <>
-            <TreeTab />
+            <TreeTab activePath={activePath} />
             <div className="tree">
                 <Tree>
                     {fileTree}
