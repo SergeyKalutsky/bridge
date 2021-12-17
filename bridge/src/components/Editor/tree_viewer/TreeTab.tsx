@@ -1,5 +1,6 @@
 import { IconContext } from "react-icons";
-import { AiOutlineFileAdd, AiOutlineFolderAdd, AiFillDelete } from "react-icons/ai";
+import { AiOutlineFolderAdd, AiFillDelete } from "react-icons/ai";
+import NewFile from "./NewFile";
 
 const TreeTab = (): JSX.Element => {
     return (
@@ -9,7 +10,7 @@ const TreeTab = (): JSX.Element => {
             </div>
             <div className="file-icons">
                 <IconContext.Provider value={{ color: 'navy', size: '25', className: 'file-icon' }}>
-                    <AiOutlineFileAdd />
+                    <NewFile />
                     <AiOutlineFolderAdd />
                     <AiFillDelete />
                 </IconContext.Provider>
