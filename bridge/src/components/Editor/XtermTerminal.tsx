@@ -7,6 +7,13 @@ const XtermTerminal = (): JSX.Element => {
     const term = new Terminal()
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon)
+    term.onData(e => {
+        window.terminal.keystoke(e)
+    })
+
+    window.terminal.incomingData("terminal:incomingdata", (data) => {
+        term.write(data);
+    });
 
     useEffect(() => {
         term.open(document.getElementById('terminal'));

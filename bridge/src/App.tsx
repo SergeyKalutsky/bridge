@@ -52,6 +52,11 @@ declare global {
             log(): Commit[]
             diff(hash: string): ParsedGitDiff[]
         }
+        terminal: {
+            incomingData(channel, callback): any
+            keystoke(e): any
+
+        }
     }
 }
 

@@ -45,3 +45,11 @@ contextBridge.exposeInMainWorld('git', {
     log: () => ipcRenderer.sendSync('git:log'),
     diff: (hash: string): ParsedGitDiff[] => ipcRenderer.sendSync('git:diff', hash)
 })
+
+
+contextBridge.exposeInMainWorld('terminal', {
+    incomingData: (channel, callback) => {
+        ipcRenderer.on(channel, (event, ...args) => callback(...args));
+    },
+    keystoke: (e) => ipcRenderer.send('terminal:keystroke', e)
+})

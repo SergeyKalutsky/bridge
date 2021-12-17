@@ -4,7 +4,10 @@ import walkSync from './lib/api/dirFiles'
 import { git } from './lib/git_api/index'
 import util from 'util'
 import path from 'path'
+import os from 'os'
 import fs from 'fs'
+const pty = require("node-pty");
+const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
 const storage = require('electron-json-storage')
 
@@ -31,7 +34,7 @@ ipcMain.on('projects:delete', (event, project_name) => {
 })
 
 ipcMain.on('projects:deletetreeelement', (event, activePath) => {
-  if (activePath.isDirectory){
+  if (activePath.isDirectory) {
     fs.rmdirSync(activePath.path, { recursive: true });
   } else {
     fs.unlinkSync(activePath.path)
@@ -184,6 +187,24 @@ const createWindow = (): void => {
       }
     })
   })
+
+
+  const ptyProcess = pty.spawn(shell, [], {
+    name: "xterm-color",
+    cols: 80,
+    rows: 30,
+    cwd: process.env.HOME,
+    env: process.env
+  });
+
+  ptyProcess.on('data', function (data) {
+    mainWindow.webContents.send("terminal:incomingdata", data);
+    console.log("Data sent");
+  });
+  ipcMain.on("terminal:keystroke", (event, key) => {
+    ptyProcess.write(key);
+  });
+
 
 };
 
