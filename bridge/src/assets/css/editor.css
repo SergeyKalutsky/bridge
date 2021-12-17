@@ -13,8 +13,17 @@
 
 .tree-tab {
     height: 30px;
-    width: 100%
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
+
+.file-icon:hover{
+    background-color: rgb(185, 130, 236);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 
 .editor {
     width: 100%;
