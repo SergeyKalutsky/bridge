@@ -5,7 +5,26 @@ import FileTreeViewer from "./tree_viewer/FileTreeView";
 import '../../assets/css/editor.css'
 
 import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-json";
+import "ace-builds/src-noconflict/mode-html";
+import "ace-builds/src-noconflict/mode-css";
+import "ace-builds/src-noconflict/mode-markdown";
+import "ace-builds/src-noconflict/mode-golang";
+import "ace-builds/src-noconflict/mode-plain_text";
+
 import "ace-builds/src-noconflict/theme-monokai";
+
+
+const ACE_MODS = {
+    js: 'javascript',
+    css: 'css',
+    html: 'html',
+    jsx: 'javascript',
+    py: 'python',
+    md: 'markdown',
+    txt: 'plain_text'
+};
 
 
 interface ActivePath {
@@ -15,15 +34,28 @@ interface ActivePath {
 
 const Editor = (): JSX.Element => {
     const [activePath, setActivePath] = useState<ActivePath>(null)
-    const [editorValue, setEditorValue] = useState(null)
+    const [editor, setEditor] = useState(null)
 
     const onChange = (newValue: string) => {
-        window.projects.writeActiveFile({filepath: activePath.path, fileContent: newValue})
+        window.projects.writeActiveFile({ filepath: activePath.path, fileContent: newValue })
     }
     useEffect(() => {
         if (activePath !== null && !activePath.isDirectory) {
             window.projects.readActiveFile(activePath.path)
-                .then(value => setEditorValue(value))
+                .then((value) => {
+                    const ext = activePath.path.split(".")[1];
+                    const mode = ACE_MODS[ext]
+                    setEditor(
+                        <AceEditor
+                            mode={mode}
+                            theme="monokai"
+                            value={value}
+                            onChange={onChange}
+                            name="aceEditor"
+                            editorProps={{ $blockScrolling: true }}
+                            fontSize={18}
+                        />)
+                })
         }
     }, [activePath])
     return (
@@ -32,15 +64,7 @@ const Editor = (): JSX.Element => {
                 <FileTreeViewer activePath={activePath} setActivePath={setActivePath} />
             </div>
             <div className="editor">
-                <AceEditor
-                    mode="python"
-                    theme="monokai"
-                    value={editorValue}
-                    onChange={onChange}
-                    name="aceEditor"
-                    editorProps={{ $blockScrolling: true }}
-                    fontSize={18}
-                />
+                {editor}
                 <XtermTerminal />
             </div>
         </div>
