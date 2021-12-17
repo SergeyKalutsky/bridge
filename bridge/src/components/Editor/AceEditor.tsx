@@ -65,7 +65,7 @@ const Editor = (): JSX.Element => {
             </div>
             <div className="editor">
                 {editor}
-                <XtermTerminal />
+                <XtermTerminal activePath={activePath}/>
             </div>
         </div>
     )
