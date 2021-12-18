@@ -69,7 +69,26 @@
     border: 1px solid rgb(188, 188, 189);
 }
 
-.tree-view::-webkit-scrollbar:horizontal {
+.xterm-viewport::-webkit-scrollbar:horizontal {
+    height: 0;
+    width: 0;
+    display: none;
+}
+
+.xterm-viewport::-webkit-scrollbar {
+    width: 8px;
+}
+
+.xterm-viewportxterm-viewport::-webkit-scrollbar-thumb {
+    background-color: rgb(199, 199, 204);
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(188, 188, 189);
+    border: 1px solid rgb(188, 188, 189);
+}
+
+.xterm-viewport::-webkit-scrollbar:horizontal {
     height: 0;
     width: 0;
     display: none;

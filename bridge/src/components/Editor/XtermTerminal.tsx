@@ -26,7 +26,7 @@ const XtermTerminal = ({ activePath }: Props): JSX.Element => {
 
     useEffect(() => {
         term.open(document.getElementById('terminal'));
-        term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ')
+        term.write('Добро пожалаловать, нажмите Enter$ ')
         fitAddon.fit()
     }, [])
 

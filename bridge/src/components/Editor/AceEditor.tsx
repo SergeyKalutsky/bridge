@@ -32,9 +32,19 @@ interface ActivePath {
     isDirectory: boolean
 }
 
+const defaultEditor = (<AceEditor
+    mode='plain_text'
+    theme="monokai"
+    value='Cоздайте или выберите файл, чтобы начать работу'
+    name="aceEditor"
+    readOnly={true}
+    editorProps={{ $blockScrolling: true }}
+    fontSize={18}
+/>)
+
 const Editor = (): JSX.Element => {
     const [activePath, setActivePath] = useState<ActivePath>(null)
-    const [editor, setEditor] = useState(null)
+    const [editor, setEditor] = useState(defaultEditor)
 
     const onChange = (newValue: string) => {
         window.projects.writeActiveFile({ filepath: activePath.path, fileContent: newValue })
@@ -65,7 +75,7 @@ const Editor = (): JSX.Element => {
             </div>
             <div className="editor">
                 {editor}
-                <XtermTerminal activePath={activePath}/>
+                <XtermTerminal activePath={activePath} />
             </div>
         </div>
     )
