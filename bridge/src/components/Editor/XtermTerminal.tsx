@@ -33,7 +33,6 @@ const XtermTerminal = ({ activePath }: Props): JSX.Element => {
     useLayoutEffect(() => {
         function updateSize() {
             fitAddon.fit()
-            console.log([window.innerWidth, window.innerHeight]);1
         }
         window.addEventListener('resize',  updateSize);
         updateSize();
