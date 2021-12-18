@@ -14,7 +14,9 @@ interface Props {
 }
 
 const XtermTerminal = ({ activePath }: Props): JSX.Element => {
-    const term = new Terminal()
+    const term = new Terminal({
+        fontSize: 20,
+    })
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon)
     term.onData(e => {
