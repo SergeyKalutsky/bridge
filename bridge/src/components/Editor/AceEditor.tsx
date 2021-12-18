@@ -3,7 +3,7 @@ import AceEditor from "react-ace";
 import XtermTerminal from "./XtermTerminal";
 import FileTreeViewer from "./tree_viewer/FileTreeView";
 import { Button } from '@material-ui/core';
-import { Arrow } from '../Icons';
+import { Arrow, Refresh } from '../Icons';
 import '../../assets/css/editor.css'
 
 import "ace-builds/src-noconflict/mode-python";
@@ -92,6 +92,9 @@ const Editor = (): JSX.Element => {
                         <div className="ArrUp">
                             <Arrow />
                         </div>
+                    </Button>
+                    <Button className='auto-update'>
+                        <Refresh />
                     </Button>
                 </div>
                 {editor}
