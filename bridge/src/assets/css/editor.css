@@ -47,8 +47,11 @@
 }
 
 .tool-bar {
-    height: 5%;
-    background-color: rgb(80, 79, 79);
+    display           : flex;
+    align-items       : center;
+    /* justify-content: center; */
+    height            : 5%;
+    background-color  : rgb(80, 79, 79);
 }
 
 #terminal {
@@ -56,6 +59,14 @@
     height          : 30%;
     background-color: black;
 
+}
+
+.run {
+    background-color: blue !important;
+}
+
+.run:hover {
+    background-color: rgb(171, 171, 212) !important;
 }
 
 #aceEditor {

@@ -75,7 +75,7 @@ const Editor = (): JSX.Element => {
                 <FileTreeViewer activePath={activePath} setActivePath={setActivePath} />
             </div>
             <div className="editor">
-                <ToolBar />
+                <ToolBar activePath={activePath}/>
                 {editor}
                 <XtermTerminal activePath={activePath} />
             </div>
