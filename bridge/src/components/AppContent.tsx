@@ -2,7 +2,7 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import SideNavBar from './SideNavBar'
 import { Git } from './git/Git'
 import { Projects } from './projects/Projects'
-import Editor from './Editor/AceEditor'
+import Editor from './Editor/Editor'
 
 const AppContent = (): JSX.Element => {
 

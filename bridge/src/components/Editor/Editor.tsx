@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import XtermTerminal from "./XtermTerminal";
 import FileTreeViewer from "./tree_viewer/FileTreeView";
-import { Button } from '@material-ui/core';
-import { Arrow, Refresh } from '../Icons';
+import ToolBar from "./ToolBar";
 import '../../assets/css/editor.css'
 
 import "ace-builds/src-noconflict/mode-python";
@@ -76,27 +75,7 @@ const Editor = (): JSX.Element => {
                 <FileTreeViewer activePath={activePath} setActivePath={setActivePath} />
             </div>
             <div className="editor">
-                <div className="tool-bar">
-                    <Button className="BttnP" color="primary"
-                        onClick={() => {
-                            window.git.pull()
-                        }}>
-                        <span>pull</span>
-                        <Arrow />
-                    </Button>
-                    <Button className="BttnP" color="secondary"
-                        onClick={() => {
-                            window.git.push()
-                        }}>
-                        <span>commit</span>
-                        <div className="ArrUp">
-                            <Arrow />
-                        </div>
-                    </Button>
-                    <Button className='auto-update'>
-                        <Refresh />
-                    </Button>
-                </div>
+                <ToolBar />
                 {editor}
                 <XtermTerminal activePath={activePath} />
             </div>
