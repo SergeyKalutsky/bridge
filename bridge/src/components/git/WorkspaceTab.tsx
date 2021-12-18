@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import { Arrow, Refresh } from '../Icons';
+import { Refresh } from '../Icons';
 import { useState, useEffect } from 'react';
 import '../../assets/css/WorkspaceTab.css'
 
@@ -28,22 +28,7 @@ const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
   return (
       <div className='tab'>
         <div className='workspace-tab'>
-          <Button className="BttnP" color="primary"
-            onClick={() => {
-              window.git.pull()
-            }}>
-            <span>PULL</span>
-            <Arrow />
-          </Button>
-          <Button className="BttnP" color="secondary"
-            onClick={() => {
-              window.git.push()
-            }}>
-            <span>PUSH</span>
-            <div className="ArrUp">
-              <Arrow />
-            </div>
-          </Button>
+         
           <Button className={autoUpdate == true ? 'auto-update auto-update-on' : 'auto-update'}
             onClick={() => {
               setAutoapdate(autoUpdate == true ? false : true)
