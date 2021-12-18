@@ -39,14 +39,6 @@ const XtermTerminal = ({ activePath }: Props): JSX.Element => {
         return () => window.removeEventListener('resize', updateSize);
     }, []);
 
-    useEffect(() => {
-        console.log(window.innerWidth)
-        fitAddon.fit()
-        if (activePath !== null) {
-            window.terminal.keystoke(`cd ${activePath.path}`)
-            window.terminal.keystoke('\r')
-        }
-    }, [activePath])
     return (
         <div id='terminal'>
 
