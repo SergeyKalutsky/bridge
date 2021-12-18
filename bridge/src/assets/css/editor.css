@@ -20,14 +20,14 @@
 }
 
 .project-name {
-    width: 60%;
+    width: 70%;
     font-size: 25px;
     font-weight: bold;
     text-align: center;
 }
 
 .file-icons {
-    width: 40%;
+    width: 30%;
     display: flex;
     justify-content: space-between;
 }
@@ -40,7 +40,7 @@
 
 
 .editor {
-    width: 100%;
+    width: 80%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -48,7 +48,9 @@
 
 #terminal {
     width: 100%;
-    height: 35%
+    height: 35%;
+    background-color: black;
+    
 }
 
 #aceEditor {
@@ -76,7 +78,7 @@
 }
 
 .xterm-viewport::-webkit-scrollbar {
-    width: 8px;
+    width: 20px;
 }
 
 .xterm-viewportxterm-viewport::-webkit-scrollbar-thumb {
@@ -84,8 +86,8 @@
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(188, 188, 189);
-    border: 1px solid rgb(188, 188, 189);
+    background-color: rgb(146, 141, 141) !important;
+    border: 1px solid rgb(136, 135, 135) !important;
 }
 
 .xterm-viewport::-webkit-scrollbar:horizontal {
