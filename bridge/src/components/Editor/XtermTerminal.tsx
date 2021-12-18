@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { Terminal } from 'xterm';
 import 'xterm/css/xterm.css'
 import { FitAddon } from 'xterm-addon-fit';
@@ -20,7 +20,6 @@ const XtermTerminal = ({ activePath }: Props): JSX.Element => {
     term.onData(e => {
         window.terminal.keystoke(e)
     })
-
     window.terminal.incomingData("terminal:incomingdata", (data) => {
         term.write(data);
     });
@@ -31,7 +30,18 @@ const XtermTerminal = ({ activePath }: Props): JSX.Element => {
         fitAddon.fit()
     }, [])
 
+    useLayoutEffect(() => {
+        function updateSize() {
+            fitAddon.fit()
+            console.log([window.innerWidth, window.innerHeight]);1
+        }
+        window.addEventListener('resize',  updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
+
     useEffect(() => {
+        console.log(window.innerWidth)
         fitAddon.fit()
         if (activePath !== null) {
             window.terminal.keystoke(`cd ${activePath.path}`)
