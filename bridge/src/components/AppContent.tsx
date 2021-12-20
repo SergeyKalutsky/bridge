@@ -7,14 +7,16 @@ import Editor from './Editor/Editor'
 const AppContent = (): JSX.Element => {
 
     return (
-        <Router>
-            <SideNavBar />
-            <Switch>
-                <Route exact path="/" component={Projects} />
-                <Route exact path="/editor" component={Editor} />
-                <Route exact path="/git" component={Git} />
-            </Switch>
-        </Router>
+        <div className="flex h-full">
+            <Router>
+                <SideNavBar />
+                <Switch>
+                    <Route exact path="/" component={Projects} />
+                    <Route exact path="/editor" component={Editor} />
+                    <Route exact path="/git" component={Git} />
+                </Switch>
+            </Router>
+        </div>
     )
 }
 
