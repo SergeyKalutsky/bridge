@@ -1,26 +1,11 @@
-import { Project } from '../../components/projects/Projects'
-
-interface Settings {
-    user?: {
-        name?: string
-        login?: string
-        password?: string
-        'X-API-Key'?: string
-    }
-    active_project?: {
-        id: number
-        name: string
-        isclassroom: number
-        isuserowner: number
-    }
-}
-
-
-const BASE_URL = 'http://localhost:8000'
+import { Project } from '../../components/projects/types'
+import { Settings } from '../../types'
 
 
 
-const authUser = (loginData: any): Promise<any> => {
+const BASE_URL = 'http://localhost:5000'
+
+const authUser = (loginData: { password: string, login: string }): Promise<any> => {
     return fetch(`${BASE_URL}/auth`,
         {
             method: 'POST',
@@ -28,7 +13,6 @@ const authUser = (loginData: any): Promise<any> => {
             body: JSON.stringify(loginData)
         })
 }
-
 
 const fetchProjects = (settings: Settings): Promise<any> => {
     return fetch(`${BASE_URL}/projects/list`, {
@@ -94,7 +78,6 @@ const addProjectMember = (settings: Settings,
         })
 }
 
-
 const findUser = (settings: Settings, search: string): Promise<any> => {
     return fetch(`${BASE_URL}/users/find`,
         {
@@ -108,7 +91,6 @@ const findUser = (settings: Settings, search: string): Promise<any> => {
         .then(response => response.json())
 }
 
-
 const deleteProject = (settings: Settings, project_id: number): void => {
     fetch(`${BASE_URL}/projects/delete`,
         {
@@ -120,7 +102,6 @@ const deleteProject = (settings: Settings, project_id: number): void => {
             body: JSON.stringify({ id: project_id })
         })
 }
-
 
 export {
     deleteProject,

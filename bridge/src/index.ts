@@ -6,10 +6,11 @@ import util from 'util'
 import path from 'path'
 import os from 'os'
 import fs from 'fs'
-const pty = require("node-pty");
-const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
+const pty = require("node-pty");
 const storage = require('electron-json-storage')
+
+const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
 const readFileAsync = util.promisify(fs.readFile)
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -199,7 +200,6 @@ const createWindow = (): void => {
 
   ptyProcess.on('data', function (data) {
     mainWindow.webContents.send("terminal:incomingdata", data);
-    console.log("Data sent");
   });
   ipcMain.on("terminal:keystroke", (event, key) => {
     ptyProcess.write(key);

@@ -6,7 +6,8 @@ import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
 import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
-import { Adding } from '../Icons';
+import { Adding } from '../common/Icons';
+import { Project } from './types';
 import '../../assets/css/Projects.css'
 
 const useStyles = makeStyles(() => ({
@@ -22,15 +23,6 @@ const useStyles = makeStyles(() => ({
 );
 
 
-type Project = {
-    id: number
-    name: string
-    isclassroom?: number
-    islocal: boolean
-    http: string
-    description?: string
-    isactive?: boolean
-}
 
 type State = {
     page: JSX.Element

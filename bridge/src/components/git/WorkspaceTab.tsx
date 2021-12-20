@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import { Arrow, Refresh } from '../Icons';
+import { Arrow, Refresh } from '../common/Icons';
 import { useState, useEffect } from 'react';
 import '../../assets/css/WorkspaceTab.css'
 

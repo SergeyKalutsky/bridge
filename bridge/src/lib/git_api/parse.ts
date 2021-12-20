@@ -1,11 +1,7 @@
-type ParsedGitDiff = {
-  filename: string
-  oldFile: string
-  newFile: string
-}
+import { ParsedGitDiff } from "../../components/git/types"
 
 
-const parseGitDiff = (diffOutput: string) => {
+const parseGitDiff = (diffOutput: string): ParsedGitDiff[] => {
   const output: ParsedGitDiff[] = []
   const files: string[][] = [[]]
   let fileIndex = 0

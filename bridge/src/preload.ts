@@ -1,25 +1,7 @@
 import { contextBridge, ipcRenderer } from "electron"
+import { FileChanges, CreateInfo, ActivePath } from './types'
+import { ParsedGitDiff } from './components/git/types'
 
-type ParsedGitDiff = {
-    filename: string
-    oldFile: string
-    newFile: string
-}
-
-type FileChanges = {
-    filepath: string
-    fileContent: string
-}
-
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
-
-interface CreateInfo {
-    name: string
-    activePath: ActivePath
-}
 
 contextBridge.exposeInMainWorld('settings', {
     set: (settings: any): Promise<any> => ipcRenderer.invoke('settings:set', settings),

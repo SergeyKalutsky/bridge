@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { Link , useHistory } from 'react-router-dom'
 import Popup from 'reactjs-popup';
 import '../assets/css/SideNavBar.css'
-import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './Icons';
+import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './common/Icons';
 import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({

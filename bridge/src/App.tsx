@@ -1,64 +1,7 @@
 import { useEffect, useState } from 'react';
 import LoginPage from './components/login/LoginPage';
 import AppContent from './components/AppContent'
-import { Project } from './components/projects/Projects'
-import { Commit } from './components/git/Git';
 import './assets/css/base.css'
-
-type ParsedGitDiff = {
-    filename: string
-    oldFile: string
-    newFile: string
-}
-
-type FileChanges = {
-    filepath: string
-    fileContent: string
-}
-
-
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
-
-interface CreateInfo {
-    name: string
-    activePath: ActivePath
-}
-
-
-declare global {
-    interface Window {
-        settings: {
-            set(settings: any): Promise<any>;
-            get(): any
-        },
-        projects: {
-            mkbasedir(data: any): Promise<any>
-            getLocalProjectsNames(): string[]
-            delete(name: string): void
-            showFiles(): Promise<any>
-            readActiveFile(filepath: string): Promise<any>
-            writeActiveFile(fileChange: FileChanges): any
-            createFile(createInfo: CreateInfo): any
-            createFolder(createInfo: CreateInfo): any
-            deleteTreeElement(activePath: ActivePath): any
-        },
-        git: {
-            clone(project: Project): void
-            pull(): void
-            push(): void
-            log(): Commit[]
-            diff(hash: string): ParsedGitDiff[]
-        }
-        terminal: {
-            incomingData(channel, callback): any
-            keystoke(e): any
-
-        }
-    }
-}
 
 
 export default function App(): JSX.Element {

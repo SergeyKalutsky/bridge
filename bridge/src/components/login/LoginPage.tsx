@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { authUser } from '../../lib/api/index'
-import { LogoIcon, UserIcon, KeyIcon } from '../Icons';
+import { LogoIcon, UserIcon, KeyIcon } from '../common/Icons';
 import '../../assets/css/LoginPage.css'
 
 type InputForms = {
