@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { authUser } from '../../lib/api/index'
+import ImputForm from '../common/InputForm'
+import Button from '../common/Button'
 import { LogoIcon, UserIcon, KeyIcon } from '../common/Icons';
-import '../../assets/css/LoginPage.css'
+
 
 type InputForms = {
     login: string
@@ -31,30 +33,33 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
         }
         window.projects.mkbasedir(data)
     }
+    const onUserInputChange = e => {
+        setloginData({ ...loginData, login: e.target.value })
+    };
+    const onPasswordInputChange = e => {
+        setloginData({ ...loginData, password: e.target.value })
+    };
+    const sendAuthUser = () => {
+        authUser(loginData)
+            .then(response => response.json())
+            .then(data => handleData(data))
+    }
     return (
-        <div className='content'>
-            <div className='text-5xl'>
+        <div className='flex justify-center items-center bg-stone-800 flex-col h-full'>
+            <div className='text-7xl text-slate-100 font-sans mt-5'>
                 Добро пожаловать!
             </div>
-            <div className='input-forms'>
+            <div className='flex flex-col items-center justify-center w-full h-full'>
                 <LogoIcon />
-                <div className='inputContainer'>
-                    <UserIcon />
-                    <input className='inLog' type="text" placeholder='Логин'
-                        onChange={(e) => { setloginData({ ...loginData, login: e.target.value }) }} />
+                <div className='flex flex-col items-center justify-center h-2/4 w-1/4'>
+                    <ImputForm onChange={onUserInputChange} type='text' placeholder='Логин'>
+                        <UserIcon />
+                    </ImputForm>
+                    <ImputForm onChange={onPasswordInputChange} type='password' placeholder='Пароль'>
+                        <KeyIcon />
+                    </ImputForm>
+                    <Button btnText='Вход' onClick={sendAuthUser} />
                 </div>
-                <div className='inputContainer'>
-                    <KeyIcon />
-                    <input className='inLog' type="password" placeholder='Пароль'
-                        onChange={(e) => { setloginData({ ...loginData, password: e.target.value }) }} />
-                </div>
-                <button
-                    onClick={() => {
-                        authUser(loginData)
-                            .then(response => response.json())
-                            .then(data => handleData(data))
-                    }}
-                >Вход</button>
             </div>
         </div>
     )

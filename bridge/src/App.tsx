@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import LoginPage from './components/login/LoginPage';
 import AppContent from './components/AppContent'
 import './assets/css/index.css'
-// import './assets/css/base.css'
 
 
 export default function App(): JSX.Element {

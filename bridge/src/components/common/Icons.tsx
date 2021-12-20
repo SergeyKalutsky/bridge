@@ -1,6 +1,7 @@
 const LogoIcon = (): JSX.Element => {
     return (
-        <svg className="logo" xmlns="http://www.w3.org/2000/svg">
+        <svg className="" 
+        xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" clipRule="evenodd" d="M273.025 115.998V104.635C215.397 101.794 163.706 53.9063 163.706 0.336731H154.731C154.731 22.3277 148.597 40.5953 137.586 55.3684C126.737 40.8271 120.353 22.6581 120.026 0.336731H109.881C109.881 56.0001 53.5741 104.635 0.712463 104.635V115.998H109.881H120.026H154.731H163.706H273.025ZM154.731 104.635H121.145V85.5193C127.418 80.7383 132.98 75.4877 138.107 69.4896C143.166 75.0784 148.919 80.8758 154.731 86.1123V104.635ZM109.881 104.635H87.5601C95.8886 100.934 103.256 97.1833 109.881 93.1639V104.635ZM121.145 44.9781V72.2131C121.323 72.0718 121.5 71.93 121.676 71.7878C125.346 68.8249 128.747 65.6529 131.861 62.2682C125.419 54.4349 121.145 47.8214 121.145 44.9781ZM163.706 104.635H184.554C179.362 104.387 171.806 99.9999 163.706 93.6785V104.635ZM109.881 80.0525V44.9781C109.881 62.946 90.849 83.3841 65.2442 97.707C82.0719 93.6631 97.1311 87.8111 109.881 80.0525ZM143.589 62.5708C147.469 57.2987 151.136 51.482 154.731 44.9781V72.7891C157.582 75.0243 160.578 77.1289 163.706 79.1069V44.9781C163.706 57.2139 185.271 82.0992 214.857 98.9153C195.743 94.7964 178.286 88.3273 163.706 79.1069C160.578 77.1289 157.582 75.0243 154.731 72.7891C150.72 69.6451 146.995 66.2426 143.589 62.5708Z" fill="#00569F"/>
             <path d="M163.706 160.837H154.731V124.989H163.706V160.837Z" fill="#00569F"/>
             <path d="M120.026 160.837H109.881V124.989H120.026V160.837Z" fill="#00569F"/>
@@ -32,8 +33,9 @@ const LogoIcon = (): JSX.Element => {
 
 const UserIcon = (): JSX.Element => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user" viewBox="0 0 24 24" >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            className="w-16 h-11 stroke-gray-500 fill-transparent stroke-2" 
+            viewBox="0 0 24 24" >
             <circle cx="12" cy="7" r="4" />
             <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
         </svg>
@@ -42,7 +44,8 @@ const UserIcon = (): JSX.Element => {
 
 const KeyIcon = (): JSX.Element => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-user"
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            className="w-16 h-11 stroke-gray-500 fill-transparent stroke-2"
             viewBox="0 0 24 24">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <circle cx="8" cy="15" r="4" />
