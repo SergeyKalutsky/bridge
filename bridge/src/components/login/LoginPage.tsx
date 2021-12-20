@@ -15,6 +15,7 @@ type User = {
     password?: string
     login?: string
 }
+
 interface Props {
     setIslogin: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -32,7 +33,7 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
     }
     return (
         <div className='content'>
-            <div className='greetings'>
+            <div className='text-5xl'>
                 Добро пожаловать!
             </div>
             <div className='input-forms'>
