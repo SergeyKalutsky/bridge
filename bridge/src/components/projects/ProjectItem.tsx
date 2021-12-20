@@ -3,7 +3,7 @@ import UserIconButton from './icons/UserIconButton'
 import TrashIconButton from './icons/TrashIconButton'
 import SelectActiveProjectPopUp from './SelectActiveProjectPopUp'
 import ActivateProjectPopUp from './ActivateProjectPopUp'
-import { Project } from './Projects'
+import { Project } from './types'
 
 type Props = {
     project: Project

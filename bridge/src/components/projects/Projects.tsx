@@ -1,6 +1,5 @@
 import { useState, useEffect, useReducer } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '../common/IconButton';
 import ProjectItem from './ProjectItem';
 import ProjectsMenu from './ProjectsMenu'
 import ProjectCreate from './ProjectsCreate'
@@ -9,18 +8,6 @@ import { fetchProjects } from '../../lib/api/index'
 import { Adding } from '../common/Icons';
 import { Project } from './types';
 import '../../assets/css/Projects.css'
-
-const useStyles = makeStyles(() => ({
-    menuIcon: {
-        '& svg': {
-            fontSize: 30
-        },
-        'color': '#b3afb0',
-        'justify-content': 'flex-end'
-
-    }
-})
-);
 
 
 
@@ -50,7 +37,6 @@ const Projects = (): JSX.Element => {
     const defaultObj = [{ id: 0, name: "", isclassroom: 0, islocal: false, http: '' }]
     const [projects, setProjects] = useState<Array<Project>>(defaultObj)
     const [state, dispatch] = useReducer(reducer, { page: null });
-    const classes = useStyles()
 
     const removeProject = (project_id: number) => {
         const newProjects = []
@@ -118,8 +104,7 @@ const Projects = (): JSX.Element => {
                 setActiveProject={setActiveProject} />
         </div>)
 
-
-    const addProjectBtn = (<IconButton className={classes.menuIcon}
+    const addProjectBtn = (<IconButton width={8} height={8}
         onClick={() => {
             dispatch({
                 type: 'createProject', payload: {
@@ -146,4 +131,4 @@ const Projects = (): JSX.Element => {
 }
 
 
-export { Projects, Project }
+export { Projects }

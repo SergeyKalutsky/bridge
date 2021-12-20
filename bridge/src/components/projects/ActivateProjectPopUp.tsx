@@ -1,5 +1,6 @@
 import Popup from 'reactjs-popup';
-import { Project } from './Projects'
+import PopUp from '../common/Popup'
+import { Project } from './types'
 import { deleteMember } from '../../lib/api/index'
 
 interface Props {
@@ -11,36 +12,33 @@ interface Props {
 }
 
 const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects, setActive }: Props): JSX.Element => {
+    const closeModal = () => { setOpen(false); setActive(false) }
     return (
-        <Popup
+        <PopUp
             open={open}
-            onClose={() => { setOpen(false); setActive(false) }}
-            closeOnDocumentClick
-            position="right center"
+            onClose={closeModal}
             key={project.name}
-            modal>
-            <div className="modal">
-                <div>Проект отсутствует локально</div>
-                <button className="close"
-                    onClick={() => {
-                        window.git.clone(project)
-                        setOpen(false)
-                        updateProjects({ ...project, islocal: true })
-                    }}
-                >
-                    Скачать
-                </button>
-                <button className="close"
-                    onClick={() => {
-                        const settings = window.settings.get()
-                        deleteMember(settings, project.id, settings.user.id)
-                        setOpen(false)
-                    }}
-                >
-                    Удалить
-                </button>
-            </div>
-        </Popup>
+        >
+            <div>Проект отсутствует локально</div>
+            <button className="close"
+                onClick={() => {
+                    window.git.clone(project)
+                    setOpen(false)
+                    updateProjects({ ...project, islocal: true })
+                }}
+            >
+                Скачать
+            </button>
+            <button className="close"
+                onClick={() => {
+                    const settings = window.settings.get()
+                    deleteMember(settings, project.id, settings.user.id)
+                    setOpen(false)
+                }}
+            >
+                Удалить
+            </button>
+        </PopUp>
     )
 }
 

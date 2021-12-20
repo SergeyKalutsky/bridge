@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Project } from './Projects'
+import { Project } from './types'
 import { createProject } from '../../lib/api/index'
 import '../../assets/css/ProjectsCreate.css'
 
