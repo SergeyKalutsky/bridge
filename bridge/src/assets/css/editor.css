@@ -1,63 +1,85 @@
 .ide {
-    width: 100%;
+    width  : 100%;
     display: flex;
 }
 
 
 .tree-view {
-    width: 20%;
-    height: 100%;
+    width           : 20%;
+    height          : 100%;
     background-color: rgb(170, 169, 168);
-    overflow: scroll;
+    overflow        : scroll;
 }
 
 .tree-tab {
-    height: 40px;
-    width: 100%;
-    display: flex;
+    height            : 40px;
+    width             : 100%;
+    display           : flex;
     /* justify-content: space-evenly; */
-    align-items: center;
+    align-items       : center;
 }
 
 .project-name {
-    width: 60%;
-    font-size: 25px;
+    width      : 70%;
+    font-size  : 25px;
     font-weight: bold;
-    text-align: center;
+    text-align : center;
 }
 
 .file-icons {
-    width: 40%;
-    display: flex;
+    width          : 30%;
+    display        : flex;
     justify-content: space-between;
 }
 
-.file-icon:hover{
+.file-icon:hover {
     background-color: rgb(185, 130, 236);
-    border-radius: 50%;
-    cursor: pointer;
+    border-radius   : 50%;
+    cursor          : pointer;
 }
 
 
 .editor {
-    width: 100%;
-    height: 100%;
-    display: flex;
+    width         : 80%;
+    height        : 100%;
+    display       : flex;
     flex-direction: column;
 }
 
+.tool-bar {
+    display           : flex;
+    align-items       : center;
+    /* justify-content: center; */
+    height            : 5%;
+    background-color  : rgb(80, 79, 79);
+}
+
 #terminal {
-    width: 100%;
-    height: 35%
+    width           : 100%;
+    height          : 30%;
+    background-color: black;
+
+}
+
+.run {
+    background-color: blue !important;
+}
+
+.run:hover {
+    background-color: rgb(171, 171, 212) !important;
 }
 
 #aceEditor {
     height: 65% !important;
-    width: 100% !important;
+    width : 100% !important;
 }
 
 .tree-view::-webkit-scrollbar {
     width: 8px;
+}
+
+.tree-view::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0);
 }
 
 .tree-view::-webkit-scrollbar-thumb {
@@ -66,11 +88,30 @@
 
 .tree-view::-webkit-scrollbar-thumb:hover {
     background-color: rgb(188, 188, 189);
-    border: 1px solid rgb(188, 188, 189);
+    border          : 1px solid rgb(188, 188, 189);
 }
 
-.tree-view::-webkit-scrollbar:horizontal {
-    height: 0;
-    width: 0;
+.xterm-viewport::-webkit-scrollbar:horizontal {
+    height : 0;
+    width  : 0;
+    display: none;
+}
+
+.xterm-viewport::-webkit-scrollbar {
+    width: 20px;
+}
+
+.xterm-viewportxterm-viewport::-webkit-scrollbar-thumb {
+    background-color: rgb(199, 199, 204);
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(146, 141, 141) !important;
+    border          : 1px solid rgb(136, 135, 135) !important;
+}
+
+.xterm-viewport::-webkit-scrollbar:horizontal {
+    height : 0;
+    width  : 0;
     display: none;
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import XtermTerminal from "./XtermTerminal";
 import FileTreeViewer from "./tree_viewer/FileTreeView";
+import ToolBar from "./ToolBar";
 import '../../assets/css/editor.css'
 
 import "ace-builds/src-noconflict/mode-python";
@@ -32,9 +33,19 @@ interface ActivePath {
     isDirectory: boolean
 }
 
+const defaultEditor = (<AceEditor
+    mode='plain_text'
+    theme="monokai"
+    value='Cоздайте или выберите файл, чтобы начать работу'
+    name="aceEditor"
+    readOnly={true}
+    editorProps={{ $blockScrolling: true }}
+    fontSize={18}
+/>)
+
 const Editor = (): JSX.Element => {
     const [activePath, setActivePath] = useState<ActivePath>(null)
-    const [editor, setEditor] = useState(null)
+    const [editor, setEditor] = useState(defaultEditor)
 
     const onChange = (newValue: string) => {
         window.projects.writeActiveFile({ filepath: activePath.path, fileContent: newValue })
@@ -64,8 +75,9 @@ const Editor = (): JSX.Element => {
                 <FileTreeViewer activePath={activePath} setActivePath={setActivePath} />
             </div>
             <div className="editor">
+                <ToolBar activePath={activePath}/>
                 {editor}
-                <XtermTerminal activePath={activePath}/>
+                <XtermTerminal activePath={activePath} />
             </div>
         </div>
     )
