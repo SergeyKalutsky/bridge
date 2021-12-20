@@ -14,25 +14,25 @@ const SideNavBar = (): JSX.Element => {
             history.push('/git') :
             setOpen(true)
     }
+    const handleCLose = () => { setOpen(false) }
     return (
-        <div className='text-center bg-zinc-600 border-r-1 border-teal-800 flex flex-col w-20'>
+        <div className='text-center bg-zinc-600 border-r-1 border-teal-800 flex flex-col w-20 drop-shadow-lg'>
             <div className='mt-5 h-2/5 flex flex-col items-center justify-between'>
-                <IconButton width={15} height={15}>
+                <IconButton>
                     <CupIcon />
                 </IconButton>
-                <IconButton width={15} height={15}>
+                <IconButton>
                     <Link to="/editor" replace><FileIcon /></Link>
                 </IconButton>
-                <IconButton width={15} height={15}
-                    onClick={checkActiveProject}>
+                <IconButton onClick={checkActiveProject}>
                     <GitIcon />
                 </IconButton>
-                <IconButton width={15} height={15}>
+                <IconButton>
                     <Link to="/" replace><ProjectIcon /></Link>
                 </IconButton>
                 <Popup
                     open={open}
-                    onClose={() => { setOpen(false) }}
+                    onClose={handleCLose}
                     position="right center"
                     modal={false}
                 >
