@@ -1,8 +1,8 @@
 import { useState } from "react"
 import UserIconButton from './icons/UserIconButton'
 import TrashIconButton from './icons/TrashIconButton'
-import SelectActiveProjectPopUp from './SelectActiveProjectPopUp'
-import ActivateProjectPopUp from './ActivateProjectPopUp'
+import SelectActiveProject from './SelectActiveProject'
+import ActivateProject from './ActivateProject'
 import { Project } from './types'
 
 type Props = {
@@ -49,13 +49,13 @@ const ProjectItem = ({ project,
             >
                 {project.name}
             </span>
-            <SelectActiveProjectPopUp
+            <SelectActiveProject
                 project={project}
                 setOpen={setOpenSelectActive}
                 open={open}
                 setActive={setActive}
                 setPopUp={setPopUp} />
-            <ActivateProjectPopUp
+            <ActivateProject
                 project={project}
                 setOpen={setOpenActivate}
                 open={openActivate}

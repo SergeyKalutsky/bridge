@@ -1,3 +1,5 @@
+import '../../assets/css/SideNavBar.css'
+
 const LogoIcon = (): JSX.Element => {
     return (
         <svg className="" 

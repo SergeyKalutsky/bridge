@@ -11,7 +11,7 @@ interface Props {
     setActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects, setActive }: Props): JSX.Element => {
+const ActivateProject = ({ open, setOpen, project, updateProjects, setActive }: Props): JSX.Element => {
     const closeModal = () => { setOpen(false); setActive(false) }
     const onDownloadClick = () => {
         window.git.clone(project)
@@ -39,4 +39,4 @@ const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects, setActiv
     )
 }
 
-export default ActivateProjectPopUp
+export default ActivateProject
