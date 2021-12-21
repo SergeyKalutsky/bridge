@@ -1,7 +1,8 @@
 import { useState, useEffect, useReducer } from 'react'
 import IconButton from '../common/IconButton';
 import ProjectItem from './ProjectItem';
-import ProjectsMenu from './ProjectsMenu'
+import SideMenu from '../common/SideMenu';
+import SideMenuHeader from '../common/SideMenuHeader';
 import ProjectCreate from './ProjectsCreate'
 import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
@@ -96,13 +97,13 @@ const Projects = (): JSX.Element => {
     }, [])
 
     const projects_list = projects.map((project) =>
-        <div className='project-item' key={project.id}>
-            <ProjectItem project={project}
-                dispatch={dispatch}
-                removeProject={removeProject}
-                updateProjects={updateProjects}
-                setActiveProject={setActiveProject} />
-        </div>)
+        <ProjectItem project={project}
+            key={project.id}
+            dispatch={dispatch}
+            removeProject={removeProject}
+            updateProjects={updateProjects}
+            setActiveProject={setActiveProject} />
+    )
 
     const addProjectBtn = (<IconButton width={8} height={8}
         onClick={() => {
@@ -117,8 +118,13 @@ const Projects = (): JSX.Element => {
     )
     return (
         <>
-            <ProjectsMenu projects_list={projects_list}
-                addProjectBtn={addProjectBtn} />
+            <SideMenu>
+                <SideMenuHeader>
+                    <span className='text-white text-3xl'>ПРОЕКТЫ</span>
+                    {addProjectBtn}
+                </SideMenuHeader>
+                {projects_list}
+            </SideMenu>
 
             <div className='workspace'>
                 <div className='workspace-background'>

@@ -8,11 +8,10 @@ import { deleteProject } from '../../../lib/api/index'
 type Props = {
     id: number
     name: string
-    setActive: React.Dispatch<React.SetStateAction<boolean>>
     removeProject: (project_id: number) => void
 }
 
-const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Element => {
+const TrashIconButton = ({ name, id, removeProject }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const handleClick = () => {
         const settings = window.settings.get()
@@ -26,18 +25,14 @@ const TrashIconButton = ({ name, id, removeProject, setActive }: Props): JSX.Ele
         removeProject(id)
         setOpen(false)
     }
-    const handleClose = () => {
-        setOpen(false)
-        setActive(false)
-    }
     return (
         <>
-            <div className='icon' onClick={() => { setOpen(true) }}>
-                <FontAwesomeIcon icon={faTrashAlt} />
+            <div className='hover:text-white'>
+                <FontAwesomeIcon icon={faTrashAlt} onClick={() => { setOpen(true) }} />
             </div>
             <PopUp
                 open={open}
-                onClose={handleClose}>
+                onClose={() => { setOpen(false) }}>
                 <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
                 <Button onClick={handleClick} btnText='Удалить' />
             </PopUp>

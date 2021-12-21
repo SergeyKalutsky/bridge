@@ -8,11 +8,10 @@ interface Props {
     project: Project
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
     updateProjects: (project: Project) => void
-    setActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ActivateProject = ({ open, setOpen, project, updateProjects, setActive }: Props): JSX.Element => {
-    const closeModal = () => { setOpen(false); setActive(false) }
+const ActivateProject = ({ open, setOpen, project, updateProjects }: Props): JSX.Element => {
+    const closeModal = () => { setOpen(false)}
     const onDownloadClick = () => {
         window.git.clone(project)
         setOpen(false)

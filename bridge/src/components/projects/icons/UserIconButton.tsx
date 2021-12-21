@@ -9,7 +9,8 @@ type UserProps = {
 const UserIconButton = ({ id, dispatch }: UserProps): JSX.Element => {
 
     return (
-        <div className='icon'><FontAwesomeIcon icon={faUserEdit}
+        <div className='hover:text-white'>
+            <FontAwesomeIcon icon={faUserEdit}
             onClick={() => { 
                 dispatch({ type: 'memberFind', payload: id }) 
             }}

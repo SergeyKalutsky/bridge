@@ -14,6 +14,34 @@ type Props = {
 }
 
 
+const ProjectDiv = ({ children, project, onClick, dispatch, removeProject }) => {
+    const [active, setActive] = useState(false)
+    const activeProject = project.isactive ? 'border-l-4 border-zinc-50' : ''
+    const localProject = project.islocal ? '' : 'after:content-["🔥"] opacity-30'
+    return (
+        <div className={`${activeProject} ${localProject} 
+                mt-2 h-18 flex justify-between items-center 
+                text-3xl cursor-pointer hover:bg-slate-500`}
+            onMouseOver={() => { project.islocal ? setActive(true) : null }}
+            onMouseLeave={() => { project.islocal ? setActive(false) : null }}
+            onClick={() => { setActive(false) }}>
+            <span className='ml-5 font-medium text-white w-full'
+                onClick={onClick}>
+                {project.name}
+            </span>
+            {children}
+            {active && project.islocal &&
+                <div className='mr-8 w-80px flex flex-row justify-between cursor-pointer text-slate-900 text-2xl'>
+                    <UserIconButton id={project.id} dispatch={dispatch} />
+                    <TrashIconButton name={project.name}
+                        id={project.id}
+                        removeProject={removeProject} />
+                </div>}
+        </div>
+    )
+}
+
+
 const ProjectItem = ({ project,
     removeProject,
     dispatch,
@@ -21,55 +49,30 @@ const ProjectItem = ({ project,
     setActiveProject }: Props): JSX.Element => {
     const [open, setOpenSelectActive] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
-    const [active, setActive] = useState(false)
 
-    const buildSpanClassName = () => {
-        let baseClass = ''
-        baseClass += project.islocal == false ? 'non-active ' : ''
-        baseClass += active == true ? 'selected' : ''
-        return baseClass
-    }
     const setPopUp = (active_project: Project) => {
         window.settings.set({ active_project: active_project })
-        setActive(false)
         setOpenSelectActive(false)
         setActiveProject(active_project.id)
     }
+    const handleClick = (e) => {
+        e.currentTarget.className.includes('non-active') == true ?
+            setOpenActivate(true) :
+            setOpenSelectActive(true)
+    }
     return (
-        <div className={project.isactive == true ? 'project active' : 'project'}
-            onMouseOver={() => { project.islocal == true ? setActive(true) : null }}
-            onMouseLeave={() => { project.islocal == true ? setActive(false) : null }}>
-            <span className={buildSpanClassName()}
-                onClick={(e) => {
-                    e.currentTarget.className.includes('non-active') == true ?
-                        setOpenActivate(true) :
-                        setOpenSelectActive(true)
-                    setActive(false)
-                }}
-            >
-                {project.name}
-            </span>
+        <ProjectDiv onClick={handleClick} project={project} dispatch={dispatch} removeProject={removeProject}>
             <SelectActiveProject
                 project={project}
                 setOpen={setOpenSelectActive}
                 open={open}
-                setActive={setActive}
                 setPopUp={setPopUp} />
             <ActivateProject
                 project={project}
                 setOpen={setOpenActivate}
                 open={openActivate}
-                setActive={setActive}
                 updateProjects={updateProjects} />
-            {active &&
-                <div className='icons'>
-                    <UserIconButton id={project.id} dispatch={dispatch} />
-                    <TrashIconButton name={project.name}
-                        id={project.id}
-                        removeProject={removeProject}
-                        setActive={setActive} />
-                </div>}
-        </div>
+        </ProjectDiv>
     )
 }
 

@@ -4,14 +4,13 @@ import { Project } from './types'
 
 interface Props {
     open: boolean
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
     project: Project
     setPopUp: (active_project: Project) => void
-    setActive: React.Dispatch<React.SetStateAction<boolean>>
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const SelectActiveProject = ({ open, setOpen, project, setPopUp, setActive }: Props): JSX.Element => {
-    const closeModal = () => { setOpen(false); setActive(false) }
+const SelectActiveProject = ({ open, setOpen, project, setPopUp }: Props): JSX.Element => {
+    const closeModal = () => { setOpen(false)}
     const selectActiveProject = () => {
         const active_project = {
             name: project.name,
