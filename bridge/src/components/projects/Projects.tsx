@@ -3,6 +3,7 @@ import IconButton from '../common/IconButton';
 import ProjectItem from './ProjectItem';
 import SideMenu from '../common/SideMenu';
 import SideMenuHeader from '../common/SideMenuHeader';
+import Workspace from '../common/Workspace'
 import ProjectCreate from './ProjectsCreate'
 import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
@@ -104,36 +105,27 @@ const Projects = (): JSX.Element => {
             setActiveProject={setActiveProject} />
     )
 
-    const addProjectBtn = (<IconButton width={8} height={8}
-        onClick={() => {
-            dispatch({
-                type: 'createProject', payload: {
-                    addProject: addProject
-                }
-            })
-        }}>
-        <Adding />
-    </IconButton >
-    )
     return (
         <>
             <SideMenu>
                 <SideMenuHeader>
                     <span className='text-white text-3xl'>ПРОЕКТЫ</span>
-                    {addProjectBtn}
+                    <IconButton width={8} height={8}
+                        onClick={() => {
+                            dispatch({type: 'createProject', payload: {addProject: addProject}})
+                        }}>
+                        <Adding />
+                    </IconButton >
                 </SideMenuHeader>
                 {projects_list}
             </SideMenu>
-
-            <div className='w-3/4 h-full border-l-1'>
-                <div className='flex flex-col justify-center h-full w-full bg-neutral-900'>
-                    {state.page}
-                </div>
-            </div>
+            <Workspace>
+                {state.page}
+            </Workspace>
         </>
 
     )
 }
 
 
-export { Projects }
+export default Projects 

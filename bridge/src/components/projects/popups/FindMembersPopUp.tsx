@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Popup from 'reactjs-popup';
-import { Member } from './ProjectMembers'
+import { Member } from '../members/ProjectMembers'
 import { findUser } from '../../../lib/api/index'
 import { addProjectMember } from '../../../lib/api/index'
 
@@ -60,9 +60,7 @@ const FindMembersPopUp = ({ membersCurrent,
                         </div> :
                         <div className='not-found'>
                             <span>К сожалению с таким ником никто не найден</span>
-                            < button className="close" onClick={() => {
-                                setOpen(false)
-                            }}>
+                            < button className="close" onClick={() => {setOpen(false)}}>
                                 ОК
                             </button>
                         </div>}

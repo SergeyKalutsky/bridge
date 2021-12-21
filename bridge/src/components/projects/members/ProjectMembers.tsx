@@ -1,7 +1,9 @@
-import { useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
+import Button from '../../common/Button'
+import InputForm from '../../common/InputForm'
 import '../../../assets/css/ProjectMembers.css'
 import CurrentMembers from './CurrentMembers'
-import FindMembersPopUp from './FindMembersPopUp'
+import FindMembersPopUp from '../popups/FindMembersPopUp'
 import { listProjectMembers } from '../../../lib/api/index'
 
 type Props = {
@@ -35,15 +37,19 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
             .then(data => data !== null ? setMembersCurrent(data) : null)
     }, [project_id])
     return (
-        <div className='project-members'>
-            <h1>Пригласить друга в проект</h1>
-            <div className='search'>
-                <input type="text"
-                    placeholder='Введите ник пользователя'
-                    onChange={(e) => { setSearch(e.target.value) }} />
-                <button onClick={() => {
-                    setOpen(true)
-                }}> Поиск</button>
+        <>
+            <div className='flex flex-col justify-between items-center w-full h-full bg-zinc-700'>
+                <h1>Пригласить друга в проект</h1>
+                <div className='w-3/5 mt-2 flex items-center justify-center'>
+                    <InputForm type="text"
+                        placeholder='Введите имя'
+                        onChange={(e) => { setSearch(e.target.value) }} />
+                    <Button onClick={() => {setOpen(true)}} btnText='Поиск' /> 
+                </div>
+                <CurrentMembers members={membersCurrent}
+                    project_id={project_id}
+                    removeMember={removeMember}
+                />
             </div>
             <FindMembersPopUp membersCurrent={membersCurrent}
                 search={search}
@@ -51,11 +57,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
                 addMember={addMember}
                 open={open}
                 setOpen={setOpen} />
-            <CurrentMembers members={membersCurrent}
-                project_id={project_id}
-                removeMember={removeMember}
-            />
-        </div>
+        </>
     )
 }
 

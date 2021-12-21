@@ -1,10 +1,3 @@
-.search {
-    width          : 70%;
-    display        : flex;
-    align-items    : center;
-    justify-content: center;
-}
-
 .search input {
     margin-right: 5px;
     height      : 30px;
@@ -27,16 +20,6 @@
 
 }
 
-
-.project-members {
-    display         : flex;
-    flex-direction  : column;
-    justify-content : space-between;
-    align-items     : center;
-    width           : 100%;
-    height          : 100%;
-    background-color: #292826;
-}
 
 .current-member {
     margin-top     : 5px;
