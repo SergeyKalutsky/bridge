@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import Popup from 'reactjs-popup';
+import PopUp from '../../common/PopUp';
+import Button from '../../common/Button';
 import { Member } from '../types'
 import { findUser } from '../../../lib/api/index'
 import { addProjectMember } from '../../../lib/api/index'
@@ -23,7 +24,7 @@ const FindMembersPopUp = ({ membersCurrent,
     const [memberFound, setmemberFound] = useState<Member>(null)
 
     const setMemberCurrent = (member: Member) => {
-        if (member === null) { return member}
+        if (member === null) { return member }
         for (const memberCurrent of membersCurrent) {
             if (memberCurrent.id === member.id) {
                 member.iscurrent = true
@@ -40,33 +41,27 @@ const FindMembersPopUp = ({ membersCurrent,
     }, [search, membersCurrent])
 
     return (
-        <Popup
+        <PopUp
             open={open}
-            onClose={() => setOpen(false)}
-            closeOnDocumentClick
-            position="right center"
-            modal>
-            <div className="modal">
-                <div className='search'>
-                    {memberFound !== null ?
-                        <div className='user-found'>
-                            <span>{memberFound.name}</span>
-                            <button disabled={memberFound.iscurrent == false ? false : true}
-                                onClick={() => {
-                                    addProjectMember(window.settings.get(), memberFound.id, project_id)
-                                    addMember(memberFound)
-                                    setOpen(false)
-                                }}>Пригласить</button>
-                        </div> :
-                        <div className='not-found'>
-                            <span>К сожалению с таким ником никто не найден</span>
-                            < button className="close" onClick={() => {setOpen(false)}}>
-                                ОК
-                            </button>
-                        </div>}
-                </div>
+            onClose={() => setOpen(false)}>
+            <div className='w-3/5 flex items-center justify-center'>
+                {memberFound !== null ?
+                    <div className='flex justify-center flex-col items-center text-xl'>
+                        <span>{memberFound.name}</span>
+                        <Button
+                            disabled={memberFound.iscurrent == false ? false : true}
+                            onClick={() => {
+                                addProjectMember(window.settings.get(), memberFound.id, project_id)
+                                addMember(memberFound)
+                                setOpen(false)
+                            }} btnText='Пригласить' />
+                    </div> :
+                    <div className='flex flex-col justify-center items-center'>
+                        <span>К сожалению с таким ником никто не найден</span>
+                        < Button onClick={() => { setOpen(false) }} btnText='OK' />
+                    </div>}
             </div>
-        </Popup >
+        </PopUp >
     )
 }
 
