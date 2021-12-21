@@ -1,6 +1,6 @@
-import PopUp from '../common/PopUp'
-import Button from '../common/Button'
-import { Project } from './types'
+import PopUp from '../../common/PopUp'
+import Button from '../../common/Button'
+import { Project } from '../types'
 
 interface Props {
     open: boolean
@@ -9,7 +9,7 @@ interface Props {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const SelectActiveProject = ({ open, setOpen, project, setPopUp }: Props): JSX.Element => {
+const SelectActiveProjectPopUp = ({ open, setOpen, project, setPopUp }: Props): JSX.Element => {
     const closeModal = () => { setOpen(false)}
     const selectActiveProject = () => {
         const active_project = {
@@ -34,4 +34,4 @@ const SelectActiveProject = ({ open, setOpen, project, setPopUp }: Props): JSX.E
     )
 }
 
-export default SelectActiveProject
+export default SelectActiveProjectPopUp

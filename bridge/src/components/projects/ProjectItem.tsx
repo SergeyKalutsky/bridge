@@ -1,9 +1,11 @@
 import { useState } from "react"
-import UserIconButton from './icons/UserIconButton'
-import TrashIconButton from './icons/TrashIconButton'
-import SelectActiveProject from './SelectActiveProject'
-import ActivateProject from './ActivateProject'
 import { Project } from './types'
+import ActivateProjectPopUp from './popups/ActivateProjectPopUp'
+import DeleteProjectPopUp from './popups/DeleteProjectPopUp'
+import SelectActiveProjectPopUp from './popups/SelectActiveProjectPopUp'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserEdit } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
     project: Project
@@ -42,17 +44,21 @@ const ProjectItem = ({ project,
     setActiveProject }: Props): JSX.Element => {
     const [open, setOpenSelectActive] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
-
+    const [openDelete, setDeleteOpen] = useState(false)
     const setPopUp = (active_project: Project) => {
         window.settings.set({ active_project: active_project })
         setOpenSelectActive(false)
         setActiveProject(active_project.id)
     }
     const icons = (<>
-        <UserIconButton id={project.id} dispatch={dispatch} />
-        <TrashIconButton name={project.name}
-            id={project.id}
-            removeProject={removeProject} />
+        <div className='hover:text-white'>
+            <FontAwesomeIcon icon={faUserEdit}
+                onClick={() => { dispatch({ type: 'memberFind', payload: project.id }) }}
+            />
+        </div>
+        <div className='hover:text-white'>
+            <FontAwesomeIcon icon={faTrashAlt} onClick={() => { setDeleteOpen(true) }} />
+        </div>
     </>)
     return (
         <>
@@ -62,16 +68,23 @@ const ProjectItem = ({ project,
                     {project.name}
                 </span>
             </ProjectDiv>
-            <SelectActiveProject
+            {/* Popups */}
+            <SelectActiveProjectPopUp
                 project={project}
                 setOpen={setOpenSelectActive}
                 open={open}
                 setPopUp={setPopUp} />
-            <ActivateProject
+            <ActivateProjectPopUp
                 project={project}
                 setOpen={setOpenActivate}
                 open={openActivate}
                 updateProjects={updateProjects} />
+            <DeleteProjectPopUp
+                name={project.name}
+                id={project.id}
+                removeProject={removeProject}
+                open={openDelete}
+                setOpen={setDeleteOpen} />
         </>
     )
 }

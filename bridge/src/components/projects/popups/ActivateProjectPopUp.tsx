@@ -1,7 +1,7 @@
-import PopUp from '../common/PopUp'
-import Button from '../common/Button'
-import { Project } from './types'
-import { deleteMember } from '../../lib/api/index'
+import PopUp from '../../common/PopUp'
+import Button from '../../common/Button'
+import { Project } from '../types'
+import { deleteMember } from '../../../lib/api/index'
 
 interface Props {
     open: boolean
@@ -10,7 +10,7 @@ interface Props {
     updateProjects: (project: Project) => void
 }
 
-const ActivateProject = ({ open, setOpen, project, updateProjects }: Props): JSX.Element => {
+const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects }: Props): JSX.Element => {
     const closeModal = () => { setOpen(false)}
     const onDownloadClick = () => {
         window.git.clone(project)
@@ -38,4 +38,4 @@ const ActivateProject = ({ open, setOpen, project, updateProjects }: Props): JSX
     )
 }
 
-export default ActivateProject
+export default ActivateProjectPopUp
