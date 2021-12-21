@@ -5,7 +5,7 @@ import SideMenu from '../common/SideMenu';
 import SideMenuHeader from '../common/SideMenuHeader';
 import Workspace from '../common/Workspace'
 import ProjectCreate from './ProjectsCreate'
-import { ProjectMembers } from './members/ProjectMembers'
+import ProjectMembers from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
 import { Adding } from '../common/Icons';
 import { Project } from './types';
@@ -112,7 +112,7 @@ const Projects = (): JSX.Element => {
                     <span className='text-white text-3xl'>ПРОЕКТЫ</span>
                     <IconButton width={8} height={8}
                         onClick={() => {
-                            dispatch({type: 'createProject', payload: {addProject: addProject}})
+                            dispatch({ type: 'createProject', payload: { addProject: addProject } })
                         }}>
                         <Adding />
                     </IconButton >

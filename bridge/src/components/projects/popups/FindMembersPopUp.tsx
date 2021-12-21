@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Popup from 'reactjs-popup';
-import { Member } from '../members/ProjectMembers'
+import { Member } from '../types'
 import { findUser } from '../../../lib/api/index'
 import { addProjectMember } from '../../../lib/api/index'
 

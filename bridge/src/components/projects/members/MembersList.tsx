@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Member } from './ProjectMembers'
+import { Member } from '../types'
 import { addProjectMember } from '../../../lib/api/index'
 
 
@@ -13,11 +13,11 @@ const MembersList = ({ member,
     project_id,
     addMember }: Props): JSX.Element => {
     const [localMember, setlocalMember] = useState<Member>(member)
-    const [ settings, setSettings ] = useState()
     return (
-        <div className='project-found'>
+        <div className='w-2/4 mt-5 flex flex-row text-2xl text-white items-center justify-center'>
             {localMember.name}
             <button disabled={localMember.iscurrent == false ? false : true} onClick={() => {
+                const settings = window.settings.get()
                 addProjectMember(settings, member.id, project_id)
                 setlocalMember({ ...localMember, iscurrent: true })
                 addMember(member)

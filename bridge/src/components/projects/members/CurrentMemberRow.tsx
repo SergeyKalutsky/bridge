@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { deleteMember } from '../../../lib/api/index'
-import { Member } from './ProjectMembers'
+import { Member } from '../types'
 
 
 interface Props {
@@ -18,12 +18,10 @@ const CurrentMemberRow = ({ member,
 
     const [open, setOpen] = useState(false)
     return (
-        <div className='current-member' key={member.id}>
-            <div className='member-row'>
-                <div className='member'>
+        <div className='w-4/5 mt-5 mb-5 pt-2 pb-2 flex justify-center items-center cursor-pointer hover:bg-zinc-700 rounded-lg' key={member.id}>
+            <div className='w-11/12 flex justify-between items-center flex-row text-2xl'>
                     {member.name}
-                </div>
-                <div className='icon' onClick={() => { setOpen(true) }}>
+                <div onClick={() => { setOpen(true) }}>
                     <FontAwesomeIcon icon={faTrashAlt} />
                 </div>
                 <Popup

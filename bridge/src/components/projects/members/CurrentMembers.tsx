@@ -1,5 +1,5 @@
 import CurrentMemberRow from './CurrentMemberRow'
-import { Member } from './ProjectMembers'
+import { Member } from '../types'
 
 interface Props {
     members: Member[]
@@ -16,7 +16,7 @@ const CurrentMembers = ({ members, project_id, removeMember }: Props): JSX.Eleme
             project_id={project_id} />
     )
     return (
-        <div className='current-members'>
+        <div className='w-4/5 h-4/5 flex flex-col text-white items-center bg-zinc-500 rounded-lg drop-shadow-lg'>
             {membersArray}
         </div>
     )

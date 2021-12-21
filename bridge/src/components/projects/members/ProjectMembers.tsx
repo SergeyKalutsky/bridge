@@ -1,21 +1,14 @@
 import { useState, useEffect } from 'react'
 import Button from '../../common/Button'
 import InputForm from '../../common/InputForm'
-import '../../../assets/css/ProjectMembers.css'
 import CurrentMembers from './CurrentMembers'
 import FindMembersPopUp from '../popups/FindMembersPopUp'
 import { listProjectMembers } from '../../../lib/api/index'
+import { Member } from '../types'
 
 type Props = {
     project_id: number
 }
-
-interface Member {
-    id: number
-    name: string
-    iscurrent?: boolean
-}
-
 
 const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
@@ -40,7 +33,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
         <>
             <div className='flex flex-col justify-between items-center w-full h-full bg-zinc-700'>
                 <h1>Пригласить друга в проект</h1>
-                <div className='w-3/5 mt-2 flex items-center justify-center'>
+                <div className='w-3/5 mt-2 flex items-center justify-center '>
                     <InputForm type="text"
                         placeholder='Введите имя'
                         onChange={(e) => { setSearch(e.target.value) }} />
@@ -62,4 +55,4 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
 }
 
 
-export { ProjectMembers, Member }
+export default ProjectMembers

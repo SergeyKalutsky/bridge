@@ -8,4 +8,11 @@ type Project = {
     isactive?: boolean
 }
 
-export { Project }
+interface Member {
+    id: number
+    name: string
+    iscurrent?: boolean
+}
+
+
+export { Project, Member }
