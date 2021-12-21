@@ -104,7 +104,6 @@ const Projects = (): JSX.Element => {
             updateProjects={updateProjects}
             setActiveProject={setActiveProject} />
     )
-
     return (
         <>
             <SideMenu>
