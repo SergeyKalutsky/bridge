@@ -14,11 +14,10 @@ type Props = {
 }
 
 
-const ProjectDiv = ({ children, project, handleClick, dispatch, removeProject }) => {
+const ProjectDiv = ({ children, project, dispatch, removeProject }) => {
     const [active, setActive] = useState(false)
     const activeProject = project.isactive ? 'border-l-4 border-zinc-50' : ''
     const localProject = project.islocal ? '' : 'after:content-["🔥"] opacity-30'
-    console.log(active)
     return (
         <div className={`${activeProject} ${localProject} 
                 mt-2 h-18 flex justify-between items-center 
@@ -26,10 +25,6 @@ const ProjectDiv = ({ children, project, handleClick, dispatch, removeProject })
             onMouseEnter={() => { project.islocal ? setActive(true) : null }}
             onMouseLeave={() => { project.islocal ? setActive(false) : null }}
             onClick={() => { setActive(false) }}>
-            <span className='ml-5 font-medium text-white w-full'
-                onClick={() => handleClick(project)}>
-                {project.name}
-            </span>
             {children}
             {active && project.islocal &&
                 <div className='mr-8 w-80px flex flex-row justify-between cursor-pointer text-slate-900 text-2xl'>
@@ -60,7 +55,11 @@ const ProjectItem = ({ project,
         !project.islocal ? setOpenActivate(true) : setOpenSelectActive(true)
     }
     return (
-        <ProjectDiv handleClick={handleClick} project={project} dispatch={dispatch} removeProject={removeProject}>
+        <ProjectDiv project={project} dispatch={dispatch} removeProject={removeProject}>
+            <span className='ml-5 font-medium text-white w-full'
+                onClick={() => handleClick(project)}>
+                {project.name}
+            </span>
             <SelectActiveProject
                 project={project}
                 setOpen={setOpenSelectActive}
