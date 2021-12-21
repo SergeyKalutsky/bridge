@@ -14,7 +14,7 @@ type Props = {
 }
 
 
-const ProjectDiv = ({ children, project, dispatch, removeProject }) => {
+const ProjectDiv = ({ children, project, icons }) => {
     const [active, setActive] = useState(false)
     const activeProject = project.isactive ? 'border-l-4 border-zinc-50' : ''
     const localProject = project.islocal ? '' : 'after:content-["🔥"] opacity-30'
@@ -28,10 +28,7 @@ const ProjectDiv = ({ children, project, dispatch, removeProject }) => {
             {children}
             {active && project.islocal &&
                 <div className='mr-8 w-80px flex flex-row justify-between cursor-pointer text-slate-900 text-2xl'>
-                    <UserIconButton id={project.id} dispatch={dispatch} />
-                    <TrashIconButton name={project.name}
-                        id={project.id}
-                        removeProject={removeProject} />
+                    {icons}
                 </div>}
         </div>
     )
@@ -51,15 +48,20 @@ const ProjectItem = ({ project,
         setOpenSelectActive(false)
         setActiveProject(active_project.id)
     }
-    const handleClick = (project) => {
-        !project.islocal ? setOpenActivate(true) : setOpenSelectActive(true)
-    }
+    const icons = (<>
+        <UserIconButton id={project.id} dispatch={dispatch} />
+        <TrashIconButton name={project.name}
+            id={project.id}
+            removeProject={removeProject} />
+    </>)
     return (
-        <ProjectDiv project={project} dispatch={dispatch} removeProject={removeProject}>
-            <span className='ml-5 font-medium text-white w-full'
-                onClick={() => handleClick(project)}>
-                {project.name}
-            </span>
+        <>
+            <ProjectDiv project={project} icons={icons}>
+                <span className='ml-5 font-medium text-white w-full'
+                    onClick={() => { !project.islocal ? setOpenActivate(true) : setOpenSelectActive(true) }}>
+                    {project.name}
+                </span>
+            </ProjectDiv>
             <SelectActiveProject
                 project={project}
                 setOpen={setOpenSelectActive}
@@ -70,7 +72,7 @@ const ProjectItem = ({ project,
                 setOpen={setOpenActivate}
                 open={openActivate}
                 updateProjects={updateProjects} />
-        </ProjectDiv>
+        </>
     )
 }
 
