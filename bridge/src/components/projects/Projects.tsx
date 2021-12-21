@@ -8,7 +8,6 @@ import { ProjectMembers } from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
 import { Adding } from '../common/Icons';
 import { Project } from './types';
-import '../../assets/css/Projects.css'
 
 
 
@@ -126,8 +125,8 @@ const Projects = (): JSX.Element => {
                 {projects_list}
             </SideMenu>
 
-            <div className='workspace'>
-                <div className='workspace-background'>
+            <div className='w-3/4 h-full border-l-1'>
+                <div className='flex flex-col justify-center h-full w-full bg-neutral-900'>
                     {state.page}
                 </div>
             </div>
