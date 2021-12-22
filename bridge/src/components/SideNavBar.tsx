@@ -16,7 +16,7 @@ const SideNavBar = (): JSX.Element => {
     }
     const handleCLose = () => { setOpen(false) }
     return (
-        <div className='text-center bg-zinc-600 border-r-1 border-teal-800 flex flex-col w-20 drop-shadow-lg'>
+        <div className='text-center bg-zinc-600 border-r-1 border-teal-800 flex flex-col w-[80px] drop-shadow-lg'>
             <div className='mt-5 h-2/5 flex flex-col items-center justify-between'>
                 <IconButton>
                     <CupIcon />

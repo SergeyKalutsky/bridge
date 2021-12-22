@@ -8,12 +8,12 @@ interface Props {
 
 const SideMenu = ({ children }: Props): JSX.Element => {
     const [size, setSize] = useState(300);
-    const ref = useRef<HTMLButtonElement>();
+    const ref = useRef<HTMLDivElement>();
     const handler = useCallback(() => {
         function onMouseMove(e) {
-            console.log(e.pageX, e.pageY)
-            if (!(e.pageX <= 350) && !(e.pageX >= 600)) {
-                setSize(e.pageX - 80)
+            if ((!(ref.current.clientWidth <= 200) && (e.movementX < 0)) ||
+                ((!(ref.current.clientWidth >= 500) && (e.movementX > 0)))) {
+                setSize(size => size + e.movementX)
             }
         }
         function onMouseUp() {
@@ -26,11 +26,11 @@ const SideMenu = ({ children }: Props): JSX.Element => {
 
     return (
         <>
-            <div className={`h-full bg-zinc-800 drop-shadow-lg`}
-                style={{ width: size }}>
+            <div className={`h-full bg-zinc-800 drop-shadow-lg w-[300px]`}
+                style={{ width: size }} ref={ref}>
                 {children}
             </div>
-            <button className='w-1 h-full cursor-col-resize' ref={ref} onMouseDown={handler} />
+            <button className='hover:w-1 h-full hover:bg-cyan-700 bg-neutral-900 hover:cursor-col-resize w-1' onMouseDown={handler} />
         </>
     )
 }
