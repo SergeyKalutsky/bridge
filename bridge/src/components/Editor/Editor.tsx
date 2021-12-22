@@ -78,10 +78,10 @@ const Editor = (): JSX.Element => {
                     setEditor(
                         <AceEditor
                             mode={mode}
-                            className="h-2/3 w-grow"
                             theme="monokai"
                             value={value}
                             onChange={onChange}
+                            style={{width: 'grow'}}
                             name="aceEditor"
                             editorProps={{ $blockScrolling: true }}
                             fontSize={18}
