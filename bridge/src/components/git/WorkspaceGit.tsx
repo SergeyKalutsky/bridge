@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Workspace from '../common/Workspace'
 import ReactDiffViewer from 'react-diff-viewer';
-import WorkspaceTab from './WorkspaceTab'
+import ToolBar from '../common/ToolBar'
 import darkModeStyle from './DiffViewerStyles'
 import { GitDiff } from './Git'
 import Switch from "react-switch";
@@ -22,21 +22,21 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
   }, [gitDiffs])
 
   const diff = gitDiffs[diffViewFileIndex]
-  const switchBtn = (
-    <Switch className='switch'
-      onChange={() => {
-        setSplitView(splitView == true ? false : true)
-      }}
-      checked={splitView} />
-  )
-  const dropDown = (
-    <DropDown gitDiffs={gitDiffs}
-      diffViewFileIndex={diffViewFileIndex}
-      setDiffViewFileIndex={setDiffViewFileIndex} />
-  )
+
   return (
     <Workspace>
-      <WorkspaceTab switchBtn={switchBtn} dropDown={dropDown} />
+      <ToolBar>
+        <DropDown gitDiffs={gitDiffs}
+          diffViewFileIndex={diffViewFileIndex}
+          setDiffViewFileIndex={setDiffViewFileIndex} />
+        <Switch 
+          onChange={() => { setSplitView(splitView ? false : true) }}
+          offColor={'#2b25cf'}
+          onColor={'#0f9100'}
+          offHandleColor={'#C7C3C3'}
+          onHandleColor={'#C7C3C3'}
+          checked={splitView} />
+      </ToolBar>
 
       <div className='code'>
         <ReactDiffViewer styles={darkModeStyle}

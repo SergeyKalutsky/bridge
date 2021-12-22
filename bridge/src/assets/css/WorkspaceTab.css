@@ -16,9 +16,6 @@
     background-color: #303030;
 }
 
-.react-switch-bg {
-    background: #00569F !important
-}
 
 span.MuiButton-label {
     font-family: Raleway;
@@ -63,9 +60,6 @@ span.MuiButton-label {
     align-items: center;
 }
 
-.react-switch-handle {
-    background: rgb(199, 195, 195) !important
-}
 
 .dropdown {
     display: flex;
