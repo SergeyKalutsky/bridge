@@ -1,4 +1,7 @@
 import '../../assets/css/leftMenu.css'
+import SideMenu from '../common/SideMenu';
+import SideMenuHeader from '../common/SideMenuHeader';
+import Workspace from '../common/Workspace'
 import { useState } from 'react'
 import CommitRow from './CommitRow'
 import {GitDiff, Commit} from './Git'
@@ -28,14 +31,14 @@ const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
   ) : null
 
   return (
-    <div className='left-menu'>
-      <div className='tab-header'>
-        <span className='tab-text-feed'>ЛЕНТА</span>
-      </div>
+    <SideMenu>
+      <SideMenuHeader>
+        <span className='text-white text-3xl'>ЛЕНТА</span>
+      </SideMenuHeader>
       <div className='git-hash-list'>
         {elements}
       </div>
-    </div>
+    </SideMenu>
   )
 }
 

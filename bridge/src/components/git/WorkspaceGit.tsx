@@ -5,7 +5,6 @@ import darkModeStyle from './DiffViewerStyles'
 import { GitDiff } from './Git'
 import Switch from "react-switch";
 import DropDown from './DropDown';
-import '../../assets/css/Workspace.css'
 
 
 type Props = {

@@ -7,7 +7,7 @@ import Editor from './Editor/Editor'
 const AppContent = (): JSX.Element => {
 
     return (
-        <div className="flex h-full">
+        <div className="flex h-full flex-end">
             <Router>
                 <SideNavBar />
                 <Switch>
