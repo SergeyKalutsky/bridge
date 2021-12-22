@@ -1,39 +1,6 @@
 import { useState } from "react";
-import styled from "styled-components";
+import { ActivePath } from "../types";
 import { AiOutlineFolder } from "react-icons/ai";
-
-const StyledFolder = styled.div`
-  padding-left: 20px;
-
-  .folder--label.active {
-    background-color: #f3f0f7;
-  }
-  .folder--label {
-    display: flex;
-    align-items: center;
-    span {
-      margin-left: 5px;
-      font-size: 20px;
-    }
-    
-    &:hover {
-        background-color: #f3f0f7;
-        cursor: pointer;
-    }
-  }
-
-`;
-
-const Collapsible = styled.div`
-  height: ${p => (p.isOpen ? "0" : "auto")};
-  overflow: hidden;
-`;
-
-
-interface ActivePath {
-  path: string
-  isDirectory: boolean
-}
 
 interface Props {
   children: JSX.Element[] | JSX.Element
@@ -43,7 +10,6 @@ interface Props {
   setActivePath: React.Dispatch<React.SetStateAction<ActivePath>>
 }
 
-
 const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -52,15 +18,17 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
     e.preventDefault()
     setIsOpen(!isOpen)
   };
+  const height = isOpen ? "h-0" : "h-auto"
+  const bgColor = activePath !== null && path === activePath.path ? "bg-slate-200" : "bg-transperent"
   return (
-    <StyledFolder>
-      <div className={activePath !== null && path === activePath.path ? "folder--label active" : "folder--label"}
+    <div className="pl-[20px] hover:bg-slate-200 hover:cursor-pointer">
+      <div className={`${bgColor} flex items-center`}
         onClick={handleToggle}>
         <AiOutlineFolder />
-        <span>{name}</span>
+        <span className="ml-[5px] text-[20px]">{name}</span>
       </div>
-      <Collapsible isOpen={isOpen}>{children}</Collapsible>
-    </StyledFolder>
+      <div className={`overflow-hidden ${height}`}>{children}</div>
+    </div>
   );
 };
 

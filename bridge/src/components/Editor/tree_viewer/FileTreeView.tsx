@@ -115,11 +115,9 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
                     </IconContext.Provider>
                 </div>
             </SideMenuHeader>
-            <div className="tree">
-                <Tree>
-                    {fileTree}
-                </Tree>
-            </div>
+            <Tree>
+                {fileTree}
+            </Tree>
         </>
     );
 }

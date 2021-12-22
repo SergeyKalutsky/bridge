@@ -1,11 +1,11 @@
-import styled from "styled-components";
 import { AiOutlineFile } from "react-icons/ai";
+import { ActivePath } from "../types";
 import {
   DiJavascript1,
-  DiCss3Full, 
-  DiHtml5, 
-  DiReact, 
-  DiPython, 
+  DiCss3Full,
+  DiHtml5,
+  DiReact,
+  DiPython,
   DiDocker,
   DiMarkdown
 } from "react-icons/di";
@@ -20,27 +20,6 @@ const FILE_ICONS = {
   md: <DiMarkdown />
 };
 
-
-const StyledFile = styled.div`
-  padding-left: 20px;
-  display: flex;
-  align-items: center;
-  background-color: ${p => (p.active ? "#f3f0f7" : "transparent")};
-  span {
-    margin-left: 5px;
-    font-size: 18px;
-  }
-  &:hover {
-    background-color: #f3f0f7;
-    cursor: pointer;
-  }
-`;
-
-interface ActivePath {
-  path: string
-  isDirectory: boolean
-}
-
 interface Props {
   name: string
   path: string
@@ -50,12 +29,13 @@ interface Props {
 
 const File = ({ name, path, activePath, setActivePath }: Props): JSX.Element => {
   const ext = name.split(".")[1];
+  const bgColor = activePath !== null && path === activePath.path ? 'bg-slate-200' : 'bg-transparent'
   return (
-    <StyledFile active={activePath !== null && path === activePath.path}
+    <div className={`pl-[20px] flex items-center ${bgColor} hover:bg-slate-200 hover:cursor-pointer`}
       onClick={() => { setActivePath({ path: path, isDirectory: false }) }}>
       {FILE_ICONS[ext] || <AiOutlineFile />}
-      <span>{name}</span>
-    </StyledFile>
+      <span className="ml-[5px] text-[18px]">{name}</span>
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import Popup from 'reactjs-popup';
+import PopUp from "../../common/PopUp";
+import Button from "../../common/Button";
 
 interface ActivePath {
     path: string
@@ -18,28 +19,17 @@ const DeleteTreeElement = ({ activePath, forceUpdate }: Props): JSX.Element => {
     return (
         <>
             <AiFillDelete onClick={() => { setOpen(true) }} />
-            <Popup
+            <PopUp
                 open={open}
-                onClose={() => { setOpen(false) }}
-                closeOnDocumentClick
-                position="right center"
-                modal>
-                <div className="modal">
-                    <div>Файл/Директория будут удалены</div>
-                    <button className="close" onClick={() => {
-                        window.projects.deleteTreeElement(activePath);
-                        forceUpdate()
-                        setOpen(false)
-                    }}>
-                        Удалить
-                    </button>
-                    <button className="close" onClick={() => {
-                        setOpen(false)
-                    }}>
-                        Закрыть
-                    </button>
-                </div>
-            </Popup>
+                onClose={() => { setOpen(false) }}>
+                <div>Файл/Директория будут удалены</div>
+                <Button onClick={() => {
+                    window.projects.deleteTreeElement(activePath);
+                    forceUpdate()
+                    setOpen(false)
+                }} btnText="Удалить" />
+                <Button onClick={() => { setOpen(false) }} btnText="Закрыть" />
+            </PopUp>
         </>
     )
 }

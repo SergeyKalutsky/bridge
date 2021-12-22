@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { AiOutlineFileAdd } from "react-icons/ai";
-import Popup from 'reactjs-popup';
+import InputForm from "../../common/InputForm";
+import PopUp from "../../common/PopUp";
+import Button from "../../common/Button";
 
 interface ActivePath {
     path: string
@@ -19,24 +21,17 @@ const NewFile = ({ activePath, forceUpdate }: Props): JSX.Element => {
     return (
         <>
             <AiOutlineFileAdd onClick={() => { setOpen(true) }} />
-            <Popup
+            <PopUp
                 open={open}
-                onClose={() => { setOpen(false) }}
-                closeOnDocumentClick
-                position="right center"
-                modal>
-                <div className="modal">
-                    <div>Введите название файла</div>
-                    <input type="text" onChange={(e) => { setFilename(e.target.value) }} />
-                    <button className="close" onClick={() => {
-                        window.projects.createFile({ activePath: activePath, name: filename });
-                        forceUpdate()
-                        setOpen(false)
-                    }}>
-                        ОК
-                    </button>
-                </div>
-            </Popup>
+                onClose={() => { setOpen(false) }}>
+                <div>Введите название файла</div>
+                <InputForm type="text" onChange={(e) => { setFilename(e.target.value) }} placeholder="Введите название файла" />
+                <Button  onClick={() => {
+                    window.projects.createFile({ activePath: activePath, name: filename });
+                    forceUpdate()
+                    setOpen(false)
+                }} btnText="ОК" />
+            </PopUp>
         </>
     )
 }
