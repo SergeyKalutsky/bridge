@@ -26,7 +26,7 @@ const SideMenu = ({ children }: Props): JSX.Element => {
 
     return (
         <>
-            <div className={`h-full bg-zinc-800 drop-shadow-lg w-[350px] overflow-y-scroll`}
+            <div className={`h-full bg-zinc-800 drop-shadow-lg w-[350px]`}
                 style={{ width: size }} ref={ref}>
                 {children}
             </div>

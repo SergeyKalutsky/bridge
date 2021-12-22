@@ -42,7 +42,7 @@ const XtermTerminal = ({ activePath }: Props): JSX.Element => {
     }, []);
 
     return (
-        <div id='terminal' className='grow'>
+        <div id='terminal' className='grow h-1/3'>
 
         </div>
     )

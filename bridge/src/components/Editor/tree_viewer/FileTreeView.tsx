@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import Folder from "./Folder";
 import File from "./File"
-import TreeTab from "./TreeTab";
+import NewFile from "./NewFile";
+import NewFolder from './newFolder'
+import SideMenuHeader from "../../common/SideMenuHeader";
+import { IconContext } from "react-icons";
 import { useEffect, useState } from "react";
+import DeleteTreeElement from './deleteTreeElement'
 
 const StyledTree = styled.div`
   line-height: 1.5;
@@ -32,7 +36,7 @@ interface Props {
     setActivePath: React.Dispatch<React.SetStateAction<ActivePath>>
 }
 
-const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
+const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
     const [update, setUpdate] = useState(false)
     const [fileTree, setFileTree] = useState<JSX.Element[]>(null)
     const buildFileTree = (files: FileObject[]): JSX.Element[] => {
@@ -96,10 +100,21 @@ const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
         }
     }, [activePath])
 
-
+    const settigns = window.settings.get()
     return (
         <>
-            <TreeTab activePath={activePath} forceUpdate={forceUpdate} />
+            <SideMenuHeader>
+                <div className="w-8/12 text-4xl text-white text-center font-medium">
+                    {settigns.active_project.name}
+                </div>
+                <div className="w-4/12 flex justify-between hover:bg-sky-900 rounded-full cursor-pointer">
+                    <IconContext.Provider value={{ color: 'white', size: '30', className: 'file-icon' }}>
+                        <NewFile activePath={activePath} forceUpdate={forceUpdate} />
+                        <NewFolder activePath={activePath} forceUpdate={forceUpdate} />
+                        <DeleteTreeElement activePath={activePath} forceUpdate={forceUpdate} />
+                    </IconContext.Provider>
+                </div>
+            </SideMenuHeader>
             <div className="tree">
                 <Tree>
                     {fileTree}
@@ -109,4 +124,4 @@ const FileTreeViewer = ({ activePath, setActivePath }: Props): JSX.Element => {
     );
 }
 
-export default FileTreeViewer
+export default FileTreeView
