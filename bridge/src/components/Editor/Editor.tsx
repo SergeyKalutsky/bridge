@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ActivePath } from "./types";
 import SideMenu from "../common/SideMenu";
 import Workspace from "../common/Workspace";
 import AceEditor from "react-ace";
@@ -36,17 +37,12 @@ const ACE_MODS = {
 };
 
 
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
-
 const defaultEditor = (<AceEditor
     mode='plain_text'
     theme="monokai"
     value='Cоздайте или выберите файл, чтобы начать работу'
     name="aceEditor"
-    style={{width: 'grow'}}
+    style={{flexGrow : 1}}
     readOnly={true}
     editorProps={{ $blockScrolling: true }}
     fontSize={18}
@@ -81,7 +77,7 @@ const Editor = (): JSX.Element => {
                             theme="monokai"
                             value={value}
                             onChange={onChange}
-                            style={{width: 'grow'}}
+                            style={{flexGrow : 1}}
                             name="aceEditor"
                             editorProps={{ $blockScrolling: true }}
                             fontSize={18}
