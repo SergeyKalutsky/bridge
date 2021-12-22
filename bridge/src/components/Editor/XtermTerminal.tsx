@@ -1,13 +1,8 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { Terminal } from 'xterm';
-import 'xterm/css/xterm.css'
+import { ActivePath } from './types';
 import { FitAddon } from 'xterm-addon-fit';
-
-
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
+import 'xterm/css/xterm.css'
 
 interface Props {
     activePath: ActivePath
@@ -33,13 +28,13 @@ const XtermTerminal = ({ activePath }: Props): JSX.Element => {
     }, [])
 
     useLayoutEffect(() => {
-        function updateSize() {
-            fitAddon.fit()
-        }
-        window.addEventListener('resize',  updateSize);
-        updateSize();
-        return () => window.removeEventListener('resize', updateSize);
-    }, []);
+        console.log('here')
+        // function updateSize() {
+        //     fitAddon.fit()
+        //     window.removeEventListener('resize', updateSize);
+        // }
+        // window.addEventListener('resize',  updateSize);
+    });
 
     return (
         <div id='terminal' className='h-1/3 grow'>
