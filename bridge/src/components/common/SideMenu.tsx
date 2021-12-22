@@ -7,7 +7,7 @@ interface Props {
 
 
 const SideMenu = ({ children }: Props): JSX.Element => {
-    const [size, setSize] = useState(300);
+    const [size, setSize] = useState(350);
     const ref = useRef<HTMLDivElement>();
     const handler = useCallback(() => {
         function onMouseMove(e) {
@@ -26,7 +26,7 @@ const SideMenu = ({ children }: Props): JSX.Element => {
 
     return (
         <>
-            <div className={`h-full bg-zinc-800 drop-shadow-lg w-[300px]`}
+            <div className={`h-full bg-zinc-800 drop-shadow-lg w-[350px]`}
                 style={{ width: size }} ref={ref}>
                 {children}
             </div>
