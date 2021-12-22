@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import  Button  from '../common/Button';
 import { Arrow, Refresh } from '../common/Icons';
 
 interface ActivePath {
@@ -21,31 +21,20 @@ const CMDS = {
 const ToolBar = ({ activePath }: Props) => {
     return (
         <div className="tool-bar">
-            <Button className="BttnP" color="primary"
-                onClick={() => {
-                    window.git.pull()
-                }}>
-                <span>pull</span>
+            <Button onClick={() => { window.git.pull() }} btnText='pull'>
                 <Arrow />
             </Button>
-            <Button className="BttnP" color="secondary"
-                onClick={() => {
-                    window.git.push()
-                }}>
-                <span>commit</span>
-                <div className="ArrUp">
+            <Button onClick={() => { window.git.push() }} btnText='commit'>
                     <Arrow />
-                </div>
             </Button>
-            <Button className='auto-update'>
+            <Button >
                 <Refresh />
             </Button>
-            <Button className="BttnP run" color="secondary"
-                onClick={() => {
-                    if (!activePath.isDirectory){
+            <Button onClick={() => {
+                    if (!activePath.isDirectory) {
                         const ext = activePath.path.split(".")[1]
                         const excecutable = CMDS[ext]
-                        if (excecutable !== undefined){
+                        if (excecutable !== undefined) {
                             window.terminal.keystoke(`${excecutable} ${activePath.path}`)
                             window.terminal.keystoke('\r')
                         }

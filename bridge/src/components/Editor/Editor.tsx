@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import SideMenu from "../common/SideMenu";
+import Workspace from "../common/Workspace";
 import AceEditor from "react-ace";
 import XtermTerminal from "./XtermTerminal";
 import FileTreeViewer from "./tree_viewer/FileTreeView";
@@ -70,16 +72,16 @@ const Editor = (): JSX.Element => {
         }
     }, [activePath])
     return (
-        <div className="ide">
-            <div className="tree-view">
+        <>
+            <SideMenu>
                 <FileTreeViewer activePath={activePath} setActivePath={setActivePath} />
-            </div>
-            <div className="editor">
-                <ToolBar activePath={activePath}/>
+            </SideMenu>
+            <Workspace>
+                <ToolBar activePath={activePath} />
                 {editor}
                 <XtermTerminal activePath={activePath} />
-            </div>
-        </div>
+            </Workspace>
+        </>
     )
 }
 
