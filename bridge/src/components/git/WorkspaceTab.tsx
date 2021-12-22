@@ -10,8 +10,8 @@ type Props = {
 const WorkspaceTab = ({ switchBtn, dropDown }: Props): JSX.Element => {
 
   return (
-    <div className='tab'>
-      <div className='workspace-tab'>
+    <div className='flex justify-self-start w-full h-[40px] bg-zinc-600 items-center mt-0'>
+      <div className='flex justify-around items-center w-3/5 h-[30px]'>
         {dropDown}
         {switchBtn}
       </div>

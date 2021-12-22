@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Workspace from '../common/Workspace'
 import ReactDiffViewer from 'react-diff-viewer';
 import WorkspaceTab from './WorkspaceTab'
 import darkModeStyle from './DiffViewerStyles'
@@ -34,21 +35,17 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
       setDiffViewFileIndex={setDiffViewFileIndex} />
   )
   return (
-    <div className='workspace'>
-      <div className='workspace-background'>
-        <WorkspaceTab
-          switchBtn={switchBtn}
-          dropDown={dropDown} />
+    <Workspace>
+      <WorkspaceTab switchBtn={switchBtn} dropDown={dropDown} />
 
-        <div className='code'>
-          <ReactDiffViewer styles={darkModeStyle}
-            oldValue={diff !== undefined ? diff.oldFile: ''}
-            newValue={diff !== undefined ? diff.newFile: ''}
-            splitView={splitView} />
-        </div>
-
+      <div className='code'>
+        <ReactDiffViewer styles={darkModeStyle}
+          oldValue={diff !== undefined ? diff.oldFile : ''}
+          newValue={diff !== undefined ? diff.newFile : ''}
+          splitView={splitView} />
       </div>
-    </div>
+
+    </Workspace>
   )
 }
 

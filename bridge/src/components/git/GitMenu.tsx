@@ -1,7 +1,6 @@
 import '../../assets/css/leftMenu.css'
 import SideMenu from '../common/SideMenu';
 import SideMenuHeader from '../common/SideMenuHeader';
-import Workspace from '../common/Workspace'
 import { useState } from 'react'
 import CommitRow from './CommitRow'
 import {GitDiff, Commit} from './Git'
