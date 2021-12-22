@@ -21,8 +21,8 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
   const height = isOpen ? "h-0" : "h-auto"
   const bgColor = activePath !== null && path === activePath.path ? "bg-slate-700" : "bg-transperent"
   return (
-    <div className="pl-[20px] hover:bg-slate-700 hover:cursor-pointer">
-      <div className={`${bgColor} flex items-center`}
+    <div className="pl-[20px]">
+      <div className={`${bgColor} flex items-center hover:bg-slate-700 hover:cursor-pointer`}
         onClick={handleToggle}>
         <AiOutlineFolder />
         <span className="ml-[5px] text-[20px] text-white">{name}</span>

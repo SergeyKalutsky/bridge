@@ -15,7 +15,7 @@ const FILE_ICONS = {
   css: <DiCss3Full />,
   html: <DiHtml5 />,
   jsx: <DiReact />,
-  py: <DiPython />,
+  py: <div className="bg-yellow-500 rounded-full text-cyan-900 opacity-60"><DiPython /></div>,
   yml: <DiDocker />,
   md: <DiMarkdown />
 };

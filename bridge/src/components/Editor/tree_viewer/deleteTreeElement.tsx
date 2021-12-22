@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
+import { ActivePath } from "../types";
 import PopUp from "../../common/PopUp";
 import Button from "../../common/Button";
 
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
 
 interface Props {
     activePath: ActivePath
