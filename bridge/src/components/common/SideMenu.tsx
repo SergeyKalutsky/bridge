@@ -26,11 +26,12 @@ const SideMenu = ({ children }: Props): JSX.Element => {
 
     return (
         <>
-            <div className={`h-full bg-zinc-800 drop-shadow-lg w-[350px]`}
+            <div className={`h-full bg-zinc-800 drop-shadow-lg w-[350px] overflow-y-scroll`}
                 style={{ width: size }} ref={ref}>
                 {children}
             </div>
-            <button className='hover:w-1 h-full hover:bg-cyan-700 bg-neutral-900 hover:cursor-col-resize w-[2px]' onMouseDown={handler} />
+            <button className='hover:w-1 h-full hover:bg-cyan-700 bg-neutral-900 hover:cursor-col-resize w-[2px]'
+                onMouseDown={handler} />
         </>
     )
 }
