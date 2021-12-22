@@ -19,13 +19,13 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
     setIsOpen(!isOpen)
   };
   const height = isOpen ? "h-0" : "h-auto"
-  const bgColor = activePath !== null && path === activePath.path ? "bg-slate-200" : "bg-transperent"
+  const bgColor = activePath !== null && path === activePath.path ? "bg-slate-700" : "bg-transperent"
   return (
-    <div className="pl-[20px] hover:bg-slate-200 hover:cursor-pointer">
+    <div className="pl-[20px] hover:bg-slate-700 hover:cursor-pointer">
       <div className={`${bgColor} flex items-center`}
         onClick={handleToggle}>
         <AiOutlineFolder />
-        <span className="ml-[5px] text-[20px]">{name}</span>
+        <span className="ml-[5px] text-[20px] text-white">{name}</span>
       </div>
       <div className={`overflow-hidden ${height}`}>{children}</div>
     </div>

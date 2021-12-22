@@ -29,12 +29,12 @@ interface Props {
 
 const File = ({ name, path, activePath, setActivePath }: Props): JSX.Element => {
   const ext = name.split(".")[1];
-  const bgColor = activePath !== null && path === activePath.path ? 'bg-slate-200' : 'bg-transparent'
+  const bgColor = activePath !== null && path === activePath.path ? 'bg-slate-700' : 'bg-transparent'
   return (
-    <div className={`pl-[20px] flex items-center ${bgColor} hover:bg-slate-200 hover:cursor-pointer`}
+    <div className={`pl-[20px] flex items-center ${bgColor} hover:bg-slate-700 hover:cursor-pointer`}
       onClick={() => { setActivePath({ path: path, isDirectory: false }) }}>
       {FILE_ICONS[ext] || <AiOutlineFile />}
-      <span className="ml-[5px] text-[18px]">{name}</span>
+      <span className="ml-[5px] text-[18px] text-white">{name}</span>
     </div>
   );
 };
