@@ -10,7 +10,7 @@ interface Props {
 
 const XtermTerminal = ({ activePath }: Props): JSX.Element => {
     const term = new Terminal({
-        fontSize: 20,
+        fontSize: 16,
     })
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon)
@@ -27,17 +27,17 @@ const XtermTerminal = ({ activePath }: Props): JSX.Element => {
         fitAddon.fit()
     }, [])
 
-    useLayoutEffect(() => {
-        console.log('here')
-        // function updateSize() {
-        //     fitAddon.fit()
-        //     window.removeEventListener('resize', updateSize);
-        // }
-        // window.addEventListener('resize',  updateSize);
-    });
+    // useLayoutEffect(() => {
+    //     console.log('here')
+    //     function updateSize() {
+    //         fitAddon.fit()
+    //         window.removeEventListener('resize', updateSize);
+    //     }
+    //     window.addEventListener('resize',  updateSize);
+    // });
 
     return (
-        <div id='terminal' className='h-1/3 grow'>
+        <div id='terminal' className='h-[34%]'>
 
         </div>
     )

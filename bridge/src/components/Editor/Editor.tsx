@@ -42,7 +42,7 @@ const defaultEditor = (<AceEditor
     theme="monokai"
     value='Cоздайте или выберите файл, чтобы начать работу'
     name="aceEditor"
-    style={{flexGrow : 1, width: '100%'}}
+    style={{height:'59%', width: '100%'}}
     readOnly={true}
     editorProps={{ $blockScrolling: true }}
     fontSize={18}
@@ -77,7 +77,7 @@ const Editor = (): JSX.Element => {
                             theme="monokai"
                             value={value}
                             onChange={onChange}
-                            style={{flexGrow : 1, width: '100%'}}
+                            style={{height:'59%', width: '100%'}}
                             name="aceEditor"
                             editorProps={{ $blockScrolling: true }}
                             fontSize={18}
