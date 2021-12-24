@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Terminal } from 'xterm';
 import { ActivePath } from './types';
 import { FitAddon } from 'xterm-addon-fit';
@@ -19,7 +19,7 @@ const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
     const [size, setSize] = useState(1000);
     const ref = useRef<HTMLDivElement>();
 
-    const handler = useCallback(() => {
+    const handler = () => {
         function onMouseMove(e) {
             setSize(size => size - e.movementX)
             fitAddon.fit()
@@ -30,7 +30,7 @@ const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
         }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("mouseup", onMouseUp);
-    }, [])
+    }
 
     useEffect(() => {
         if (!activeToggle) {

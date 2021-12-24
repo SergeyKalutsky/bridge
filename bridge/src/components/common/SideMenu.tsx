@@ -27,11 +27,8 @@ const SideMenu = ({ children, activeToggle }: Props): JSX.Element => {
         }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("mouseup", onMouseUp);
-        return () => {
-            window.addEventListener("mousemove", onMouseMove);
-            window.addEventListener("mouseup", onMouseUp);
-        };
     }, [activeToggle])
+    
     return (
         <>
             <div className={`h-full bg-zinc-800 drop-shadow-lg w-[350px]`}
