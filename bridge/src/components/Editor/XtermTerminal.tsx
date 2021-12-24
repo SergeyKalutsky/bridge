@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Terminal } from 'xterm';
-import { ActivePath } from './types';
 import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css'
 
 interface Props {
-    activePath: ActivePath
     activeToggle: boolean
 }
 
@@ -15,8 +13,7 @@ const term = new Terminal({
 const fitAddon = new FitAddon();
 term.loadAddon(fitAddon)
 
-const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
-    const [size, setSize] = useState(1000);
+const XtermTerminal = ({ activeToggle }: Props): JSX.Element => {
     const ref = useRef<HTMLDivElement>();
 
     useEffect(() => {
@@ -24,7 +21,6 @@ const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
             return
         }
         function onMouseMove(e) {
-            setSize(size => size - e.movementX)
             fitAddon.fit()
         }
         function onMouseUp() {
@@ -50,7 +46,7 @@ const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
 
     return (
         <>
-            <div id='terminal' className='h-[34%] w-full flex flex-row' ref={ref} style={{ width: size }}>
+            <div id='terminal' className='h-[34%] w-full flex flex-row' ref={ref}>
             </div>
         </>
     )

@@ -103,7 +103,7 @@ const Editor = (): JSX.Element => {
                     </Button>
                 </ToolBar>
                 {editor}
-                <XtermTerminal activePath={activePath} activeToggle={activeToggle} />
+                <XtermTerminal activeToggle={activeToggle} />
             </Workspace>
         </>
     )
