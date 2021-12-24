@@ -4,7 +4,7 @@ import ToggleBar from "../common/ToggleBar";
 import SideMenu from "../common/SideMenu";
 import Workspace from "../common/Workspace";
 import AceEditor from "react-ace";
-import XtermTerminal from "./XtermTerminal";
+import Xterm from "./Xterm";
 import FileTreeView from "./tree_viewer/FileTreeView";
 import ToolBar from '../common/ToolBar';
 import Button from '../common/Button';
@@ -108,7 +108,7 @@ const Editor = (): JSX.Element => {
                     </div>
                 </ToolBar>
                 {editor}
-                <XtermTerminal activeToggle={activeToggle} />
+                <Xterm activeToggle={activeToggle} />
             </Workspace>
         </>
     )
