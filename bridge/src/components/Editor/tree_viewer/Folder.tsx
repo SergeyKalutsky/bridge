@@ -25,7 +25,7 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
       <div className={`${bgColor} flex items-center hover:bg-slate-700 hover:cursor-pointer`}
         onClick={handleToggle}>
         <span className="text-white"><AiOutlineFolder /></span>
-        <span className="ml-[5px] text-[20px] text-white">{name}</span>
+        <span className="ml-[5px] text-[20px] text-white text-ellipsis overflow-hidden whitespace-nowrap">{name}</span>
       </div>
       <div className={`overflow-hidden ${height}`}>{children}</div>
     </div>

@@ -34,7 +34,7 @@ const File = ({ name, path, activePath, setActivePath }: Props): JSX.Element => 
     <div className={`pl-[20px] flex items-center ${bgColor} hover:bg-slate-700 hover:cursor-pointer`}
       onClick={() => { setActivePath({ path: path, isDirectory: false }) }}>
       {FILE_ICONS[ext] || <AiOutlineFile />}
-      <span className="ml-[5px] text-[18px] text-white">{name}</span>
+      <span className="ml-[5px] text-[18px] text-white overflow-hidden whitespace-nowrap text-ellipsis">{name}</span>
     </div>
   );
 };
