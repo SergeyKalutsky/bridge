@@ -26,16 +26,18 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
   return (
     <Workspace>
       <ToolBar>
-        <DropDown gitDiffs={gitDiffs}
-          diffViewFileIndex={diffViewFileIndex}
-          setDiffViewFileIndex={setDiffViewFileIndex} />
-        <Switch 
-          onChange={() => { setSplitView(splitView ? false : true) }}
-          offColor={'#2b25cf'}
-          onColor={'#0f9100'}
-          offHandleColor={'#C7C3C3'}
-          onHandleColor={'#C7C3C3'}
-          checked={splitView} />
+        <div className='flex justify-around items-center w-3/5 h-[30px]'>
+          <DropDown gitDiffs={gitDiffs}
+            diffViewFileIndex={diffViewFileIndex}
+            setDiffViewFileIndex={setDiffViewFileIndex} />
+          <Switch
+            onChange={() => { setSplitView(splitView ? false : true) }}
+            offColor={'#2b25cf'}
+            onColor={'#0f9100'}
+            offHandleColor={'#C7C3C3'}
+            onHandleColor={'#C7C3C3'}
+            checked={splitView} />
+        </div>
       </ToolBar>
 
       <div className='code'>

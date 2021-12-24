@@ -43,7 +43,7 @@ const defaultEditor = (<AceEditor
     theme="monokai"
     value='Cоздайте или выберите файл, чтобы начать работу'
     name="aceEditor"
-    style={{height:'59%', width: '100%'}}
+    style={{ height: '59%', width: '100%' }}
     readOnly={true}
     editorProps={{ $blockScrolling: true }}
     fontSize={18}
@@ -80,7 +80,7 @@ const Editor = (): JSX.Element => {
                             theme="monokai"
                             value={value}
                             onChange={onChange}
-                            style={{height:'59%', width: '100%'}}
+                            style={{ height: '59%', width: '100%' }}
                             name="aceEditor"
                             editorProps={{ $blockScrolling: true }}
                             fontSize={18}
@@ -96,11 +96,15 @@ const Editor = (): JSX.Element => {
             <ToggleBar handleToggle={handleToggle} />
             <Workspace>
                 <ToolBar>
-                    <Button onClick={() => { window.git.push() }} btnText='commit'>
-                    </Button>
-                    <Button onClick={handleClick}>
-                        <span>RUN</span>
-                    </Button>
+                    <div className="w-full flex justify-end">
+                        <div className="flex justify-between w-[270px] ml-5 h-2/5">
+                            <Button onClick={() => { window.git.push() }} btnText='commit'>
+                            </Button>
+                            <Button onClick={handleClick}>
+                                <span>RUN</span>
+                            </Button>
+                        </div>
+                    </div>
                 </ToolBar>
                 {editor}
                 <XtermTerminal activeToggle={activeToggle} />
