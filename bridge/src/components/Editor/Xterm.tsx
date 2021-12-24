@@ -20,7 +20,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         if (!activeToggle) {
             return
         }
-        function onMouseMove(e) {
+        function onMouseMove(e: Event) {
             fitAddon.fit()
         }
         function onMouseUp() {
