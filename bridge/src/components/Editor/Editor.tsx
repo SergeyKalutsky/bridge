@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActivePath } from "./types";
+import ToggleBar from "../common/ToggleBar";
 import SideMenu from "../common/SideMenu";
 import Workspace from "../common/Workspace";
 import AceEditor from "react-ace";
@@ -49,6 +50,8 @@ const defaultEditor = (<AceEditor
 />)
 
 const Editor = (): JSX.Element => {
+    const [activeToggle, setActiveToggle] = useState(false)
+    const handleToggle = () => { setActiveToggle(!activeToggle) }
     const [activePath, setActivePath] = useState<ActivePath>(null)
     const [editor, setEditor] = useState(defaultEditor)
 
@@ -87,9 +90,10 @@ const Editor = (): JSX.Element => {
     }, [activePath])
     return (
         <>
-            <SideMenu>
+            <SideMenu activeToggle={activeToggle}>
                 <FileTreeView activePath={activePath} setActivePath={setActivePath} />
             </SideMenu>
+            <ToggleBar handleToggle={handleToggle} />
             <Workspace>
                 <ToolBar>
                     <Button onClick={() => { window.git.push() }} btnText='commit'>
@@ -99,7 +103,7 @@ const Editor = (): JSX.Element => {
                     </Button>
                 </ToolBar>
                 {editor}
-                <XtermTerminal activePath={activePath} />
+                <XtermTerminal activePath={activePath} activeToggle={activeToggle} />
             </Workspace>
         </>
     )

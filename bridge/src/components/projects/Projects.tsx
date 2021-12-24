@@ -1,4 +1,5 @@
 import { useState, useEffect, useReducer } from 'react'
+import ToggleBar from '../common/ToggleBar';
 import IconButton from '../common/IconButton';
 import ProjectItem from './ProjectItem';
 import SideMenu from '../common/SideMenu';
@@ -38,6 +39,8 @@ const Projects = (): JSX.Element => {
     const defaultObj = [{ id: 0, name: "", isclassroom: 0, islocal: false, http: '' }]
     const [projects, setProjects] = useState<Array<Project>>(defaultObj)
     const [state, dispatch] = useReducer(reducer, { page: null });
+    const [activeToggle, setActiveToggle] = useState(false)
+    const handleToggle = () => { setActiveToggle(!activeToggle) }
 
     const removeProject = (project_id: number) => {
         const newProjects = []
@@ -106,7 +109,7 @@ const Projects = (): JSX.Element => {
     )
     return (
         <>
-            <SideMenu>
+            <SideMenu activeToggle={activeToggle}>
                 <SideMenuHeader>
                     <span className='text-white text-3xl'>ПРОЕКТЫ</span>
                     <IconButton width={8} height={8}
@@ -118,6 +121,7 @@ const Projects = (): JSX.Element => {
                 </SideMenuHeader>
                 {projects_list}
             </SideMenu>
+            <ToggleBar handleToggle={handleToggle} />
             <Workspace>
                 {state.page}
             </Workspace>

@@ -1,16 +1,21 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import React from 'react'
 
 interface Props {
     children: React.ReactNode
+    activeToggle: boolean
 }
 
 
-const SideMenu = ({ children }: Props): JSX.Element => {
+const SideMenu = ({ children, activeToggle }: Props): JSX.Element => {
     const [size, setSize] = useState(350);
     const ref = useRef<HTMLDivElement>();
-    const handler = useCallback(() => {
+    useEffect(() => {
+        if (!activeToggle) {
+            return
+        }
         function onMouseMove(e) {
+
             if ((!(ref.current.clientWidth <= 200) && (e.movementX < 0)) ||
                 ((!(ref.current.clientWidth >= 500) && (e.movementX > 0)))) {
                 setSize(size => size + e.movementX)
@@ -22,16 +27,17 @@ const SideMenu = ({ children }: Props): JSX.Element => {
         }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("mouseup", onMouseUp);
-    }, []);
-
+        return () => {
+            window.addEventListener("mousemove", onMouseMove);
+            window.addEventListener("mouseup", onMouseUp);
+        };
+    }, [activeToggle])
     return (
         <>
             <div className={`h-full bg-zinc-800 drop-shadow-lg w-[350px]`}
                 style={{ width: size }} ref={ref}>
                 {children}
             </div>
-            <button className='hover:w-1 h-full hover:bg-cyan-700 bg-neutral-900 hover:cursor-col-resize w-[2px]'
-                onMouseDown={handler} />
         </>
     )
 }

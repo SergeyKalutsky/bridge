@@ -1,9 +1,10 @@
 import '../../assets/css/leftMenu.css'
+import ToggleBar from '../common/ToggleBar';
 import SideMenu from '../common/SideMenu';
 import SideMenuHeader from '../common/SideMenuHeader';
 import { useState } from 'react'
 import CommitRow from './CommitRow'
-import {GitDiff, Commit} from './Git'
+import { GitDiff, Commit } from './Git'
 
 
 type Props = {
@@ -14,7 +15,8 @@ type Props = {
 
 const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
   const [activeHashRow, setActiveHashRow] = useState<string>()
-
+  const [activeToggle, setActiveToggle] = useState(false)
+  const handleToggle = () => { setActiveToggle(!activeToggle) }
   const onClickCallback = (hash: string) => {
     const gitDiffs = window.git.diff(hash)
     setGitDiffs(gitDiffs)
@@ -30,14 +32,17 @@ const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
   ) : null
 
   return (
-    <SideMenu>
-      <SideMenuHeader>
-        <span className='text-white text-3xl'>ЛЕНТА</span>
-      </SideMenuHeader>
-      <div className='git-hash-list'>
-        {elements}
-      </div>
-    </SideMenu>
+    <>
+      <SideMenu activeToggle={activeToggle}>
+        <SideMenuHeader>
+          <span className='text-white text-3xl'>ЛЕНТА</span>
+        </SideMenuHeader>
+        <div className='git-hash-list'>
+          {elements}
+        </div>
+      </SideMenu>
+      <ToggleBar handleToggle={handleToggle} />
+    </>
   )
 }
 
