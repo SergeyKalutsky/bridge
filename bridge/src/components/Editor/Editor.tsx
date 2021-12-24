@@ -97,10 +97,11 @@ const Editor = (): JSX.Element => {
             <Workspace>
                 <ToolBar>
                     <div className="w-full flex justify-end">
-                        <div className="flex justify-between w-[270px] ml-5 h-2/5">
-                            <Button onClick={() => { window.git.push() }} btnText='commit'>
+                        <div className="flex justify-between w-[270px] mr-5 h-2/5">
+                            <Button onClick={() => { window.git.push() }}
+                                btnText='commit' theme="purple" height={5} >
                             </Button>
-                            <Button onClick={handleClick}>
+                            <Button onClick={handleClick} theme="purple" height={5}>
                                 <span>RUN</span>
                             </Button>
                         </div>
