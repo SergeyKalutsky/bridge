@@ -9,10 +9,16 @@ interface Props {
     activeToggle: boolean
 }
 
+const term = new Terminal({
+    fontSize: 16,
+})
+const fitAddon = new FitAddon();
+term.loadAddon(fitAddon)
+
 const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
     const [size, setSize] = useState(1000);
     const ref = useRef<HTMLDivElement>();
-   
+
     const handler = useCallback(() => {
         function onMouseMove(e) {
             setSize(size => size - e.movementX)
@@ -24,10 +30,6 @@ const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
         }
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("mouseup", onMouseUp);
-        return () => {
-            window.addEventListener("mousemove", onMouseMove);
-            window.addEventListener("mouseup", onMouseUp);
-        };
     }, [])
 
     useEffect(() => {
@@ -37,19 +39,14 @@ const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
         handler()
     }, [activeToggle])
 
-    const term = new Terminal({
-        fontSize: 16,
-    })
-    const fitAddon = new FitAddon();
-    term.loadAddon(fitAddon)
-    term.onData(e => {
-        window.terminal.keystoke(e)
-    })
-    window.terminal.incomingData("terminal:incomingdata", (data) => {
-        term.write(data);
-    });
 
     useEffect(() => {
+        term.onData(e => {
+            window.terminal.keystoke(e)
+        })
+        window.terminal.incomingData("terminal:incomingdata", (data) => {
+            term.write(data);
+        });
         term.open(ref.current);
         term.write('Добро пожаловать, нажмите Enter$ ')
         fitAddon.fit()
@@ -57,7 +54,7 @@ const XtermTerminal = ({ activePath, activeToggle }: Props): JSX.Element => {
 
     return (
         <>
-            <div id='terminal' className='h-[34%] w-full flex flex-row' ref={ref} style={{width: size}}>
+            <div id='terminal' className='h-[34%] w-full flex flex-row' ref={ref} style={{ width: size }}>
             </div>
         </>
     )
