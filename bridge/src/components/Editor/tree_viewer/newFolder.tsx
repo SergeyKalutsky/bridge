@@ -21,7 +21,7 @@ const NewFolder = ({ activePath, forceUpdate }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     return (
         <>
-            <AiOutlineFolderAdd onClick={() => { setOpen(true) }} />
+            <AiOutlineFolderAdd onClick={() => { setOpen(true) }} className="hover:bg-neutral-500 hover:rounded-full" />
             <PopUp
                 open={open}
                 onClose={() => { setOpen(false) }}>

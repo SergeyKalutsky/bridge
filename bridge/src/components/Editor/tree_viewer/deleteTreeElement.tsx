@@ -15,7 +15,7 @@ const DeleteTreeElement = ({ activePath, forceUpdate }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     return (
         <>
-            <AiFillDelete onClick={() => { setOpen(true) }} />
+            <AiFillDelete onClick={() => { setOpen(true) }}  className="hover:bg-neutral-500 hover:rounded-full"/>
             <PopUp
                 open={open}
                 onClose={() => { setOpen(false) }}>

@@ -104,11 +104,11 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
     return (
         <>
             <SideMenuHeader>
-                <div className="grow text-4xl text-white text-center font-medium">
-                    {settigns.active_project.name}
+                <div className="grow flex justify-center items-center overflow-hidden">
+                    <span className='text-white text-4xl text-ellipsis'>{settigns.active_project.name}</span>
                 </div>
                 <div className="w-[100px] flex hover:bg-sky-900 rounded-full cursor-pointer justify-end mr-4">
-                    <IconContext.Provider value={{ color: 'white', size: '30', className: 'file-icon' }}>
+                    <IconContext.Provider value={{ color: 'white', size: '25', className: 'file-icon' }}>
                         <NewFile activePath={activePath} forceUpdate={forceUpdate} />
                         <NewFolder activePath={activePath} forceUpdate={forceUpdate} />
                         <DeleteTreeElement activePath={activePath} forceUpdate={forceUpdate} />

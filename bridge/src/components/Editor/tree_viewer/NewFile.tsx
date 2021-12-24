@@ -20,7 +20,7 @@ const NewFile = ({ activePath, forceUpdate }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     return (
         <>
-            <AiOutlineFileAdd onClick={() => { setOpen(true) }} />
+            <AiOutlineFileAdd onClick={() => { setOpen(true) }} className="hover:bg-neutral-500 hover:rounded-full" />
             <PopUp
                 open={open}
                 onClose={() => { setOpen(false) }}>
