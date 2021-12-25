@@ -46,6 +46,12 @@ const defaultEditor = (<AceEditor
     style={{ width: 'none', height: 'none', flexGrow: 1 }}
     readOnly={true}
     editorProps={{ $blockScrolling: true }}
+    onLoad={editorInstance => {
+        // mouseup = css resize end
+        document.addEventListener("mouseup", e => (
+            editorInstance.resize()
+        ));
+    }}
     fontSize={18}
 />)
 

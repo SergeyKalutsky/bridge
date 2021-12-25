@@ -16,7 +16,7 @@ term.loadAddon(fitAddon)
 
 const Xterm = ({ activeToggle }: Props): JSX.Element => {
     const ref = useRef<HTMLDivElement>();
-    const [height, setHeight] = useState(300)
+    const [height, setHeight] = useState(100)
 
     const handleToggle = () => {
         function onMouseMove(e) {
