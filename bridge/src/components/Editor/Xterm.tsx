@@ -51,7 +51,6 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
     useLayoutEffect(() => {
         function updateSize() {
-            console.log(window.innerWidth, window.innerHeight)
             fitAddon.fit()
         }
         window.addEventListener('resize', updateSize)
