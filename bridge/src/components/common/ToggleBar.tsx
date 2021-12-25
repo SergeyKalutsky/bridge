@@ -5,7 +5,7 @@ interface Props {
 const ToggleBar = ({ handleToggle }: Props): JSX.Element => {
 
     return (
-        <button className='hover:w-1 h-full hover:bg-cyan-700 bg-neutral-900 hover:cursor-col-resize w-[2px] drop-shadow-lg'
+        <button className='hover:w-1 h-full hover:bg-cyan-700 bg-neutral-500 hover:cursor-col-resize w-[2px] drop-shadow-lg'
             onMouseDown={handleToggle} />
     )
 }

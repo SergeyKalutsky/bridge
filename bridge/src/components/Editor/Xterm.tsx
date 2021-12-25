@@ -7,14 +7,14 @@ interface Props {
     activeToggle: boolean
 }
 
-const term = new Terminal({
-    fontSize: 16,
-})
-const fitAddon = new FitAddon();
-term.loadAddon(fitAddon)
 
 
 const Xterm = ({ activeToggle }: Props): JSX.Element => {
+    const term = new Terminal({
+        fontSize: 16,
+    })
+    const fitAddon = new FitAddon();
+    term.loadAddon(fitAddon)
     const ref = useRef<HTMLDivElement>();
     const [height, setHeight] = useState(100)
 
@@ -60,6 +60,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
     }, []);
 
     useEffect(() => {
+        
         term.onData(e => {
             window.terminal.keystoke(e)
         })
