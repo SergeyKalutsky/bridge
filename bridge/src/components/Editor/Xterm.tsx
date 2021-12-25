@@ -16,6 +16,23 @@ term.loadAddon(fitAddon)
 
 const Xterm = ({ activeToggle }: Props): JSX.Element => {
     const ref = useRef<HTMLDivElement>();
+    const [height, setHeight] = useState(300)
+
+    const handleToggle = () => {
+        function onMouseMove(e) {
+            if ((!(ref.current.clientHeight <= 100) && (e.movementY > 0)) ||
+                ((!(ref.current.clientHeight >= 500) && (e.movementY < 0)))) {
+                setHeight(height => height - e.movementY)
+                fitAddon.fit()
+            }
+        }
+        function onMouseUp() {
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("mouseup", onMouseUp);
+        }
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("mouseup", onMouseUp);
+    }
 
     useEffect(() => {
         if (!activeToggle) {
@@ -34,9 +51,11 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
     useLayoutEffect(() => {
         function updateSize() {
+            console.log(window.innerWidth, window.innerHeight)
             fitAddon.fit()
         }
         window.addEventListener('resize', updateSize)
+        updateSize()
         return () => window.removeEventListener('resize', updateSize)
     }, []);
 
@@ -54,7 +73,10 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
     return (
         <>
-            <div id='terminal' className='w-full flex flex-row h-[300px]' ref={ref}>
+            <button className='hover:h-[4px] h-[2px] hover:bg-cyan-700 bg-neutral-500 hover:cursor-row-resize w-full drop-shadow-lg'
+                onMouseDown={handleToggle} />
+
+            <div id='terminal' className='flex flex-row' ref={ref} style={{ height: height }}>
             </div>
         </>
     )
