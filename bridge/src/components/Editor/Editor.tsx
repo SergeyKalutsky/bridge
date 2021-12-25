@@ -43,7 +43,7 @@ const defaultEditor = (<AceEditor
     theme="monokai"
     value='Cоздайте или выберите файл, чтобы начать работу'
     name="aceEditor"
-    style={{ flex: 1, width: '100%' }}
+    style={{ width: '100%', height: 'none', flexGrow: 1 }}
     readOnly={true}
     editorProps={{ $blockScrolling: true }}
     fontSize={18}
@@ -79,7 +79,7 @@ const Editor = (): JSX.Element => {
                             theme="monokai"
                             value={value}
                             onChange={onChange}
-                            style={{ flex: 1, width: '100%' }}
+                            style={{ flex: '1 1 0%', width: '100%' }}
                             name="aceEditor"
                             editorProps={{ $blockScrolling: true }}
                             fontSize={18}
@@ -106,7 +106,7 @@ const Editor = (): JSX.Element => {
                         </div>
                     </div>
                 </ToolBar>
-                <div className="w-full flex-1">
+                <div className="w-full flex-1 flex flex-col">
                     {editor}
                     <Xterm activeToggle={activeToggle} />
                 </div>
