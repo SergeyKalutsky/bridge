@@ -43,7 +43,7 @@ const defaultEditor = (<AceEditor
     theme="monokai"
     value='Cоздайте или выберите файл, чтобы начать работу'
     name="aceEditor"
-    style={{ height: '59%', width: '100%' }}
+    style={{ flex: 1, width: '100%' }}
     readOnly={true}
     editorProps={{ $blockScrolling: true }}
     fontSize={18}
@@ -73,14 +73,13 @@ const Editor = (): JSX.Element => {
             window.projects.readActiveFile(activePath.path)
                 .then((value) => {
                     const ext = activePath.path.split(".")[1];
-                    const mode = ACE_MODS[ext]
                     setEditor(
                         <AceEditor
-                            mode={mode}
+                            mode={ACE_MODS[ext]}
                             theme="monokai"
                             value={value}
                             onChange={onChange}
-                            style={{ height: '59%', width: '100%' }}
+                            style={{ flex: 1, width: '100%' }}
                             name="aceEditor"
                             editorProps={{ $blockScrolling: true }}
                             fontSize={18}
@@ -107,8 +106,10 @@ const Editor = (): JSX.Element => {
                         </div>
                     </div>
                 </ToolBar>
-                {editor}
-                <Xterm activeToggle={activeToggle} />
+                <div className="w-full flex-1">
+                    {editor}
+                    <Xterm activeToggle={activeToggle} />
+                </div>
             </Workspace>
         </>
     )

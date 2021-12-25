@@ -1,4 +1,4 @@
-import { useEffect, useRef, useLayoutEffect } from 'react';
+import { useEffect, useRef, useLayoutEffect, useState } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css'
@@ -12,6 +12,7 @@ const term = new Terminal({
 })
 const fitAddon = new FitAddon();
 term.loadAddon(fitAddon)
+
 
 const Xterm = ({ activeToggle }: Props): JSX.Element => {
     const ref = useRef<HTMLDivElement>();
@@ -37,8 +38,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         }
         window.addEventListener('resize', updateSize)
         return () => window.removeEventListener('resize', updateSize)
-      }, []);
-
+    }, []);
 
     useEffect(() => {
         term.onData(e => {
@@ -54,7 +54,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
     return (
         <>
-            <div id='terminal' className='h-[34%] w-full flex flex-row' ref={ref}>
+            <div id='terminal' className='w-full flex flex-row h-[300px]' ref={ref}>
             </div>
         </>
     )
