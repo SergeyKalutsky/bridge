@@ -3,4 +3,12 @@ interface ActivePath {
     isDirectory: boolean
 }
 
-export { ActivePath }
+interface FileObject {
+    name: string
+    files?: FileObject[]
+    path: string
+    isDirectory: boolean
+}
+
+
+export { ActivePath, FileObject }

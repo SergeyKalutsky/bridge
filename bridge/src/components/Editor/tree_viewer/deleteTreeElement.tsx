@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { ActivePath } from "../types";
-import PopUp from "../../common/PopUp";
-import Button from "../../common/Button";
+import {PopUp, Button} from "../../common";
 
 
 interface Props {

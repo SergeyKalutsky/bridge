@@ -1,24 +1,7 @@
+import { FILE_ICONS } from "../Constants";
 import { AiOutlineFile } from "react-icons/ai";
 import { ActivePath } from "../types";
-import {
-  DiJavascript1,
-  DiCss3Full,
-  DiHtml5,
-  DiReact,
-  DiPython,
-  DiDocker,
-  DiMarkdown
-} from "react-icons/di";
 
-const FILE_ICONS = {
-  js: <DiJavascript1 />,
-  css: <DiCss3Full />,
-  html: <DiHtml5 />,
-  jsx: <DiReact />,
-  py: <div className="bg-yellow-500 rounded-full text-cyan-900 opacity-60"><DiPython /></div>,
-  yml: <DiDocker />,
-  md: <DiMarkdown />
-};
 
 interface Props {
   name: string

@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { AiOutlineFolderAdd } from "react-icons/ai";
-import Popup from 'reactjs-popup';
-import InputForm from "../../common/InputForm";
-import PopUp from "../../common/PopUp";
-import Button from "../../common/Button";
-
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
+import { ActivePath } from "../types";
+import {InputForm, PopUp, Button} from "../../common";
 
 interface Props {
     activePath: ActivePath

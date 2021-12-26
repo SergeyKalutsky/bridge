@@ -1,35 +1,21 @@
-import styled from "styled-components";
 import Folder from "./Folder";
 import File from "./File"
 import NewFile from "./NewFile";
 import NewFolder from './newFolder'
+import { ActivePath, FileObject } from '../types'
 import SideMenuHeader from "../../common/SideMenuHeader";
 import { IconContext } from "react-icons";
 import { useEffect, useState } from "react";
-import DeleteTreeElement from './deleteTreeElement'
+import DeleteTreeElement from './DeleteTreeElement'
 
-const StyledTree = styled.div`
-  line-height: 1.5;
-`;
 
 const Tree = ({ children }) => {
-    return <StyledTree>{children}</StyledTree>;
+    return <div className="leading-8">{children}</div>
 };
 
 Tree.File = File;
 Tree.Folder = Folder;
 
-interface FileObject {
-    name: string
-    files?: FileObject[]
-    path: string
-    isDirectory: boolean
-}
-
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
 
 interface Props {
     activePath: ActivePath

@@ -1,12 +1,9 @@
 import { IconContext } from "react-icons";
+import { ActivePath } from "../types";
 import NewFile from "./NewFile";
 import NewFolder from './newFolder'
-import DeleteTreeElement from './deleteTreeElement'
+import DeleteTreeElement from './DeleteTreeElement'
 
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
 
 interface Props {
     activePath: ActivePath

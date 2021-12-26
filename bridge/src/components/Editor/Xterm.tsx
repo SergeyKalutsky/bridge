@@ -7,8 +7,6 @@ interface Props {
     activeToggle: boolean
 }
 
-
-
 const Xterm = ({ activeToggle }: Props): JSX.Element => {
     const term = new Terminal({
         fontSize: 16,

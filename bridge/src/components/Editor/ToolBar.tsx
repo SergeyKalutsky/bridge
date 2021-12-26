@@ -1,20 +1,11 @@
-import  Button  from '../common/Button';
+import { Button } from '../common';
+import { CMD } from './Constants';
+import { ActivePath } from './types';
 import { Arrow, Refresh } from '../common/Icons';
 
-interface ActivePath {
-    path: string
-    isDirectory: boolean
-}
 
 interface Props {
     activePath: ActivePath
-}
-
-
-const CMDS = {
-    js: 'node',
-    ts: 'ts-node',
-    py: 'python'
 }
 
 
@@ -25,22 +16,22 @@ const ToolBar = ({ activePath }: Props) => {
                 <Arrow />
             </Button>
             <Button onClick={() => { window.git.push() }} btnText='commit'>
-                    <Arrow />
+                <Arrow />
             </Button>
             <Button >
                 <Refresh />
             </Button>
             <Button onClick={() => {
-                    if (!activePath.isDirectory) {
-                        const ext = activePath.path.split(".")[1]
-                        const excecutable = CMDS[ext]
-                        if (excecutable !== undefined) {
-                            window.terminal.keystoke(`${excecutable} ${activePath.path}`)
-                            window.terminal.keystoke('\r')
-                        }
+                if (!activePath.isDirectory) {
+                    const ext = activePath.path.split(".")[1]
+                    const excecutable = CMD[ext]
+                    if (excecutable !== undefined) {
+                        window.terminal.keystoke(`${excecutable} ${activePath.path}`)
+                        window.terminal.keystoke('\r')
                     }
-                }}>
-                <span>RUN</span>
+                }
+            }}>
+                RUN
             </Button>
         </div>
 
