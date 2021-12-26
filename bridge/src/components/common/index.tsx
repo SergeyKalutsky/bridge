@@ -7,7 +7,7 @@ import SideMenu from "./SideMenu";
 import ToggleBar from "./ToggleBar";
 import ToolBar from "./ToolBar";
 import Workspace from "./Workspace";
-
+import SideMenuHeader from "./SideMenuHeader";
 
 
 export {
@@ -19,5 +19,6 @@ export {
     SideMenu,
     ToggleBar,
     ToolBar,
+    SideMenuHeader,
     Workspace
 }

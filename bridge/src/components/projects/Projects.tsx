@@ -1,17 +1,11 @@
 import { useState, useEffect, useReducer } from 'react'
-import ToggleBar from '../common/ToggleBar';
-import IconButton from '../common/IconButton';
-import ProjectItem from './ProjectItem';
-import SideMenu from '../common/SideMenu';
-import SideMenuHeader from '../common/SideMenuHeader';
-import Workspace from '../common/Workspace'
+import {ToggleBar, IconButton, SideMenu, SideMenuHeader, Workspace} from '../common';
 import ProjectCreate from './ProjectsCreate'
+import ProjectItem from './ProjectItem';
 import ProjectMembers from './members/ProjectMembers'
 import { fetchProjects } from '../../lib/api/index'
 import { Adding } from '../common/Icons';
 import { Project } from './types';
-
-
 
 type State = {
     page: JSX.Element
