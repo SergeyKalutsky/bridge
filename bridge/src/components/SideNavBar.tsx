@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import Popup from 'reactjs-popup';
+import PopUp from '../components/common/PopUp';
+import Button from '../components/common/Button';
 import IconButton from './common/IconButton';
 import { Link, useHistory } from 'react-router-dom'
 import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './common/Icons';
@@ -30,14 +31,13 @@ const SideNavBar = (): JSX.Element => {
                 <IconButton>
                     <Link to="/" replace><ProjectIcon /></Link>
                 </IconButton>
-                <Popup
+                <PopUp
                     open={open}
                     onClose={handleCLose}
-                    position="right center"
-                    modal={false}
                 >
-                    {<div>Сначало необходимо создать или выбрать проект</div>}
-                </Popup >
+                    <div>Сначало необходимо создать или выбрать проект</div>
+                    <Button btnText='OK' onClick={handleCLose} />
+                </PopUp >
             </div>
         </div>
     )
