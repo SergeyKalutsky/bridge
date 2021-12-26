@@ -38,32 +38,34 @@ const ACE_MODS = {
 };
 
 
-const defaultEditor = (<AceEditor
-    mode='plain_text'
-    theme="monokai"
-    value='Cоздайте или выберите файл, чтобы начать работу'
-    name="aceEditor"
-    style={{ width: 'none', height: 'none', flexGrow: 1 }}
-    readOnly={true}
-    editorProps={{ $blockScrolling: true }}
-    onLoad={editorInstance => {
-        // mouseup = css resize end
-        document.addEventListener("mouseup", e => (
-            editorInstance.resize()
-        ));
-    }}
-    fontSize={18}
-/>)
+const buildEditor = (mode = 'plain_text',
+    value = 'Cоздайте или выберите файл, чтобы начать работу',
+    readOnly = false,
+    onChange=null): JSX.Element => {
+    return <AceEditor
+        mode={mode}
+        theme="monokai"
+        value={value}
+        name="aceEditor"
+        style={{ width: 'none', height: 'none', flexGrow: 1 }}
+        readOnly={readOnly}
+        editorProps={{ $blockScrolling: true }}
+        onLoad={editorInstance => {
+            document.addEventListener("mouseup", e => (
+                editorInstance.resize()
+            ));
+        }}
+        onChange={onChange}
+        fontSize={18}
+    />
+}
 
 const Editor = (): JSX.Element => {
     const [activeToggle, setActiveToggle] = useState(false)
     const handleToggle = () => { setActiveToggle(!activeToggle) }
     const [activePath, setActivePath] = useState<ActivePath>(null)
-    const [editor, setEditor] = useState(defaultEditor)
+    const [editor, setEditor] = useState(buildEditor())
 
-    const onChange = (newValue: string) => {
-        window.projects.writeActiveFile({ filepath: activePath.path, fileContent: newValue })
-    }
     const handleClick = () => {
         if (!activePath.isDirectory) {
             const ext = activePath.path.split(".")[1]
@@ -76,20 +78,14 @@ const Editor = (): JSX.Element => {
     }
     useEffect(() => {
         if (activePath !== null && !activePath.isDirectory) {
+            const onChange = (newValue: string) => {
+                window.projects.writeActiveFile({ filepath: activePath.path, fileContent: newValue })
+            }
             window.projects.readActiveFile(activePath.path)
+                
                 .then((value) => {
                     const ext = activePath.path.split(".")[1];
-                    setEditor(
-                        <AceEditor
-                            mode={ACE_MODS[ext]}
-                            theme="monokai"
-                            value={value}
-                            onChange={onChange}
-                            style={{ flex: '1 1 0%', width: '100%' }}
-                            name="aceEditor"
-                            editorProps={{ $blockScrolling: true }}
-                            fontSize={18}
-                        />)
+                    setEditor(buildEditor(ACE_MODS[ext], value, false, onChange))
                 })
         }
     }, [activePath])

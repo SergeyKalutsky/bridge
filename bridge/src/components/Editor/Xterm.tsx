@@ -75,7 +75,6 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         <>
             <button className='hover:h-[4px] h-[2px] hover:bg-cyan-700 bg-neutral-500 hover:cursor-row-resize w-full drop-shadow-lg'
                 onMouseDown={handleToggle} />
-
             <div id='terminal' className='flex flex-row' ref={ref} style={{ height: height }}>
             </div>
         </>
