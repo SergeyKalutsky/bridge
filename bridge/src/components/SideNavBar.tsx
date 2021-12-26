@@ -8,10 +8,10 @@ import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './common/Icons';
 const SideNavBar = (): JSX.Element => {
     const history = useHistory()
     const [open, setOpen] = useState(false)
-    const checkActiveProject = () => {
+    const checkActiveProject = (path: string): void => {
         const settigns = window.settings.get()
         'active_project' in settigns && settigns.active_project !== undefined ?
-            history.push('/git') :
+            history.push(path) :
             setOpen(true)
     }
     const handleCLose = () => { setOpen(false) }
@@ -21,10 +21,10 @@ const SideNavBar = (): JSX.Element => {
                 <IconButton>
                     <CupIcon />
                 </IconButton>
-                <IconButton>
-                    <Link to="/editor" replace><FileIcon /></Link>
+                <IconButton onClick={() => { checkActiveProject('/editor') }}>
+                    <FileIcon />
                 </IconButton>
-                <IconButton onClick={checkActiveProject}>
+                <IconButton onClick={() => { checkActiveProject('/git') }}>
                     <GitIcon />
                 </IconButton>
                 <IconButton>
@@ -36,7 +36,7 @@ const SideNavBar = (): JSX.Element => {
                     position="right center"
                     modal={false}
                 >
-                    {<div>Чтобы использовать Git нужно выбрать проект</div>}
+                    {<div>Сначало необходимо создать или выбрать проект</div>}
                 </Popup >
             </div>
         </div>
