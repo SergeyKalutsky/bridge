@@ -35,7 +35,7 @@ const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
     <>
       <SideMenu activeToggle={activeToggle}>
         <SideMenuHeader>
-          <span className='text-white text-3xl'>ЛЕНТА</span>
+          <span className='text-white text-2xl'>ЛЕНТА</span>
         </SideMenuHeader>
         <div className='git-hash-list'>
           {elements}
