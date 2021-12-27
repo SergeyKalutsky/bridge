@@ -32,17 +32,19 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                 <div className='w-3/5 h-1/2'>
                     <InputForm type="text" placeholder='Название'
                         onChange={(e) => { setProject({ ...project, name: e.target.value }) }} />
-                    <textarea placeholder='Описание' className='w-full h-[150px] text-xl rounded-lg'
+                    <textarea placeholder='Описание' className='w-full h-[150px] text-xl rounded-lg focus:outline-none'
                         onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                     <div className='w-full gap-y-2 flex flex-col'>
                         <div>
                             <input type="checkbox"
+                                className='scale-150'
                                 checked={checked == 0}
                                 onChange={() => { setChecked(0); setProject({ ...project, isclassroom: 0 }) }} />
                             <label className='ml-2 text-xl font-medium text-white'>Личный проект</label>
                         </div>
                         <div>
                             <input type="checkbox"
+                                className='scale-150'
                                 checked={checked == 1}
                                 onChange={() => { setChecked(1); setProject({ ...project, isclassroom: 1 }) }} />
                             <label className='ml-2 text-xl font-medium text-white'>Для обучения</label>

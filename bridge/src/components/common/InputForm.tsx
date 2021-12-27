@@ -10,9 +10,9 @@ const InputForm = ({ children,
     type,
     onChange }: Props): JSX.Element => {
     return (
-        <div className='flex items-center justify-start bg-white w-full rounded-xl focus:outline-none mb-5'>
+        <div className='flex items-center justify-start bg-white w-full rounded-lg focus:outline-none mb-5'>
             {children}
-            <input className='text-xl'
+            <input className='text-xl w-full rounded-lg ml-2 focus:outline-none'
                 type={type}
                 placeholder={placeholder}
                 onChange={onChange} />
