@@ -51,7 +51,7 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
             </div>
             <div className='flex flex-col items-center justify-center w-full h-full'>
                 <LogoIcon />
-                <div className='flex flex-col items-center justify-center h-2/4 w-1/4'>
+                <div className='flex flex-col items-center justify-center h-2/4 w-1/4 gap-y-5'>
                     <ImputForm onChange={onUserInputChange} type='text' placeholder='Логин'>
                         <UserIcon />
                     </ImputForm>
