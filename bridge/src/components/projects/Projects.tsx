@@ -1,11 +1,12 @@
 import { useState, useEffect, useReducer } from 'react'
-import {ToggleBar, IconButton, SideMenu, SideMenuHeader, Workspace} from '../common';
+import { ToggleBar, SideMenu, Workspace } from '../common';
 import ProjectCreate from './ProjectsCreate'
 import ProjectItem from './ProjectItem';
 import ProjectMembers from './members/ProjectMembers'
+import MenuHeader from './MenuHeader';
 import { fetchProjects } from '../../lib/api/index'
-import { Adding } from '../common/Icons';
 import { Project } from './types';
+
 
 type State = {
     page: JSX.Element
@@ -19,9 +20,7 @@ type Action =
 function reducer(state: State, action: Action) {
     switch (action.type) {
         case 'createProject':
-            return {
-                page: <ProjectCreate addProject={action.payload.addProject} />
-            }
+            return { page: <ProjectCreate addProject={action.payload.addProject} /> }
         case 'memberFind':
             return { page: <ProjectMembers project_id={action.payload} /> }
         case 'home':
@@ -93,6 +92,13 @@ const Projects = (): JSX.Element => {
             })
     }, [])
 
+    const dispatchCreateProject = () => {
+        dispatch({
+            type: 'createProject',
+            payload: { addProject: addProject }
+        })
+    }
+
     const projects_list = projects.map((project) =>
         <ProjectItem project={project}
             key={project.id}
@@ -104,15 +110,7 @@ const Projects = (): JSX.Element => {
     return (
         <>
             <SideMenu activeToggle={activeToggle}>
-                <SideMenuHeader>
-                    <span className='text-white text-3xl'>ПРОЕКТЫ</span>
-                    <IconButton width={8} height={8}
-                        onClick={() => {
-                            dispatch({ type: 'createProject', payload: { addProject: addProject } })
-                        }}>
-                        <Adding />
-                    </IconButton >
-                </SideMenuHeader>
+                <MenuHeader  onClick={dispatchCreateProject}/>
                 {projects_list}
             </SideMenu>
             <ToggleBar handleToggle={handleToggle} />
