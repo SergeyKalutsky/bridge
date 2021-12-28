@@ -31,25 +31,27 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
     }, [project_id])
     return (
         <>
-            <div className='flex flex-col justify-between items-center w-full h-full bg-zinc-700'>
-                <h1>Пригласить друга в проект</h1>
-                <div className='w-3/5 mt-2 flex items-center justify-center '>
-                    <InputForm type="text"
-                        placeholder='Введите имя'
-                        onChange={(e) => { setSearch(e.target.value) }} />
-                    <Button onClick={() => {setOpen(true)}} btnText='Поиск' /> 
+            <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Пригласить друга</h1>
+            <div className='flex justify-between items-center w-full h-full bg-zinc-500'>
+                <div className='flex flex-col justify-between items-center w-full h-3/4 bg-zinc-500'>
+                    <div className='w-3/5 mt-2 flex items-center justify-center gap-x-5'>
+                        <InputForm type="text"
+                            placeholder='Введите имя'
+                            onChange={(e) => { setSearch(e.target.value) }} />
+                        <Button onClick={() => { setOpen(true) }} btnText='Поиск' />
+                    </div>
+                    <CurrentMembers members={membersCurrent}
+                        project_id={project_id}
+                        removeMember={removeMember}
+                    />
                 </div>
-                <CurrentMembers members={membersCurrent}
+                <FindMembersPopUp membersCurrent={membersCurrent}
+                    search={search}
                     project_id={project_id}
-                    removeMember={removeMember}
-                />
+                    addMember={addMember}
+                    open={open}
+                    setOpen={setOpen} />
             </div>
-            <FindMembersPopUp membersCurrent={membersCurrent}
-                search={search}
-                project_id={project_id}
-                addMember={addMember}
-                open={open}
-                setOpen={setOpen} />
         </>
     )
 }

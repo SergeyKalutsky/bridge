@@ -8,6 +8,7 @@ function windows(instance: instance): void {
   const command = [];
   command.push('powershell.exe');
   command.push('Start-Process');
+  command.push('-WindowStyle hidden');
   command.push('powershell.exe');
   command.push('-Verb runAs');
   command.push('-ArgumentList');
