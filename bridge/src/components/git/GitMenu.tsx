@@ -1,4 +1,3 @@
-import '../../assets/css/leftMenu.css'
 import ToggleBar from '../common/ToggleBar';
 import SideMenu from '../common/SideMenu';
 import SideMenuHeader from '../common/SideMenuHeader';
@@ -37,9 +36,7 @@ const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
         <SideMenuHeader>
           <span className='text-white text-3xl'>ЛЕНТА</span>
         </SideMenuHeader>
-        <div className='git-hash-list'>
           {elements}
-        </div>
       </SideMenu>
       <ToggleBar handleToggle={handleToggle} />
     </>

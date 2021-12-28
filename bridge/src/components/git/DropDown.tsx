@@ -16,8 +16,8 @@ const DropDown = ({ gitDiffs,
         </option>
     )
     return (
-        <div className='dropdown'>
-            <select name="select" value={diffViewFileIndex}
+        <div className='flex justify-center items-center w-[300px] h-[44px] rounded-lg'>
+            <select name="text-black bg-white w-full h-3/5" value={diffViewFileIndex}
                 onChange={(e) => {
                     setDiffViewFileIndex(Number(e.target.value));
                 }}>

@@ -6,12 +6,13 @@ type Props = {
 
 
 const CommitRow = ({ hash, active, onClickCallback }: Props): JSX.Element => {
+    const hashActive = active ? '': ''
     return (
-        <div className={active ? 'git-hash active' : 'git-hash'}
+        <div className='hover:bg-slate-700 hover:cursor-pointer text-xl flex items-center justify-center py-2 h-[40px] w-full'
             onClick={() => onClickCallback(hash)}
         >
-            <span className='commit'>commit</span>
-            <span className='hash'>{hash.substr(0, 8)}</span>
+            <span className='text-white mr-[20px]'>commit</span>
+            <span className='text-sky-600	'>{hash.substring(0, 8)}</span>
         </div>
     )
 }
