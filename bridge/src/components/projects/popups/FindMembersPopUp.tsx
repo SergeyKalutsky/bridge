@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import PopUp from '../../common/PopUp';
+import PopUp from '../../common/PopuUp';
 import Button from '../../common/Button';
 import { Member } from '../types'
 import { findUser } from '../../../lib/api/index'

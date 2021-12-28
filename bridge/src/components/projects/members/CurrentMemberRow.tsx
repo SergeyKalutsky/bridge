@@ -1,4 +1,4 @@
-import PopUp from '../../common/PopUp'
+import PopUp from '../../common/PopuUp'
 import Button from '../../common/Button'
 import { useState } from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'

@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import PopUp from '../components/common/PopUp';
-import Button from '../components/common/Button';
-import IconButton from './common/IconButton';
+import {PopUp, Button, IconButton} from '../components/common';
 import { Link, useHistory } from 'react-router-dom'
 import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './common/Icons';
 

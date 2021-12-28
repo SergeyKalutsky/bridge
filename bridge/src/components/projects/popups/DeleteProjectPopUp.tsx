@@ -1,4 +1,4 @@
-import PopUp from '../../common/PopUp';
+import PopUp from '../../common/PopuUp';
 import Button from '../../common/Button';
 import { deleteProject } from '../../../lib/api/index'
 
