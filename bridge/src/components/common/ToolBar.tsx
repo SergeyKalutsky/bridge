@@ -1,5 +1,3 @@
-import '../../assets/css/WorkspaceTab.css'
-
 interface Props {
   children: React.ReactNode
 }
