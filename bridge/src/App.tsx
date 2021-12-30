@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import InitInstaller from './InitInstaller'
 import LoginPage from './components/login/LoginPage';
 import AppContent from './components/AppContent'
 import './assets/index.css'
@@ -15,6 +16,7 @@ export default function App(): JSX.Element {
     }, [])
 
     return (
+        // <InitInstaller />
         <>
             {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage setIslogin={setIslogin} /> : null}
         </>
