@@ -4,7 +4,7 @@ import ProjectCreate from './ProjectsCreate'
 import ProjectItem from './ProjectItem';
 import ProjectMembers from './members/ProjectMembers'
 import MenuHeader from './MenuHeader';
-import { fetchProjects } from '../../lib/api/index'
+import { fetchProjects } from '../../lib/api/gitlab/index'
 import { Project } from './types';
 
 

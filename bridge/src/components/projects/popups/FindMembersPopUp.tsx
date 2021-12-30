@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import PopUp from '../../common/PopuUp';
 import Button from '../../common/Button';
 import { Member } from '../types'
-import { findUser } from '../../../lib/api/index'
-import { addProjectMember } from '../../../lib/api/index'
+import { findUser } from '../../../lib/api/gitlab/index'
+import { addProjectMember } from '../../../lib/api/gitlab/index'
 
 
 interface Props {

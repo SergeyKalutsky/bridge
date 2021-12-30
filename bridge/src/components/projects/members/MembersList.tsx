@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Member } from '../types'
-import { addProjectMember } from '../../../lib/api/index'
+import { addProjectMember } from '../../../lib/api/gitlab/index'
 
 
 type Props = {

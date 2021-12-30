@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { authUser } from '../../lib/api/index'
+import { authUser } from '../../lib/api/gitlab/index'
 import ImputForm from '../common/InputForm'
 import Button from '../common/Button'
 import { LogoIcon, UserIcon, KeyIcon } from '../common/Icons';

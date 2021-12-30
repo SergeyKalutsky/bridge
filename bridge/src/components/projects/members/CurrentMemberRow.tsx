@@ -3,7 +3,7 @@ import Button from '../../common/Button'
 import { useState } from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { deleteMember } from '../../../lib/api/index'
+import { deleteMember } from '../../../lib/api/gitlab/index'
 import { Member } from '../types'
 
 

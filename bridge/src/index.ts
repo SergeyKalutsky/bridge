@@ -1,163 +1,34 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
-import parseGitDiff from './lib/git_api/parse'
-import walkSync from './lib/api/dirFiles'
-import { git } from './lib/git_api/index'
-import util from 'util'
-import path from 'path'
+import { registerProjectAPI, registerGitAPI } from './lib/api/main'
 import os from 'os'
-import fs from 'fs'
+
 
 const pty = require("node-pty");
-const storage = require('electron-json-storage')
-
 const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
-const readFileAsync = util.promisify(fs.readFile)
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
-let settings = storage.getSync('settings')
-const BASE_DIR = storage.getDataPath()
 
-// Projects ===========================================================
-ipcMain.on('projects:mkbasedir', (event, arg) => {
-  const filePath = path.join(BASE_DIR, arg.user.login)
-  fs.mkdirSync(filePath, { recursive: true })
-})
-
-ipcMain.on('projects:getlocalprojectsnames', (event) => {
-  const filePath = path.join(BASE_DIR, settings.user.login)
-  event.returnValue = fs.readdirSync(filePath)
-})
-
-ipcMain.on('projects:delete', (event, project_name) => {
-  const filePath = path.join(BASE_DIR, settings.user.login, project_name.replace(/ /g, '-'))
-  fs.rmdirSync(filePath, { recursive: true });
-})
-
-ipcMain.on('projects:deletetreeelement', (event, activePath) => {
-  if (activePath.isDirectory) {
-    fs.rmdirSync(activePath.path, { recursive: true });
-  } else {
-    fs.unlinkSync(activePath.path)
-  }
-})
-
-ipcMain.on('projects:writeactivefile', (event, data) => {
-  fs.writeFile(data.filepath, data.fileContent, (err) => {
-    if (err) return console.log(err);
-  })
-})
-
-ipcMain.on('projects:createfolder', (event, data) => {
-  if (data.activePath === null) {
-    const project_name = settings.active_project.name.replace(/ /g, '-')
-    const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-    const folderPath = path.join(project_dir, data.name)
-    fs.mkdirSync(folderPath)
-  } else if (data.activePath.isDirectory) {
-    const folderPath = path.join(data.activePath.path, data.name)
-    fs.mkdirSync(folderPath)
-  } else {
-    const folderPath = path.join(path.dirname(data.activePath.path), data.name)
-    fs.mkdirSync(folderPath)
-  }
-})
-
-ipcMain.on('projects:createfile', (event, data) => {
-  if (data.activePath === null) {
-    const project_name = settings.active_project.name.replace(/ /g, '-')
-    const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-    const filePath = path.join(project_dir, data.name)
-    fs.closeSync(fs.openSync(filePath, 'w'))
-  } else if (data.activePath.isDirectory) {
-    const filePath = path.join(data.activePath.path, data.name)
-    fs.closeSync(fs.openSync(filePath, 'w'))
-  } else {
-    const filePath = path.join(path.dirname(data.activePath.path), data.name)
-    fs.closeSync(fs.openSync(filePath, 'w'))
-  }
-})
-
-ipcMain.handle('projects:readactivefile', async (event, filepath) => {
-  if (filepath === '') {
-    return ''
-  } else {
-    const fileContent = await readFileAsync(filepath, 'utf-8')
-    return fileContent
-  }
-})
-
-ipcMain.handle('projects:listfiles', async (event) => {
-  const project_name = settings.active_project.name.replace(/ /g, '-')
-  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-  const result = walkSync(project_dir)
-  return result
-})
-
-// GIT ---------------------------------------------------------------
-ipcMain.on('git:clone', (event, project) => {
-  const project_name = project.name.replace(/ /g, '-')
-  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-  if (!fs.existsSync(project_dir)) {
-    git.cwd(path.join(BASE_DIR, settings.user.login)).clone(project.http)
-  }
-})
-
-ipcMain.on('git:log', (event) => {
-  const project_name = settings.active_project.name.replace(/ /g, '-')
-  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-  git.cwd(project_dir).log().then(result => {
-    event.returnValue = result['all']
-  })
-    .catch(err => { event.returnValue = []; console.log(err) })
-})
-
-ipcMain.on('git:pull', () => {
-  const project_name = settings.active_project.name.replace(/ /g, '-')
-  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-  git.cwd(project_dir).pull()
-})
-
-ipcMain.on('git:push', () => {
-  const project_name = settings.active_project.name.replace(/ /g, '-')
-  const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-  git.cwd(project_dir).add('./*').commit('test').push()
-})
+const storage = require('electron-json-storage')
 
 
-ipcMain.on('git:diff', (event, hash) => {
-  git.show(hash)
-    .then(result => {
-      event.returnValue = parseGitDiff(result)
-    })
-    .catch(err => {
-      event.returnValue = undefined
-    });
-})
-
-ipcMain.on('git:diff', (event, hash) => {
-  git.show(hash)
-    .then(result => {
-      event.returnValue = parseGitDiff(result)
-    })
-    .catch(err => {
-      event.returnValue = undefined
-    });
-})
+// ipcMain APIs 
+registerProjectAPI()
+registerGitAPI()
 
 
-
-// User Settings -------------------------------------------------------------------
+// User Settings 
 ipcMain.on('settings:get', (event) => {
-  event.returnValue = settings
+  event.returnValue = storage.getSync('settings')
 })
 
 ipcMain.handle('settings:set', (event, new_settings) => {
+  let settings = storage.getSync('settings')
   settings = { ...settings, ...new_settings }
   storage.set('settings', settings)
 })
 
-// Usual Stuff ---------------------------------------------------------------------
+// Usual Stuff
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
@@ -188,7 +59,6 @@ const createWindow = (): void => {
       }
     })
   })
-
 
   const ptyProcess = pty.spawn(shell, [], {
     name: "xterm-color",

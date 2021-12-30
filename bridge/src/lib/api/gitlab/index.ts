@@ -1,5 +1,5 @@
-import { Project } from '../../components/projects/types'
-import { Settings } from '../../types'
+import { Project } from '../../../components/projects/types'
+import { Settings } from '../../../types'
 
 
 

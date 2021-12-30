@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Project } from './types'
 import { InputForm, Button } from '../common'
-import { createProject } from '../../lib/api/index'
+import { createProject } from '../../lib/api/gitlab/index'
 
 interface Prop {
     addProject: (project: Project) => void

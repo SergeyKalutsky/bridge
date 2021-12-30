@@ -1,7 +1,7 @@
 import PopUp from '../../common/PopuUp'
 import Button from '../../common/Button'
 import { Project } from '../types'
-import { deleteMember } from '../../../lib/api/index'
+import { deleteMember } from '../../../lib/api/gitlab/index'
 
 interface Props {
     open: boolean

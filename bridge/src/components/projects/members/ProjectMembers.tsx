@@ -3,7 +3,7 @@ import Button from '../../common/Button'
 import InputForm from '../../common/InputForm'
 import CurrentMembers from './CurrentMembers'
 import FindMembersPopUp from '../popups/FindMembersPopUp'
-import { listProjectMembers } from '../../../lib/api/index'
+import { listProjectMembers } from '../../../lib/api/gitlab/index'
 import { Member } from '../types'
 
 type Props = {

@@ -1,6 +1,6 @@
 import PopUp from '../../common/PopuUp';
 import Button from '../../common/Button';
-import { deleteProject } from '../../../lib/api/index'
+import { deleteProject } from '../../../lib/api/gitlab/index'
 
 type Props = {
     id: number
