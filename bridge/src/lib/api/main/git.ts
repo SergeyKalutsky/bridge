@@ -2,7 +2,6 @@ import { ipcMain } from 'electron';
 import { git, parseGitDiff } from '../../git_api/index'
 import path from 'path'
 import fs from 'fs'
-import { registerProjectAPI } from '.';
 
 const storage = require('electron-json-storage')
 const BASE_DIR = storage.getDataPath()
