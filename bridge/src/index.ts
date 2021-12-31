@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import { registerProjectAPI, registerGitAPI } from './lib/api/main'
+// import { elevatedShell } from './elevated_shell/shell'
 import os from 'os'
 
 
@@ -16,6 +17,14 @@ const storage = require('electron-json-storage')
 registerProjectAPI()
 registerGitAPI()
 
+
+ipcMain.on('pkg:install', (event, pkg) => {
+  console.log(pkg)
+  // elevatedShell({ command: `apt-get update` },
+  //   async (error?: Error, data?: string | Buffer) => {
+  //     await event.reply('stdout', data.toString())
+  //   })
+})
 
 // User Settings 
 ipcMain.on('settings:get', (event) => {

@@ -1,3 +1,4 @@
+// stolen and refactored from https://github.com/jorangreef/sudo-prompt
 import { windows } from './windows'
 import { linux } from './linux'
 

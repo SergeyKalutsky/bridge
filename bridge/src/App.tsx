@@ -16,9 +16,9 @@ export default function App(): JSX.Element {
     }, [])
 
     return (
-        // <InitInstaller />
-        <>
-            {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage setIslogin={setIslogin} /> : null}
-        </>
+        <InitInstaller />
+        // <>
+        //     {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage setIslogin={setIslogin} /> : null}
+        // </>
     )
 }

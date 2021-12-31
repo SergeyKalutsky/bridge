@@ -30,8 +30,11 @@ contextBridge.exposeInMainWorld('git', {
 
 
 contextBridge.exposeInMainWorld('terminal', {
-    incomingData: (channel, callback) => {
-        ipcRenderer.on(channel, (event, ...args) => callback(...args));
-    },
+    incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) },
     keystoke: (e) => ipcRenderer.send('terminal:keystroke', e)
 })
+
+contextBridge.exposeInMainWorld('pkg', {
+    install: (pkg: string) => ipcRenderer.send('pkg:isntall', pkg)
+})
+
