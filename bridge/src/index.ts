@@ -20,7 +20,7 @@ registerGitAPI()
 
 ipcMain.on('pkg:install', (event, pkg) => {
   // console.log(pkg)
-  elevatedShell({ command: "-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1''));" },
+  elevatedShell({ command: "choco install -y golang" },
     async (error?: Error, data?: string | Buffer) => {
       console.log(data.toString())
     })
