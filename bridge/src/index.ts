@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import { registerProjectAPI, registerGitAPI } from './lib/api/main'
-// import { elevatedShell } from './elevated_shell/shell'
+import { elevatedShell } from './lib/elevated_shell'
 import os from 'os'
 
 
@@ -19,11 +19,11 @@ registerGitAPI()
 
 
 ipcMain.on('pkg:install', (event, pkg) => {
-  console.log(pkg)
-  // elevatedShell({ command: `apt-get update` },
-  //   async (error?: Error, data?: string | Buffer) => {
-  //     await event.reply('stdout', data.toString())
-  //   })
+  // console.log(pkg)
+  elevatedShell({ command: "-NoProfile -InputFormat None -ExecutionPolicy Bypass -Command [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://chocolatey.org/install.ps1''));" },
+    async (error?: Error, data?: string | Buffer) => {
+      console.log(data.toString())
+    })
 })
 
 // User Settings 

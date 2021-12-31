@@ -29,6 +29,9 @@ declare global {
             incomingData(channel, callback): any
             keystoke(e): any
 
+        },
+        pkg: {
+            install(pkg: string): any
         }
     }
 }
