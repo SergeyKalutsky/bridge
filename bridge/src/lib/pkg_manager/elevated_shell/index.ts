@@ -19,4 +19,4 @@ async function elevatedShell(instance: instance,
 }
 
 
-export { elevatedShell }
+export default elevatedShell

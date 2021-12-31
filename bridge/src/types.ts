@@ -32,6 +32,7 @@ declare global {
         },
         pkg: {
             install(pkg: string): any
+            checkInstall(pkg: string): any
         }
     }
 }

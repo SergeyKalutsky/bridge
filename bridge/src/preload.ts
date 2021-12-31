@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from "electron"
 import { FileChanges, CreateInfo, ActivePath } from './types'
 import { ParsedGitDiff } from './components/git/types'
+import { Check } from "@material-ui/icons"
 
 
 contextBridge.exposeInMainWorld('settings', {
@@ -35,6 +36,7 @@ contextBridge.exposeInMainWorld('terminal', {
 })
 
 contextBridge.exposeInMainWorld('pkg', {
-    install: (pkg: string) => ipcRenderer.send('pkg:install', pkg)
+    install: (pkg: string) => ipcRenderer.send('pkg:install', pkg),
+    checkInstall: (pkg: string) => ipcRenderer.send('pkg:check', pkg)
 })
 

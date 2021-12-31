@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import { registerProjectAPI, registerGitAPI } from './lib/api/main'
-import { elevatedShell } from './lib/elevated_shell'
+import { elevatedShell, checkInstalled } from './lib/pkg_manager'
 import os from 'os'
 
 
@@ -17,9 +17,14 @@ const storage = require('electron-json-storage')
 registerProjectAPI()
 registerGitAPI()
 
+ipcMain.on('pkg:check', (event, pkg) => {
+  checkInstalled(pkg, (installed) => {
+    console.log(installed)
+  })
+})
+
 
 ipcMain.on('pkg:install', (event, pkg) => {
-  // console.log(pkg)
   elevatedShell({ command: "choco install -y golang" },
     async (error?: Error, data?: string | Buffer) => {
       console.log(data.toString())
