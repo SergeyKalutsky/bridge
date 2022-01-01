@@ -6,7 +6,7 @@ const CMD = {
         },
         check: {
             cmd: 'git --version',
-            string: 'git version'
+            contains: 'git version'
         }
     },
     vscode: {
@@ -27,11 +27,11 @@ const CMD = {
     },
     choco: {
         install: {
-            win32: "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+            win32: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))`
         },
         check: {
             cmd: 'choco',
-            string: 'Chocolatey'
+            contains: 'Chocolatey'
         }
     }
 }

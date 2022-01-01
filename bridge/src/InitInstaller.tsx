@@ -33,6 +33,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
             }
         });
     }, [])
+    
     const handleClick = () => {
         if (chocoInstalled && gitInstalled) {
             setIsFirstLoad(false)
