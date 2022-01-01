@@ -25,17 +25,20 @@ ipcMain.on('pkg:check', (event, pkg) => {
 })
 
 
-ipcMain.on('pkg:install', (event, pkg) => {
-  elevatedShell({ command: CMD[pkg].install },
+ipcMain.on('pkg:install', (event, pkgs) => {
+  CMD[pkg].install
+  elevatedShell({ command: '' },
     async (error?: Error, data?: string | Buffer) => {
       console.log(data.toString())
     })
 })
 
+
 // User Settings 
 ipcMain.on('settings:get', (event) => {
   event.returnValue = storage.getSync('settings')
 })
+
 
 ipcMain.handle('settings:set', (event, new_settings) => {
   let settings = storage.getSync('settings')
