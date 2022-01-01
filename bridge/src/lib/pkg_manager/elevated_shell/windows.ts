@@ -1,8 +1,5 @@
 import { spawn } from 'child_process';
-
-interface instance {
-  command: string,
-}
+import { instance } from './types'
 
 function windows(instance: instance): void {
   const command = [];

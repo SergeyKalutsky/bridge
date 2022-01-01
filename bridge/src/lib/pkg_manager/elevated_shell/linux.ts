@@ -1,13 +1,7 @@
 import { spawn } from 'child_process';
+import { instance } from './types'
 import fs from 'fs';
 
-
-interface instance {
-  command: string;
-  options?: { name: string };
-  uuid?: string;
-  path?: string;
-}
 
 function escapeDoubleQuotes(string: string | Array<string>) {
   if (typeof string !== 'string') throw new Error('Expected a string.');
@@ -43,7 +37,7 @@ async function linuxSpawn(instance: instance,
     const str_command = command.join(' ');
     const child = spawn(str_command, { shell: true });
     child.stdout.on('data', (chunk) => {
-       callback(null, chunk)
+      callback(null, chunk)
     })
     child.stderr.on('data', (chunk) => {
       callback(null, chunk)

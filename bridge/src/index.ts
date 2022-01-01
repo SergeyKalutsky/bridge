@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import { registerProjectAPI, registerGitAPI } from './lib/api/main'
 import { elevatedShell, checkInstalled } from './lib/pkg_manager'
+import CMD from "./lib/pkg_manager/cmds";
 import os from 'os'
 
 
@@ -25,7 +26,7 @@ ipcMain.on('pkg:check', (event, pkg) => {
 
 
 ipcMain.on('pkg:install', (event, pkg) => {
-  elevatedShell({ command: "choco install -y golang" },
+  elevatedShell({ command: CMD[pkg].install },
     async (error?: Error, data?: string | Buffer) => {
       console.log(data.toString())
     })

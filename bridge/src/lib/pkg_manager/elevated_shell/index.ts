@@ -1,17 +1,12 @@
 import { windows } from './windows'
 import { linux } from './linux'
+import { instance } from './types'
 
 
-interface instance {
-  command: string;
-  options?: { name: string };
-  uuid?: string;
-  path?: string;
-}
 
 
 async function elevatedShell(instance: instance,
-  callback:  (error?: Error, data?: string | Buffer) => void): Promise<void> {
+  callback: (error?: Error, data?: string | Buffer) => void): Promise<void> {
   const platform = process.platform;
   if (platform === 'linux') return linux(instance, callback);
   if (platform === 'win32') return windows(instance);
