@@ -1,6 +1,5 @@
 import CMD from "./cmds";
 import { spawn } from 'child_process';
-import util from 'util'
 
 async function checkInstalled(pkg: string,
     callback?: (installed: boolean, error?: Error) => void): Promise<any> {

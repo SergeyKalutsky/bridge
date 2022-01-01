@@ -7,7 +7,9 @@ import './assets/index.css'
 
 export default function App(): JSX.Element {
     const [islogin, setIslogin] = useState(false)
+    const [isFirstLoad, setIsFirstLoad] = useState(true)
     const [userSettingsLoaded, setUserSettingLoaded] = useState(false)
+    const [content, setContent] = useState<JSX.Element>(null)
 
     useEffect(() => {
         const settings = window.settings.get()
@@ -15,10 +17,19 @@ export default function App(): JSX.Element {
         'user' in settings ? setIslogin(false) : setIslogin(true)
     }, [])
 
-    return (
-        <InitInstaller />
-        // <>
-        //     {userSettingsLoaded == true ? islogin == false ? <AppContent /> : <LoginPage setIslogin={setIslogin} /> : null}
-        // </>
-    )
+    useEffect(() => {
+        if (userSettingsLoaded) {
+            if (isFirstLoad) {
+                setContent(<InitInstaller setIsFirstLoad={setIsFirstLoad} />)
+                return
+            }
+            if (islogin) {
+                setContent(<LoginPage setIslogin={setIslogin} />)
+                return
+            }
+            setContent(<AppContent />)
+        }
+    }, [userSettingsLoaded, isFirstLoad, islogin])
+    
+    return <>{content}</>
 }

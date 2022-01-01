@@ -2,15 +2,27 @@ import { useEffect, useState } from "react";
 import { Button } from "./components/common"
 import { LogoIcon } from './components/common/Icons';
 
-const InitInstaller = (): JSX.Element => {
+interface Props {
+    setIsFirstLoad: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [gitInstalled, setGitInstalled] = useState(false)
     const [chocoInstalled, setChocoInstalled] = useState(false)
     const checkMark = <>✔️</>
     const crossMark = <>❌</>
-    useEffect(() => {
-        window.pkg.checkInstall('git')
-        window.pkg.checkInstall('choco')
 
+    useEffect(() => {
+        const checkInstall = async () => {
+            window.pkg.checkInstall('git')
+            window.pkg.checkInstall('choco')
+        };
+
+        const t = setInterval(checkInstall, 1000);
+        return () => clearInterval(t);
+    }, []);
+
+    useEffect(() => {
         window.shared.incomingData("pkg:check", (data) => {
             switch (data.pkg) {
                 case 'git':
@@ -22,6 +34,10 @@ const InitInstaller = (): JSX.Element => {
         });
     }, [])
     const handleClick = () => {
+        if (chocoInstalled && gitInstalled) {
+            setIsFirstLoad(false)
+            return
+        }
         const pkgs = []
         if (!gitInstalled) { pkgs.push('git') }
         if (!chocoInstalled) { pkgs.push('choco') }
@@ -37,7 +53,7 @@ const InitInstaller = (): JSX.Element => {
                     <span className="text-white font-medium text-xl">{gitInstalled ? checkMark : crossMark}Git</span>
                 </div>
                 <Button onClick={handleClick}>
-                    Установить
+                    {chocoInstalled && gitInstalled ? 'Продолжить' : 'Установить'}
                 </Button>
             </div>
         </div>
