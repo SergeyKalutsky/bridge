@@ -121,7 +121,6 @@ function createFile() {
 
 function readActiveFile() {
     return ipcMain.handle('projects:readactivefile', async (event, filepath) => {
-        const settings = storage.getSync('settings')
         if (filepath === '') {
             return ''
         } else {

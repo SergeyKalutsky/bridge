@@ -18,16 +18,20 @@ const storage = require('electron-json-storage')
 registerProjectAPI()
 registerGitAPI()
 
-ipcMain.on('pkg:check', (event, pkg) => {
+ipcMain.on('pkg:check', async (event, pkg) => {
   checkInstalled(pkg, (installed) => {
-    console.log(installed)
+    event.reply('pkg:check', { installed: installed, pkg: pkg })
   })
 })
 
 
 ipcMain.on('pkg:install', (event, pkgs) => {
-  CMD[pkg].install
-  elevatedShell({ command: '' },
+  let command = ''
+  const platform = process.platform;
+  for (const pkg of pkgs) {
+    command += CMD[pkg].install[platform] + '; '
+  }
+  elevatedShell({ command: command },
     async (error?: Error, data?: string | Buffer) => {
       console.log(data.toString())
     })

@@ -61,7 +61,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         term.onData(e => {
             window.terminal.keystoke(e)
         })
-        window.terminal.incomingData("terminal:incomingdata", (data) => {
+        window.shared.incomingData("terminal:incomingdata", (data) => {
             term.write(data);
         });
         term.open(ref.current);

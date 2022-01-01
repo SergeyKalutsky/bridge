@@ -3,6 +3,9 @@ import { Project } from './components/projects/types'
 
 declare global {
     interface Window {
+        shared: {
+            incomingData(channel, callback): any
+        }
         settings: {
             set(settings: any): Promise<any>;
             get(): any
@@ -26,12 +29,11 @@ declare global {
             diff(hash: string): ParsedGitDiff[]
         }
         terminal: {
-            incomingData(channel, callback): any
             keystoke(e): any
 
         },
         pkg: {
-            install(pkg: string): any
+            install(pkgs: string[]): any
             checkInstall(pkg: string): any
         }
     }

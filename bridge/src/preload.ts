@@ -1,8 +1,11 @@
 import { contextBridge, ipcRenderer } from "electron"
 import { FileChanges, CreateInfo, ActivePath } from './types'
 import { ParsedGitDiff } from './components/git/types'
-import { Check } from "@material-ui/icons"
 
+
+contextBridge.exposeInMainWorld('shared', {
+    incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) }
+})
 
 contextBridge.exposeInMainWorld('settings', {
     set: (settings: any): Promise<any> => ipcRenderer.invoke('settings:set', settings),
@@ -31,12 +34,11 @@ contextBridge.exposeInMainWorld('git', {
 
 
 contextBridge.exposeInMainWorld('terminal', {
-    incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) },
     keystoke: (e) => ipcRenderer.send('terminal:keystroke', e)
 })
 
 contextBridge.exposeInMainWorld('pkg', {
-    install: (pkg: string) => ipcRenderer.send('pkg:install', pkg),
+    install: (pkgs: string[]) => ipcRenderer.send('pkg:install', pkgs),
     checkInstall: (pkg: string) => ipcRenderer.send('pkg:check', pkg)
 })
 

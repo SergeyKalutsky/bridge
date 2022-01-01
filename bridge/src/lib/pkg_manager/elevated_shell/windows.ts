@@ -10,7 +10,7 @@ function windows(instance: instance): void {
   command.push('-Command Start-Process');
   command.push('powershell.exe');
   command.push('-ArgumentList');
-  command.push("('" + instance.command + ';' + " Read-Host ''Type ENTER to exit'' ')");
+  command.push("('" + instance.command + "Read-Host ''Type ENTER to exit'' ')");
   command.push('-Verb runAs');
   const str_command = command.join(' ');
   const child = spawn(str_command, { shell: true })
