@@ -39,8 +39,8 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
             return
         }
         const pkgs = []
-        if (!gitInstalled) { pkgs.push('git') }
         if (!chocoInstalled) { pkgs.push('choco') }
+        if (!gitInstalled) { pkgs.push('git') }
         window.pkg.install(pkgs)
     }
     return (
