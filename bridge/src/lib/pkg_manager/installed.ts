@@ -9,6 +9,7 @@ async function checkInstalled(pkg: string,
     let installed = false
 
     child.stdout.on('data', (chunk) => {
+        console.log(chunk.toString())
         if (chunk.toString().includes(check.string)) {
             installed = true
         }
