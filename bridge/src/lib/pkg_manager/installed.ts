@@ -3,9 +3,11 @@ import { spawn } from 'child_process';
 
 async function checkInstalled(pkg: string,
     callback?: (installed: boolean, error?: Error) => void): Promise<any> {
+    const platform = process.platform
 
     const check = CMD[pkg].check
-    const child = spawn(check.cmd, { shell: true })
+    const command = platform === 'win32' ? 'powershell.exe refreshenv;' + check.cmd : check.cmd
+    const child = spawn(command, { shell: true })
     let installed = false
 
     child.stdout.on('data', (chunk) => {
