@@ -27,7 +27,7 @@ const Button = ({ children,
     width,
     height }: Props): JSX.Element => {
     const style = theme === undefined ? themes['default'] : themes[theme]
-    const disabledStyle = disabled ? 'cursor-not-allowed bg-slate-800' : style['hover']
+    const disabledStyle = disabled ? 'cursor-not-allowed bg-slate-900' : style['hover']
     const w = 'w-32'
     const h = `h-${height}`
     return (

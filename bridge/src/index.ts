@@ -24,7 +24,6 @@ ipcMain.on('pkg:check', async (event, pkg) => {
   })
 })
 
-
 ipcMain.on('pkg:install', (event, pkgs) => {
   let command = ''
   const platform = process.platform;
@@ -34,9 +33,12 @@ ipcMain.on('pkg:install', (event, pkgs) => {
   elevatedShell({ command: command },
     async (error?: Error, data?: string | Buffer) => {
       console.log(data.toString())
+      if (data.toString() === 'restart') {
+        app.relaunch()
+        app.quit()
+      }
     })
 })
-
 
 // User Settings 
 ipcMain.on('settings:get', (event) => {
@@ -113,3 +115,4 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
