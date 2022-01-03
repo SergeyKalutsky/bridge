@@ -11,8 +11,8 @@ const startInfo = <><LoadingIcon />Проверяем установлены л�
 
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [info, setInfo] = useState<JSX.Element>(startInfo)
-    const [gitInstalled, setGitInstalled] = useState(false)
-    const [chocoInstalled, setChocoInstalled] = useState(false)
+    const [gitInstalled, setGitInstalled] = useState(null)
+    const [chocoInstalled, setChocoInstalled] = useState(null)
     const [disabled, setDisabled] = useState(false)
 
     useEffect(() => {
@@ -32,6 +32,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     useEffect(() => {
         if (gitInstalled !== null && chocoInstalled !== null) {
             setInfo(<>Проверка завершена</>)
+            setDisabled(false)
         }
     }, [gitInstalled, chocoInstalled])
 
@@ -44,7 +45,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         if (!chocoInstalled) { pkgs.push('choco') }
         if (!gitInstalled) { pkgs.push('git') }
         setDisabled(true)
-        setInfo(<>Выполняется установка не закрывайте окно...</>)
+        setInfo(<><LoadingIcon />Выполняется установка не закрывайте окно...</>)
         window.pkg.install(pkgs)
     }
     return (
