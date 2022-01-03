@@ -1,3 +1,4 @@
+import { LoadingIcon } from './components/common/Icons'
 import { useEffect, useState } from "react";
 import { Button } from "./components/common"
 import { LogoIcon } from './components/common/Icons';
@@ -41,12 +42,12 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         // setDisabled(true)
     }
     return (
-        <div className="w-full h-full flex flex-col gap-10 items-center justify-center bg-slate-800">
+        <div className="w-full h-full flex flex-col gap-10 items-center justify-center bg-slate-900">
             <LogoIcon />
             <div className="w-full h-2/4 flex flex-col items-center gap-10">
-                <h1 className="text-white font-medium text-3xl">Для работы BRIDGE требуется установка 🍫choco и 🔀git</h1>
+                <h1 className="text-white font-medium text-3xl">Для работы 🌉Bridge требуется установка 🍫choco и 🔀git</h1>
                 <div className="flex flex-col">
-                    <span className="text-white font-medium text-xl">{chocoInstalled ? checkMark : crossMark}Chocolotey</span>
+                    <span className="text-white font-medium text-xl flex flex-row items-center flex-center">{chocoInstalled ? <LoadingIcon /> : crossMark} Chocolotey</span>
                     <span className="text-white font-medium text-xl">{gitInstalled ? checkMark : crossMark}Git</span>
                 </div>
                 <div className="w-full h-full gap-3 flex items-center justify-center">
