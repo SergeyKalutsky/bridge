@@ -8,6 +8,7 @@ import ToggleBar from "./ToggleBar";
 import ToolBar from "./ToolBar";
 import Workspace from "./Workspace";
 import SideMenuHeader from "./SideMenuHeader";
+import PackageSpan from "./PackageSpan";
 
 
 export {
@@ -20,5 +21,6 @@ export {
     ToggleBar,
     ToolBar,
     SideMenuHeader,
-    Workspace
+    Workspace,
+    PackageSpan
 }

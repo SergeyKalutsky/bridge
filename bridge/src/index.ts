@@ -1,3 +1,4 @@
+import { spawn } from 'child_process';
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import { registerProjectAPI, registerGitAPI } from './lib/api/main'
 import { elevatedShell, checkInstalled } from './lib/pkg_manager'
@@ -18,10 +19,12 @@ const storage = require('electron-json-storage')
 registerProjectAPI()
 registerGitAPI()
 
-ipcMain.on('pkg:check', async (event, pkg) => {
-  checkInstalled(pkg, (installed) => {
-    event.reply('pkg:check', { installed: installed, pkg: pkg })
-  })
+ipcMain.on('pkg:check', async (event, pkgs) => {
+  for (const pkg of pkgs) {
+    checkInstalled(pkg, (installed) => {
+      event.reply('pkg:check', { installed: installed, pkg: pkg })
+    })
+  }
 })
 
 ipcMain.on('pkg:install', (event, pkgs) => {
@@ -32,7 +35,16 @@ ipcMain.on('pkg:install', (event, pkgs) => {
   }
   elevatedShell({ command: command },
     async (error?: Error, data?: string | Buffer) => {
-      console.log(data.toString())
+      if (data.toString() === 'done') {
+        const child = spawn('powershell.exe refreshenv', { shell: true })
+        child.on('close', () => {
+          for (const pkg of pkgs) {
+            checkInstalled(pkg, (installed) => {
+              event.reply('pkg:check', { installed: installed, pkg: pkg })
+            })
+          }
+        })
+      }
       if (data.toString() === 'restart') {
         app.relaunch()
         app.quit()

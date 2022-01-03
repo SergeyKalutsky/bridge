@@ -11,11 +11,18 @@ function windows(instance: instance,
   // In order to use pipe(for logging in this case) in Powershell (basically that >> | << thing) we need to wrap all command in ""
   command.push('-Command "Start-Process');
   command.push('powershell.exe');
-  command.push('-windowstyle hidden');
+  // command.push('-windowstyle hidden');
   command.push('-ArgumentList');
-  command.push("'" + instance.command + ' | Out-File C:\\Users\\skalu\\lesson3\\out.txt' + "'" + '"')
+  command.push("'")
+  command.push(instance.command)
+  // Log output of installation
+  // command.push(' | Out-File C:\\Users\\skalu\\lesson3\\out.txt')
+  // Debug
+  command.push("Read-Host ''Type ENTER to exit''")
+  command.push("'")
   command.push('-Verb runAs');
   command.push('-Wait');
+  command.push('"')
   const str_command = command.join(' ');
   const child = spawn(str_command, { shell: true })
   child.on('close', () => {

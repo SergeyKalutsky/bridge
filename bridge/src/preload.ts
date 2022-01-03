@@ -39,6 +39,6 @@ contextBridge.exposeInMainWorld('terminal', {
 
 contextBridge.exposeInMainWorld('pkg', {
     install: (pkgs: string[]) => ipcRenderer.send('pkg:install', pkgs),
-    checkInstall: (pkg: string) => ipcRenderer.send('pkg:check', pkg)
+    checkInstall: (pkgs: string[]) => ipcRenderer.send('pkg:check', pkgs)
 })
 

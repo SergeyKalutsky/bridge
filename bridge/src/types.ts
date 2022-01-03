@@ -34,7 +34,7 @@ declare global {
         },
         pkg: {
             install(pkgs: string[]): any
-            checkInstall(pkg: string): any
+            checkInstall(pkgs: string[]): any
         }
     }
 }
