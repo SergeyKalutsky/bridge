@@ -7,12 +7,31 @@ interface Props {
     setIsFirstLoad: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+const PackageSpan = ({ children, icon }): JSX.Element => {
+    let statusIcon: JSX.Element
+    switch (icon) {
+        case 'not installed':
+            statusIcon = <>❌</>
+            break
+        case 'installed':
+            statusIcon = <>✔️</>
+            break
+        case 'installing':
+            statusIcon = <LoadingIcon />
+    }
+    return (
+        <span className="text-white font-medium text-xl flex flex-row items-center flex-center">
+            {statusIcon}
+            {children}
+        </span>
+    )
+}
+
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [gitInstalled, setGitInstalled] = useState(false)
     const [chocoInstalled, setChocoInstalled] = useState(false)
     const [disabled, setDisabled] = useState(false)
-    const checkMark = <>✔️</>
-    const crossMark = <>❌</>
+
 
 
     useEffect(() => {
@@ -47,8 +66,8 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
             <div className="w-full h-2/4 flex flex-col items-center gap-10">
                 <h1 className="text-white font-medium text-3xl">Для работы 🌉Bridge требуется установка 🍫choco и 🔀git</h1>
                 <div className="flex flex-col">
-                    <span className="text-white font-medium text-xl flex flex-row items-center flex-center">{chocoInstalled ? <LoadingIcon /> : crossMark} Chocolotey</span>
-                    <span className="text-white font-medium text-xl">{gitInstalled ? checkMark : crossMark}Git</span>
+                    <PackageSpan icon={'installing'}>Chocolotey</PackageSpan>
+                    <PackageSpan icon={'not installed'}>Git</PackageSpan>
                 </div>
                 <div className="w-full h-full gap-3 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled}>
