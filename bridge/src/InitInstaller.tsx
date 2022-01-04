@@ -16,8 +16,8 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [disabled, setDisabled] = useState(false)
 
     useEffect(() => {
-        window.pkg.checkInstall(['git', 'choco'])
-
+        window.pkg.checkInstall(['choco', 'git'])
+        
         window.shared.incomingData("pkg:check", (data) => {
             switch (data.pkg) {
                 case 'git':
@@ -55,8 +55,8 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                 <span className="text-white font-medium text-3xl">Для работы 🌉Bridge требуется установка 🍫choco и 🔀git</span>
                 <span className="text-white font-medium text-2xl flex flex-row items-center justify-center">{info}</span>
                 <div className="flex flex-col">
-                    <PackageSpan icon={chocoInstalled ? 'installed': 'not installed'}>Chocolotey</PackageSpan>
-                    <PackageSpan icon={gitInstalled ? 'installed': 'not installed'}>Git</PackageSpan>
+                    <PackageSpan icon={chocoInstalled ? 'installed' : 'not installed'}>Chocolotey</PackageSpan>
+                    <PackageSpan icon={gitInstalled ? 'installed' : 'not installed'}>Git</PackageSpan>
                 </div>
                 <div className="w-full h-full gap-3 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled}>
