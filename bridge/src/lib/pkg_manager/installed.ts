@@ -1,6 +1,7 @@
 import CMD from "./cmds";
 import { spawn } from 'child_process';
 
+
 async function checkInstalled(pkg: string,
     callback?: (installed: boolean, error?: Error) => void): Promise<any> {
     const platform = process.platform
@@ -21,5 +22,4 @@ async function checkInstalled(pkg: string,
     })
 }
 
-
-export default checkInstalled
+export { checkInstalled }

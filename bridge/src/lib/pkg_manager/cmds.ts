@@ -7,6 +7,9 @@ const CMD = {
         check: {
             cmd: 'git --version',
             string: 'git version'
+        },
+        path: {
+            win32: ';C:\\Program Files\\Git\\cmd'
         }
     },
     vscode: {
@@ -32,6 +35,9 @@ const CMD = {
         check: {
             cmd: 'choco',
             string: 'Chocolatey'
+        },
+        path: {
+            win32: ';C:\\ProgramData\\chocolatey\\bin'
         }
     }
 }

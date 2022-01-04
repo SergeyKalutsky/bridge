@@ -1,7 +1,7 @@
-import { spawn } from 'child_process';
+import { exec, spawn } from 'child_process';
 import { instance } from './types'
 
-// powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -ArgumentList 'choco install -y git | Out-File C:\Users\skalu\lesson3\out.txt' -Verb runAs -Wait"
+// powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -windowstyle hidden -ArgumentList 'choco install -y rust | Out-File -append C:\Users\skalu\lesson3\out.txt' -Verb runAs -Wait"
 
 function windows(instance: instance,
   callback?: (error?: Error, data?: string | Buffer) => void): void {
@@ -26,7 +26,7 @@ function windows(instance: instance,
   const str_command = command.join(' ');
   const child = spawn(str_command, { shell: true })
   child.on('close', () => {
-    callback(null, 'done')
+      callback(null, 'refreshenv')
   })
   child.stdin.end(); // Otherwise PowerShell waits indefinitely on Windows 7.
 }
