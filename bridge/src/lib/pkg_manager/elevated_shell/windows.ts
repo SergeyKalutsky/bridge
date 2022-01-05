@@ -1,5 +1,7 @@
-import { exec, spawn } from 'child_process';
+import { spawn } from 'child_process'
 import { instance } from './types'
+import os from 'os'
+import path from 'path'
 
 // powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -windowstyle hidden -ArgumentList 'choco install -y rust | Out-File -append C:\Users\skalu\lesson3\out.txt' -Verb runAs -Wait"
 
@@ -11,20 +13,22 @@ function windows(instance: instance,
   // In order to use pipe(for logging in this case) in Powershell (basically that >> | << thing) we need to wrap all command in ""
   command.push('-Command "Start-Process');
   command.push('powershell.exe');
-  // command.push('-windowstyle hidden');
+  command.push('-windowstyle hidden');
   command.push('-ArgumentList');
-  command.push("'")
+  command.push("' & {")
   command.push(instance.command)
   // Log output of installation
-  // command.push(' | Out-File C:\\Users\\skalu\\lesson3\\out.txt')
-  // Debug
-  command.push("Read-Host ''Type ENTER to exit''")
+  const logPath = path.join(os.tmpdir(), 'initInstallBridge.log')
+  command.push(`} 2>&1 | Out-File ${logPath}`)
+  // Waits to press Enter before close for Debugging
+  // command.push("Read-Host ''Type ENTER to exit''")
   command.push("'")
   command.push('-Verb runAs');
   command.push('-Wait');
   command.push('"')
-  const str_command = command.join(' ');
-  const child = spawn(str_command, { shell: true })
+  const strCommand = command.join(' ');
+  console.log(strCommand)
+  const child = spawn(strCommand, { shell: true })
   child.on('close', () => {
       callback(null, 'refreshenv')
   })
