@@ -19,7 +19,7 @@ function windows(instance: instance,
   command.push(instance.command)
   // Log output of installation
   const logPath = path.join(os.tmpdir(), 'initInstallBridge.log')
-  command.push(`} 2>&1 | Out-File ${logPath}`)
+  command.push(`} 2>&1 | Out-File ${logPath} -Append`)
   // Waits to press Enter before close for Debugging
   // command.push("Read-Host ''Type ENTER to exit''")
   command.push("'")

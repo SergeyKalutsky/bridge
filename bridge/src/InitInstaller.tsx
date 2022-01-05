@@ -16,7 +16,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [disabled, setDisabled] = useState(false)
 
     useEffect(() => {
-        // window.pkg.checkInstall(['choco'])
+        window.pkg.checkInstall(['choco', 'git'])
         
         window.shared.incomingData("pkg:check", (data) => {
             switch (data.pkg) {

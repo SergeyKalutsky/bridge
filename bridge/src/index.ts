@@ -31,7 +31,6 @@ ipcMain.on('pkg:install', (event, pkgs) => {
   for (const pkg of pkgs) {
     command += CMD[pkg].install[platform] + '; '
   }
-  command = 'choco install -y rust; pip install boto3; pip install pygame; pip install discord.py; '
   elevatedShell({ command: command },
     async (error?: Error, data?: string | Buffer) => {
       if (data.toString() === 'refreshenv') {11
