@@ -1,5 +1,5 @@
 import { PackageSpan } from "./components/common";
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Button } from "./components/common"
 import { LoadingIcon, LogoIcon } from './components/common/Icons';
 
@@ -11,13 +11,15 @@ const startInfo = <><LoadingIcon />Проверяем установлены л�
 
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [info, setInfo] = useState<JSX.Element>(startInfo)
+    const [logs, setLogs] = useState<JSX.Element[]>([])
     const [gitInstalled, setGitInstalled] = useState(null)
     const [chocoInstalled, setChocoInstalled] = useState(null)
     const [disabled, setDisabled] = useState(false)
+    const ref = useRef(null)
 
     useEffect(() => {
-        window.pkg.checkInstall(['choco', 'git'])
-        
+        window.pkg.checkInstall(['choco'])
+
         window.shared.incomingData("pkg:check", (data) => {
             switch (data.pkg) {
                 case 'git':
@@ -27,7 +29,24 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                     setChocoInstalled(data.installed)
             }
         });
+        const scrollToBottom = () => {
+            ref.current?.scrollIntoView({ behavior: "smooth" })
+        }
+
+        window.shared.incomingData("pkg:getlogs", (data: string) => {
+            const logs = data.split(/\r?\n/)
+            setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
+            scrollToBottom()
+        });
     }, [])
+
+    useEffect(() => {
+        const fileContent = setInterval(() => {
+            window.pkg.getlogs()
+        }, 1000)
+
+        return () => clearInterval(fileContent);
+    }, []);
 
     useEffect(() => {
         if (gitInstalled !== null && chocoInstalled !== null) {
@@ -49,16 +68,19 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         window.pkg.install(pkgs)
     }
     return (
-        <div className="w-full h-full flex flex-col gap-10 items-center justify-center bg-slate-900">
+        <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">
             <LogoIcon />
-            <div className="w-full h-2/4 flex flex-col items-center gap-10">
-                <span className="text-white font-medium text-3xl">Для работы 🌉Bridge требуется установка 🍫choco и 🔀git</span>
+            <div className="w-full h-3/5 flex flex-col items-center gap-4">
+                <span className="text-white font-medium text-3xl text-ellipsis overflow-hidden whitespace-nowrap">Для работы 🌉Bridge требуется установка 🍫choco и 🔀git</span>
                 <span className="text-white font-medium text-2xl flex flex-row items-center justify-center">{info}</span>
                 <div className="flex flex-col">
                     <PackageSpan icon={chocoInstalled ? 'installed' : 'not installed'}>Chocolotey</PackageSpan>
                     <PackageSpan icon={gitInstalled ? 'installed' : 'not installed'}>Git</PackageSpan>
                 </div>
-                <div className="w-full h-full gap-3 flex items-center justify-center">
+                <div className="w-2/4 h-2/5 flex justify-center flex-col overflow-scroll bg-slate-800" ref={ref}>
+                    {logs}
+                </div>
+                <div className="w-full h-1/6 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled}>
                         {gitInstalled && chocoInstalled ? 'Продолжить' : 'Установить'}
                     </Button>
