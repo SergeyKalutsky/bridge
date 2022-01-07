@@ -18,7 +18,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const ref = useRef(null)
 
     useEffect(() => {
-        window.pkg.checkInstall(['choco'])
+        window.pkg.checkInstall(['choco', 'git'])
 
         window.shared.incomingData("pkg:check", (data) => {
             switch (data.pkg) {
