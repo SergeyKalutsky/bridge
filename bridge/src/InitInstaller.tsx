@@ -29,16 +29,22 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                     setChocoInstalled(data.installed)
             }
         });
-        const scrollToBottom = () => {
-            ref.current?.scrollIntoView({ behavior: "smooth" })
-        }
 
         window.shared.incomingData("pkg:getlogs", (data: string) => {
             const logs = data.split(/\r?\n/)
             setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
-            scrollToBottom()
         });
     }, [])
+
+    useEffect(() => {
+        const scrollToBottom = () => {
+            ref.current.scrollIntoView({
+                behavior: "smooth", block: 'end',
+                inline: 'nearest'
+            })
+        }
+        scrollToBottom()
+    }, [logs])
 
     useEffect(() => {
         const fileContent = setInterval(() => {
@@ -77,8 +83,9 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                     <PackageSpan icon={chocoInstalled ? 'installed' : 'not installed'}>Chocolotey</PackageSpan>
                     <PackageSpan icon={gitInstalled ? 'installed' : 'not installed'}>Git</PackageSpan>
                 </div>
-                <div className="w-2/4 h-2/5 flex justify-center flex-col overflow-scroll bg-slate-800" ref={ref}>
+                <div className="w-2/4 h-2/5 flex justify-center flex-col overflow-scroll bg-slate-800" >
                     {logs}
+                    <div ref={ref} />
                 </div>
                 <div className="w-full h-1/6 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled}>
