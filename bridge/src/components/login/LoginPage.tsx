@@ -59,6 +59,7 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
                         <KeyIcon />
                     </ImputForm>
                     <Button btnText='Вход' onClick={sendAuthUser} />
+                    <Button btnText='Гость' onClick={sendAuthUser} theme='teal' />
                 </div>
             </div>
         </div>

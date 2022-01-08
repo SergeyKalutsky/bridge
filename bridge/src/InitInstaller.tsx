@@ -83,7 +83,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                     <PackageSpan icon={chocoInstalled ? 'installed' : 'not installed'}>Chocolotey</PackageSpan>
                     <PackageSpan icon={gitInstalled ? 'installed' : 'not installed'}>Git</PackageSpan>
                 </div>
-                <div className="w-2/4 h-2/5 flex justify-center flex-col overflow-scroll bg-slate-800" >
+                <div className="w-3/4 h-2/5 flex justify-center flex-col overflow-scroll bg-slate-800" >
                     {logs}
                     <div ref={ref} />
                 </div>

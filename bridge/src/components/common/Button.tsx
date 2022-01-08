@@ -16,6 +16,10 @@ const themes = {
     purple: {
         base: 'rounded-md text-white bg-violet-500 font-medium',
         hover: 'hover:bg-violet-300'
+    },
+    teal: {
+        base: 'rounded-md text-white bg-teal-500 font-medium',
+        hover: 'hover:bg-teal-200'
     }
 }
 
