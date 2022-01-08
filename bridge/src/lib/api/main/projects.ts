@@ -2,7 +2,7 @@ import { ipcMain } from 'electron';
 import util from 'util'
 import path from 'path'
 import fs from 'fs'
-import { Settings } from 'src/types';
+import { Settings } from '../../../types';
 
 const storage = require('electron-json-storage')
 
