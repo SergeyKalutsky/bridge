@@ -81,7 +81,7 @@ const Projects = (): JSX.Element => {
     useEffect(() => {
         const localProjects = window.projects.getLocalProjectsNames()
         const settings = window.settings.get()
-        if (settings.user.login == 'guest') {
+        if (settings.user.type == 'guest') {
             const projects = []
             for (let i = 0; i < localProjects.length; i++) {
                 projects.push({
