@@ -45,7 +45,7 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
             .then(data => handleData(data))
     }
     const authGuest = (): void => {
-        window.settings.set({ user: 'guest' })
+        window.settings.set({ user: { type: 'guest', login: 'guest' } })
         setIslogin(false)
     }
     return (

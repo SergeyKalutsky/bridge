@@ -81,6 +81,18 @@ const Projects = (): JSX.Element => {
     useEffect(() => {
         const localProjects = window.projects.getLocalProjectsNames()
         const settings = window.settings.get()
+        if (settings.user.login == 'guest') {
+            const projects = []
+            for (let i = 0; i < localProjects.length; i++) {
+                projects.push({
+                    id: i,
+                    name: localProjects[i],
+                    islocal: true
+                })
+            }
+            setProjects(projects)
+            return
+        }
         fetchProjects(window.settings.get())
             .then(data => {
                 const projects = data.map((project: Project) => {
@@ -110,7 +122,7 @@ const Projects = (): JSX.Element => {
     return (
         <>
             <SideMenu activeToggle={activeToggle}>
-                <MenuHeader  onClick={dispatchCreateProject}/>
+                <MenuHeader onClick={dispatchCreateProject} />
                 {projects_list}
             </SideMenu>
             <ToggleBar handleToggle={handleToggle} />
