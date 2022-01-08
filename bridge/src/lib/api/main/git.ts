@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { git, parseGitDiff } from '../../git_api/index'
+import { git, parseGitDiff } from '../../simple_git'
 import path from 'path'
 import fs from 'fs'
 

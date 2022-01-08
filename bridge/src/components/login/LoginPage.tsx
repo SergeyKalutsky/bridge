@@ -33,16 +33,20 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
         }
         window.projects.mkbasedir(data)
     }
-    const onUserInputChange = e => {
+    const onUserInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setloginData({ ...loginData, login: e.target.value })
     };
-    const onPasswordInputChange = e => {
+    const onPasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setloginData({ ...loginData, password: e.target.value })
     };
-    const sendAuthUser = () => {
+    const sendAuthUser = (): void => {
         authUser(loginData)
             .then(response => response.json())
             .then(data => handleData(data))
+    }
+    const authGuest = (): void => {
+        window.settings.set({ user: 'guest' })
+        setIslogin(false)
     }
     return (
         <div className='flex justify-center items-center bg-stone-800 flex-col h-full'>
@@ -59,7 +63,7 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
                         <KeyIcon />
                     </ImputForm>
                     <Button btnText='Вход' onClick={sendAuthUser} />
-                    <Button btnText='Гость' onClick={sendAuthUser} theme='teal' />
+                    <Button btnText='Гость' onClick={authGuest} theme='teal' />
                 </div>
             </div>
         </div>

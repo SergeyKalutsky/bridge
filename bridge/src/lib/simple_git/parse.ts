@@ -7,12 +7,12 @@ const parseGitDiff = (diffOutput: string): ParsedGitDiff[] => {
   let fileIndex = 0
   let doPush = false
   for (const line of diffOutput.split(/\r?\n/)) {
-    if (line.substr(0, 4) === 'diff' && doPush) {
+    if (line.substring(0, 4) === 'diff' && doPush) {
       fileIndex++
       files.push([])
       files[fileIndex].push(line)
 
-    } else if (line.substr(0, 4) === 'diff') {
+    } else if (line.substring(0, 4) === 'diff') {
       files[fileIndex].push(line)
       doPush = true
 
