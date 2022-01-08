@@ -45,7 +45,9 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
             .then(data => handleData(data))
     }
     const authGuest = (): void => {
-        window.settings.set({ user: { type: 'guest', login: 'guest' } })
+        const data = { user: { type: 'guest', login: 'guest' } }
+        window.settings.set(data)
+        window.projects.mkbasedir(data.user)
         setIslogin(false)
     }
     return (
