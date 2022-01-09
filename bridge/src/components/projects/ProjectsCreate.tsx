@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Project } from './types'
 import { InputForm, Button } from '../common'
-import { createProject } from '../../lib/api/gitlab/index'
+import { createProject } from '../../lib/api/gitlab'
 
 interface Prop {
     addProject: (project: Project) => void
@@ -22,6 +22,10 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
 
 
     const handleClick = () => {
+        const settings = window.settings.get()
+        if (settings.user.type == 'guest'){
+            
+        }
         createProject(window.settings.get(), project)
             .then(data => addProject(data['project']))
     }

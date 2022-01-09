@@ -62,6 +62,21 @@ function diff() {
 
 }
 
+function init() {
+    return ipcMain.on('git:diff', (event, hash) => {
+        git.show(hash)
+            .then(result => {
+                event.returnValue = parseGitDiff(result)
+            })
+            .catch(err => {
+                event.returnValue = undefined
+            });
+    })
+
+}
+
+
+
 function registerGitAPI() {
     clone()
     log()
