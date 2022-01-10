@@ -148,16 +148,14 @@ function readActiveFile() {
 function listFiles() {
     return ipcMain.handle('projects:listfiles', async (event) => {
         const settings = storage.getSync('settings')
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const project_name = settings.active_project.name.replace(/ /g, '-')
-            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-            const result = walkSync(project_dir)
-            return result
-        })
+        const project_name = settings.active_project.name.replace(/ /g, '-')
+        const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+        const result = walkSync(project_dir)
+        return result
     })
 }
 
-function registerProjectAPI() {
+function registerProjectAPI(): void {
     mkbasedir()
     getlocalprojectsnames()
     deleteProject()

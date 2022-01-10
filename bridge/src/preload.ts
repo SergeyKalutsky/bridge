@@ -1,4 +1,6 @@
 import { contextBridge, ipcRenderer } from "electron"
+import { Settings } from "./types"
+import { Project } from "./components/projects/types"
 import { FileChanges, CreateInfo, ActivePath } from './types'
 import { ParsedGitDiff } from './components/git/types'
 
@@ -8,25 +10,25 @@ contextBridge.exposeInMainWorld('shared', {
 })
 
 contextBridge.exposeInMainWorld('settings', {
-    set: (settings: any): Promise<any> => ipcRenderer.invoke('settings:set', settings),
+    set: (settings: Settings): Promise<any> => ipcRenderer.invoke('settings:set', settings),
     get: (): any => ipcRenderer.sendSync('settings:get')
 })
 
 contextBridge.exposeInMainWorld('projects', {
     mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
-    delete: (project_name): any => ipcRenderer.send('projects:delete', project_name),
-    showFiles: (): Promise<any> => ipcRenderer.invoke('projects:listfiles'),
-    readActiveFile: (filepath: string): Promise<any> => ipcRenderer.invoke('projects:readactivefile', filepath),
-    writeActiveFile: (fileChange: FileChanges): any => ipcRenderer.send('projects:writeactivefile', fileChange),
-    createFile: (createInfo: CreateInfo): any => ipcRenderer.send('projects:createfile', createInfo),
-    createFolder: (createInfo: CreateInfo): any => ipcRenderer.send('projects:createfolder', createInfo),
-    deleteTreeElement: (activePath: ActivePath): any => ipcRenderer.send('projects:deletetreeelement', activePath),
-    mkprojectdir: (project_name: string): any => ipcRenderer.send('projects:mkprojectdir', project_name)
+    delete: (project_name): void => ipcRenderer.send('projects:delete', project_name),
+    showFiles: (): void => ipcRenderer.send('projects:listfiles'),
+    readActiveFile: (filepath: string): void => ipcRenderer.send('projects:readactivefile', filepath),
+    writeActiveFile: (fileChange: FileChanges): void => ipcRenderer.send('projects:writeactivefile', fileChange),
+    createFile: (createInfo: CreateInfo): void => ipcRenderer.send('projects:createfile', createInfo),
+    createFolder: (createInfo: CreateInfo): void => ipcRenderer.send('projects:createfolder', createInfo),
+    deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
+    mkprojectdir: (project_name: string): void => ipcRenderer.send('projects:mkprojectdir', project_name)
 })
 
 contextBridge.exposeInMainWorld('git', {
-    clone: (project: any) => ipcRenderer.send('git:clone', project),
+    clone: (project: Project) => ipcRenderer.send('git:clone', project),
     pull: () => ipcRenderer.send('git:pull'),
     push: () => ipcRenderer.send('git:push'),
     log: () => ipcRenderer.sendSync('git:log'),
