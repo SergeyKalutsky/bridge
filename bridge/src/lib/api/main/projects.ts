@@ -135,13 +135,12 @@ function createFile() {
 
 function readActiveFile() {
     return ipcMain.on('projects:readactivefile', async (event, filepath) => {
-        console.log(filepath)
+        const ext = filepath.split(".")[1];
         if (filepath === '') {
-            event.reply('projects:readactivefile', 'test')
+            event.reply('projects:readactivefile', {ext: ext, content: '', path: filepath})
         } else {
             const fileContent = await readFileAsync(filepath, 'utf-8')
-            console.log(fileContent)
-            event.reply('projects:readactivefile', fileContent)
+            event.reply('projects:readactivefile', {ext: ext, content: fileContent, path: filepath})
         }
     })
 
