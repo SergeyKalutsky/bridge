@@ -1,4 +1,5 @@
 import { ipcMain } from 'electron';
+import { Settings } from '../../../types';
 import { git, parseGitDiff } from '../../simple_git'
 import path from 'path'
 import fs from 'fs'
@@ -9,43 +10,46 @@ const BASE_DIR = storage.getDataPath()
 
 function clone() {
     return ipcMain.on('git:clone', (event, project) => {
-        const settings = storage.getSync('settings')
-        const project_name = project.name.replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-        if (!fs.existsSync(project_dir)) {
-            git.cwd(path.join(BASE_DIR, settings.user.login)).clone(project.http)
-        }
+        storage.get('settings', function (error: Error, settings: Settings) {
+            const project_name = project.name.replace(/ /g, '-')
+            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+            if (!fs.existsSync(project_dir)) {
+                git.cwd(path.join(BASE_DIR, settings.user.login)).clone(project.http)
+            }
+        })
     })
-
 }
 
 function log() {
     return ipcMain.on('git:log', (event) => {
-        const settings = storage.getSync('settings')
-        const project_name = settings.active_project.name.replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-        git.cwd(project_dir).log().then(result => {
-            event.returnValue = result['all']
+        storage.get('settings', function (error: Error, settings: Settings) {
+            const project_name = settings.active_project.name.replace(/ /g, '-')
+            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+            git.cwd(project_dir).log().then(result => {
+                event.returnValue = result['all']
+            })
+                .catch(err => { event.returnValue = []; console.log(err) })
         })
-            .catch(err => { event.returnValue = []; console.log(err) })
     })
 }
 
 function pull() {
     return ipcMain.on('git:pull', () => {
-        const settings = storage.getSync('settings')
-        const project_name = settings.active_project.name.replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-        git.cwd(project_dir).pull()
+        storage.get('settings', function (error: Error, settings: Settings) {
+            const project_name = settings.active_project.name.replace(/ /g, '-')
+            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+            git.cwd(project_dir).pull()
+        })
     })
 }
 
 function push() {
     return ipcMain.on('git:push', () => {
-        const settings = storage.getSync('settings')
-        const project_name = settings.active_project.name.replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-        git.cwd(project_dir).add('./*').commit('test').push()
+        storage.get('settings', function (error: Error, settings: Settings) {
+            const project_name = settings.active_project.name.replace(/ /g, '-')
+            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+            git.cwd(project_dir).add('./*').commit('test').push()
+        })
     })
 }
 
