@@ -20,6 +20,7 @@ declare global {
             createFile(createInfo: CreateInfo): any
             createFolder(createInfo: CreateInfo): any
             deleteTreeElement(activePath: ActivePath): any
+            mkprojectdir (project_name: string): any
         },
         git: {
             clone(project: Project): void
@@ -27,6 +28,7 @@ declare global {
             push(): void
             log(): Commit[]
             diff(hash: string): ParsedGitDiff[]
+            init(project_name: string): void 
         }
         terminal: {
             keystoke(e): any

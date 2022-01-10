@@ -47,6 +47,15 @@ function mkbasedir() {
     })
 }
 
+function mkprojectdir() {
+    return ipcMain.on('projects:mkprojectdir', (event, project_name) => {
+        storage.get('settings', function (error: Error, settings: Settings) {
+            const filePath = path.join(BASE_DIR, settings.user.login, project_name)
+            fs.mkdirSync(filePath, { recursive: true })
+        })
+    })
+}
+
 function getlocalprojectsnames() {
     return ipcMain.on('projects:getlocalprojectsnames', (event) => {
         storage.get('settings', function (error: Error, settings: Settings) {
@@ -158,6 +167,7 @@ function registerProjectAPI() {
     createFile()
     readActiveFile()
     listFiles()
+    mkprojectdir()
 }
 
 export default registerProjectAPI

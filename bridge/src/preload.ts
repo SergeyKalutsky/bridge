@@ -21,7 +21,8 @@ contextBridge.exposeInMainWorld('projects', {
     writeActiveFile: (fileChange: FileChanges): any => ipcRenderer.send('projects:writeactivefile', fileChange),
     createFile: (createInfo: CreateInfo): any => ipcRenderer.send('projects:createfile', createInfo),
     createFolder: (createInfo: CreateInfo): any => ipcRenderer.send('projects:createfolder', createInfo),
-    deleteTreeElement: (activePath: ActivePath): any => ipcRenderer.send('projects:deletetreeelement', activePath)
+    deleteTreeElement: (activePath: ActivePath): any => ipcRenderer.send('projects:deletetreeelement', activePath),
+    mkprojectdir: (project_name: string): any => ipcRenderer.send('projects:mkprojectdir', project_name)
 })
 
 contextBridge.exposeInMainWorld('git', {
@@ -29,7 +30,8 @@ contextBridge.exposeInMainWorld('git', {
     pull: () => ipcRenderer.send('git:pull'),
     push: () => ipcRenderer.send('git:push'),
     log: () => ipcRenderer.sendSync('git:log'),
-    diff: (hash: string): ParsedGitDiff[] => ipcRenderer.sendSync('git:diff', hash)
+    diff: (hash: string): ParsedGitDiff[] => ipcRenderer.sendSync('git:diff', hash),
+    init: (project_name: string) => ipcRenderer.send('git:init', project_name)
 })
 
 

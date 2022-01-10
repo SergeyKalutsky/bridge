@@ -54,7 +54,7 @@ function push() {
 }
 
 function diff() {
-    return ipcMain.on('git:diff', (event, hash) => {
+    return ipcMain.on('git:init', (event, hash) => {
         git.show(hash)
             .then(result => {
                 event.returnValue = parseGitDiff(result)
@@ -67,26 +67,23 @@ function diff() {
 }
 
 function init() {
-    return ipcMain.on('git:diff', (event, hash) => {
-        git.show(hash)
-            .then(result => {
-                event.returnValue = parseGitDiff(result)
-            })
-            .catch(err => {
-                event.returnValue = undefined
-            });
+    return ipcMain.on('git:init', (event, project_name) => {
+        storage.get('settings', function (error: Error, settings: Settings) {
+            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+            git.cwd(project_dir).init()
+        })
     })
 
 }
 
 
-
-function registerGitAPI() {
+function registerGitAPI(): void {
     clone()
     log()
     pull()
     push()
     diff()
+    init()
 }
 
 export default registerGitAPI
