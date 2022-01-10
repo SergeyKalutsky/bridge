@@ -73,10 +73,15 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
         return elements
     }
 
+    useEffect(() => {
+        window.shared.incomingData('projects:listfiles', (data) => {
+            setFileTree(buildFileTree(data))
+        })
+    }, [])
     // sets initial file structure
     useEffect(() => {
         window.projects.showFiles()
-            .then(val => setFileTree(buildFileTree(val)))
+
     }, [update])
 
     // updates active selected path

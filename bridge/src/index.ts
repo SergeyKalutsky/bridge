@@ -24,6 +24,7 @@ registerGitAPI()
 
 const readFileAsync = util.promisify(fs.readFile)
 
+
 ipcMain.on('pkg:getlogs', async (event, pkgs) => {
   const logPath = path.join(os.tmpdir(), 'initInstallBridge.log')
   if (fs.existsSync(logPath)) {

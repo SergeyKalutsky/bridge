@@ -24,16 +24,24 @@ const Editor = (): JSX.Element => {
         }
     }
     useEffect(() => {
+        const onChange = (newValue: string) => {
+            // window.projects.writeActiveFile({ filepath: activePath.path, fileContent: newValue })
+            console.log(newValue)
+        }
+        window.shared.incomingData('projects:readactivefile', (data) => {
+            console.log('here')
+            console.log(data)
+            setEditor(buildEditor(ACE_MODS['py'], data, false, onChange))
+            // const ext = activePath.path.split(".")[1];
+        })
+
+    }, [])
+
+    useEffect(() => {
         if (activePath !== null && !activePath.isDirectory) {
-            const onChange = (newValue: string) => {
-                window.projects.writeActiveFile({ filepath: activePath.path, fileContent: newValue })
-            }
+
             window.projects.readActiveFile(activePath.path)
 
-                .then((value) => {
-                    const ext = activePath.path.split(".")[1];
-                    setEditor(buildEditor(ACE_MODS[ext], value, false, onChange))
-                })
         }
     }, [activePath])
     return (

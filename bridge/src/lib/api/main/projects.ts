@@ -134,24 +134,27 @@ function createFile() {
 }
 
 function readActiveFile() {
-    return ipcMain.handle('projects:readactivefile', async (event, filepath) => {
+    return ipcMain.on('projects:readactivefile', async (event, filepath) => {
+        console.log(filepath)
         if (filepath === '') {
-            return ''
+            event.reply('projects:readactivefile', 'test')
         } else {
             const fileContent = await readFileAsync(filepath, 'utf-8')
-            return fileContent
+            console.log(fileContent)
+            event.reply('projects:readactivefile', fileContent)
         }
     })
 
 }
 
 function listFiles() {
-    return ipcMain.handle('projects:listfiles', async (event) => {
-        const settings = storage.getSync('settings')
-        const project_name = settings.active_project.name.replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-        const result = walkSync(project_dir)
-        return result
+    return ipcMain.on('projects:listfiles', async (event) => {
+        storage.get('settings', function (error: Error, settings: Settings) {
+            const project_name = settings.active_project.name.replace(/ /g, '-')
+            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+            const result = walkSync(project_dir)
+            event.reply('projects:listfiles', result)
+        })
     })
 }
 
