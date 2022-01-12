@@ -13,13 +13,12 @@ type Props = {
 const DeleteProjectPopUp = ({ name, id, removeProject, open, setOpen }: Props): JSX.Element => {
 
     const handleClick = () => {
-        const settings = window.settings.get()
-        if (settings.active_project !== undefined && settings.active_project.id === id) {
-            settings.active_project = undefined;
-            console.log(settings)
-            window.settings.set(settings)
+        let active_project = window.settings.get('active_project')
+        if (active_project !== undefined && active_project.id === id) {
+            active_project = undefined;
+            window.settings.set(active_project)
         }
-        deleteProject(settings, id)
+        deleteProject(window.settings.get('user'), id)
         window.projects.delete(name)
         removeProject(id)
         setOpen(false)

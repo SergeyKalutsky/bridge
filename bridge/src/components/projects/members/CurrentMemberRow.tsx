@@ -18,7 +18,7 @@ const CurrentMemberRow = ({ member,
     removeMember }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const hanleClose = () => {
-        deleteMember(window.settings.get(), project_id, member.id)
+        deleteMember(window.settings.get('user'), project_id, member.id)
         removeMember(member)
         setOpen(false)
     }

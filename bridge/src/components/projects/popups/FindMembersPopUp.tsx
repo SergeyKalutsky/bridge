@@ -36,7 +36,7 @@ const FindMembersPopUp = ({ membersCurrent,
     }
 
     useEffect(() => {
-        findUser(window.settings.get(), search)
+        findUser(window.settings.get('user'), search)
             .then(data => setmemberFound(setMemberCurrent(data)))
     }, [search, membersCurrent])
 
@@ -51,7 +51,7 @@ const FindMembersPopUp = ({ membersCurrent,
                         <Button
                             disabled={memberFound.iscurrent == false ? false : true}
                             onClick={() => {
-                                addProjectMember(window.settings.get(), memberFound.id, project_id)
+                                addProjectMember(window.settings.get('user'), memberFound.id, project_id)
                                 addMember(memberFound)
                                 setOpen(false)
                             }} btnText='Пригласить' />

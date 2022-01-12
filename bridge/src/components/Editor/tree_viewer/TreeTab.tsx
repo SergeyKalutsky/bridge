@@ -11,11 +11,11 @@ interface Props {
 }
 
 const TreeTab = ({ activePath, forceUpdate }: Props): JSX.Element => {
-    const settigns = window.settings.get()
+    const active_project = window.settings.get('active_project')
     return (
         <div className="tree-tab">
             <div className="project-name">
-                {settigns.active_project.name}
+                {active_project.name}
             </div>
             <div className="file-icons">
                 <IconContext.Provider value={{ color: 'navy', size: '25', className: 'file-icon' }}>

@@ -18,8 +18,8 @@ const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects }: Props)
         updateProjects({ ...project, islocal: true })
     }
     const onDeleteClick = () => {
-        const settings = window.settings.get()
-        deleteMember(settings, project.id, settings.user.id)
+        const user = window.settings.get('user')
+        deleteMember(user, project.id, user.id)
         setOpen(false)
     }
     return (

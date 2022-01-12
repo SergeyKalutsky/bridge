@@ -80,8 +80,8 @@ const Projects = (): JSX.Element => {
 
     useEffect(() => {
         const localProjects = window.projects.getLocalProjectsNames()
-        const settings = window.settings.get()
-        if (settings.user.type == 'guest') {
+        const user = window.settings.get('user')
+        if (user.type == 'guest') {
             const projects = []
             for (let i = 0; i < localProjects.length; i++) {
                 projects.push({
@@ -93,11 +93,12 @@ const Projects = (): JSX.Element => {
             setProjects(projects)
             return
         }
-        fetchProjects(window.settings.get())
+        fetchProjects(user)
             .then(data => {
                 const projects = data.map((project: Project) => {
                     project.islocal = localProjects.includes(project.name)
-                    project.isactive = settings.active_project !== undefined && settings.active_project.id == project.id
+                    const active_project = window.settings.get('active_project')
+                    project.isactive = active_project !== undefined && active_project.id == project.id
                     return project
                 })
                 setProjects(projects)

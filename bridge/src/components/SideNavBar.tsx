@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {PopUp, Button, IconButton} from '../components/common';
+import { PopUp, Button, IconButton } from '../components/common';
 import { Link, useHistory } from 'react-router-dom'
 import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './common/Icons';
 
@@ -8,8 +8,8 @@ const SideNavBar = (): JSX.Element => {
     const history = useHistory()
     const [open, setOpen] = useState(false)
     const checkActiveProject = (path: string): void => {
-        const settigns = window.settings.get()
-        'active_project' in settigns && settigns.active_project !== undefined ?
+        const active_project = window.settings.get('active_project')
+        active_project !== undefined ?
             history.push(path) :
             setOpen(true)
     }

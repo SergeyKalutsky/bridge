@@ -26,7 +26,7 @@ const ProjectMembers = ({ project_id }: Props): JSX.Element => {
         setMembersCurrent(newMemberList)
     }
     useEffect(() => {
-        listProjectMembers(window.settings.get(), project_id)
+        listProjectMembers(window.settings.get('user'), project_id)
             .then(data => data !== null ? setMembersCurrent(data) : null)
     }, [project_id])
     return (

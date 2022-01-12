@@ -17,8 +17,7 @@ const MembersList = ({ member,
         <div className='w-2/4 mt-5 flex flex-row text-2xl text-white items-center justify-center'>
             {localMember.name}
             <button disabled={localMember.iscurrent == false ? false : true} onClick={() => {
-                const settings = window.settings.get()
-                addProjectMember(settings, member.id, project_id)
+                addProjectMember(window.settings.get('user'), member.id, project_id)
                 setlocalMember({ ...localMember, iscurrent: true })
                 addMember(member)
             }}>Пригласить</button>
