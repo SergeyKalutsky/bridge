@@ -27,7 +27,6 @@ const Editor = (): JSX.Element => {
         window.shared.incomingData('projects:readactivefile', (data) => {
             const onChange = (newValue: string) => {
                 window.projects.writeActiveFile({ filepath: data.path, fileContent: newValue })
-                console.log(newValue)
             }
             setEditor(buildEditor(ACE_MODS[data.ext], data.content, false, onChange))
         })

@@ -15,7 +15,8 @@ const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 
-const storage = require('electron-json-storage')
+const Store = require('electron-store')
+const store = new Store()
 
 // ipcMain APIs 
 registerProjectAPI()
@@ -65,14 +66,17 @@ ipcMain.on('pkg:install', (event, pkgs) => {
 
 // User Settings 
 ipcMain.on('settings:get', (event) => {
-  event.returnValue = storage.getSync('settings')
+  const settings = store.get('settings')
+  console.log(settings)
+  event.returnValue = settings
 })
 
 
 ipcMain.handle('settings:set', (event, new_settings) => {
-  let settings = storage.getSync('settings')
-  settings = { ...settings, ...new_settings }
-  storage.set('settings', settings)
+  store.set('settings', new_settings)
+  // let settings = storage.getSync('settings')
+  // settings = { ...settings, ...new_settings }
+  // storage.set('settings', settings)
 })
 
 // Usual Stuff

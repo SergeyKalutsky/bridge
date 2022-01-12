@@ -13,8 +13,9 @@ export default function App(): JSX.Element {
 
     useEffect(() => {
         const settings = window.settings.get()
+        console.log(settings)
         setUserSettingLoaded(true)
-        'user' in settings ? setIslogin(false) : setIslogin(true)
+        settings !== undefined ? setIslogin(false) : setIslogin(true)
     }, [])
 
     useEffect(() => {
@@ -30,6 +31,6 @@ export default function App(): JSX.Element {
             setContent(<AppContent />)
         }
     }, [userSettingsLoaded, isFirstLoad, islogin])
-    
+
     return <>{content}</>
 }

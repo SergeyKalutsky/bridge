@@ -78,6 +78,7 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
             setFileTree(buildFileTree(data))
         })
     }, [])
+    
     // sets initial file structure
     useEffect(() => {
         window.projects.showFiles()
