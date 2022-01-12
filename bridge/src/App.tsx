@@ -12,10 +12,9 @@ export default function App(): JSX.Element {
     const [content, setContent] = useState<JSX.Element>(null)
 
     useEffect(() => {
-        const settings = window.settings.get()
-        console.log(settings)
+        const user = window.settings.get('user')
         setUserSettingLoaded(true)
-        settings !== undefined ? setIslogin(false) : setIslogin(true)
+        user !== undefined ? setIslogin(false) : setIslogin(true)
     }, [])
 
     useEffect(() => {

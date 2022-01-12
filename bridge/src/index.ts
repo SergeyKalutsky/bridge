@@ -19,7 +19,7 @@ const Store = require('electron-store')
 const store = new Store()
 
 // ipcMain APIs 
-registerProjectAPI()
+registerProjectAPI(store)
 registerGitAPI()
 
 
@@ -65,18 +65,13 @@ ipcMain.on('pkg:install', (event, pkgs) => {
 })
 
 // User Settings 
-ipcMain.on('settings:get', (event) => {
-  const settings = store.get('settings')
-  console.log(settings)
-  event.returnValue = settings
+ipcMain.on('settings:get', (event, field) => {
+  event.returnValue = store.get(field)
 })
 
 
-ipcMain.handle('settings:set', (event, new_settings) => {
-  store.set('settings', new_settings)
-  // let settings = storage.getSync('settings')
-  // settings = { ...settings, ...new_settings }
-  // storage.set('settings', settings)
+ipcMain.handle('settings:set', (event, data) => {
+  store.set(data)
 })
 
 // Usual Stuff

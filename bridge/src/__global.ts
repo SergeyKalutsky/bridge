@@ -9,8 +9,8 @@ declare global {
             incomingData(channel, callback): any;
         };
         settings: {
-            set(settings: any): Promise<any>;
-            get(): any;
+            set(val: any): Promise<any>;
+            get(key: string): any;
         };
         projects: {
             mkbasedir(data: any): Promise<any>;

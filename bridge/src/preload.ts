@@ -1,5 +1,4 @@
 import { contextBridge, ipcRenderer } from "electron"
-import { Settings } from "./types"
 import { Project } from "./components/projects/types"
 import { FileChanges, CreateInfo, ActivePath } from './types'
 import { ParsedGitDiff } from './components/git/types'
@@ -10,8 +9,8 @@ contextBridge.exposeInMainWorld('shared', {
 })
 
 contextBridge.exposeInMainWorld('settings', {
-    set: (settings: Settings): Promise<any> => ipcRenderer.invoke('settings:set', settings),
-    get: (): any => ipcRenderer.sendSync('settings:get')
+    set: (val: any): Promise<any> => ipcRenderer.invoke('settings:set', val),
+    get: (key: string): any => ipcRenderer.sendSync('settings:get', key)
 })
 
 contextBridge.exposeInMainWorld('projects', {

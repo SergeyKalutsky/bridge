@@ -2,7 +2,6 @@ import { ipcMain } from 'electron';
 import util from 'util'
 import path from 'path'
 import fs from 'fs'
-import { Settings } from '../../../types';
 
 const storage = require('electron-json-storage')
 
@@ -47,32 +46,26 @@ function mkbasedir() {
     })
 }
 
-function mkprojectdir() {
+function mkprojectdir(store) {
     return ipcMain.on('projects:mkprojectdir', (event, project_name) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const filePath = path.join(BASE_DIR, settings.user.login, project_name)
-            fs.mkdirSync(filePath, { recursive: true })
-        })
+        const filePath = path.join(BASE_DIR, store.get('user.login'), project_name)
+        fs.mkdirSync(filePath, { recursive: true })
     })
 }
 
-function getlocalprojectsnames() {
+function getlocalprojectsnames(store) {
     return ipcMain.on('projects:getlocalprojectsnames', (event) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const filePath = path.join(BASE_DIR, settings.user.login)
-            event.returnValue = fs.readdirSync(filePath)
-        });
+        const filePath = path.join(BASE_DIR, store.get('user.login'))
+        event.returnValue = fs.readdirSync(filePath)
     })
 }
 
-function deleteProject() {
+function deleteProject(store) {
     return ipcMain.on('projects:delete', (event, project_name) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const filePath = path.join(BASE_DIR,
-                settings.user.login,
-                project_name.replace(/ /g, '-'))
-            fs.rmSync(filePath, { recursive: true })
-        })
+        const filePath = path.join(BASE_DIR,
+            store.get('user.login'),
+            project_name.replace(/ /g, '-'))
+        fs.rmSync(filePath, { recursive: true })
     })
 }
 
@@ -94,42 +87,37 @@ function writeActiveFile() {
     })
 }
 
-function createFolder() {
+function createFolder(store) {
     return ipcMain.on('projects:createfolder', (event, data) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            if (data.activePath === null) {
-                const project_name = settings.active_project.name.replace(/ /g, '-')
-                const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-                const folderPath = path.join(project_dir, data.name)
-                fs.mkdirSync(folderPath)
-            } else if (data.activePath.isDirectory) {
-                const folderPath = path.join(data.activePath.path, data.name)
-                fs.mkdirSync(folderPath)
-            } else {
-                const folderPath = path.join(path.dirname(data.activePath.path), data.name)
-                fs.mkdirSync(folderPath)
-            }
-        })
+        if (data.activePath === null) {
+            const project_name = store.get('active_project.name')
+            const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+            const folderPath = path.join(project_dir, data.name)
+            fs.mkdirSync(folderPath)
+        } else if (data.activePath.isDirectory) {
+            const folderPath = path.join(data.activePath.path, data.name)
+            fs.mkdirSync(folderPath)
+        } else {
+            const folderPath = path.join(path.dirname(data.activePath.path), data.name)
+            fs.mkdirSync(folderPath)
+        }
     })
-
 }
 
-function createFile() {
+function createFile(store) {
     return ipcMain.on('projects:createfile', (event, data) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            if (data.activePath === null) {
-                const project_name = settings.active_project.name.replace(/ /g, '-')
-                const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-                const filePath = path.join(project_dir, data.name)
-                fs.closeSync(fs.openSync(filePath, 'w'))
-            } else if (data.activePath.isDirectory) {
-                const filePath = path.join(data.activePath.path, data.name)
-                fs.closeSync(fs.openSync(filePath, 'w'))
-            } else {
-                const filePath = path.join(path.dirname(data.activePath.path), data.name)
-                fs.closeSync(fs.openSync(filePath, 'w'))
-            }
-        })
+        if (data.activePath === null) {
+            const project_name = store.get('active_project.name')
+            const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+            const filePath = path.join(project_dir, data.name)
+            fs.closeSync(fs.openSync(filePath, 'w'))
+        } else if (data.activePath.isDirectory) {
+            const filePath = path.join(data.activePath.path, data.name)
+            fs.closeSync(fs.openSync(filePath, 'w'))
+        } else {
+            const filePath = path.join(path.dirname(data.activePath.path), data.name)
+            fs.closeSync(fs.openSync(filePath, 'w'))
+        }
     })
 }
 
@@ -137,37 +125,36 @@ function readActiveFile() {
     return ipcMain.on('projects:readactivefile', async (event, filepath) => {
         const ext = filepath.split(".")[1];
         if (filepath === '') {
-            event.reply('projects:readactivefile', {ext: ext, content: '', path: filepath})
+            event.reply('projects:readactivefile', { ext: ext, content: '', path: filepath })
         } else {
             const fileContent = await readFileAsync(filepath, 'utf-8')
-            event.reply('projects:readactivefile', {ext: ext, content: fileContent, path: filepath})
+            event.reply('projects:readactivefile', { ext: ext, content: fileContent, path: filepath })
         }
     })
 
 }
 
-function listFiles() {
+function listFiles(store) {
     return ipcMain.on('projects:listfiles', async (event) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const project_name = settings.active_project.name.replace(/ /g, '-')
-            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
+            const project_name = store.get('active_project.name')
+            const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
             const result = walkSync(project_dir)
             event.reply('projects:listfiles', result)
         })
-    })
 }
 
-function registerProjectAPI(): void {
+function registerProjectAPI(store: any): void {
     mkbasedir()
-    getlocalprojectsnames()
-    deleteProject()
     deleteTreeElement()
     writeActiveFile()
-    createFolder()
-    createFile()
     readActiveFile()
-    listFiles()
-    mkprojectdir()
+
+    getlocalprojectsnames(store)
+    deleteProject(store)
+    createFolder(store)
+    createFile(store)
+    listFiles(store)
+    mkprojectdir(store)
 }
 
 export default registerProjectAPI
