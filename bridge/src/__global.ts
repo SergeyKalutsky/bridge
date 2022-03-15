@@ -11,6 +11,7 @@ declare global {
         settings: {
             set(val: any): Promise<any>;
             get(key: string): any;
+            del(key: string): Promise<any>
         };
         projects: {
             mkbasedir(data: any): Promise<any>;

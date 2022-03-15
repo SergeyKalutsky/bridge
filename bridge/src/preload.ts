@@ -10,7 +10,9 @@ contextBridge.exposeInMainWorld('shared', {
 
 contextBridge.exposeInMainWorld('settings', {
     set: (val: any): Promise<any> => ipcRenderer.invoke('settings:set', val),
-    get: (key: string): any => ipcRenderer.sendSync('settings:get', key)
+    get: (key: string): any => ipcRenderer.sendSync('settings:get', key),
+    del: (key: string): any => ipcRenderer.invoke('settings:del', key)
+
 })
 
 contextBridge.exposeInMainWorld('projects', {

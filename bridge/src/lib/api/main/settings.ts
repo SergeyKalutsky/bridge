@@ -13,9 +13,17 @@ function set() {
     })
 }
 
+
+function del () {
+    return ipcMain.handle('settings:del', (event, data) => {
+        store.delete(data)
+    })
+}
+
 function settingsAPI(): void {
     get()
     set()
+    del()
 }
 
 export default settingsAPI
