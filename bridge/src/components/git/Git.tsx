@@ -10,13 +10,8 @@ const Git = (): JSX.Element => {
   const [commitList, setCommitList] = useState<Commit[]>()
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const commits = window.git.log()
-      setCommitList(commits)
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
+    const commits = window.git.log()
+    setCommitList(commits)
   }, [])
   return (
     <>
