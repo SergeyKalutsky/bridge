@@ -18,7 +18,10 @@ const DeleteProjectPopUp = ({ name, id, removeProject, open, setOpen }: Props): 
             active_project = undefined;
             window.settings.set(active_project)
         }
-        deleteProject(window.settings.get('user'), id)
+        const user = window.settings.get('user')
+        if (user.login != 'guest') {
+            deleteProject(window.settings.get('user'), id)
+        }
         window.projects.delete(name)
         removeProject(id)
         setOpen(false)
