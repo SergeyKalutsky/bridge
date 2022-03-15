@@ -5,6 +5,7 @@ import ProjectItem from './ProjectItem';
 import ProjectMembers from './members/ProjectMembers'
 import MenuHeader from './MenuHeader';
 import { fetchProjects } from '../../lib/api/gitlab/index'
+import { createProject } from '../../lib/api/gitlab'
 import { Project } from './types';
 
 
@@ -46,10 +47,20 @@ const Projects = (): JSX.Element => {
     }
 
     const addProject = (project: Project) => {
-        window.git.clone(project)
+        
+        const user = window.settings.get('user')
+        if (user.type == 'guest'){
+            window.projects.mkprojectdir(project.name)
+            window.git.init(project.name)
+        } else {
+            createProject(user, project)
+             .then(data => window.git.clone(data['project']))
+        }
+        
         project.islocal = true
         setProjects([...projects, project])
         dispatch({ type: 'home' })
+        
     }
 
     const setActiveProject = (project_id: number) => {

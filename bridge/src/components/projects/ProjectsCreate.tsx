@@ -22,14 +22,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
 
 
     const handleClick = () => {
-        const user = window.settings.get('user')
-        if (user.type == 'guest'){
-            window.projects.mkprojectdir(project.name)
-            window.git.init(project.name)
-            return
-        }
-        createProject(user, project)
-            .then(data => addProject(data['project']))
+        addProject(project)
     }
     return (
         <>
