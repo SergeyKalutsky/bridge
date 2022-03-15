@@ -20,7 +20,6 @@ const Git = (): JSX.Element => {
   }, [])
   return (
     <>
-    hello
       <GitMenu setGitDiffs={setGitDiffs} commitList={commitList} />
       <WorkspaceGit gitDiffs={gitDiffs} />
     </>

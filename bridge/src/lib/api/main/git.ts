@@ -1,60 +1,45 @@
-import { app, ipcMain } from 'electron';
-import { Settings } from '../../../types';
+import { ipcMain } from 'electron';
+import { store, BASE_DIR } from './storage'
 import { git, parseGitDiff } from '../../simple_git'
 import path from 'path'
 import fs from 'fs'
 
-const Store = require('electron-store')
-const BASE_DIR = path.join(app.getPath('userData'), 'storage')
-const store = new Store()
-
-
-const storage = require('electron-json-storage')
-const BASE_DIR = storage.getDataPath()
 
 
 function clone() {
     return ipcMain.on('git:clone', (event, project) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const project_name = project.name.replace(/ /g, '-')
-            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-            if (!fs.existsSync(project_dir)) {
-                git.cwd(path.join(BASE_DIR, settings.user.login)).clone(project.http)
-            }
-        })
+        const project_name = project.name.replace(/ /g, '-')
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        if (!fs.existsSync(project_dir)) {
+            git.cwd(path.join(BASE_DIR, store.get('user.login'))).clone(project.http)
+        }
     })
 }
 
 function log() {
     return ipcMain.on('git:log', (event) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const project_name = settings.active_project.name.replace(/ /g, '-')
-            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-            git.cwd(project_dir).log().then(result => {
-                event.returnValue = result['all']
-            })
-                .catch(err => { event.returnValue = []; console.log(err) })
+        const project_name = store.get('active_project.name').replace(/ /g, '-')
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        git.cwd(project_dir).log().then(result => {
+            event.returnValue = result['all']
         })
+            .catch(err => { event.returnValue = []; console.log(err) })
     })
 }
 
 function pull() {
     return ipcMain.on('git:pull', () => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const project_name = settings.active_project.name.replace(/ /g, '-')
-            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-            git.cwd(project_dir).pull()
-        })
+        const project_name = store.get('active_project.name').replace(/ /g, '-')
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        git.cwd(project_dir).pull()
     })
 }
 
 function push() {
     return ipcMain.on('git:push', () => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const project_name = settings.active_project.name.replace(/ /g, '-')
-            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-            git.cwd(project_dir).add('./*').commit('test').push()
-        })
+        const project_name = store.get('active_project.name').replace(/ /g, '-')
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        git.cwd(project_dir).add('./*').commit('test').push()
     })
 }
 
@@ -73,12 +58,9 @@ function diff() {
 
 function init() {
     return ipcMain.on('git:init', (event, project_name) => {
-        storage.get('settings', function (error: Error, settings: Settings) {
-            const project_dir = path.join(BASE_DIR, settings.user.login, project_name)
-            git.cwd(project_dir).init()
-        })
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        git.cwd(project_dir).init()
     })
-
 }
 
 
