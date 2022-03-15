@@ -44,7 +44,7 @@ function push() {
 }
 
 function diff() {
-    return ipcMain.on('git:init', (event, hash) => {
+    return ipcMain.on('git:diff', (event, hash) => {
         git.show(hash)
             .then(result => {
                 event.returnValue = parseGitDiff(result)
