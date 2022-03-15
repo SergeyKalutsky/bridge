@@ -3,7 +3,7 @@ import SideMenu from '../common/SideMenu';
 import SideMenuHeader from '../common/SideMenuHeader';
 import { useState } from 'react'
 import CommitRow from './CommitRow'
-import { GitDiff, Commit } from './Git'
+import { GitDiff, Commit } from './types'
 
 
 type Props = {

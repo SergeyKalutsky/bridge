@@ -1,8 +1,13 @@
-import { ipcMain } from 'electron';
+import { app, ipcMain } from 'electron';
 import { Settings } from '../../../types';
 import { git, parseGitDiff } from '../../simple_git'
 import path from 'path'
 import fs from 'fs'
+
+const Store = require('electron-store')
+const BASE_DIR = path.join(app.getPath('userData'), 'storage')
+const store = new Store()
+
 
 const storage = require('electron-json-storage')
 const BASE_DIR = storage.getDataPath()
@@ -77,7 +82,7 @@ function init() {
 }
 
 
-function registerGitAPI(): void {
+function gitAPI(): void {
     clone()
     log()
     pull()
@@ -86,4 +91,4 @@ function registerGitAPI(): void {
     init()
 }
 
-export default registerGitAPI
+export default gitAPI

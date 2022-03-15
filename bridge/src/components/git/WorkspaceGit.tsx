@@ -3,7 +3,7 @@ import Workspace from '../common/Workspace'
 import ReactDiffViewer from 'react-diff-viewer';
 import ToolBar from '../common/ToolBar'
 import darkModeStyle from './DiffViewerStyles'
-import { GitDiff } from './Git'
+import { GitDiff } from './types'
 import Switch from "react-switch";
 import DropDown from './DropDown';
 

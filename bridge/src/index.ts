@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
-import { registerProjectAPI, registerGitAPI } from './lib/api/main'
+import { projectAPI, gitAPI, settingsAPI } from './lib/api/main'
 import { elevatedShell, checkInstalled } from './lib/pkg_manager'
 import path from 'path'
 import util from 'util'
@@ -8,19 +8,18 @@ import fs from 'fs'
 import CMD from "./lib/pkg_manager/cmds";
 import os from 'os'
 
-
 const pty = require("node-pty");
 const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 
-const Store = require('electron-store')
-const store = new Store()
+
 
 // ipcMain APIs 
-registerProjectAPI(store)
-registerGitAPI()
+projectAPI()
+gitAPI()
+settingsAPI()
 
 
 const readFileAsync = util.promisify(fs.readFile)
@@ -64,15 +63,6 @@ ipcMain.on('pkg:install', (event, pkgs) => {
     })
 })
 
-// User Settings 
-ipcMain.on('settings:get', (event, field) => {
-  event.returnValue = store.get(field)
-})
-
-
-ipcMain.handle('settings:set', (event, data) => {
-  store.set(data)
-})
 
 // Usual Stuff
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require

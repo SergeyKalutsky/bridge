@@ -1,4 +1,4 @@
-import { GitDiff } from './Git'
+import { GitDiff } from './types'
 
 interface Props {
     gitDiffs: GitDiff[]

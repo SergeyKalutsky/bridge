@@ -1,8 +1,9 @@
-import  registerProjectAPI from './projects'
-import registerGitAPI from './git'
-
+import  projectAPI from './projects'
+import gitAPI from './git'
+import settingsAPI from './settings'
 
 export {
-    registerProjectAPI,
-    registerGitAPI
+    projectAPI,
+    gitAPI,
+    settingsAPI
 }

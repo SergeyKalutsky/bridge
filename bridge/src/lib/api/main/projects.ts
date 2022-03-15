@@ -1,11 +1,10 @@
 import { ipcMain } from 'electron';
+import { store, BASE_DIR } from './storage'
 import util from 'util'
 import path from 'path'
 import fs from 'fs'
 
-const storage = require('electron-json-storage')
 
-const BASE_DIR = storage.getDataPath()
 const readFileAsync = util.promisify(fs.readFile)
 
 interface FileObject {
@@ -46,21 +45,21 @@ function mkbasedir() {
     })
 }
 
-function mkprojectdir(store) {
+function mkprojectdir() {
     return ipcMain.on('projects:mkprojectdir', (event, project_name) => {
         const filePath = path.join(BASE_DIR, store.get('user.login'), project_name)
         fs.mkdirSync(filePath, { recursive: true })
     })
 }
 
-function getlocalprojectsnames(store) {
+function getlocalprojectsnames() {
     return ipcMain.on('projects:getlocalprojectsnames', (event) => {
         const filePath = path.join(BASE_DIR, store.get('user.login'))
         event.returnValue = fs.readdirSync(filePath)
     })
 }
 
-function deleteProject(store) {
+function deleteProject() {
     return ipcMain.on('projects:delete', (event, project_name) => {
         const filePath = path.join(BASE_DIR,
             store.get('user.login'),
@@ -87,7 +86,7 @@ function writeActiveFile() {
     })
 }
 
-function createFolder(store) {
+function createFolder() {
     return ipcMain.on('projects:createfolder', (event, data) => {
         if (data.activePath === null) {
             const project_name = store.get('active_project.name')
@@ -104,7 +103,7 @@ function createFolder(store) {
     })
 }
 
-function createFile(store) {
+function createFile() {
     return ipcMain.on('projects:createfile', (event, data) => {
         if (data.activePath === null) {
             const project_name = store.get('active_project.name')
@@ -134,30 +133,30 @@ function readActiveFile() {
 
 }
 
-function listFiles(store) {
+function listFiles() {
     return ipcMain.on('projects:listfiles', async (event) => {
-            const project_name = store.get('active_project.name')
-            const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-            const result = walkSync(project_dir)
-            event.reply('projects:listfiles', result)
-        })
+        const project_name = store.get('active_project.name')
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        const result = walkSync(project_dir)
+        event.reply('projects:listfiles', result)
+    })
 }
 
-function registerProjectAPI(store: any): void {
+function projectAPI(): void {
     mkbasedir()
     deleteTreeElement()
     writeActiveFile()
     readActiveFile()
 
-    getlocalprojectsnames(store)
-    deleteProject(store)
-    createFolder(store)
-    createFile(store)
-    listFiles(store)
-    mkprojectdir(store)
+    getlocalprojectsnames()
+    deleteProject()
+    createFolder()
+    createFile()
+    listFiles()
+    mkprojectdir()
 }
 
-export default registerProjectAPI
+export default projectAPI
 
 
 
