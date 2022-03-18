@@ -24,6 +24,7 @@ const Editor = (): JSX.Element => {
         }
     }
     useEffect(() => {
+        window.shared.removeListeners('projects:readactivefile')
         window.shared.incomingData('projects:readactivefile', (data) => {
             const onChange = (newValue: string) => {
                 window.projects.writeActiveFile({ filepath: data.path, fileContent: newValue })

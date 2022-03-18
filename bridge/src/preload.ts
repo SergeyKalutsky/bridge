@@ -5,7 +5,8 @@ import { ParsedGitDiff } from './components/git/types'
 
 
 contextBridge.exposeInMainWorld('shared', {
-    incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) }
+    incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) },
+    removeListeners: (channel) => { ipcRenderer.removeAllListeners(channel) }
 })
 
 contextBridge.exposeInMainWorld('settings', {

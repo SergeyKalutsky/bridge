@@ -7,6 +7,7 @@ declare global {
     interface Window {
         shared: {
             incomingData(channel, callback): any;
+            removeListeners(channel): void;
         };
         settings: {
             set(val: any): Promise<any>;

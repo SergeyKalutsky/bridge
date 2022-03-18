@@ -74,6 +74,7 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
     }
 
     useEffect(() => {
+        window.shared.removeListeners('projects:listfiles')
         window.shared.incomingData('projects:listfiles', (data) => {
             setFileTree(buildFileTree(data))
         })
@@ -82,7 +83,6 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
     // sets initial file structure
     useEffect(() => {
         window.projects.showFiles()
-
     }, [update])
 
     // updates active selected path
