@@ -19,13 +19,12 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
     const handleToggle = () => {
         function onMouseMove(e) {
             if ((!(ref.current.clientHeight <= 100) && (e.movementY > 0)) ||
-                ((!(ref.current.clientHeight >= 500) && (e.movementY < 0)))) {
+            ((!(ref.current.clientHeight >= 500) && (e.movementY < 0)))) {
                 setHeight(height => height - e.movementY)
+                fitAddon.fit()
             }
         }
         function onMouseUp() {
-            console.log('hello')
-            fitAddon.fit()
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("mouseup", onMouseUp);
         }
@@ -33,17 +32,16 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         window.addEventListener("mouseup", onMouseUp);
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         function updateSize() {
             fitAddon.fit()
         }
         window.addEventListener('resize', updateSize)
-        updateSize()
         return () => window.removeEventListener('resize', updateSize)
     }, []);
 
     useEffect(() => {
-        
+
         term.onData(e => {
             window.terminal.keystoke(e)
         })
