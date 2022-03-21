@@ -36,6 +36,7 @@ declare global {
         };
         terminal: {
             keystoke(e): any;
+            fit(): any;
 
         };
         pkg: {

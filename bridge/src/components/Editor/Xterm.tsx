@@ -21,6 +21,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
             if ((!(ref.current.clientHeight <= 100) && (e.movementY > 0)) ||
                 ((!(ref.current.clientHeight >= 500) && (e.movementY < 0)))) {
                 setHeight(height => height - e.movementY)
+                window.terminal.fit()
             }
         }
         function onMouseUp() {
@@ -39,25 +40,6 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         return () => window.removeEventListener('resize', updateSize)
     }, []);
 
-    useEffect(()=>{
-        const element = ref.current;
-        element.addEventListener('resize', (event) => fitAddon.fit())
-        function checkResize(mutations) {
-            const el = mutations[0].target;
-            const w = el.clientWidth;
-            const h = el.clientHeight;
-
-            const isChange = mutations
-                .map((m) => `${m.oldValue}`)
-                .some((prev) => prev.indexOf(`width: ${w}px`) === -1 || prev.indexOf(`height: ${h}px`) === -1);
-
-            if (!isChange) { return; }
-            const event = new CustomEvent('resize', { detail: { width: w, height: h } });
-            el.dispatchEvent(event);
-        }
-        const observer = new MutationObserver(checkResize);
-        observer.observe(element, { attributes: true, attributeOldValue: true, attributeFilter: ['style'] })
-    })
 
     useEffect(() => {
 
@@ -66,6 +48,9 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         })
         window.shared.incomingData("terminal:incomingdata", (data) => {
             term.write(data);
+        });
+        window.shared.incomingData("terminal:fit", (data) => {
+            fitAddon.fit()
         });
         term.open(ref.current);
         term.write('Добро пожаловать, нажмите Enter$ ')
