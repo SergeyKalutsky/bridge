@@ -50,7 +50,6 @@ ipcMain.on('pkg:install', (event, pkgs) => {
   elevatedShell({ command: command },
     async (error?: Error, data?: string | Buffer) => {
       if (data.toString() === 'refreshenv') {
-        11
         for (const pkg of pkgs) {
           if (!(process.env.Path.includes(CMD[pkg].path[platform]))) {
             process.env.Path += CMD[pkg].path[platform]
@@ -113,9 +112,6 @@ const createWindow = (): void => {
   ipcMain.on('terminal:fit', async (event) => {
     event.reply('terminal:fit', {})
   })
-
-
-
 };
 
 app.on('ready', createWindow);
