@@ -17,13 +17,20 @@ const dummyProject: Project = {
 }
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
-    const [checked, setChecked] = useState<number>(0)
+    // const [checked, setChecked] = useState<number>(0)
+    const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
 
 
     const handleClick = () => {
         addProject(project)
     }
+    const libs = ['Python', 'Python Flask', 'Python Discord', 'Python Pgzero']
+    const options = libs.map((option, indx) =>
+        <option value={indx} key={option}>
+            {option}
+        </option>
+    )
     return (
         <>
             <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1>
@@ -36,7 +43,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                     </div>
                     <div className='w-full gap-y-2 flex flex-col mt-2'>
-                        <div>
+                        {/* <div>
                             <input type="checkbox"
                                 className='scale-150'
                                 checked={checked == 0}
@@ -49,6 +56,12 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                                 checked={checked == 1}
                                 onChange={() => { setChecked(1); setProject({ ...project, isclassroom: 1 }) }} />
                             <label className='ml-2 text-xl font-medium text-white'>Для обучения</label>
+                        </div> */}
+                        <div className='flex justify-center items-center w-[300px] h-[44px]'>
+                            <select className="text-black w-full bg-white h-3/5 rounded-lg" value={option}
+                                onChange={(e) => { setOption(e.target.value) }}>
+                                {options}
+                            </select>
                         </div>
                         <Button onClick={handleClick} btnText='Создать' />
                     </div>
