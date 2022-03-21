@@ -49,6 +49,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         window.shared.incomingData("terminal:incomingdata", (data) => {
             term.write(data);
         });
+        window.shared.removeListeners('terminal:fit')
         window.shared.incomingData("terminal:fit", (data) => {
             fitAddon.fit()
         });
