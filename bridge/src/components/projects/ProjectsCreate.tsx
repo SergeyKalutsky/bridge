@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Project } from './types'
 import { InputForm, Button } from '../common'
 import { createProject } from '../../lib/api/gitlab'
@@ -18,9 +18,10 @@ const dummyProject: Project = {
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
+    const [logs, setLogs] = useState<JSX.Element[]>([])
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
-
+    const ref = useRef(null)
 
     const handleClick = () => {
         addProject(project)
@@ -63,8 +64,12 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                                 {options}
                             </select>
                         </div>
-                        <Button onClick={handleClick} btnText='Создать' />
                     </div>
+                    <div className="w-full h-2/5 flex justify-center flex-col overflow-scroll bg-zinc-600 mb-2 mt-1" >
+                        {logs}
+                        <div ref={ref} />
+                    </div>
+                    <Button onClick={handleClick} btnText='Создать' />
                 </div>
             </div >
         </>
