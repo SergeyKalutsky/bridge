@@ -1,11 +1,5 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
-import { projectAPI, gitAPI, settingsAPI } from './lib/api/main'
-import { elevatedShell, checkInstalled } from './lib/pkg_manager'
-import path from 'path'
-import util from 'util'
-import fs from 'fs'
-
-import CMD from "./lib/pkg_manager/cmds";
+import { projectAPI, gitAPI, settingsAPI, pkgAPI } from './lib/api/main'
 import os from 'os'
 
 const pty = require("node-pty");
@@ -15,53 +9,11 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
 
 
-
 // ipcMain APIs 
 projectAPI()
 gitAPI()
 settingsAPI()
-
-
-const readFileAsync = util.promisify(fs.readFile)
-
-
-ipcMain.on('pkg:getlogs', async (event, pkgs) => {
-  const logPath = path.join(os.tmpdir(), 'initInstallBridge.log')
-  if (fs.existsSync(logPath)) {
-    const fileContent = await readFileAsync(logPath, 'utf-8')
-    event.reply('pkg:getlogs', fileContent)
-  }
-})
-
-ipcMain.on('pkg:check', async (event, pkgs) => {
-  for (const pkg of pkgs) {
-    checkInstalled(pkg, (installed) => {
-      event.reply('pkg:check', { installed: installed, pkg: pkg })
-    })
-  }
-})
-
-ipcMain.on('pkg:install', (event, pkgs) => {
-  let command = ''
-  const platform = process.platform;
-  for (const pkg of pkgs) {
-    command += CMD[pkg].install[platform] + '; '
-  }
-  elevatedShell({ command: command },
-    async (error?: Error, data?: string | Buffer) => {
-      if (data.toString() === 'refreshenv') {
-        for (const pkg of pkgs) {
-          if (!(process.env.Path.includes(CMD[pkg].path[platform]))) {
-            process.env.Path += CMD[pkg].path[platform]
-          }
-          checkInstalled(pkg, (installed) => {
-            event.reply('pkg:check', { installed: installed, pkg: pkg })
-          })
-        }
-      }
-    })
-})
-
+pkgAPI()
 
 // Usual Stuff
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
