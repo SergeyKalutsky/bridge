@@ -52,7 +52,7 @@ function pkgInstall() {
     })
 }
 
-function pkgAPI() {
+function pkgAPI(): void {
     getLogs()
     check()
     pkgInstall()
