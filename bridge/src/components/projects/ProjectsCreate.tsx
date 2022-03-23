@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { Project } from './types'
 import { InputForm, Button } from '../common'
+import { LoadingIcon } from '../common/Icons'
 import { createProject } from '../../lib/api/gitlab'
 
 interface Prop {
@@ -65,11 +66,15 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             </select>
                         </div>
                     </div>
-                    <div className="w-full h-2/5 flex justify-center flex-col overflow-scroll bg-zinc-600 mb-2 mt-1" >
+                    <div className="w-full h-2/5 flex justify-center flex-col overflow-scroll bg-zinc-600 mb-2" >
                         {logs}
                         <div ref={ref} />
                     </div>
-                    <Button onClick={handleClick} btnText='Создать' />
+                    <div className='w-full gap-y-2 flex flex-row mt-2 gap-x-2 items-center'>
+                        <Button onClick={handleClick} btnText='Создать' />
+                        <LoadingIcon />
+                        <div className='text-lg text-slate-50 font-medium'>Установка...</div>
+                    </div>
                 </div>
             </div >
         </>
