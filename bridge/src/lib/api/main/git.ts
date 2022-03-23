@@ -11,7 +11,7 @@ function clone() {
         const project_name = project.name.replace(/ /g, '-')
         const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
         if (!fs.existsSync(project_dir)) {
-            git.cwd(path.join(BASE_DIR, store.get('user.login'))).clone(project.http)
+            git.cwd(path.join(BASE_DIR, store.get('user.login'))).clone(project.http, project_name)
         }
     })
 }

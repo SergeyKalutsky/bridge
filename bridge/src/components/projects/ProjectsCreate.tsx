@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Project } from './types'
 import { InputForm, Button } from '../common'
 import { LoadingIcon } from '../common/Icons'
+import templates from './templates'
 import { createProject } from '../../lib/api/gitlab'
 
 interface Prop {
@@ -19,20 +20,52 @@ const dummyProject: Project = {
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
+    const [info, setInfo] = useState('Клонирование шаблона...')
+    const [visible, setVisible] = useState(false)
     const [logs, setLogs] = useState<JSX.Element[]>([])
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
     const ref = useRef(null)
 
     const handleClick = () => {
+        console.log(project)
+        setVisible(true)
         addProject(project)
     }
+
+    useEffect(() => {
+        window.shared.incomingData("pkg:getlogs", (data: string) => {
+            const logs = data.split(/\r?\n/)
+            setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
+        });
+    })
+
+    useEffect(() => {
+        const scrollToBottom = () => {
+            ref.current.scrollIntoView({
+                behavior: "smooth", block: 'end',
+                inline: 'nearest'
+            })
+        }
+        scrollToBottom()
+    }, [logs])
+
+    // useEffect(() => {
+    //     const fileContent = setInterval(() => {
+    //         window.pkg.getlogs()
+    //     }, 1000)
+
+    //     return () => clearInterval(fileContent);
+    // }, []);
+
     const libs = ['Python', 'Python Flask', 'Python Discord', 'Python Pgzero']
     const options = libs.map((option, indx) =>
         <option value={indx} key={option}>
             {option}
         </option>
     )
+    const loadInfo = <><LoadingIcon />
+        <div className='text-lg text-slate-50 font-medium'>{info}</div></>
     return (
         <>
             <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1>
@@ -61,7 +94,10 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                         </div> */}
                         <div className='flex justify-center items-center w-[300px] h-[44px]'>
                             <select className="text-black w-full bg-white h-3/5 rounded-lg" value={option}
-                                onChange={(e) => { setOption(e.target.value) }}>
+                                onChange={(e) => { 
+                                    setOption(e.target.value) 
+                                    setProject({ ...project, http: templates[libs[e.target.value]].http })
+                                    }}>
                                 {options}
                             </select>
                         </div>
@@ -72,8 +108,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                     </div>
                     <div className='w-full gap-y-2 flex flex-row mt-2 gap-x-2 items-center'>
                         <Button onClick={handleClick} btnText='Создать' />
-                        <LoadingIcon />
-                        <div className='text-lg text-slate-50 font-medium'>Установка...</div>
+                        {visible ? loadInfo : null }
                     </div>
                 </div>
             </div >

@@ -50,8 +50,7 @@ const Projects = (): JSX.Element => {
         
         const user = window.settings.get('user')
         if (user.type == 'guest'){
-            window.projects.mkprojectdir(project.name)
-            window.git.init(project.name)
+            window.git.clone(project)
         } else {
             createProject(user, project)
              .then(data => window.git.clone(data['project']))
@@ -59,7 +58,7 @@ const Projects = (): JSX.Element => {
         
         project.islocal = true
         setProjects([...projects, project])
-        dispatch({ type: 'home' })
+        // dispatch({ type: 'home' })
         
     }
 
