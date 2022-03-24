@@ -36,12 +36,12 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     }
 
     useEffect(() => {
-        window.shared.removeListeners('pkg:getlogs')
         window.shared.incomingData("pkg:getlogs", (data: string) => {
             const logs = data.split(/\r?\n/)
             setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
         });
-    })
+        return () => window.shared.removeListeners('pkg:getlogs')
+    }, [])
 
     useEffect(() => {
         const scrollToBottom = () => {
@@ -96,11 +96,11 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                         </div> */}
                         <div className='flex justify-center items-center w-[300px] h-[44px]'>
                             <select className="text-black w-full bg-white h-3/5 rounded-lg" value={option}
-                                onChange={(e) => { 
-                                    setOption(e.target.value) 
+                                onChange={(e) => {
+                                    setOption(e.target.value)
                                     setProject({ ...project, http: templates[libs[e.target.value]].http })
                                     setPkgs(templates[libs[e.target.value]].lib)
-                                    }}>
+                                }}>
                                 {options}
                             </select>
                         </div>
@@ -111,7 +111,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                     </div>
                     <div className='w-full gap-y-2 flex flex-row mt-2 gap-x-2 items-center'>
                         <Button onClick={handleClick} btnText='Создать' />
-                        {visible ? loadInfo : null }
+                        {visible ? loadInfo : null}
                     </div>
                 </div>
             </div >

@@ -29,11 +29,12 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                     setChocoInstalled(data.installed)
             }
         });
-        window.shared.removeListeners('pkg:getlogs')
         window.shared.incomingData("pkg:getlogs", (data: string) => {
             const logs = data.split(/\r?\n/)
             setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
         });
+
+        return () => window.shared.removeListeners('pkg:getlogs')
     }, [])
 
     useEffect(() => {
