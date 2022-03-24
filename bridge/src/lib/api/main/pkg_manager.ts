@@ -32,22 +32,25 @@ function check() {
 
 function pkgInstall() {
     ipcMain.on('pkg:install', (event, pkgs) => {
-        console.log(pkgs)
+        const logPath = path.join(os.tmpdir(), 'initInstallBridge.log')
         let commandElevated = ''
-        let commandNormal = ''
+        let commandNormal = 'powershell.exe '
         const platform = process.platform;
+        const elevatedPkgs = []
         for (const pkg of pkgs) {
-            const pkg_info = CMD[pkg]
-            if (pkg_info.elevate) {
+            if (CMD[pkg].elevate) {
+                elevatedPkgs.push(pkg)
                 commandElevated += CMD[pkg].install[platform] + '; '
             } else {
                 commandNormal += CMD[pkg].install[platform] + '; '
             }
         }
+        console.log(commandNormal)
+        console.log(commandElevated)
         elevatedShell({ command: commandElevated },
             async (error?: Error, data?: string | Buffer) => {
                 if (data.toString() === 'refreshenv') {
-                    for (const pkg of pkgs) {
+                    for (const pkg of elevatedPkgs) {
                         if (!(process.env.Path.includes(CMD[pkg].path[platform]))) {
                             process.env.Path += CMD[pkg].path[platform]
                         }
@@ -55,12 +58,20 @@ function pkgInstall() {
                             event.reply('pkg:check', { installed: installed, pkg: pkg })
                         })
                     }
+                    const child = spawn(commandNormal, { shell: true })
+                    child.stdout.on('data', async (data) => {
+                        fs.writeFile(logPath, data.toString(), { flag: "a+" }, (err) => {
+                            if (err) throw err;
+                        });
+                    })
+                    child.stderr.on('data', (data) => {
+                        fs.writeFile(logPath, data.toString(), { flag: "a+" }, (err) => {
+                            if (err) throw err;
+                        });
+                    })
                 }
             })
-        // const child = spawn(commandNormal, { shell: true })
-        // child.on('data', (data) => {
-        //     event.reply('pkg:getlogs', data.toString())
-        // })
+
     })
 }
 
