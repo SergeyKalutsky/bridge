@@ -9,13 +9,14 @@ interface Prop {
     addProject: (project: Project) => void
 }
 
+const libs = ['Python', 'Python Flask', 'Python Discord', 'Python Pgzero']
 const dummyProject: Project = {
     id: null,
     islocal: true,
     name: '',
     description: '',
     isclassroom: 0,
-    http: ''
+    http: templates[libs[0]].http
 }
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
@@ -58,7 +59,6 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     //     return () => clearInterval(fileContent);
     // }, []);
 
-    const libs = ['Python', 'Python Flask', 'Python Discord', 'Python Pgzero']
     const options = libs.map((option, indx) =>
         <option value={indx} key={option}>
             {option}
