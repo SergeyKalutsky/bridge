@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
-import CMD from "../../pkg_manager/cmds";
 import { elevatedShell, checkInstalled } from '../../pkg_manager'
+import CMD from "../../pkg_manager/cmds";
+import { spawn } from 'child_process'
 import path from 'path'
 import util from 'util'
 import fs from 'fs'
@@ -31,12 +32,19 @@ function check() {
 
 function pkgInstall() {
     ipcMain.on('pkg:install', (event, pkgs) => {
-        let command = ''
+        console.log(pkgs)
+        let commandElevated = ''
+        let commandNormal = ''
         const platform = process.platform;
         for (const pkg of pkgs) {
-            command += CMD[pkg].install[platform] + '; '
+            const pkg_info = CMD[pkg]
+            if (pkg_info.elevate) {
+                commandElevated += CMD[pkg].install[platform] + '; '
+            } else {
+                commandNormal += CMD[pkg].install[platform] + '; '
+            }
         }
-        elevatedShell({ command: command },
+        elevatedShell({ command: commandElevated },
             async (error?: Error, data?: string | Buffer) => {
                 if (data.toString() === 'refreshenv') {
                     for (const pkg of pkgs) {
@@ -49,6 +57,10 @@ function pkgInstall() {
                     }
                 }
             })
+        // const child = spawn(commandNormal, { shell: true })
+        // child.on('data', (data) => {
+        //     event.reply('pkg:getlogs', data.toString())
+        // })
     })
 }
 

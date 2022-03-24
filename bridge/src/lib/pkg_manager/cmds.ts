@@ -1,3 +1,6 @@
+import os from 'os'
+
+
 const CMD = {
     git: {
         elevate: true,
@@ -22,6 +25,9 @@ const CMD = {
         check: {
             cmd: 'python --version',
             string: 'Python 3'
+        },
+        path: {
+            win32: `C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python39`
         }
     },
     choco: {

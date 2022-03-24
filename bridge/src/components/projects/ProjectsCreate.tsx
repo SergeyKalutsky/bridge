@@ -21,9 +21,9 @@ const dummyProject: Project = {
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
-    const [info, setInfo] = useState('Клонирование шаблона...')
     const [visible, setVisible] = useState(false)
     const [logs, setLogs] = useState<JSX.Element[]>([])
+    const [pkgs, setPkgs] = useState(templates[libs[0]].lib)
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
     const ref = useRef(null)
@@ -32,9 +32,11 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         console.log(project)
         setVisible(true)
         addProject(project)
+        window.pkg.install(pkgs)
     }
 
     useEffect(() => {
+        window.shared.removeListeners('pkg:getlogs')
         window.shared.incomingData("pkg:getlogs", (data: string) => {
             const logs = data.split(/\r?\n/)
             setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
@@ -51,13 +53,13 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         scrollToBottom()
     }, [logs])
 
-    // useEffect(() => {
-    //     const fileContent = setInterval(() => {
-    //         window.pkg.getlogs()
-    //     }, 1000)
+    useEffect(() => {
+        const fileContent = setInterval(() => {
+            window.pkg.getlogs()
+        }, 1000)
 
-    //     return () => clearInterval(fileContent);
-    // }, []);
+        return () => clearInterval(fileContent);
+    }, []);
 
     const options = libs.map((option, indx) =>
         <option value={indx} key={option}>
@@ -65,7 +67,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         </option>
     )
     const loadInfo = <><LoadingIcon />
-        <div className='text-lg text-slate-50 font-medium'>{info}</div></>
+        <div className='text-lg text-slate-50 font-medium'>Создание/установка проекта...</div></>
     return (
         <>
             <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1>
@@ -97,6 +99,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                                 onChange={(e) => { 
                                     setOption(e.target.value) 
                                     setProject({ ...project, http: templates[libs[e.target.value]].http })
+                                    setPkgs(templates[libs[e.target.value]].lib)
                                     }}>
                                 {options}
                             </select>

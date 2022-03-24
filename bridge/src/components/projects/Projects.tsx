@@ -55,7 +55,6 @@ const Projects = (): JSX.Element => {
             createProject(user, project)
              .then(data => window.git.clone(data['project']))
         }
-        
         project.islocal = true
         setProjects([...projects, project])
         // dispatch({ type: 'home' })
