@@ -21,6 +21,7 @@ const dummyProject: Project = {
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
+    const [logFileName, setLogFileName] = useState<string>()
     const [visible, setVisible] = useState(false)
     const [logs, setLogs] = useState<JSX.Element[]>([])
     const [pkgs, setPkgs] = useState(templates[libs[0]].lib)
@@ -32,7 +33,10 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         console.log(project)
         setVisible(true)
         addProject(project)
-        window.pkg.install(pkgs)
+        const date = new Date()
+        const fileName = date.toLocaleString().replace(', ', '-').replace(/:/g, '-').replace(/\./g, '-') + '.log'
+        window.pkg.install({ pkgs: pkgs, fileName: fileName })
+        setLogFileName(fileName)
     }
 
     useEffect(() => {
@@ -55,11 +59,12 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
 
     useEffect(() => {
         const fileContent = setInterval(() => {
-            window.pkg.getlogs('')
+            if (logFileName !== undefined) {
+                window.pkg.getlogs(logFileName)
+            }
         }, 1000)
-
         return () => clearInterval(fileContent);
-    }, []);
+    }, [logFileName]);
 
     const options = libs.map((option, indx) =>
         <option value={indx} key={option}>
@@ -105,7 +110,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             </select>
                         </div>
                     </div>
-                    <div className="w-full h-2/5 flex justify-center flex-col overflow-scroll bg-zinc-600 mb-2" >
+                    <div className="w-4/5 h-2/5 flex justify-center self-center flex-col overflow-scroll bg-zinc-600 mb-2">
                         {logs}
                         <div ref={ref} />
                     </div>
