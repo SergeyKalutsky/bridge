@@ -1,7 +1,7 @@
-import { ipcMain } from 'electron';
 import { elevatedShell, checkInstalled } from '../../pkg_manager'
-import CMD from "../../pkg_manager/cmds";
+import { ipcMain } from 'electron';
 import { spawn } from 'child_process'
+import CMD from "../../pkg_manager/cmds";
 import path from 'path'
 import util from 'util'
 import fs from 'fs'
@@ -11,8 +11,8 @@ const readFileAsync = util.promisify(fs.readFile)
 
 
 function getLogs() {
-    return ipcMain.on('pkg:getlogs', async (event, pkgs) => {
-        const logPath = path.join(os.tmpdir(), 'initInstallBridge.log')
+    return ipcMain.on('pkg:getlogs', async (event, fileName) => {
+        const logPath = path.join(os.tmpdir(), fileName)
         if (fs.existsSync(logPath)) {
             const fileContent = await readFileAsync(logPath, 'utf-8')
             event.reply('pkg:getlogs', fileContent)
@@ -31,8 +31,24 @@ function check() {
 }
 
 function pkgInstall() {
-    ipcMain.on('pkg:install', (event, pkgs) => {
-        const logPath = path.join(os.tmpdir(), 'initInstallBridge.log')
+    const appendLogs = (logs: string, logPath: string): void => {
+        fs.writeFile(logPath, logs, { flag: "a+" }, (err) => {
+            if (err) throw err;
+        });
+    }
+    const executeShell = (command: string, logPath: string): void => {
+        const child = spawn(command, { shell: true })
+        child.stdout.on('data', async (data) => {
+            appendLogs(data.toString(), logPath)
+        })
+        child.stderr.on('data', async (data) => {
+            appendLogs(data.toString(), logPath)
+        })
+
+    }
+    ipcMain.on('pkg:install', (event, data) => {
+        const pkgs = data.pkgs
+        const logPath = path.join(os.tmpdir(), data.fileName)
         let commandElevated = ''
         let commandNormal = 'powershell.exe '
         const platform = process.platform;
@@ -45,32 +61,24 @@ function pkgInstall() {
                 commandNormal += CMD[pkg].install[platform] + '; '
             }
         }
-        console.log(commandNormal)
-        console.log(commandElevated)
-        elevatedShell({ command: commandElevated },
-            async (error?: Error, data?: string | Buffer) => {
-                if (data.toString() === 'refreshenv') {
-                    for (const pkg of elevatedPkgs) {
-                        if (!(process.env.Path.includes(CMD[pkg].path[platform]))) {
-                            process.env.Path += CMD[pkg].path[platform]
+        if (commandElevated != '') {
+            elevatedShell({ command: commandElevated, path: logPath },
+                async (error?: Error, data?: string | Buffer) => {
+                    if (data.toString() === 'refreshenv') {
+                        for (const pkg of elevatedPkgs) {
+                            if (!(process.env.Path.includes(CMD[pkg].path[platform]))) {
+                                process.env.Path += CMD[pkg].path[platform]
+                            }
+                            checkInstalled(pkg, (installed) => {
+                                event.reply('pkg:check', { installed: installed, pkg: pkg })
+                            })
                         }
-                        checkInstalled(pkg, (installed) => {
-                            event.reply('pkg:check', { installed: installed, pkg: pkg })
-                        })
+                        executeShell(commandNormal, logPath)
                     }
-                    const child = spawn(commandNormal, { shell: true })
-                    child.stdout.on('data', async (data) => {
-                        fs.writeFile(logPath, data.toString(), { flag: "a+" }, (err) => {
-                            if (err) throw err;
-                        });
-                    })
-                    child.stderr.on('data', (data) => {
-                        fs.writeFile(logPath, data.toString(), { flag: "a+" }, (err) => {
-                            if (err) throw err;
-                        });
-                    })
-                }
-            })
+                })
+        } else {
+            executeShell(commandNormal, logPath)
+        }
 
     })
 }

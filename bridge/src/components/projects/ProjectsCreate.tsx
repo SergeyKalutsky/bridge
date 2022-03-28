@@ -55,7 +55,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
 
     useEffect(() => {
         const fileContent = setInterval(() => {
-            window.pkg.getlogs()
+            window.pkg.getlogs('')
         }, 1000)
 
         return () => clearInterval(fileContent);

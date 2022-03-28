@@ -10,6 +10,7 @@ interface Props {
 const startInfo = <><LoadingIcon />Проверяем установлены ли программы...</>
 
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
+    const [logFileName, setLogFileName] = useState<string>()
     const [info, setInfo] = useState<JSX.Element>(startInfo)
     const [logs, setLogs] = useState<JSX.Element[]>([])
     const [gitInstalled, setGitInstalled] = useState(null)
@@ -18,7 +19,16 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const ref = useRef(null)
 
     useEffect(() => {
-        window.pkg.checkInstall(['choco', 'git'])
+        window.shared.incomingData("pkg:getlogs", (data: string) => {
+            const logs = data.split(/\r?\n/)
+            setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
+        });
+
+        return () => window.shared.removeListeners('pkg:getlogs')
+    }, [])
+
+    useEffect(() => {
+        window.pkg.checkInstall(['choco'])
 
         window.shared.incomingData("pkg:check", (data) => {
             switch (data.pkg) {
@@ -29,12 +39,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                     setChocoInstalled(data.installed)
             }
         });
-        window.shared.incomingData("pkg:getlogs", (data: string) => {
-            const logs = data.split(/\r?\n/)
-            setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
-        });
-
-        return () => window.shared.removeListeners('pkg:getlogs')
+        return () => window.shared.removeListeners('pkg:check')
     }, [])
 
     useEffect(() => {
@@ -49,11 +54,14 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
 
     useEffect(() => {
         const fileContent = setInterval(() => {
-            window.pkg.getlogs()
+            if (logFileName !== undefined) {
+                window.pkg.getlogs(logFileName)
+            }
+            console.log(logFileName)
         }, 1000)
 
         return () => clearInterval(fileContent);
-    }, []);
+    }, [logFileName]);
 
     useEffect(() => {
         if (gitInstalled !== null && chocoInstalled !== null) {
@@ -72,7 +80,10 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         if (!gitInstalled) { pkgs.push('git') }
         setDisabled(true)
         setInfo(<><LoadingIcon />Выполняется установка не закрывайте окно...</>)
-        window.pkg.install(pkgs)
+        const date = new Date()
+        const fileName = date.toLocaleString().replace(', ', '-').replace(/:/g, '-').replace(/\./g, '-') + '.log'
+        window.pkg.install({ pkgs: pkgs, fileName: fileName })
+        setLogFileName(fileName)
     }
     return (
         <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">
