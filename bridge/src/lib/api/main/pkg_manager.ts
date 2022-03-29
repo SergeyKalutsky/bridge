@@ -33,7 +33,7 @@ function check() {
 
 function pkgInstall() {
     const appendLogs = (logs: string, logPath: string): void => {
-        fs.writeFile(logPath, logs, { flag: "a+" }, (err) => {
+        fs.appendFile(logPath, logs, {encoding: 'utf-8'}, (err) => {
             if (err) throw err;
         });
     }
@@ -74,11 +74,11 @@ function pkgInstall() {
                                 event.reply('pkg:check', { installed: installed, pkg: pkg })
                             })
                         }
-                        executeShell(commandNormal, logPath)
+                        // executeShell(commandNormal, logPath)
                     }
                 })
         } else {
-            executeShell(commandNormal, logPath)
+            // executeShell(commandNormal, logPath)
         }
 
     })

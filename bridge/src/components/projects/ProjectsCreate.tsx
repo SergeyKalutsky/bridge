@@ -75,16 +75,16 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         <div className='text-lg text-slate-50 font-medium'>Создание/установка проекта...</div></>
     return (
         <>
-            <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1>
+            {/* <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1> */}
             <div className='bg-zinc-500 flex flex-col h-full items-center justify-center'>
-                <div className='w-3/5 h-1/2'>
-                    <div className='w-full gap-y-5 flex flex-col'>
+                <div className='w-3/5 h-2/3'>
+                    <div className='w-full h-2/6 gap-y-5 flex flex-col'>
                         <InputForm type="text" placeholder='Название'
                             onChange={(e) => { setProject({ ...project, name: e.target.value }) }} />
                         <textarea placeholder='Описание' className='w-full h-[150px] text-xl rounded-lg focus:outline-none'
                             onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                     </div>
-                    <div className='w-full gap-y-2 flex flex-col mt-2'>
+                    <div className='w-full h-1/6 gap-y-2 flex flex-col mt-2'>
                         {/* <div>
                             <input type="checkbox"
                                 className='scale-150'
@@ -110,11 +110,11 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             </select>
                         </div>
                     </div>
-                    <div className="w-4/5 h-2/5 flex justify-center self-center flex-col overflow-scroll bg-zinc-600 mb-2">
+                    <div className="w-full h-3/6 flex justify-center flex-col overflow-scroll bg-zinc-600 mb-2">
                         {logs}
-                        <div ref={ref} />
+                        <div ref={ref}/>
                     </div>
-                    <div className='w-full gap-y-2 flex flex-row mt-2 gap-x-2 items-center'>
+                    <div className='w-full gap-y-2 h-1/6 flex flex-row mt-2 gap-x-2 items-center'>
                         <Button onClick={handleClick} btnText='Создать' />
                         {visible ? loadInfo : null}
                     </div>
