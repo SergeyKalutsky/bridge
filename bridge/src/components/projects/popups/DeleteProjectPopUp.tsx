@@ -14,7 +14,8 @@ const DeleteProjectPopUp = ({ name, id, removeProject, open, setOpen }: Props): 
 
     const handleClick = () => {
         const active_project = window.settings.get('active_project')
-        if (active_project !== undefined && active_project.id === id) {
+        if (active_project !== undefined && active_project.name === name) {
+            console.log('here')
             window.settings.del('active_project')
         }
         const user = window.settings.get('user')
