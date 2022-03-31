@@ -9,6 +9,15 @@ interface Prop {
     addProject: (project: Project) => void
 }
 
+function isLatinString(s: string): boolean {
+    for (let i = s.length; i--;) {
+        const charCode = s.charCodeAt(i)
+        if (charCode < 65 || charCode > 122)
+            return false
+    }
+    return true
+}
+
 const libs = ['Python', 'Python Flask', 'Python Discord', 'Python Pgzero']
 const dummyProject: Project = {
     id: null,
@@ -21,6 +30,7 @@ const dummyProject: Project = {
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
+    const [error, setError] = useState<string>()
     const [logFileName, setLogFileName] = useState<string>()
     const [visible, setVisible] = useState(false)
     const [logs, setLogs] = useState<JSX.Element[]>([])
@@ -30,7 +40,19 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const ref = useRef(null)
 
     const handleClick = () => {
-        console.log(project)
+        if (project.name === '') {
+            setError('Название проекта не может быть пустым')
+            return
+        }
+        if (project.name.includes(' ')) {
+            setError('Название проекта не может содержать пробелы')
+            return
+        }
+        if (!isLatinString(project.name)) {
+            setError('Название может содержать только латинские буквы')
+            return
+        }
+        setError('')
         setVisible(true)
         addProject(project)
         const date = new Date()
@@ -93,13 +115,14 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1>
             <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center'>
                 <div className='w-3/5 h-2/3'>
-                    <div className='w-full h-2/6 gap-y-5 flex flex-col'>
+                    <div className='w-full h-3/6 gap-y-2 flex flex-col'>
+                        <span className='text-red-400 font-medium text-xl'>{error}</span>
                         <InputForm type="text" placeholder='Название'
                             onChange={(e) => { setProject({ ...project, name: e.target.value }) }} />
                         <textarea placeholder='Описание' className='w-full h-[150px] text-xl rounded-lg focus:outline-none'
                             onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                     </div>
-                    <div className='w-full h-1/6 gap-y-2 flex flex-col mt-2'>
+                    <div className='w-full h-1/6 gap-y-2 flex flex-col'>
                         {/* <div>
                             <input type="checkbox"
                                 className='scale-150'
@@ -125,7 +148,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             </select>
                         </div>
                     </div>
-                    <div className="w-full h-3/6 flex justify-center flex-col overflow-scroll bg-zinc-600 mb-2">
+                    <div className="w-full h-2/6 flex justify-center flex-col overflow-scroll bg-zinc-600">
                         {logs}
                         <div ref={ref} />
                     </div>
