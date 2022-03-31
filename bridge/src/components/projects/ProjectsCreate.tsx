@@ -52,14 +52,12 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             setError('Название может содержать только латинские буквы')
             return
         }
-        const localProjects = window.projects.getLocalProjectsNames()
-        for (const local of localProjects) {
+        for (const local of window.projects.getLocalProjectsNames()) {
             if (project.name === local){
                 setError('Проект с таким именем уже есть')
                 return
             }
         }
-        console.log(localProjects)
         setError('')
         setVisible(true)
         addProject(project)
