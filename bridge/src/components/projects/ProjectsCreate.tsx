@@ -40,9 +40,24 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     }
 
     useEffect(() => {
+        const splitLogs = (logs: string[]): string[] => {
+            const newLogs = []
+            for (const log of logs) {
+                if (log.length > 90) {
+                    const splitedLog = log.split(/\s/g)
+                    console.log(splitedLog)
+                    newLogs.push(splitedLog.slice(0, splitedLog.length / 2).join(' '))
+                    newLogs.push(splitedLog.slice(splitedLog.length / 2).join(' '))
+                } else {
+                    newLogs.push(log)
+                }
+            }
+            return newLogs
+        }
         window.shared.incomingData("pkg:getlogs", (data: string) => {
             const logs = data.split(/\r?\n/)
-            setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
+            const newLogs = splitLogs(logs)
+            setLogs(newLogs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
         });
         return () => window.shared.removeListeners('pkg:getlogs')
     }, [])
@@ -112,7 +127,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                     </div>
                     <div className="w-full h-3/6 flex justify-center flex-col overflow-scroll bg-zinc-600 mb-2">
                         {logs}
-                        <div ref={ref}/>
+                        <div ref={ref} />
                     </div>
                     <div className='w-full gap-y-2 h-1/6 flex flex-row mt-2 gap-x-2 items-center'>
                         <Button onClick={handleClick} btnText='Создать' />

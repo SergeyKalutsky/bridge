@@ -36,7 +36,7 @@ function pkgInstall() {
         const pkgs = data.pkgs
         const logPath = path.join(BASE_DIR, data.fileName)
         let commandElevated = ''
-        let commandNormal = 'powershell.exe '
+        let commandNormal = ''
         const platform = process.platform;
         const elevatedPkgs = []
         for (const pkg of pkgs) {
