@@ -7,7 +7,7 @@ async function checkInstalled(pkg: string,
     const platform = process.platform
 
     const check = CMD[pkg].check
-    const command = platform === 'win32' ? 'powershell.exe ' + check.cmd : check.cmd
+    const command = platform === 'win32' ? 'powershell.exe "' + check.cmd + '"' : check.cmd
     const child = spawn(command, { shell: true })
     let installed = false
 
@@ -21,5 +21,4 @@ async function checkInstalled(pkg: string,
         callback(installed)
     })
 }
-
 export { checkInstalled }
