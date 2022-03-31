@@ -1,7 +1,7 @@
 interface Props {
     children?: React.ReactNode
     btnText?: string
-    onClick?: () => void
+    onClick?: (e?) => void
     disabled?: boolean
     theme?: string
     width?: string
@@ -37,7 +37,7 @@ const Button = ({ children,
     return (
         <button disabled={disabled}
             className={`${disabledStyle} ${style['base']} ${w} ${h} font-medium text-xl focus:outline-none flex flex-row justify-center items-center`}
-            onClick={onClick}
+            onClick={e => onClick(e)}
         >{btnText}{children}</button>
 
     )

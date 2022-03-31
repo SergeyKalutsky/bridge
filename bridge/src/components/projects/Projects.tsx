@@ -57,7 +57,7 @@ const Projects = (): JSX.Element => {
         }
         project.islocal = true
         setProjects([...projects, project])
-        // dispatch({ type: 'home' })
+        dispatch({ type: 'home' })
         
     }
 

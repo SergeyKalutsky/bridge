@@ -3,7 +3,6 @@ import { Project } from './types'
 import { InputForm, Button } from '../common'
 import { LoadingIcon } from '../common/Icons'
 import templates from './templates'
-import { createProject } from '../../lib/api/gitlab'
 
 interface Prop {
     addProject: (project: Project) => void
@@ -37,16 +36,21 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [pkgs, setPkgs] = useState(templates[libs[0]].lib)
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
+    const [btnText, setBtnText] = useState('Создать')
     const ref = useRef(null)
 
     useEffect(() => {
         window.shared.incomingData("pkg:check", (data) => {
-            console.log(data)
+            setVisible(false)
+            setBtnText('Завершить')
         });
         return () => window.shared.removeListeners('pkg:check')
     }, [])
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        if (e.target.innerText === 'Завершить') {
+            addProject(project)
+        }
         if (project.name === '') {
             setError('Название проекта не может быть пустым')
             return
@@ -60,14 +64,13 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             return
         }
         for (const local of window.projects.getLocalProjectsNames()) {
-            if (project.name === local){
+            if (project.name === local) {
                 setError('Проект с таким именем уже есть')
                 return
             }
         }
         setError('')
         setVisible(true)
-        addProject(project)
         const date = new Date()
         const fileName = date.toLocaleString().replace(', ', '-').replace(/:/g, '-').replace(/\./g, '-') + '.log'
         window.pkg.install({ pkgs: pkgs, fileName: fileName })
@@ -165,7 +168,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                         <div ref={ref} />
                     </div>
                     <div className='w-full gap-y-2 h-1/6 flex flex-row mt-2 gap-x-2 items-center'>
-                        <Button onClick={handleClick} btnText='Создать' />
+                        <Button onClick={e => handleClick(e)} btnText={btnText} disabled={visible} />
                         {visible ? loadInfo : null}
                     </div>
                 </div>
