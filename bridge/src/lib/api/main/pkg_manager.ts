@@ -55,18 +55,23 @@ function pkgInstall() {
                             if (!(process.env.Path.includes(CMD[pkg].path[platform]))) {
                                 process.env.Path += CMD[pkg].path[platform]
                             }
-                            checkInstalled(pkg, (installed) => {
-                                event.reply('pkg:check', { installed: installed, pkg: pkg })
-                            })
                         }
                         shell({ command: commandNormal, path: logPath, elevate: false }, (error, data) => {
-                            console.log(data.toString())
+                            for (const pkg of pkgs) {
+                                checkInstalled(pkg, (installed) => {
+                                    event.reply('pkg:check', { installed: installed, pkg: pkg })
+                                })
+                            }
                         })
                     }
                 })
         } else {
             shell({ command: commandNormal, path: logPath, elevate: false }, (error, data) => {
-                console.log(data.toString())
+                for (const pkg of pkgs) {
+                    checkInstalled(pkg, (installed) => {
+                        event.reply('pkg:check', { installed: installed, pkg: pkg })
+                    })
+                }
             })
         }
 

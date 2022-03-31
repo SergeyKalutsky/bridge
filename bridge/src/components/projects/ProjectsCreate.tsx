@@ -115,14 +115,14 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1>
             <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center'>
                 <div className='w-3/5 h-2/3'>
-                    <div className='w-full h-3/6 gap-y-2 flex flex-col'>
+                    <div className='w-full h-4/7 gap-y-2 flex flex-col'>
                         <span className='text-red-400 font-medium text-xl'>{error}</span>
                         <InputForm type="text" placeholder='Название'
                             onChange={(e) => { setProject({ ...project, name: e.target.value }) }} />
                         <textarea placeholder='Описание' className='w-full h-[150px] text-xl rounded-lg focus:outline-none'
                             onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                     </div>
-                    <div className='w-full h-1/6 gap-y-2 flex flex-col'>
+                    <div className='w-full h-1/7 gap-y-2 flex flex-col'>
                         {/* <div>
                             <input type="checkbox"
                                 className='scale-150'

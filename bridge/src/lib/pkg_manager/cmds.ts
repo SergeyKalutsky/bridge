@@ -48,13 +48,21 @@ const CMD = {
         install: {
             win32: 'pip install pgzero --user',
             darwin: 'pip install pgzero'
-        }
+        },
+        check: {
+            cmd: 'pip list | Select-String "pgzero"',
+            string: 'pgzero'
+        },
     },
     'discord.py': {
         elevate: false,
         install: {
             win32: 'pip install discord.py --user',
             darwin: 'pip install discord.py'
+        },
+        check: {
+            cmd: 'pip list | Select-String "discord"',
+            string: 'discord'
         }
     },
     requests: {
@@ -62,6 +70,10 @@ const CMD = {
         install: {
             win32: 'pip install requests --user',
             darwin: 'pip install requests'
+        },
+        check: {
+            cmd: 'pip list | Select-String "requests"',
+            string: 'requests'
         }
     },
     flask_login: {
@@ -69,6 +81,10 @@ const CMD = {
         install: {
             win32: 'pip install flask_login --user',
             darwin: 'pip install flask_login'
+        },
+        check: {
+            cmd: 'pip list | Select-String "Flask-Login"',
+            string: 'Flask-Login'
         }
     },
     sqlalchemy: {
@@ -76,6 +92,10 @@ const CMD = {
         install: {
             win32: 'pip install sqlalchemy --user',
             darwin: 'pip install sqlalchemy'
+        },
+        check: {
+            cmd: 'pip list | Select-String "SQLAlchemy"',
+            string: 'SQLAlchemy'
         }
     },
     flask: {
@@ -83,6 +103,10 @@ const CMD = {
         install: {
             win32: 'pip install flask --user',
             darwin: 'pip install flask'
+        },
+        check: {
+            cmd: 'pip list | Select-String "Flask"',
+            string: 'Flask'
         }
     }
 }
