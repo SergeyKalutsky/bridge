@@ -1,12 +1,10 @@
 import { shell, checkInstalled } from '../../pkg_manager'
 import { ipcMain } from 'electron';
-import { spawn } from 'child_process'
 import { BASE_DIR } from './storage';
 import CMD from "../../pkg_manager/cmds";
 import path from 'path'
 import util from 'util'
 import fs from 'fs'
-import os from 'os'
 
 const readFileAsync = util.promisify(fs.readFile)
 

@@ -39,6 +39,13 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [project, setProject] = useState<Project>(dummyProject)
     const ref = useRef(null)
 
+    useEffect(() => {
+        window.shared.incomingData("pkg:check", (data) => {
+            console.log(data)
+        });
+        return () => window.shared.removeListeners('pkg:check')
+    }, [])
+
     const handleClick = () => {
         if (project.name === '') {
             setError('Название проекта не может быть пустым')
