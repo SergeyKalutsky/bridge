@@ -90,8 +90,8 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         <div className='text-lg text-slate-50 font-medium'>Создание/установка проекта...</div></>
     return (
         <>
-            {/* <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1> */}
-            <div className='bg-zinc-500 flex flex-col h-full items-center justify-center'>
+            <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1>
+            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center'>
                 <div className='w-3/5 h-2/3'>
                     <div className='w-full h-2/6 gap-y-5 flex flex-col'>
                         <InputForm type="text" placeholder='Название'
