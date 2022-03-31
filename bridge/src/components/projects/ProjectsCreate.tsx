@@ -53,6 +53,12 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             return
         }
         const localProjects = window.projects.getLocalProjectsNames()
+        for (const local of localProjects) {
+            if (project.name === local){
+                setError('Проект с таким именем уже есть')
+                return
+            }
+        }
         console.log(localProjects)
         setError('')
         setVisible(true)
