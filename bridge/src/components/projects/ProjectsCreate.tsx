@@ -52,6 +52,8 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             setError('Название может содержать только латинские буквы')
             return
         }
+        const localProjects = window.projects.getLocalProjectsNames()
+        console.log(localProjects)
         setError('')
         setVisible(true)
         addProject(project)
@@ -67,7 +69,6 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             for (const log of logs) {
                 if (log.length > 90) {
                     const splitedLog = log.split(/\s/g)
-                    console.log(splitedLog)
                     newLogs.push(splitedLog.slice(0, splitedLog.length / 2).join(' '))
                     newLogs.push(splitedLog.slice(splitedLog.length / 2).join(' '))
                 } else {
