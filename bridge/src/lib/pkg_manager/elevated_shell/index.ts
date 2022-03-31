@@ -3,9 +3,7 @@ import { linux } from './linux'
 import { instance } from './types'
 
 
-
-
-async function elevatedShell(instance: instance,
+async function shell(instance: instance,
   callback: (error?: Error, data?: string | Buffer) => void): Promise<void> {
   const platform = process.platform;
   if (platform === 'linux') return linux(instance, callback);
@@ -14,4 +12,4 @@ async function elevatedShell(instance: instance,
 }
 
 
-export default elevatedShell
+export default shell

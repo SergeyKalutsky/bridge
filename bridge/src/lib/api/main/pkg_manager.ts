@@ -1,4 +1,4 @@
-import { elevatedShell, checkInstalled } from '../../pkg_manager'
+import { shell, checkInstalled } from '../../pkg_manager'
 import { ipcMain } from 'electron';
 import { spawn } from 'child_process'
 import { BASE_DIR } from './storage';
@@ -32,21 +32,6 @@ function check() {
 }
 
 function pkgInstall() {
-    const appendLogs = (logs: string, logPath: string): void => {
-        fs.appendFile(logPath, logs, {encoding: 'utf-8'}, (err) => {
-            if (err) throw err;
-        });
-    }
-    const executeShell = (command: string, logPath: string): void => {
-        const child = spawn(command, { shell: true })
-        child.stdout.on('data', async (data) => {
-            appendLogs(data.toString(), logPath)
-        })
-        child.stderr.on('data', async (data) => {
-            appendLogs(data.toString(), logPath)
-        })
-
-    }
     ipcMain.on('pkg:install', (event, data) => {
         const pkgs = data.pkgs
         const logPath = path.join(BASE_DIR, data.fileName)
@@ -63,7 +48,7 @@ function pkgInstall() {
             }
         }
         if (commandElevated != '') {
-            elevatedShell({ command: commandElevated, path: logPath },
+            shell({ command: commandElevated, path: logPath, elevate: true },
                 async (error?: Error, data?: string | Buffer) => {
                     if (data.toString() === 'refreshenv') {
                         for (const pkg of elevatedPkgs) {
@@ -74,11 +59,15 @@ function pkgInstall() {
                                 event.reply('pkg:check', { installed: installed, pkg: pkg })
                             })
                         }
-                        // executeShell(commandNormal, logPath)
+                        shell({ command: commandNormal, path: logPath, elevate: false }, (error, data) => {
+                            console.log(data.toString())
+                        })
                     }
                 })
         } else {
-            // executeShell(commandNormal, logPath)
+            shell({ command: commandNormal, path: logPath, elevate: false }, (error, data) => {
+                console.log(data.toString())
+            })
         }
 
     })

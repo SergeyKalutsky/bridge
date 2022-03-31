@@ -1,7 +1,5 @@
 import { spawn } from 'child_process'
 import { instance } from './types'
-import os from 'os'
-import path from 'path'
 
 // powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -windowstyle hidden -ArgumentList 'choco install -y rust | Out-File -append C:\Users\skalu\lesson3\out.txt' -Verb runAs -Wait"
 
@@ -22,7 +20,9 @@ function windows(instance: instance,
   // Waits to press Enter before close for Debugging
   // command.push("Read-Host ''Type ENTER to exit''")
   command.push("'")
-  command.push('-Verb runAs');
+  if (instance.elevate) {
+    command.push('-Verb runAs');
+  }
   command.push('-Wait');
   command.push('"')
   const strCommand = command.join(' ');
