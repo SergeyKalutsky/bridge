@@ -57,7 +57,6 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
             if (logFileName !== undefined) {
                 window.pkg.getlogs(logFileName)
             }
-            console.log(logFileName)
         }, 1000)
 
         return () => clearInterval(fileContent);
