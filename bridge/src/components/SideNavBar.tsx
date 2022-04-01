@@ -5,6 +5,7 @@ import { CupIcon, FileIcon, GitIcon, ProjectIcon } from './common/Icons';
 
 
 const SideNavBar = (): JSX.Element => {
+    const [active, setActive] = useState<number>(0)
     const history = useHistory()
     const [open, setOpen] = useState(false)
     const checkActiveProject = (path: string): void => {
@@ -20,13 +21,13 @@ const SideNavBar = (): JSX.Element => {
                 <IconButton>
                     <CupIcon />
                 </IconButton>
-                <IconButton onClick={() => { checkActiveProject('/editor') }}>
+                <IconButton active={active === 2} onClick={() => { checkActiveProject('/editor'); setActive(2) }}>
                     <FileIcon />
                 </IconButton>
-                <IconButton onClick={() => { checkActiveProject('/git') }}>
+                <IconButton active={active === 1} onClick={() => { checkActiveProject('/git'); setActive(1) }}>
                     <GitIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton active={active === 0} onClick={() => setActive(0)}>
                     <Link to="/" replace><ProjectIcon /></Link>
                 </IconButton>
                 <PopUp
