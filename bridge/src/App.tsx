@@ -15,6 +15,7 @@ export default function App(): JSX.Element {
         const user = window.settings.get('user')
         setUserSettingLoaded(true)
         user !== undefined ? setIslogin(false) : setIslogin(true)
+        user !== undefined ? setIsFirstLoad(false) : setIsFirstLoad(true)
     }, [])
 
     useEffect(() => {
