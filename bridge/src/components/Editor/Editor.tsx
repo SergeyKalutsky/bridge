@@ -23,6 +23,14 @@ const Editor = (): JSX.Element => {
             }
         }
     }
+
+    useEffect(() => {
+        const activeProject = window.settings.get('active_project')
+        if (activeProject.activePath !== undefined) {
+            setActivePath(activeProject.activePath)
+        }
+    }, [])
+
     useEffect(() => {
 
         window.shared.incomingData('projects:readactivefile', (data) => {

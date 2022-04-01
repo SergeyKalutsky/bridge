@@ -16,6 +16,9 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
   const ref = useRef(null)
   const handleToggle = e => {
     setActivePath({ path: path, isDirectory: true })
+    const activeProject = window.settings.get('active_project')
+    activeProject.activePath = { path: path, isDirectory: false }
+    window.settings.set({active_project: activeProject})
     e.preventDefault()
     setIsOpen(!isOpen)
   };
@@ -41,7 +44,7 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
       setColor("bg-transperent")
 
       for (const f of e.dataTransfer.files) {
-        window.projects.copyFile({src: f.path, destination: path, root: false})
+        window.projects.copyFile({ src: f.path, destination: path, root: false })
       }
     }
     ref.current.addEventListener('drop', drop)
@@ -50,10 +53,6 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
       e.stopPropagation();
     });
   }, [])
-  useEffect(() => {
-    setColor(bgColor)
-  }, [])
-
   const bgColor = activePath !== null && path === activePath.path ? "bg-slate-700" : "bg-transperent"
   const height = isOpen ? "h-0" : "h-auto"
   return (
