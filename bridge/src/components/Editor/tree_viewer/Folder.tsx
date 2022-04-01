@@ -22,7 +22,6 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
 
   useEffect(() => {
     const onDragEnter = (e) => {
-      console.log('File is in the Drop Space')
       setColor("bg-slate-700")
     }
     ref.current.addEventListener('dragenter', onDragEnter)
@@ -31,7 +30,6 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
 
   useEffect(() => {
     const onDragLeave = (e) => {
-      console.log('File has left the Drop Space')
       setColor("bg-transperent")
     }
     ref.current.addEventListener('dragleave', onDragLeave)

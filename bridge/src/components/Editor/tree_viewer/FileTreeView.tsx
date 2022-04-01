@@ -5,12 +5,29 @@ import NewFolder from './newFolder'
 import { ActivePath, FileObject } from '../types'
 import SideMenuHeader from "../../common/SideMenuHeader";
 import { IconContext } from "react-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import DeleteTreeElement from './DeleteTreeElement'
 
 
 const Tree = ({ children }) => {
-    return <div className="leading-8">{children}</div>
+    const [color, setColor] = useState('bg-transperent')
+    const ref = useRef(null)
+    useEffect(() => {
+        const onDragEnter = (e) => {
+            setColor("bg-slate-700")
+        }
+        ref.current.addEventListener('dragenter', onDragEnter)
+        return () => ref.current.removeEventListener('dragenter', onDragEnter)
+    }, [])
+
+    useEffect(() => {
+        const onDragLeave = (e) => {
+            setColor("bg-transperent")
+        }
+        ref.current.addEventListener('dragleave', onDragLeave)
+        return () => ref.current.removeEventListener('dragleave', onDragLeave)
+    }, [])
+    return <div ref={ref} className={`leading-8 h-2/3 ${color}`}>{children}</div>
 };
 
 Tree.File = File;
