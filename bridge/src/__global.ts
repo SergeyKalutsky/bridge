@@ -25,6 +25,7 @@ declare global {
             createFolder(createInfo: CreateInfo): any;
             deleteTreeElement(activePath: ActivePath): any;
             mkprojectdir(project_name: string): any;
+            copyFile(args: { src: string, destination: string, root: boolean }): any
         };
         git: {
             clone(project: Project): void;

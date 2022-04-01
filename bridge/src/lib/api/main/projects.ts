@@ -142,7 +142,24 @@ function listFiles() {
     })
 }
 
+function copyFile() {
+    return ipcMain.on('projects:copyfile', async (event, arg) => {
+        if (arg.root) {
+            arg.destination = path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
+        }
+        arg.destination = path.join(arg.destination, path.parse(arg.src).name)
+        fs.copyFile(arg.src, arg.destination, (err) => {
+            if (err) throw err;
+            const project_name = store.get('active_project.name')
+            const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+            const result = walkSync(project_dir)
+            event.reply('projects:listfiles', result)
+        });
+    })
+}
+
 function projectAPI(): void {
+    copyFile()
     mkbasedir()
     deleteTreeElement()
     writeActiveFile()

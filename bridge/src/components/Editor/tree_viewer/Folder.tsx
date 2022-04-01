@@ -25,7 +25,6 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
       setColor("bg-slate-700")
     }
     ref.current.addEventListener('dragenter', onDragEnter)
-    return () => ref.current.removeEventListener('dragenter', onDragEnter)
   }, [])
 
   useEffect(() => {
@@ -33,13 +32,28 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
       setColor("bg-transperent")
     }
     ref.current.addEventListener('dragleave', onDragLeave)
-    return () => ref.current.removeEventListener('dragleave', onDragLeave)
   }, [])
 
   useEffect(() => {
+    const drop = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setColor("bg-transperent")
+
+      for (const f of e.dataTransfer.files) {
+        window.projects.copyFile({src: f.path, destination: path, root: false})
+      }
+    }
+    ref.current.addEventListener('drop', drop)
+    ref.current.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  }, [])
+  useEffect(() => {
     setColor(bgColor)
   }, [])
-  
+
   const bgColor = activePath !== null && path === activePath.path ? "bg-slate-700" : "bg-transperent"
   const height = isOpen ? "h-0" : "h-auto"
   return (

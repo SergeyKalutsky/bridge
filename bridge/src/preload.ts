@@ -26,7 +26,8 @@ contextBridge.exposeInMainWorld('projects', {
     createFile: (createInfo: CreateInfo): void => ipcRenderer.send('projects:createfile', createInfo),
     createFolder: (createInfo: CreateInfo): void => ipcRenderer.send('projects:createfolder', createInfo),
     deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
-    mkprojectdir: (project_name: string): void => ipcRenderer.send('projects:mkprojectdir', project_name)
+    mkprojectdir: (project_name: string): void => ipcRenderer.send('projects:mkprojectdir', project_name),
+    copyFile: (args: { src: string, destination: string, root: boolean }): void => ipcRenderer.send('projects:copyfile', args)
 })
 
 contextBridge.exposeInMainWorld('git', {
