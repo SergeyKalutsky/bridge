@@ -51,7 +51,7 @@ const Editor = (): JSX.Element => {
     }, [activePath])
     return (
         <>
-            <SideMenu activeToggle={activeToggle}>
+            <SideMenu activeToggle={activeToggle} terminal={true}>
                 <FileTreeView activePath={activePath} setActivePath={setActivePath} />
             </SideMenu>
             <ToggleBar handleToggle={handleToggle} />

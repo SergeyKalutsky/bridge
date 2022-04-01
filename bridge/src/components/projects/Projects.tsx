@@ -133,7 +133,7 @@ const Projects = (): JSX.Element => {
     )
     return (
         <>
-            <SideMenu activeToggle={activeToggle}>
+            <SideMenu activeToggle={activeToggle} terminal={false}>
                 <MenuHeader onClick={dispatchCreateProject} />
                 {projects_list}
             </SideMenu>
