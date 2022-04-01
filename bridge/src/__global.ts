@@ -31,6 +31,7 @@ declare global {
             clone(project: Project): void;
             pull(): void;
             push(): void;
+            commit(): void;
             log(): Commit[];
             diff(hash: string): ParsedGitDiff[];
             init(project_name: string): void;

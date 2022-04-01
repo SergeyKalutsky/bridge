@@ -1,7 +1,6 @@
 import { FILE_ICONS } from "../Constants";
 import { AiOutlineFile } from "react-icons/ai";
 import { ActivePath } from "../types";
-import { useEffect } from "react";
 
 
 interface Props {

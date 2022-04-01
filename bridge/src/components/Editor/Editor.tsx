@@ -59,7 +59,7 @@ const Editor = (): JSX.Element => {
                 <ToolBar>
                     <div className="w-full flex justify-end">
                         <div className="flex justify-between w-[270px] mr-5 h-2/5">
-                            <Button onClick={() => { window.git.push() }}
+                            <Button onClick={() => { window.git.commit() }}
                                 btnText='commit' theme="purple" height={5} >
                             </Button>
                             <Button onClick={handleClick} theme="purple" height={5}>

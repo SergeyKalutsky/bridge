@@ -35,6 +35,14 @@ function pull() {
     })
 }
 
+function commit() {
+    return ipcMain.on('git:commit', () => {
+        const project_name = store.get('active_project.name').replace(/ /g, '-')
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        git.cwd(project_dir).add('./*').commit('test')
+    })
+}
+
 function push() {
     return ipcMain.on('git:push', () => {
         const project_name = store.get('active_project.name').replace(/ /g, '-')
@@ -71,6 +79,7 @@ function gitAPI(): void {
     push()
     diff()
     init()
+    commit()
 }
 
 export default gitAPI
