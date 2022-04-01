@@ -26,7 +26,6 @@ function windows(instance: instance,
   command.push('-Wait');
   command.push('"')
   const strCommand = command.join(' ');
-  console.log(strCommand)
   const child = spawn(strCommand, { shell: true })
   child.on('close', () => {
       callback(null, 'refreshenv')
