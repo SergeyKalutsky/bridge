@@ -34,7 +34,6 @@ const Tree = ({ children }) => {
 
             for (const f of e.dataTransfer.files) {
                 window.projects.copyFile({src: f.path, destination: '', root: true})
-                console.log('File Path of dragged files: ', f.path)
             }
         }
         ref.current.addEventListener('drop', drop)

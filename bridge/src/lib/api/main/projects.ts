@@ -147,7 +147,7 @@ function copyFile() {
         if (arg.root) {
             arg.destination = path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
         }
-        arg.destination = path.join(arg.destination, path.parse(arg.src).name)
+        arg.destination = path.join(arg.destination, path.parse(arg.src).base)
         fs.copyFile(arg.src, arg.destination, (err) => {
             if (err) throw err;
             const project_name = store.get('active_project.name')
