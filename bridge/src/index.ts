@@ -62,8 +62,8 @@ const createWindow = (): void => {
   ipcMain.on("terminal:keystroke", (event, key) => {
     ptyProcess.write(key);
   });
-  ipcMain.on('terminal:fit', async (event) => {
-    event.reply('terminal:fit', {})
+  ipcMain.on('terminal:fit', async (event, data) => {
+    event.reply('terminal:fit', data)
   })
 };
 

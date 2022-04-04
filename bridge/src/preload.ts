@@ -43,7 +43,7 @@ contextBridge.exposeInMainWorld('git', {
 
 contextBridge.exposeInMainWorld('terminal', {
     keystoke: (e) => ipcRenderer.send('terminal:keystroke', e),
-    fit: (): void => ipcRenderer.send('terminal:fit')
+    fit: (data: { x: number, y: number }): void => ipcRenderer.send('terminal:fit', data)
 })
 
 contextBridge.exposeInMainWorld('pkg', {
