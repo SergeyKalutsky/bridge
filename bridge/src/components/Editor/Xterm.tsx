@@ -10,6 +10,7 @@ interface Props {
 const Xterm = ({ activeToggle }: Props): JSX.Element => {
     const term = new Terminal({
         fontSize: 16,
+        cursorBlink: true
     })
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon)
@@ -21,7 +22,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         function onMouseMove(e) {
             if ((!(ref.current.clientHeight <= 100) && (e.movementY > 0)) ||
                 ((!(ref.current.clientHeight >= 500) && (e.movementY < 0)))) {
-                window.terminal.fit({y: e.movementY})
+                window.terminal.fit({ y: e.movementY })
             }
         }
         function onMouseUp() {
@@ -43,9 +44,9 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
 
     useEffect(() => {
-        const unSub = ()=> {
+        const unSub = () => {
             window.shared.removeListeners('terminal:incomingdata')
-            window.shared.removeListeners('terminal:fit') 
+            window.shared.removeListeners('terminal:fit')
         }
         term.onData(e => {
             window.terminal.keystoke(e)
@@ -56,6 +57,12 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         window.shared.incomingData("terminal:fit", (data) => {
             if (data.y !== undefined) {
                 setHeight(ref.current.clientHeight - data.y)
+                // stupid hack because textarea doesn't resize properly
+                const element = document.querySelector('.xterm-helper-textarea')
+                let num = Number(element['style'].top.replace('px', ''))
+                num = num - data.y
+                element['style'].top = `${num}px`
+
             }
             if (data.x !== undefined) {
                 setWidth(ref.current.clientWidth - data.x)
@@ -68,7 +75,9 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
         return () => unSub()
     }, [])
-
+    useEffect(() => {
+        console.log(width)
+    }, [width])
     return (
         <>
             <button className='hover:h-[4px] h-[2px] hover:bg-cyan-700 bg-neutral-500 hover:cursor-row-resize w-full drop-shadow-lg'
