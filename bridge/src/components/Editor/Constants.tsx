@@ -3,10 +3,18 @@ import {
     DiCss3Full,
     DiHtml5,
     DiReact,
-    DiPython,
     DiDocker,
     DiMarkdown
 } from "react-icons/di";
+import {
+    FcImageFile
+} from "react-icons/fc"
+import {
+    SiPython
+} from "react-icons/si"
+import {
+    AiOutlineFileText
+} from "react-icons/ai"
 
 const IMG_FORMATS = [
     'apng',
@@ -23,13 +31,21 @@ const IMG_FORMATS = [
 ]
 
 const FILE_ICONS = {
-    js: <DiJavascript1 />,
+    js: <DiJavascript1 style={{ color: '#f5f551' }}/>,
     css: <DiCss3Full />,
     html: <DiHtml5 />,
     jsx: <DiReact />,
-    py: <div className="bg-yellow-500 rounded-full text-cyan-900 opacity-60"><DiPython /></div>,
+    py: <SiPython style={{ color: '#367dc9' }} />,
     yml: <DiDocker />,
-    md: <DiMarkdown />
+    md: <DiMarkdown />,
+    jpg: <FcImageFile />,
+    apng: <FcImageFile />,
+    avif: <FcImageFile />,
+    gif: <FcImageFile />,
+    jpeg: <FcImageFile />,
+    png: <FcImageFile />,
+    svg: <FcImageFile />,
+    txt: <AiOutlineFileText style={{ color: 'white' }} />
 };
 
 const CMD = {
