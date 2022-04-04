@@ -32,8 +32,8 @@ const IMG_FORMATS = [
 
 const FILE_ICONS = {
     js: <DiJavascript1 style={{ color: '#f5f551' }}/>,
-    css: <DiCss3Full />,
-    html: <DiHtml5 />,
+    css: <DiCss3Full style={{ color: '#1b61f7' }}/>,
+    html: <DiHtml5 style={{ color: '#f76916' }}/>,
     jsx: <DiReact />,
     py: <SiPython style={{ color: '#367dc9' }} />,
     yml: <DiDocker />,
