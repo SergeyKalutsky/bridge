@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActivePath } from "./types";
-import { CMD, ACE_MODS } from './Constants'
+import { CMD, ACE_MODS, IMG_FORMATS } from './Constants'
 import { ToggleBar, SideMenu, Workspace, ToolBar, Button } from "../common";
 
 import Xterm from "./Xterm";
@@ -37,7 +37,13 @@ const Editor = (): JSX.Element => {
             const onChange = (newValue: string) => {
                 window.projects.writeActiveFile({ filepath: data.path, fileContent: newValue })
             }
-            setEditor(buildEditor(ACE_MODS[data.ext], data.content, false, onChange))
+            if (IMG_FORMATS.includes(data.ext)) {
+                // if its an image folder we don't load editor
+                setEditor(<><div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
+                    <img src={data.path} alt=""className="max-w-lg" /></div></>)
+            } else {
+                setEditor(buildEditor(ACE_MODS[data.ext], data.content, false, onChange))
+            }
         })
         return () => window.shared.removeListeners('projects:readactivefile')
     }, [])

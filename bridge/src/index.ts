@@ -29,6 +29,7 @@ const createWindow = (): void => {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
+      webSecurity: false,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
     }
 

@@ -8,6 +8,20 @@ import {
     DiMarkdown
 } from "react-icons/di";
 
+const IMG_FORMATS = [
+    'apng',
+    'avif',
+    'gif',
+    'jpg',
+    'jpeg',
+    'jfif',
+    'pjpeg',
+    'pjp',
+    'png',
+    'svg',
+    'webp'
+]
+
 const FILE_ICONS = {
     js: <DiJavascript1 />,
     css: <DiCss3Full />,
@@ -38,5 +52,6 @@ const ACE_MODS = {
 export {
     FILE_ICONS,
     CMD,
-    ACE_MODS
+    ACE_MODS,
+    IMG_FORMATS
 }

@@ -11,7 +11,7 @@ import "ace-builds/src-noconflict/mode-plain_text";
 import "ace-builds/src-noconflict/theme-monokai";
 
 
-const buildEditor = (mode = 'plain_text',
+const buildEditor = (mode='plain_text',
     value = 'Cоздайте или выберите файл, чтобы начать работу',
     readOnly = false,
     onChange=null): JSX.Element => {
