@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { ActivePath } from "./types";
 import { CMD, ACE_MODS, IMG_FORMATS } from './Constants'
-import { ToggleBar, SideMenu, Workspace, ToolBar, Button } from "../common";
+import { ToggleBar, SideMenu, Workspace, ToolBar, IconButton } from "../common";
+import { IoMdGitCommit, IoMdPlay } from 'react-icons/io'
+import { FaStop } from 'react-icons/fa'
 
 import Xterm from "./Xterm";
 import buildEditor from "./TextEditor";
@@ -40,7 +42,7 @@ const Editor = (): JSX.Element => {
             if (IMG_FORMATS.includes(data.ext)) {
                 // if its an image folder we don't load editor
                 setEditor(<><div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
-                    <img src={data.path} alt=""className="max-w-lg" /></div></>)
+                    <img src={data.path} alt="" className="max-w-lg" /></div></>)
             } else {
                 setEditor(buildEditor(ACE_MODS[data.ext], data.content, false, onChange))
             }
@@ -64,13 +66,22 @@ const Editor = (): JSX.Element => {
             <Workspace>
                 <ToolBar>
                     <div className="w-full flex justify-end">
-                        <div className="flex justify-between w-[270px] mr-5 h-2/5">
-                            <Button onClick={() => { window.git.commit() }}
+                        <div className="flex justify-between w-[150px] mr-10 h-1/5">
+                            <IconButton>
+                                <IoMdPlay style={{ color: '#76de85', height: 30, width: 30 }} />
+                            </IconButton>
+                            <IconButton>
+                                <FaStop style={{ color: '#d91a1a', height: 25, width: 25 }} />
+                            </IconButton>
+                            <IconButton>
+                                <IoMdGitCommit style={{ color: 'white', height: 50, width: 50 }} />
+                            </IconButton>
+                            {/* <Button onClick={() => { window.git.commit() }}
                                 btnText='commit' theme="purple" height={5} >
                             </Button>
                             <Button onClick={handleClick} theme="purple" height={5}>
                                 <span>RUN</span>
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                 </ToolBar>
