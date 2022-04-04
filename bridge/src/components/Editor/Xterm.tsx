@@ -58,10 +58,12 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
             if (data.y !== undefined) {
                 setHeight(ref.current.clientHeight - data.y)
                 // stupid hack because textarea doesn't resize properly
-                const element = document.querySelector('.xterm-helper-textarea')
-                let num = Number(element['style'].top.replace('px', ''))
-                num = num - data.y
-                element['style'].top = `${num}px`
+                if (data.y > 0) {
+                    const element = document.querySelector('.xterm-helper-textarea')
+                    let num = Number(element['style'].top.replace('px', ''))
+                    num = num - data.y
+                    element['style'].top = `${num}px`
+                }
 
             }
             if (data.x !== undefined) {
