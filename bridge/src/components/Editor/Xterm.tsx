@@ -49,6 +49,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
             window.shared.removeListeners('terminal:fit')
         }
         term.onData(e => {
+            console.log(e.toString())
             window.terminal.keystoke(e)
         })
         window.shared.incomingData("terminal:incomingdata", (data) => {

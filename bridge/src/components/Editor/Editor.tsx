@@ -25,6 +25,9 @@ const Editor = (): JSX.Element => {
             }
         }
     }
+    const handeCansel = () => {
+        window.terminal.keystoke('\x03')
+    }
 
     useEffect(() => {
         const activeProject = window.settings.get('active_project')
@@ -67,21 +70,15 @@ const Editor = (): JSX.Element => {
                 <ToolBar>
                     <div className="w-full flex justify-end">
                         <div className="flex justify-between w-[150px] mr-10 h-1/5">
-                            <IconButton>
+                            <IconButton onClick={handleClick}>
                                 <IoMdPlay style={{ color: '#76de85', height: 30, width: 30 }} />
                             </IconButton>
-                            <IconButton>
+                            <IconButton onClick={handeCansel}>
                                 <FaStop style={{ color: '#d91a1a', height: 25, width: 25 }} />
                             </IconButton>
-                            <IconButton>
+                            <IconButton onClick={() => { window.git.commit() }}>
                                 <IoMdGitCommit style={{ color: 'white', height: 50, width: 50 }} />
                             </IconButton>
-                            {/* <Button onClick={() => { window.git.commit() }}
-                                btnText='commit' theme="purple" height={5} >
-                            </Button>
-                            <Button onClick={handleClick} theme="purple" height={5}>
-                                <span>RUN</span>
-                            </Button> */}
                         </div>
                     </div>
                 </ToolBar>
