@@ -14,7 +14,6 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon)
     const ref = useRef<HTMLDivElement>();
-    console.log(window.innerWidth)
     const [height, setHeight] = useState(200)
     const [width, setWidth] = useState(window.innerWidth - 430)
 
@@ -22,9 +21,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         function onMouseMove(e) {
             if ((!(ref.current.clientHeight <= 100) && (e.movementY > 0)) ||
                 ((!(ref.current.clientHeight >= 500) && (e.movementY < 0)))) {
-                console.log(e.movementY)
-                setHeight(height => height - e.movementY)
-                window.terminal.fit()
+                window.terminal.fit({y: e.movementY})
             }
         }
         function onMouseUp() {
@@ -57,13 +54,18 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
             term.write(data);
         });
         window.shared.incomingData("terminal:fit", (data) => {
-            console.log(data)
+            if (data.y !== undefined) {
+                setHeight(ref.current.clientHeight - data.y)
+            }
+            if (data.x !== undefined) {
+                setWidth(ref.current.clientWidth - data.x)
+            }
             fitAddon.fit()
         });
         term.open(ref.current);
         term.write('Добро пожаловать, нажмите Enter$ ')
         fitAddon.fit()
-        
+
         return () => unSub()
     }, [])
 

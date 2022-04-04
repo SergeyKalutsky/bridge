@@ -21,7 +21,7 @@ const SideMenu = ({ children, activeToggle, terminal }: Props): JSX.Element => {
                 ((!(ref.current.clientWidth >= 500) && (e.movementX > 0)))) {
                 setSize(size => size + e.movementX)
                 if (terminal) {
-                    window.terminal.fit()
+                    window.terminal.fit({x: e.movementX})
                 }
             }
         }
