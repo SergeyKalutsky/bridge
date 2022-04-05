@@ -50,11 +50,11 @@ const ProjectItem = ({ project,
         setActiveProject(active_project.id)
     }
     const icons = (<>
-        <div className='hover:text-white'>
+        {/* <div className='hover:text-white'>
             <FontAwesomeIcon icon={faUserEdit}
                 onClick={() => { dispatch({ type: 'memberFind', payload: project.id }) }}
             />
-        </div>
+        </div> */}
         <div className='hover:text-white'>
             <FontAwesomeIcon icon={faTrashAlt} onClick={() => { setDeleteOpen(true) }} />
         </div>
