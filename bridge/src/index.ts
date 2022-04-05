@@ -6,7 +6,9 @@ const pty = require("node-pty");
 const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 const contextMenu = require('electron-context-menu');
 contextMenu({
-  showSaveImageAs: true
+  showSearchWithGoogle: false,
+  showCopyImage: false,
+  showInspectElement: false
 });
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
