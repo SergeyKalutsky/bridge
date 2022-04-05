@@ -15,7 +15,6 @@ const Tree = ({ children }) => {
     const ref = useRef(null)
     useEffect(() => {
         const onDragLeave = (e) => {
-            console.log('exit')
             setColor("bg-transperent")
         }
         ref.current.addEventListener('dragleave', onDragLeave)

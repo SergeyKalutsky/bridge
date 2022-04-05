@@ -49,7 +49,6 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
             window.shared.removeListeners('terminal:fit')
         }
         term.onData(e => {
-            console.log(e.toString())
             window.terminal.keystoke(e)
         })
         window.shared.incomingData("terminal:incomingdata", (data) => {
@@ -78,9 +77,6 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
         return () => unSub()
     }, [])
-    useEffect(() => {
-        console.log(width)
-    }, [width])
     return (
         <>
             <button className='hover:h-[4px] h-[2px] hover:bg-cyan-700 bg-neutral-500 hover:cursor-row-resize w-full drop-shadow-lg'
