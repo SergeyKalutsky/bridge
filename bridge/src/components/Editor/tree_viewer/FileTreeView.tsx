@@ -2,6 +2,7 @@ import Folder from "./Folder";
 import File from "./File"
 import NewFile from "./NewFile";
 import NewFolder from './newFolder'
+import RenameFile from "./renameFile";
 import { ActivePath, FileObject } from '../types'
 import SideMenuHeader from "../../common/SideMenuHeader";
 import { IconContext } from "react-icons";
@@ -128,6 +129,7 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
                 </div>
                 <div className="w-[100px] flex rounded-full cursor-pointer justify-end mx-3">
                     <IconContext.Provider value={{ color: 'white', size: '25', className: 'file-icon' }}>
+                        <RenameFile activePath={activePath} forceUpdate={forceUpdate}/>
                         <NewFile activePath={activePath} forceUpdate={forceUpdate} />
                         <NewFolder activePath={activePath} forceUpdate={forceUpdate} />
                         <DeleteTreeElement activePath={activePath} forceUpdate={forceUpdate} />
