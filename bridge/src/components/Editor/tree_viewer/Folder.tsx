@@ -18,17 +18,10 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
     setActivePath({ path: path, isDirectory: true })
     const activeProject = window.settings.get('active_project')
     activeProject.activePath = { path: path, isDirectory: false }
-    window.settings.set({active_project: activeProject})
+    window.settings.set({ active_project: activeProject })
     e.preventDefault()
     setIsOpen(!isOpen)
   };
-
-  useEffect(() => {
-    const onDragEnter = (e) => {
-      setColor("bg-slate-700")
-    }
-    ref.current.addEventListener('dragenter', onDragEnter)
-  }, [])
 
   useEffect(() => {
     const onDragLeave = (e) => {
@@ -51,6 +44,7 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
     ref.current.addEventListener('dragover', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      setColor("bg-slate-700")
     });
   }, [])
   const bgColor = activePath !== null && path === activePath.path ? "bg-slate-700" : "bg-transperent"

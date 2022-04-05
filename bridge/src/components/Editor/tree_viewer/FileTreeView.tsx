@@ -13,14 +13,8 @@ const Tree = ({ children }) => {
     const [color, setColor] = useState('bg-transperent')
     const ref = useRef(null)
     useEffect(() => {
-        const onDragEnter = (e) => {
-            setColor("bg-slate-700")
-        }
-        ref.current.addEventListener('dragenter', onDragEnter)
-    }, [])
-
-    useEffect(() => {
         const onDragLeave = (e) => {
+            console.log('exit')
             setColor("bg-transperent")
         }
         ref.current.addEventListener('dragleave', onDragLeave)
@@ -33,13 +27,14 @@ const Tree = ({ children }) => {
             setColor("bg-transperent")
 
             for (const f of e.dataTransfer.files) {
-                window.projects.copyFile({src: f.path, destination: '', root: true})
+                window.projects.copyFile({ src: f.path, destination: '', root: true })
             }
         }
         ref.current.addEventListener('drop', drop)
         ref.current.addEventListener('dragover', (e) => {
             e.preventDefault();
             e.stopPropagation();
+            setColor("bg-slate-700")
         });
     }, [])
     return <div ref={ref} className={`leading-8 h-2/3 ${color}`}>{children}</div>
