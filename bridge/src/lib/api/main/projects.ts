@@ -80,7 +80,6 @@ function deleteTreeElement() {
 
 function renameFile() {
     return ipcMain.on('projects:renamefile', (event, data) => {
-        console.log(data)
         const newPath = path.join(path.parse(data.activePath.path).dir, data.newName)
         fs.renameSync(data.activePath.path, newPath);
     })
