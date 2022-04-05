@@ -26,6 +26,7 @@ declare global {
             deleteTreeElement(activePath: ActivePath): any;
             mkprojectdir(project_name: string): any;
             copyFile(args: { src: string, destination: string, root: boolean }): any
+            renameFile(data: { newName: string, activePath: ActivePath}): any
         };
         git: {
             clone(project: Project): void;

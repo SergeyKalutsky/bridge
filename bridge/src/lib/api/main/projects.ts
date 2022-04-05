@@ -78,6 +78,14 @@ function deleteTreeElement() {
     })
 }
 
+function renameFile() {
+    return ipcMain.on('projects:renamefile', (event, data) => {
+        console.log(data)
+        const newPath = path.join(path.parse(data.activePath.path).dir, data.newName)
+        fs.renameSync(data.activePath.path, newPath);
+    })
+}
+
 function writeActiveFile() {
     return ipcMain.on('projects:writeactivefile', (event, data) => {
         fs.writeFile(data.filepath, data.fileContent, (err) => {
@@ -159,6 +167,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    renameFile()
     copyFile()
     mkbasedir()
     deleteTreeElement()

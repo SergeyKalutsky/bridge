@@ -13,7 +13,7 @@ const RenameFile = ({ activePath, forceUpdate }: Props): JSX.Element => {
     const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
     const handleClick = () => {
-        window.projects.createFile({ activePath: activePath, name: filename });
+        window.projects.renameFile({ activePath: activePath, newName: filename });
         forceUpdate()
         setOpen(false)
     }
