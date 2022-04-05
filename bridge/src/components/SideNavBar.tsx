@@ -14,6 +14,13 @@ const SideNavBar = (): JSX.Element => {
             history.push(path) :
             setOpen(true)
     }
+    const checkSetActive = (num: number) => {
+        const active_project = window.settings.get('active_project')
+        if (active_project === undefined) {
+            return
+        }
+        setActive(num)
+    }
     const handleCLose = () => { setOpen(false) }
     return (
         <div className='text-center bg-zinc-600 border-r-1 border-teal-800 flex flex-col w-[80px] drop-shadow-lg'>
@@ -21,20 +28,20 @@ const SideNavBar = (): JSX.Element => {
                 <IconButton>
                     <CupIcon />
                 </IconButton>
-                <IconButton active={active === 2} onClick={() => { checkActiveProject('/editor'); setActive(2) }}>
+                <IconButton active={active === 2} onClick={() => { checkActiveProject('/editor'); checkSetActive(2) }}>
                     <FileIcon />
                 </IconButton>
-                <IconButton active={active === 1} onClick={() => { checkActiveProject('/git'); setActive(1) }}>
+                <IconButton active={active === 1} onClick={() => { checkActiveProject('/git'); checkSetActive(1) }}>
                     <GitIcon />
                 </IconButton>
-                <IconButton active={active === 0} onClick={() => setActive(0)}>
+                <IconButton active={active === 0} onClick={() => checkSetActive(0)}>
                     <Link to="/" replace><ProjectIcon /></Link>
                 </IconButton>
                 <PopUp
                     open={open}
                     onClose={handleCLose}
                 >
-                    <div>Сначало необходимо создать или выбрать проект</div>
+                    <div>Создайте или выберите проект</div>
                     <Button btnText='OK' onClick={handleCLose} />
                 </PopUp >
             </div>
