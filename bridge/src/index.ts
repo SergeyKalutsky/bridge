@@ -4,6 +4,10 @@ import os from 'os'
 
 const pty = require("node-pty");
 const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
+const contextMenu = require('electron-context-menu');
+contextMenu({
+  showSaveImageAs: true
+});
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
