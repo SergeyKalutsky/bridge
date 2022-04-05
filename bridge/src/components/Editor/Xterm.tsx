@@ -51,8 +51,9 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         term.onData(e => {
             window.terminal.keystoke(e)
         })
-        window.shared.incomingData("terminal:incomingdata", (data) => {
+        window.shared.incomingData("terminal:incomingdata", (data: string) => {
             term.write(data);
+            window.sessionStorage.setItem('terminalOutput', window.sessionStorage.getItem('terminalOutput') + data)
         });
         window.shared.incomingData("terminal:fit", (data) => {
             if (data.y !== undefined) {
@@ -72,7 +73,12 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
             fitAddon.fit()
         });
         term.open(ref.current);
-        term.write('Добро пожаловать, нажмите Enter$ ')
+        const output = window.sessionStorage.getItem('terminalOutput')
+        if (output === null) {
+            term.write('Добро пожаловать, нажмите Enter$ ')
+        } else{
+            term.write(output)
+        }
         fitAddon.fit()
 
         return () => unSub()
