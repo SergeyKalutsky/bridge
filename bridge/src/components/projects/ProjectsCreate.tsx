@@ -168,7 +168,10 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                         <div ref={ref} />
                     </div>
                     <div className='w-full gap-y-2 h-1/6 flex flex-row mt-2 gap-x-2 items-center'>
-                        <Button onClick={e => handleClick(e)} btnText={btnText} disabled={visible} />
+                        <Button onClick={e => handleClick(e)}
+                            btnText={btnText}
+                            disabled={visible}
+                            theme={btnText == 'Завершить' ? 'teal' : 'default'} />
                         {visible ? loadInfo : null}
                     </div>
                 </div>
