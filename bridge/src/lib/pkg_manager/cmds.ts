@@ -1,114 +1,53 @@
+import fs from 'fs'
 import os from 'os'
+import { store } from '../api/main/storage'
 
-
-const CMD = {
-    git: {
-        elevate: true,
-        install: {
-            linux: "sudo apt install git",
-            win32: "choco install -y git"
-        },
-        check: {
-            cmd: 'git --version',
-            string: 'git version'
-        },
-        path: {
-            win32: ';C:\\Program Files\\Git\\cmd'
-        }
-    },
-    python: {
-        elevate: true,
-        install: {
-            linux: "sudo apt-get install python3.10",
-            win32: "choco install -y python3 --version=3.10.1"
-        },
-        check: {
-            cmd: 'python --version',
-            string: 'Python 3'
-        },
-        path: {
-            win32: `C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python39`
-        }
-    },
-    choco: {
-        elevate: true,
-        install: {
-            win32: "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))"
-        },
-        check: {
-            cmd: 'choco',
-            string: 'Chocolatey'
-        },
-        path: {
-            win32: ';C:\\ProgramData\\chocolatey\\bin'
-        }
-    },
-    pgzero: {
-        elevate: false,
-        install: {
-            win32: 'pip install pgzero --user',
-            darwin: 'pip install pgzero'
-        },
-        check: {
-            cmd: 'pip list | Select-String "pgzero"',
-            string: 'pgzero'
-        },
-    },
-    'discord.py': {
-        elevate: false,
-        install: {
-            win32: 'pip install discord.py --user',
-            darwin: 'pip install discord.py'
-        },
-        check: {
-            cmd: 'pip list | Select-String "discord"',
-            string: 'discord'
-        }
-    },
-    requests: {
-        elevate: false,
-        install: {
-            win32: 'pip install requests --user',
-            darwin: 'pip install requests'
-        },
-        check: {
-            cmd: 'pip list | Select-String "requests"',
-            string: 'requests'
-        }
-    },
-    flask_login: {
-        elevate: false,
-        install: {
-            win32: 'pip install flask_login --user',
-            darwin: 'pip install flask_login'
-        },
-        check: {
-            cmd: 'pip list | Select-String "Flask-Login"',
-            string: 'Flask-Login'
-        }
-    },
-    sqlalchemy: {
-        elevate: false,
-        install: {
-            win32: 'pip install sqlalchemy --user',
-            darwin: 'pip install sqlalchemy'
-        },
-        check: {
-            cmd: 'pip list | Select-String "SQLAlchemy"',
-            string: 'SQLAlchemy'
-        }
-    },
-    flask: {
-        elevate: false,
-        install: {
-            win32: 'pip install flask --user',
-            darwin: 'pip install flask'
-        },
-        check: {
-            cmd: 'pip list | Select-String "Flask"',
-            string: 'Flask'
-        }
-    }
+const installationPaths = {
+    git: ['C:\\Program Files\\Git\\cmd\\git.exe'],
+    python: [`C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python310\\python.exe`,
+        'C:\\Python310\\python.exe'],
+    choco: "C:\\ProgramData\\chocolatey\\bin\\choco.exe"
 }
 
-export default CMD
+
+interface Command {
+    elevate: boolean,
+    install: string
+}
+async function checkInstalled(pkg: string,
+    callback?: (installed: boolean, error?: Error) => void): Promise<any> {
+
+    if (fs.existsSync(installationPaths[pkg])) {
+        callback(true)
+    } else {
+        callback(false)
+    }
+
+}
+
+const chocoInstall = (pkgName: string, version: string | null): Command => {
+    const cmd = []
+    cmd.push(store.get('pkgs.Choco'))
+    cmd.push('install -y')
+    cmd.push(pkgName)
+    if (version !== null) {
+        cmd.push(`--version=${version}`)
+    }
+    return { elevate: true, install: cmd.join(' ') }
+}
+
+const pipInstall = (pkgName: string): Command => {
+    const cmd = []
+    cmd.push(store.get('pkgs.Python'))
+    cmd.push('-m')
+    cmd.push('pip install')
+    cmd.push(pkgName)
+    const platform = process.platform
+    platform === 'win32' ? cmd.push('--user') : null
+    return { elevate: false, install: cmd.join(' ') }
+}
+// win32: "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))"
+
+
+
+export { chocoInstall, pipInstall, installationPaths }
