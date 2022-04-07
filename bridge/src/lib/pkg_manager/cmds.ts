@@ -14,14 +14,13 @@ interface Command {
     elevate: boolean,
     install: string
 }
-async function checkInstalled(pkg: string,
-    callback?: (installed: boolean, error?: Error) => void): Promise<any> {
+
+async function checkInstalled(pkg: string): Promise<any> {
 
     if (fs.existsSync(installationPaths[pkg])) {
-        callback(true)
-    } else {
-        callback(false)
+        return true
     }
+    return false
 
 }
 
@@ -50,4 +49,4 @@ const pipInstall = (pkgName: string): Command => {
 
 
 
-export { chocoInstall, pipInstall, installationPaths }
+export { chocoInstall, pipInstall, checkInstalled }
