@@ -1,7 +1,8 @@
 import shell from "./elevated_shell";
-import {checkInstalled} from "./installed";
+import { checkInstalledApp, commandBuilder } from "./cmds";
 
 export {
     shell,
-    checkInstalled
+    checkInstalledApp,
+    commandBuilder
 }

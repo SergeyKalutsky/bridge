@@ -43,9 +43,9 @@ declare global {
 
         };
         pkg: {
-            install(data: { pkgs: string[], fileName: string }): any;
+            install(pkgs: string[]): any;
             checkInstall(pkgs: string[]): any;
-            getlogs(fileName: string): any;
+            getlogs(): any;
         };
     }
 }

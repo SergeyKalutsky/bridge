@@ -1,10 +1,12 @@
-import { spawn } from 'child_process'
+import { exec } from 'child_process'
+import util from 'util'
 import { instance } from './types'
 
 // powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -windowstyle hidden -ArgumentList 'choco install -y rust | Out-File -append C:\Users\skalu\lesson3\out.txt' -Verb runAs -Wait"
 
-function windows(instance: instance,
-  callback?: (error?: Error, data?: string | Buffer) => void): void {
+const promisifiedExec = util.promisify(exec);
+
+async function windows(instance: instance): Promise<void> {
   const command = [];
   // By default we use CMD in electron, we call on powershell within CMD to excecute a command
   command.push('powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass');
@@ -26,11 +28,7 @@ function windows(instance: instance,
   command.push('-Wait');
   command.push('"')
   const strCommand = command.join(' ');
-  const child = spawn(strCommand, { shell: true })
-  child.on('close', () => {
-      callback(null, 'refreshenv')
-  })
-  child.stdin.end(); // Otherwise PowerShell waits indefinitely on Windows 7.
+  await promisifiedExec(strCommand)
 }
 
 export { windows }

@@ -2,6 +2,11 @@ import fs from 'fs'
 import os from 'os'
 import { store } from '../api/main/storage'
 
+interface Command {
+    elevate: boolean,
+    install: string
+}
+
 const installationPaths = {
     git: ['C:\\Program Files\\Git\\cmd\\git.exe'],
     python: [`C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python310\\python.exe`,
@@ -9,7 +14,12 @@ const installationPaths = {
     choco: "C:\\ProgramData\\chocolatey\\bin\\choco.exe"
 }
 
-async function checkInstalled(pkg: string): Promise<any> {
+
+// const installPathPip = async () => {
+    
+// }
+
+async function checkInstalledApp(pkg: string): Promise<any> {
 
     if (fs.existsSync(installationPaths[pkg])) {
         return true
@@ -18,7 +28,8 @@ async function checkInstalled(pkg: string): Promise<any> {
 
 }
 
-const chocoCommand = (pkgName: string, version?: string | null): string => {
+const chocoCommand = async (pkgName: string, version: string | null): Promise<Command> => {
+
     const cmd = []
     cmd.push(store.get('pkgs.Choco'))
     cmd.push('install -y')
@@ -26,10 +37,10 @@ const chocoCommand = (pkgName: string, version?: string | null): string => {
     if (version !== null) {
         cmd.push(`--version=${version}`)
     }
-    return cmd.join(' ')
+    return { elevate: true, install: cmd.join(' ') }
 }
 
-const pipCommand = (pkgName: string): string => {
+const pipCommand = async (pkgName: string): Promise<Command> => {
     const cmd = []
     cmd.push(store.get('pkgs.Python'))
     cmd.push('-m')
@@ -37,7 +48,7 @@ const pipCommand = (pkgName: string): string => {
     cmd.push(pkgName)
     const platform = process.platform
     platform === 'win32' ? cmd.push('--user') : null
-    return install: cmd.join(' ') 
+    return { elevate: false, install: cmd.join(' ') }
 }
 
 const commandBuilder = {
@@ -48,4 +59,4 @@ const commandBuilder = {
     }
 }
 
-export { commandBuilder, checkInstalled }
+export { commandBuilder, checkInstalledApp }
