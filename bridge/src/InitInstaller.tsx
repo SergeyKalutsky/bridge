@@ -52,13 +52,11 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
 
     useEffect(() => {
         const fileContent = setInterval(() => {
-            if (logFileName !== undefined) {
                 window.pkg.getlogs()
-            }
         }, 1000)
 
         return () => clearInterval(fileContent);
-    }, [logFileName]);
+    });
 
     useEffect(() => {
         if (gitInstalled !== null && chocoInstalled !== null) {
@@ -78,7 +76,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         setDisabled(true)
         setInfo(<><LoadingIcon />Выполняется установка не закрывайте окно...</>)
         console.log(pkgs)
-        window.pkg.install(['custom choco'])
+        window.pkg.install(pkgs)
     }
     return (
         <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">

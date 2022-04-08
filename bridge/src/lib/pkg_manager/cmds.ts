@@ -12,15 +12,20 @@ const installationPaths = {
     git: ['C:\\Program Files\\Git\\cmd\\git.exe'],
     python: [`C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python310\\python.exe`,
         'C:\\Python310\\python.exe'],
-    choco: "C:\\ProgramData\\chocolatey\\bin\\choco.exe"
+    choco: ["C:\\ProgramData\\chocolatey\\bin\\choco.exe"]
 }
 
 
 
 async function checkInstalled(manager: string, pkg: string): Promise<boolean> {
 
-    if (['choco', 'custom'].includes(manager) && fs.existsSync(installationPaths[pkg])) {
-        return true
+    if (['choco', 'custom'].includes(manager)) {
+        for (const installPath of installationPaths[pkg]) {
+            if (fs.existsSync(installPath)) {
+                store.set('pkgs.choco', installPath)
+                return true
+            }
+        }
     }
     if (manager === 'pip') {
         for (const pythonPath of installationPaths.python) {
@@ -39,10 +44,10 @@ async function checkInstalled(manager: string, pkg: string): Promise<boolean> {
 const chocoCommand = (pkgName: string, version: string | null): Command => {
 
     const cmd = []
-    cmd.push(store.get('pkgs.Choco'))
+    cmd.push(store.get('pkgs.choco'))
     cmd.push('install -y')
     cmd.push(pkgName)
-    if (version !== null) {
+    if (version !== undefined) {
         cmd.push(`--version=${version}`)
     }
     return { elevate: true, install: cmd.join(' ') }
@@ -50,7 +55,7 @@ const chocoCommand = (pkgName: string, version: string | null): Command => {
 
 const pipCommand = (pkgName: string, version: string): Command => {
     const cmd = []
-    cmd.push(store.get('pkgs.Python'))
+    cmd.push(store.get('pkgs.python'))
     cmd.push('-m')
     cmd.push('pip install')
     if (version !== undefined) {
