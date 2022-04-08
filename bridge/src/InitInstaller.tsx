@@ -13,8 +13,8 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [logFileName, setLogFileName] = useState<string>()
     const [info, setInfo] = useState<JSX.Element>(startInfo)
     const [logs, setLogs] = useState<JSX.Element[]>([])
-    const [gitInstalled, setGitInstalled] = useState(null)
-    const [chocoInstalled, setChocoInstalled] = useState(null)
+    const [gitInstalled, setGitInstalled] = useState(false)
+    const [chocoInstalled, setChocoInstalled] = useState(false)
     const [disabled, setDisabled] = useState(false)
     const ref = useRef(null)
 
@@ -28,8 +28,6 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     }, [])
 
     useEffect(() => {
-        window.pkg.checkInstall(['choco', 'git'])
-
         window.shared.incomingData("pkg:check", (data) => {
             switch (data.pkg) {
                 case 'git':
@@ -55,7 +53,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     useEffect(() => {
         const fileContent = setInterval(() => {
             if (logFileName !== undefined) {
-                window.pkg.getlogs(logFileName)
+                window.pkg.getlogs()
             }
         }, 1000)
 
@@ -75,14 +73,12 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
             return
         }
         const pkgs = []
-        if (!chocoInstalled) { pkgs.push('choco') }
-        if (!gitInstalled) { pkgs.push('git') }
+        if (!chocoInstalled) { pkgs.push('custom choco') }
+        if (!gitInstalled) { pkgs.push('choco git') }
         setDisabled(true)
         setInfo(<><LoadingIcon />Выполняется установка не закрывайте окно...</>)
-        const date = new Date()
-        const fileName = date.toLocaleString().replace(', ', '-').replace(/:/g, '-').replace(/\./g, '-') + '.log'
-        window.pkg.install({ pkgs: pkgs, fileName: fileName })
-        setLogFileName(fileName)
+        console.log(pkgs)
+        window.pkg.install(['custom choco'])
     }
     return (
         <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">

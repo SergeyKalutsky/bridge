@@ -1,4 +1,4 @@
-import { shell, checkInstalledApp, commandBuilder } from '../../pkg_manager'
+import { shell, checkInstalled, commandBuilder } from '../../pkg_manager'
 import { app, ipcMain } from 'electron';
 import path from 'path'
 import util from 'util'
@@ -18,20 +18,20 @@ function getLogs() {
 }
 
 function pkgInstall() {
-    ipcMain.on('pkg:install', async (event, data) => {
-        const pkgs = data.pkgs
+    ipcMain.on('pkg:install', async (event, pkgs) => {
         const logPath = path.join(app.getPath('userData'), 'bridge.log')
         for (const pkg of pkgs) {
             const [manager, pkgInfo] = pkg.split(' ')
             const [pkgName, pkgVersion] = pkgInfo.split('=')
-            
-            let installed = await checkInstalledApp(manager, pkgName)
+
+            // let installed = await checkInstalled(manager, pkgName)
+            let installed = false
             if (!installed) {
                 const cmd = commandBuilder[manager](pkgName, pkgVersion)
-                await shell({ command: cmd.cmd, path: logPath, elevate: cmd.elevate })
-                installed = await checkInstalledApp(manager, pkgName)
+                await shell({ command: cmd.install, path: logPath, elevate: cmd.elevate })
+                // After installation store path in pkgs
+                installed = await checkInstalled(manager, pkgName)
             }
-            // After installation store path in pkgs
             event.reply('pkg:check', { installed: installed, pkg: pkg })
         }
     })

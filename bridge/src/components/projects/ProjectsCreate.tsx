@@ -72,10 +72,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         }
         setError('')
         setVisible(true)
-        const date = new Date()
-        const fileName = date.toLocaleString().replace(', ', '-').replace(/:/g, '-').replace(/\./g, '-') + '.log'
-        window.pkg.install({ pkgs: pkgs, fileName: fileName })
-        setLogFileName(fileName)
+        window.pkg.install(pkgs)
     }
 
     useEffect(() => {
@@ -113,7 +110,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     useEffect(() => {
         const fileContent = setInterval(() => {
             if (logFileName !== undefined) {
-                window.pkg.getlogs(logFileName)
+                window.pkg.getlogs()
             }
         }, 1000)
         return () => clearInterval(fileContent);

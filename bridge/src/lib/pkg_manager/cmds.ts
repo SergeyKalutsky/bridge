@@ -1,5 +1,6 @@
 import fs from 'fs'
 import os from 'os'
+import path from 'path'
 import { store } from '../api/main/storage'
 
 interface Command {
@@ -15,20 +16,27 @@ const installationPaths = {
 }
 
 
-// const installPathPip = async () => {
-    
-// }
 
-async function checkInstalledApp(pkg: string): Promise<any> {
+async function checkInstalled(manager: string, pkg: string): Promise<boolean> {
 
-    if (fs.existsSync(installationPaths[pkg])) {
+    if (['choco', 'custom'].includes(manager) && fs.existsSync(installationPaths[pkg])) {
         return true
     }
+    if (manager === 'pip') {
+        for (const pythonPath of installationPaths.python) {
+            const pythonDir = path.parse(pythonPath).dir
+            if (fs.existsSync(path.join(pythonDir, 'site-packages', pkg))) {
+                return true
+            }
+            if (fs.existsSync(path.join(pythonDir, 'Lib/site-packages', pkg))) {
+                return true
+            }
+        }
+    }
     return false
-
 }
 
-const chocoCommand = async (pkgName: string, version: string | null): Promise<Command> => {
+const chocoCommand = (pkgName: string, version: string | null): Command => {
 
     const cmd = []
     cmd.push(store.get('pkgs.Choco'))
@@ -40,23 +48,33 @@ const chocoCommand = async (pkgName: string, version: string | null): Promise<Co
     return { elevate: true, install: cmd.join(' ') }
 }
 
-const pipCommand = async (pkgName: string): Promise<Command> => {
+const pipCommand = (pkgName: string, version: string): Command => {
     const cmd = []
     cmd.push(store.get('pkgs.Python'))
     cmd.push('-m')
     cmd.push('pip install')
-    cmd.push(pkgName)
+    if (version !== undefined) {
+        cmd.push(`${pkgName}==${version}`)
+    }
+    else {
+        cmd.push(pkgName)
+    }
     const platform = process.platform
     platform === 'win32' ? cmd.push('--user') : null
     return { elevate: false, install: cmd.join(' ') }
 }
 
+const customCommand =  (pkgName: string, version?: string): Command => {
+    const cmds = {
+        'choco': "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))"
+    }
+    return { elevate: true, install: cmds[pkgName] }
+}
+
 const commandBuilder = {
     'pip': pipCommand,
     'choco': chocoCommand,
-    'custom': {
-        'choco': "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))"
-    }
+    'custom': customCommand
 }
 
-export { commandBuilder, checkInstalledApp }
+export { commandBuilder, checkInstalled }

@@ -2,11 +2,11 @@ import { exec } from 'child_process'
 import util from 'util'
 import { instance } from './types'
 
-// powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -windowstyle hidden -ArgumentList 'choco install -y rust | Out-File -append C:\Users\skalu\lesson3\out.txt' -Verb runAs -Wait"
 
 const promisifiedExec = util.promisify(exec);
 
 async function windows(instance: instance): Promise<void> {
+  console.log(instance)
   const command = [];
   // By default we use CMD in electron, we call on powershell within CMD to excecute a command
   command.push('powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass');
@@ -18,7 +18,8 @@ async function windows(instance: instance): Promise<void> {
   command.push("' & {")
   command.push(instance.command)
   // Log output of installation
-  command.push(`} 2>&1 | Out-File ${instance.path} -Append`)
+  // -force *>> pipes all powershell output to a log file
+  command.push(`} -force *>>  ${instance.path}`)
   // Waits to press Enter before close for Debugging
   // command.push("Read-Host ''Type ENTER to exit''")
   command.push("'")
@@ -28,6 +29,7 @@ async function windows(instance: instance): Promise<void> {
   command.push('-Wait');
   command.push('"')
   const strCommand = command.join(' ');
+  console.log(strCommand)
   await promisifiedExec(strCommand)
 }
 
