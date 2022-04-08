@@ -7,15 +7,34 @@ interface Props {
     setIsFirstLoad: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+interface Package {
+    installed: boolean,
+    name: string,
+    installCmd: string
+}
+
+
 const startInfo = <><LoadingIcon />Проверяем установлены ли программы...</>
 
+const pkgsToInstall = [
+    {
+        installed: null,
+        name: 'choco',
+        installCmd: 'cunstom choco'
+    },
+    {
+        installed: null,
+        name: 'git',
+        installCmd: 'choco git'
+    },
+]
+
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
-    const [logFileName, setLogFileName] = useState<string>()
+    const [pkgsMenu, setPkgsMenu] = useState<JSX.Element[]>(null)
     const [info, setInfo] = useState<JSX.Element>(startInfo)
     const [logs, setLogs] = useState<JSX.Element[]>([])
-    const [gitInstalled, setGitInstalled] = useState(false)
-    const [chocoInstalled, setChocoInstalled] = useState(false)
-    const [disabled, setDisabled] = useState(false)
+    const [pkgs, setPkgs] = useState<Package[]>(pkgsToInstall)
+    const [disabled, setDisabled] = useState(true)
     const ref = useRef(null)
 
     useEffect(() => {
@@ -28,14 +47,20 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     }, [])
 
     useEffect(() => {
+        for (const pkg of pkgs) {
+            window.pkg.check(pkg.installCmd)
+        }
         window.shared.incomingData("pkg:check", (data) => {
-            switch (data.pkg) {
-                case 'git':
-                    setGitInstalled(data.installed)
-                    break
-                case 'choco':
-                    setChocoInstalled(data.installed)
+            console.log(data)
+            const newPkgs = []
+            for (const pkg of pkgs) {
+                if (pkg.name === data.pkg) {
+                    newPkgs.push({ ...pkg, installed: data.installed })
+                    continue
+                }
+                newPkgs.push({ ...pkg })
             }
+            setPkgs(newPkgs)
         });
         return () => window.shared.removeListeners('pkg:check')
     }, [])
@@ -52,32 +77,44 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
 
     useEffect(() => {
         const fileContent = setInterval(() => {
-                window.pkg.getlogs()
+            window.pkg.getlogs()
         }, 1000)
 
         return () => clearInterval(fileContent);
     });
 
     useEffect(() => {
-        if (gitInstalled !== null && chocoInstalled !== null) {
-            setInfo(<>Проверка завершена</>)
-            setDisabled(false)
+        console.log(pkgs)
+        for (const pkg of pkgs) {
+            if (pkg.installed === null) {
+                return
+            }
         }
-    }, [gitInstalled, chocoInstalled])
+        setInfo(<>Проверка завершена</>)
+        setDisabled(false)
+    }, [pkgs])
 
     const handleClick = () => {
-        if (gitInstalled && chocoInstalled) {
-            setIsFirstLoad(false)
-            return
+        // if (gitInstalled && chocoInstalled) {
+        //     setIsFirstLoad(false)
+        //     return
+        // }
+        const pkgsInstallList = []
+        for (const pkg of pkgs) {
+            if (!pkg.installed) {
+                pkgsInstallList.push(pkg.installCmd)
+            }
         }
-        const pkgs = []
-        if (!chocoInstalled) { pkgs.push('custom choco') }
-        if (!gitInstalled) { pkgs.push('choco git') }
         setDisabled(true)
         setInfo(<><LoadingIcon />Выполняется установка не закрывайте окно...</>)
-        console.log(pkgs)
-        window.pkg.install(pkgs)
+        window.pkg.install(pkgsInstallList)
     }
+    useEffect(() => {
+        const pkgsMenu = pkgs.map((pkg, indx) =>
+            <PackageSpan key={indx} icon={pkg.installed ? 'installed' : 'not installed'}>{pkg.name}</PackageSpan>
+        )
+        setPkgsMenu(pkgsMenu)
+    }, [pkgs])
     return (
         <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">
             <LogoIcon />
@@ -85,8 +122,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                 <span className="text-white font-medium text-3xl text-ellipsis overflow-hidden whitespace-nowrap">Для работы 🌉Bridge требуется установка 🍫choco и 🔀git</span>
                 <span className="text-white font-medium text-2xl flex flex-row items-center justify-center">{info}</span>
                 <div className="flex flex-col">
-                    <PackageSpan icon={chocoInstalled ? 'installed' : 'not installed'}>Chocolotey</PackageSpan>
-                    <PackageSpan icon={gitInstalled ? 'installed' : 'not installed'}>Git</PackageSpan>
+                    {pkgsMenu}
                 </div>
                 <div className="w-3/4 h-2/5 flex justify-center flex-col overflow-scroll bg-slate-800" >
                     {logs}
@@ -94,7 +130,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                 </div>
                 <div className="w-full h-1/6 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled}>
-                        {gitInstalled && chocoInstalled ? 'Продолжить' : 'Установить'}
+                        Установить
                     </Button>
                 </div>
             </div>

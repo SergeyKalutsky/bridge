@@ -45,6 +45,7 @@ declare global {
         pkg: {
             install(pkgs: string[]): any;
             getlogs(): any;
+            check(cmd: string): void
         };
     }
 }

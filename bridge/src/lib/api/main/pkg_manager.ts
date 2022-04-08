@@ -6,6 +6,15 @@ import fs from 'fs'
 
 const readFileAsync = util.promisify(fs.readFile)
 
+function check() {
+    return ipcMain.on('pkg:check', async (event, pkg) => {
+        const [manager, pkgInfo] = pkg.split(' ')
+        const pkgName = pkgInfo.split('=')[0]
+        let installed = await checkInstalled(manager, pkgName)
+        event.reply('pkg:check', { installed: installed, pkg: pkgName })
+    })
+}
+
 
 function getLogs() {
     return ipcMain.on('pkg:getlogs', async (event) => {
@@ -24,8 +33,7 @@ function pkgInstall() {
             const [manager, pkgInfo] = pkg.split(' ')
             const [pkgName, pkgVersion] = pkgInfo.split('=')
 
-            // let installed = await checkInstalled(manager, pkgName)
-            let installed = false
+            let installed = await checkInstalled(manager, pkgName)
             if (!installed) {
                 const cmd = commandBuilder[manager](pkgName, pkgVersion)
                 await shell({ command: cmd.install, path: logPath, elevate: cmd.elevate })
@@ -40,6 +48,7 @@ function pkgInstall() {
 function pkgAPI(): void {
     getLogs()
     pkgInstall()
+    check()
 }
 
 export default pkgAPI
