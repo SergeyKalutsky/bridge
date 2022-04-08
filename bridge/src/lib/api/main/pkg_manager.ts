@@ -24,9 +24,14 @@ function pkgInstall() {
         for (const pkg of pkgs) {
             const [manager, pkgInfo] = pkg.split(' ')
             const [pkgName, pkgVersion] = pkgInfo.split('=')
-            const cmd = commandBuilder[manager](pkgName, pkgVersion)
-            await shell({ command: cmd.cmd, path: logPath, elevate: cmd.elevate })
-            const installed = await checkInstalledApp(pkg)
+            
+            let installed = await checkInstalledApp(manager, pkgName)
+            if (!installed) {
+                const cmd = commandBuilder[manager](pkgName, pkgVersion)
+                await shell({ command: cmd.cmd, path: logPath, elevate: cmd.elevate })
+                installed = await checkInstalledApp(manager, pkgName)
+            }
+            // After installation store path in pkgs
             event.reply('pkg:check', { installed: installed, pkg: pkg })
         }
     })
