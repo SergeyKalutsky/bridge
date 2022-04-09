@@ -3,6 +3,7 @@ import { Project } from './types'
 import { InputForm, Button } from '../common'
 import { LoadingIcon } from '../common/Icons'
 import templates from './templates'
+import { Package } from '../../types'
 
 interface Prop {
     addProject: (project: Project) => void
@@ -33,7 +34,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [logFileName, setLogFileName] = useState<string>()
     const [visible, setVisible] = useState(false)
     const [logs, setLogs] = useState<JSX.Element[]>([])
-    const [pkgs, setPkgs] = useState(templates[libs[0]].lib)
+    const [pkgs, setPkgs] = useState<Package[]>(templates[libs[0]].pkgs)
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
     const [btnText, setBtnText] = useState('Создать')
@@ -109,12 +110,10 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
 
     useEffect(() => {
         const fileContent = setInterval(() => {
-            if (logFileName !== undefined) {
                 window.pkg.getlogs()
-            }
         }, 1000)
         return () => clearInterval(fileContent);
-    }, [logFileName]);
+    }, []);
 
     const options = libs.map((option, indx) =>
         <option value={indx} key={option}>
@@ -155,7 +154,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                                 onChange={(e) => {
                                     setOption(e.target.value)
                                     setProject({ ...project, http: templates[libs[e.target.value]].http })
-                                    setPkgs(templates[libs[e.target.value]].lib)
+                                    setPkgs(templates[libs[e.target.value]].pkgs)
                                 }}>
                                 {options}
                             </select>

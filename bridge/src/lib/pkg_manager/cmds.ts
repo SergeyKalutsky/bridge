@@ -55,7 +55,7 @@ const chocoCommand = (pkgName: string, version: string | null): Command => {
 
 const pipCommand = (pkgName: string, version: string): Command => {
     const cmd = []
-    cmd.push(store.get('pkgs.python'))
+    cmd.push(store.get('pkgs.python3'))
     cmd.push('-m')
     cmd.push('pip install')
     if (version !== undefined) {

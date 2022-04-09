@@ -4,6 +4,7 @@ import path from 'path'
 import util from 'util'
 import fs from 'fs'
 
+const LOG_PATH = path.join(app.getPath('userData'), 'bridge.log')
 const readFileAsync = util.promisify(fs.readFile)
 
 function check() {
@@ -19,9 +20,8 @@ function check() {
 
 function getLogs() {
     return ipcMain.on('pkg:getlogs', async (event) => {
-        const logPath = path.join(app.getPath('userData'), 'bridge.log')
-        if (fs.existsSync(logPath)) {
-            const fileContent = await readFileAsync(logPath, 'utf-8')
+        if (fs.existsSync(LOG_PATH)) {
+            const fileContent = await readFileAsync(LOG_PATH, 'utf-8')
             event.reply('pkg:getlogs', fileContent)
         }
     })
@@ -29,12 +29,11 @@ function getLogs() {
 
 function pkgInstall() {
     ipcMain.on('pkg:install', async (event, pkgs) => {
-        const logPath = path.join(app.getPath('userData'), 'bridge.log')
         const updatePkgs = []
         for (const pkg of pkgs) {
             if (!pkg.installed) {
                 const cmd = commandBuilder[pkg.manager](pkg.name, pkg.verison)
-                await shell({ command: cmd.install, path: logPath, elevate: cmd.elevate })
+                await shell({ command: cmd.install, path: LOG_PATH, elevate: cmd.elevate })
                 pkg.installed = checkInstalled(pkg.manager, pkg.name)
             }
             updatePkgs.push(pkg)
