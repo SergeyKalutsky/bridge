@@ -29,6 +29,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [info, setInfo] = useState<JSX.Element>(startInfo)
     const [logs, setLogs] = useState<JSX.Element[]>([])
     const [pkgs, setPkgs] = useState<Package[]>(pkgsToInstall)
+    const [btnTheme, setBtnTheme] = useState('default')
     const [disabled, setDisabled] = useState(true)
     const ref = useRef(null)
 
@@ -68,21 +69,27 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     });
 
     useEffect(() => {
-        console.log(pkgs)
+        let count = 0
         for (const pkg of pkgs) {
             if (pkg.installed === null) {
                 return
             }
+            if (pkg.installed === true) {
+                count += 1
+            }
+        }
+        if (count === pkgs.length) {
+            setBtnTheme('teal')
         }
         setInfo(<>Проверка завершена</>)
         setDisabled(false)
     }, [pkgs])
 
-    const handleClick = () => {
-        // if (gitInstalled && chocoInstalled) {
-        //     setIsFirstLoad(false)
-        //     return
-        // }
+    const handleClick = (e) => {
+        if (e.target.innerText === 'Продолжить') {
+            setIsFirstLoad(false)
+            return
+        }
         setDisabled(true)
         setInfo(<><LoadingIcon />Выполняется установка не закрывайте окно...</>)
         window.pkg.install(pkgs)
@@ -107,8 +114,8 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                     <div ref={ref} />
                 </div>
                 <div className="w-full h-1/6 flex items-center justify-center">
-                    <Button onClick={handleClick} disabled={disabled}>
-                        Установить
+                    <Button onClick={handleClick} disabled={disabled} theme={btnTheme}>
+                        {btnTheme === 'default' ? 'Установить' : 'Продолжить' }
                     </Button>
                 </div>
             </div>
