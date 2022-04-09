@@ -35,7 +35,6 @@ function pkgInstall() {
             if (!pkg.installed) {
                 const cmd = commandBuilder[pkg.manager](pkg.name, pkg.verison)
                 await shell({ command: cmd.install, path: logPath, elevate: cmd.elevate })
-                // After installation store path in pkgs
                 pkg.installed = checkInstalled(pkg.manager, pkg.name)
             }
             updatePkgs.push(pkg)

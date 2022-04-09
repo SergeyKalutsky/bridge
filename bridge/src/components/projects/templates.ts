@@ -1,18 +1,59 @@
 const templates = {
     'Python': {
-        lib: ['choco python3=10.0.1'],
+        pkgs: [{
+            installed: null,
+            name: 'python3',
+            manager: 'choco',
+            version: '10.0.1'
+        }],
         http: 'https://github.com/SergeyKalutsky/python_base.git',
     },
-    'Python Flask' : {
-        lib: ['choco python3=10.0.1', 'pip flask', 'pip flask_login', 'pip sqlalchemy'],
+    'Python Flask': {
+        pkgs: [{
+            installed: null,
+            name: 'python3',
+            manager: 'choco',
+            version: '10.0.1'
+        },
+        {
+            installed: null,
+        pkgs: ['choco python3=10.0.1', 'pip pgzero'],
+            name: 'flask',
+            manager: 'pip',
+        },
+        {
+            installed: null,
+            name: 'sqlalchemy',
+            manager: 'pip',
+        }],
         http: 'https://github.com/SergeyKalutsky/flask_base.git',
     },
-    'Python Discord' : {
-        lib: ['choco python3=10.0.1', 'pip discord.py'],
+    'Python Discord': {
+        pkgs: [{
+            installed: null,
+            name: 'python3',
+            manager: 'choco',
+            version: '10.0.1'
+        },
+        {
+            installed: null,
+            name: 'discord.py',
+            manager: 'pip',
+        }],
         http: 'https://github.com/SergeyKalutsky/discord_template.git',
     },
-    'Python Pgzero' : {
-        lib: ['choco python3=10.0.1', 'pip pgzero'],
+    'Python Pgzero': {
+        pkgs: [{
+            installed: null,
+            name: 'python3',
+            manager: 'choco',
+            version: '10.0.1'
+        },
+        {
+            installed: null,
+            name: 'pgzero',
+            manager: 'pip',
+        }],
         http: 'https://github.com/SergeyKalutsky/pgzero_template.git',
     }
 

@@ -10,30 +10,30 @@ interface Command {
 
 const installationPaths = {
     git: ['C:\\Program Files\\Git\\cmd\\git.exe'],
-    python: [`C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python310\\python.exe`,
+    python3: [`C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python310\\python.exe`,
         'C:\\Python310\\python.exe'],
     choco: ["C:\\ProgramData\\chocolatey\\bin\\choco.exe"]
 }
 
 
 
-function checkInstalled(manager: string, pkg: string): boolean {
+function checkInstalled(manager: string, pkgName: string): boolean {
 
     if (['choco', 'custom'].includes(manager)) {
-        for (const installPath of installationPaths[pkg]) {
+        for (const installPath of installationPaths[pkgName]) {
             if (fs.existsSync(installPath)) {
-                store.set('pkgs.choco', installPath)
+                store.set(`pkgs.${pkgName}`, installPath)
                 return true
             }
         }
     }
     if (manager === 'pip') {
-        for (const pythonPath of installationPaths.python) {
+        for (const pythonPath of installationPaths.python3) {
             const pythonDir = path.parse(pythonPath).dir
-            if (fs.existsSync(path.join(pythonDir, 'site-packages', pkg))) {
+            if (fs.existsSync(path.join(pythonDir, 'site-packages', pkgName))) {
                 return true
             }
-            if (fs.existsSync(path.join(pythonDir, 'Lib/site-packages', pkg))) {
+            if (fs.existsSync(path.join(pythonDir, 'Lib/site-packages', pkgName))) {
                 return true
             }
         }
