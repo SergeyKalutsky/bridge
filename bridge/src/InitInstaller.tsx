@@ -35,7 +35,8 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
 
     useEffect(() => {
         window.shared.incomingData("pkg:getlogs", (data: string) => {
-            const logs = data.split(/\r?\n/)
+            let logs = data.split(/\r?\n/)
+            logs = logs.slice(logs.length - 10)
             setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
         });
 

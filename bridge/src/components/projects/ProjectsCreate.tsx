@@ -90,9 +90,9 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             return newLogs
         }
         window.shared.incomingData("pkg:getlogs", (data: string) => {
-            const logs = data.split(/\r?\n/)
-            const newLogs = splitLogs(logs)
-            setLogs(newLogs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
+            let logs = data.split(/\r?\n/)
+            logs = splitLogs(logs.slice(logs.length - 10))
+            setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
         });
         return () => window.shared.removeListeners('pkg:getlogs')
     }, [])

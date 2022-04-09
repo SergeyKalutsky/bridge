@@ -37,6 +37,7 @@ function getLogs() {
 
 function pkgInstall() {
     ipcMain.on('pkg:install', async (event, pkgs) => {
+        // Add separator to log file
         const updatePkgs = []
         for (const pkg of pkgs) {
             if (!pkg.installed) {
