@@ -29,7 +29,7 @@ const DeleteProjectPopUp = ({ name, id, removeProject, open, setOpen }: Props): 
         <PopUp
             open={open}
             onClose={() => { setOpen(false) }}>
-            <div>Вы уверены, что хотите удалить/покинуть проект? (Изменения необратимы)</div>
+            <div>Вы уверены, что хотите удалить проект?</div>
             <Button onClick={handleClick} btnText='Удалить' />
         </PopUp>
     )

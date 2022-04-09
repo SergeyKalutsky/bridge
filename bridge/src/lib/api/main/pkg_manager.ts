@@ -21,8 +21,16 @@ function check() {
 function getLogs() {
     return ipcMain.on('pkg:getlogs', async (event) => {
         if (fs.existsSync(LOG_PATH)) {
-            const fileContent = await readFileAsync(LOG_PATH, 'utf-8')
-            event.reply('pkg:getlogs', fileContent)
+            fs.stat(LOG_PATH, async (err, stats) => {
+                const currentDate = new Date(); 
+                const updateFileDate =  new Date(stats.mtime)
+                const timeDiff = Math.abs(updateFileDate.getTime() - currentDate.getTime()) / 1000
+                if (timeDiff < 3) {
+                    const fileContent = await readFileAsync(LOG_PATH, 'utf-8')
+                    event.reply('pkg:getlogs', fileContent)
+                }
+            })
+
         }
     })
 }
