@@ -32,14 +32,13 @@ function pkgInstall() {
         const logPath = path.join(app.getPath('userData'), 'bridge.log')
         const updatePkgs = []
         for (const pkg of pkgs) {
-            let installed = checkInstalled(pkg.manager, pkg.name)
-            if (!installed) {
+            if (!pkg.installed) {
                 const cmd = commandBuilder[pkg.manager](pkg.name, pkg.verison)
                 await shell({ command: cmd.install, path: logPath, elevate: cmd.elevate })
                 // After installation store path in pkgs
                 pkg.installed = checkInstalled(pkg.manager, pkg.name)
-                updatePkgs.push(pkg)
             }
+            updatePkgs.push(pkg)
         }
         event.reply('pkg:check', updatePkgs)
     })

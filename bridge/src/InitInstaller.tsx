@@ -97,7 +97,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">
             <LogoIcon />
             <div className="w-full h-3/5 flex flex-col items-center gap-4">
-                <span className="text-white font-medium text-3xl text-ellipsis overflow-hidden whitespace-nowrap">Для работы 🌉Bridge требуется установка 🍫choco и 🔀git</span>
+                <span className="text-white font-medium text-3xl text-ellipsis overflow-hidden whitespace-nowrap">Для работы 🌉Bridge требуется установка стороних программ</span>
                 <span className="text-white font-medium text-2xl flex flex-row items-center justify-center">{info}</span>
                 <div className="flex flex-col">
                     {pkgsMenu}
