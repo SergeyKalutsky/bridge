@@ -17,7 +17,7 @@ const installationPaths = {
 
 
 
-async function checkInstalled(manager: string, pkg: string): Promise<boolean> {
+function checkInstalled(manager: string, pkg: string): boolean {
 
     if (['choco', 'custom'].includes(manager)) {
         for (const installPath of installationPaths[pkg]) {

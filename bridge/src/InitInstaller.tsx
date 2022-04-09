@@ -2,15 +2,10 @@ import { PackageSpan } from "./components/common";
 import { useRef, useEffect, useState } from "react";
 import { Button } from "./components/common"
 import { LoadingIcon, LogoIcon } from './components/common/Icons';
+import { Package } from './types'
 
 interface Props {
     setIsFirstLoad: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-interface Package {
-    installed: boolean,
-    name: string,
-    installCmd: string
 }
 
 
@@ -20,12 +15,12 @@ const pkgsToInstall = [
     {
         installed: null,
         name: 'choco',
-        installCmd: 'cunstom choco'
+        manager: 'custom',
     },
     {
         installed: null,
         name: 'git',
-        installCmd: 'choco git'
+        manager: 'choco'
     },
 ]
 
@@ -47,20 +42,9 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     }, [])
 
     useEffect(() => {
-        for (const pkg of pkgs) {
-            window.pkg.check(pkg.installCmd)
-        }
-        window.shared.incomingData("pkg:check", (data) => {
-            console.log(data)
-            const newPkgs = []
-            for (const pkg of pkgs) {
-                if (pkg.name === data.pkg) {
-                    newPkgs.push({ ...pkg, installed: data.installed })
-                    continue
-                }
-                newPkgs.push({ ...pkg })
-            }
-            setPkgs(newPkgs)
+        window.pkg.check(pkgs)
+        window.shared.incomingData("pkg:check", (pkgs) => {
+            setPkgs(pkgs)
         });
         return () => window.shared.removeListeners('pkg:check')
     }, [])
@@ -99,15 +83,9 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         //     setIsFirstLoad(false)
         //     return
         // }
-        const pkgsInstallList = []
-        for (const pkg of pkgs) {
-            if (!pkg.installed) {
-                pkgsInstallList.push(pkg.installCmd)
-            }
-        }
         setDisabled(true)
         setInfo(<><LoadingIcon />Выполняется установка не закрывайте окно...</>)
-        window.pkg.install(pkgsInstallList)
+        window.pkg.install(pkgs)
     }
     useEffect(() => {
         const pkgsMenu = pkgs.map((pkg, indx) =>

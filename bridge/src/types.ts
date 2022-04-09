@@ -36,11 +36,18 @@ interface Settings {
     }
 }
 
+interface Package {
+    installed: boolean,
+    name: string,
+    manager: string,
+    version?: string
+}
 
 export {
     FileChanges,
     ParsedGitDiff,
     CreateInfo,
     ActivePath,
-    Settings
+    Settings,
+    Package
 }

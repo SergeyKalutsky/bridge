@@ -1,6 +1,6 @@
 import { Commit } from './components/git/types';
 import { Project } from './components/projects/types';
-import { FileChanges, CreateInfo, ActivePath, ParsedGitDiff } from './types';
+import { Package, FileChanges, CreateInfo, ActivePath, ParsedGitDiff } from './types';
 
 
 declare global {
@@ -43,9 +43,9 @@ declare global {
 
         };
         pkg: {
-            install(pkgs: string[]): any;
+            install(pkgs: Package[]): any;
             getlogs(): any;
-            check(cmd: string): void
+            check(pkgs: Package[]): void
         };
     }
 }

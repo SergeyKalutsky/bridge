@@ -7,14 +7,15 @@ import fs from 'fs'
 const readFileAsync = util.promisify(fs.readFile)
 
 function check() {
-    return ipcMain.on('pkg:check', async (event, pkg) => {
-        const [manager, pkgInfo] = pkg.split(' ')
-        const pkgName = pkgInfo.split('=')[0]
-        let installed = await checkInstalled(manager, pkgName)
-        event.reply('pkg:check', { installed: installed, pkg: pkgName })
+    return ipcMain.on('pkg:check', async (event, pkgs) => {
+        console.log(pkgs)
+        pkgs = pkgs.map(pkg => {
+            pkg.installed = checkInstalled(pkg.manager, pkg.name)
+            return pkg
+        })
+        event.reply('pkg:check', pkgs)
     })
 }
-
 
 function getLogs() {
     return ipcMain.on('pkg:getlogs', async (event) => {
@@ -29,19 +30,18 @@ function getLogs() {
 function pkgInstall() {
     ipcMain.on('pkg:install', async (event, pkgs) => {
         const logPath = path.join(app.getPath('userData'), 'bridge.log')
+        const updatePkgs = []
         for (const pkg of pkgs) {
-            const [manager, pkgInfo] = pkg.split(' ')
-            const [pkgName, pkgVersion] = pkgInfo.split('=')
-
-            let installed = await checkInstalled(manager, pkgName)
+            let installed = checkInstalled(pkg.manager, pkg.name)
             if (!installed) {
-                const cmd = commandBuilder[manager](pkgName, pkgVersion)
+                const cmd = commandBuilder[pkg.manager](pkg.name, pkg.verison)
                 await shell({ command: cmd.install, path: logPath, elevate: cmd.elevate })
                 // After installation store path in pkgs
-                installed = await checkInstalled(manager, pkgName)
+                pkg.installed = checkInstalled(pkg.manager, pkg.name)
+                updatePkgs.push(pkg)
             }
-            event.reply('pkg:check', { installed: installed, pkg: pkg })
         }
+        event.reply('pkg:check', updatePkgs)
     })
 }
 

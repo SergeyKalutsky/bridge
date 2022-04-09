@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from "electron"
 import { Project } from "./components/projects/types"
 import { FileChanges, CreateInfo, ActivePath } from './types'
 import { ParsedGitDiff } from './components/git/types'
-
+import { Package } from './types'
 
 contextBridge.exposeInMainWorld('shared', {
     incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) },
@@ -48,8 +48,8 @@ contextBridge.exposeInMainWorld('terminal', {
 })
 
 contextBridge.exposeInMainWorld('pkg', {
-    install: (pkgs: string[]): void => ipcRenderer.send('pkg:install', pkgs),
+    install: (pkgs: Package[]): void => ipcRenderer.send('pkg:install', pkgs),
     getlogs: () => ipcRenderer.send('pkg:getlogs'),
-    check: (cmd: string): void => ipcRenderer.send('pkg:check', cmd)
+    check: (pkgs: Package[]): void => ipcRenderer.send('pkg:check', pkgs)
 })
 
