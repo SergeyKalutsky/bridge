@@ -31,7 +31,6 @@ const dummyProject: Project = {
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
     const [error, setError] = useState<string>()
-    const [logFileName, setLogFileName] = useState<string>()
     const [visible, setVisible] = useState(false)
     const [logs, setLogs] = useState<JSX.Element[]>([])
     const [pkgs, setPkgs] = useState<Package[]>(templates[libs[0]].pkgs)
