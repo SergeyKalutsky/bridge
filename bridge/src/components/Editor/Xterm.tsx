@@ -35,9 +35,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
     useEffect(() => {
         function updateSize({ target }) {
-            console.log(JSON.parse(window.localStorage.getItem('sideWidth')))
             setWidth(target.innerWidth - JSON.parse(window.localStorage.getItem('sideWidth')) - 80)
-            // setWidth(target.innerWidth - 430)
             fitAddon.fit()
         }
         window.addEventListener('resize', updateSize)
@@ -78,7 +76,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
         const output = window.sessionStorage.getItem('terminalOutput')
         if (output === null) {
             term.write('Добро пожаловать, нажмите Enter$ ')
-        } else{
+        } else {
             term.write(output)
         }
         fitAddon.fit()
