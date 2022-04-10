@@ -9,7 +9,6 @@ const readFileAsync = util.promisify(fs.readFile)
 
 function check() {
     return ipcMain.on('pkg:check', async (event, pkgs) => {
-        console.log(pkgs)
         pkgs = pkgs.map(pkg => {
             pkg.installed = checkInstalled(pkg.manager, pkg.name)
             return pkg

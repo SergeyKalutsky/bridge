@@ -36,19 +36,31 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [pkgs, setPkgs] = useState<Package[]>(templates[libs[0]].pkgs)
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
-    const [btnText, setBtnText] = useState('Создать')
+    const [btnText, setBtnText] = useState('Установить')
     const ref = useRef(null)
 
     useEffect(() => {
-        window.shared.incomingData("pkg:check", (data) => {
-            setVisible(false)
-            setBtnText('Завершить')
+        window.pkg.check(templates[libs[0]].pkgs)
+        window.shared.incomingData("pkg:check", (pkgs) => {
+            let count = 0
+            for (const pkg of pkgs) {
+                if (pkg.installed === true) {
+                    count += 1
+                }
+            }
+            if (count === pkgs.length) {
+                setVisible(false)
+                setBtnText('Создать')
+            } else {
+                setBtnText('Установить')
+            }
+            setPkgs(pkgs)
         });
         return () => window.shared.removeListeners('pkg:check')
     }, [])
 
     const handleClick = (e) => {
-        if (e.target.innerText === 'Завершить') {
+        if (e.target.innerText === 'Создать') {
             addProject(project)
             return
         }
@@ -109,7 +121,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
 
     useEffect(() => {
         const fileContent = setInterval(() => {
-                window.pkg.getlogs()
+            window.pkg.getlogs()
         }, 1000)
         return () => clearInterval(fileContent);
     }, []);
@@ -153,7 +165,9 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                                 onChange={(e) => {
                                     setOption(e.target.value)
                                     setProject({ ...project, http: templates[libs[e.target.value]].http })
-                                    setPkgs(templates[libs[e.target.value]].pkgs)
+                                    const pkgsSelected = templates[libs[e.target.value]].pkgs
+                                    setPkgs(pkgsSelected)
+                                    window.pkg.check(pkgsSelected)
                                 }}>
                                 {options}
                             </select>
@@ -167,7 +181,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                         <Button onClick={e => handleClick(e)}
                             btnText={btnText}
                             disabled={visible}
-                            theme={btnText == 'Завершить' ? 'teal' : 'default'} />
+                            theme={btnText == 'Создать' ? 'teal' : 'default'} />
                         {visible ? loadInfo : null}
                     </div>
                 </div>

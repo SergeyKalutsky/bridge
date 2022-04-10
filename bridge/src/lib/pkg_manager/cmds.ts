@@ -12,7 +12,8 @@ const installationPaths = {
     golang: ['C:\\Program Files\\Go\\bin\\go.exe', 'C:\\Program Files (x86)\\Go\\bin\\go.exe'],
     git: ['C:\\Program Files\\Git\\cmd\\git.exe'],
     python3: [`C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python310\\python.exe`,
-        'C:\\Python310\\python.exe'],
+        'C:\\Python310\\python.exe',
+    `C:\\Users\\${os.userInfo().username}\\AppData\\Roaming\\Python\\Python310\\site-packages`],
     choco: ["C:\\ProgramData\\chocolatey\\bin\\choco.exe"]
 }
 
@@ -31,6 +32,7 @@ function checkInstalled(manager: string, pkgName: string): boolean {
     if (manager === 'pip') {
         for (const pythonPath of installationPaths.python3) {
             const pythonDir = path.parse(pythonPath).dir
+            pkgName = pkgName.replace('.py', '') //because discord.py creator is a fucking moron
             if (fs.existsSync(path.join(pythonDir, 'site-packages', pkgName))) {
                 return true
             }
@@ -70,7 +72,7 @@ const pipCommand = (pkgName: string, version: string): Command => {
     return { elevate: false, install: cmd.join(' ') }
 }
 
-const customCommand =  (pkgName: string, version?: string): Command => {
+const customCommand = (pkgName: string, version?: string): Command => {
     const cmds = {
         'choco': "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))"
     }
