@@ -72,7 +72,8 @@ const createWindow = (): void => {
   });
   ipcMain.on("terminal:exec", (event, { exec, path }) => {
     const binary = store.get(`pkgs.${exec}`)
-    ptyProcess.write(`${binary} ${path} \r`);
+    const cmd = os.platform() === "win32" ? `& "${binary}" ${path} \r` : `${binary} ${path} \r`
+    ptyProcess.write(cmd);
   });
   ipcMain.on('terminal:fit', async (event, data) => {
     event.reply('terminal:fit', data)
