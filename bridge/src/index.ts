@@ -65,7 +65,6 @@ const createWindow = (): void => {
   });
 
   ptyProcess.on('data', function (data) {
-    console.log(data)
     mainWindow.webContents.send("terminal:incomingdata", data);
   });
   ipcMain.on("terminal:keystroke", (event, key) => {
