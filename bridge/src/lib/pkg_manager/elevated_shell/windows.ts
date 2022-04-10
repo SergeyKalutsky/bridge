@@ -6,7 +6,6 @@ import { instance } from './types'
 const promisifiedExec = util.promisify(exec);
 
 async function windows(instance: instance): Promise<void> {
-  console.log(instance)
   const command = [];
   // By default we use CMD in electron, we call on powershell within CMD to excecute a command
   command.push('powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass');
@@ -29,7 +28,6 @@ async function windows(instance: instance): Promise<void> {
   command.push('-Wait');
   command.push('"')
   const strCommand = command.join(' ');
-  console.log(strCommand)
   await promisifiedExec(strCommand)
 }
 
