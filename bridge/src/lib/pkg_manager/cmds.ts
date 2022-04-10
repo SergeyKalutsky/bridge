@@ -9,6 +9,7 @@ interface Command {
 }
 
 const installationPaths = {
+    golang: ['C:\\Program Files\\Go\\bin\\go.exe', 'C:\\Program Files (x86)\\Go\\bin\\go.exe'],
     git: ['C:\\Program Files\\Git\\cmd\\git.exe'],
     python3: [`C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python310\\python.exe`,
         'C:\\Python310\\python.exe'],
