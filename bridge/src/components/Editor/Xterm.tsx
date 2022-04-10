@@ -35,7 +35,9 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
 
     useEffect(() => {
         function updateSize({ target }) {
-            setWidth(target.innerWidth - 430)
+            console.log(JSON.parse(window.localStorage.getItem('sideWidth')))
+            setWidth(target.innerWidth - JSON.parse(window.localStorage.getItem('sideWidth')) - 80)
+            // setWidth(target.innerWidth - 430)
             fitAddon.fit()
         }
         window.addEventListener('resize', updateSize)

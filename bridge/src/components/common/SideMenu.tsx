@@ -12,6 +12,7 @@ const SideMenu = ({ children, activeToggle, terminal }: Props): JSX.Element => {
     const [size, setSize] = useState(350);
     const ref = useRef<HTMLDivElement>();
     useEffect(() => {
+        window.localStorage.setItem('sideWidth', JSON.stringify(350))
         if (!activeToggle) {
             return
         }
@@ -20,6 +21,7 @@ const SideMenu = ({ children, activeToggle, terminal }: Props): JSX.Element => {
             if ((!(ref.current.clientWidth <= 200) && (e.movementX < 0)) ||
                 ((!(ref.current.clientWidth >= 500) && (e.movementX > 0)))) {
                 setSize(size => size + e.movementX)
+                window.localStorage.setItem('sideWidth', JSON.stringify(ref.current.clientWidth))
                 if (terminal) {
                     window.terminal.fit({x: e.movementX})
                 }
