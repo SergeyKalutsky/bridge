@@ -42,6 +42,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     useEffect(() => {
         window.pkg.check(templates[libs[0]].pkgs)
         window.shared.incomingData("pkg:check", (pkgs) => {
+            console.log(pkgs)
             let count = 0
             for (const pkg of pkgs) {
                 if (pkg.installed === true) {

@@ -13,7 +13,7 @@ const installationPaths = {
     git: ['C:\\Program Files\\Git\\cmd\\git.exe'],
     python3: [`C:\\Users\\${os.userInfo().username}\\AppData\\Local\\Programs\\Python\\Python310\\python.exe`,
         'C:\\Python310\\python.exe',
-    `C:\\Users\\${os.userInfo().username}\\AppData\\Roaming\\Python\\Python310\\site-packages`],
+    `C:\\Users\\${os.userInfo().username}\\AppData\\Roaming\\Python\\Python310\\python.exe`],
     choco: ["C:\\ProgramData\\chocolatey\\bin\\choco.exe"]
 }
 
