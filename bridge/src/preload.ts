@@ -43,6 +43,7 @@ contextBridge.exposeInMainWorld('git', {
 
 
 contextBridge.exposeInMainWorld('terminal', {
+    exec: (data: { exec: string, path: string }) => ipcRenderer.send('terminal:exec', data),
     keystoke: (e) => ipcRenderer.send('terminal:keystroke', e),
     fit: (data: { x?: number, y?: number }): void => ipcRenderer.send('terminal:fit', data)
 })

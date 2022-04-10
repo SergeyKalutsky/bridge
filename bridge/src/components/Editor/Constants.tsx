@@ -51,7 +51,7 @@ const FILE_ICONS = {
 const CMD = {
     js: 'node',
     ts: 'ts-node',
-    py: 'python'
+    py: 'python3'
 }
 
 

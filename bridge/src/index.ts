@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import { projectAPI, gitAPI, settingsAPI, pkgAPI } from './lib/api/main'
+import { store } from './lib/api/main/storage';
 import os from 'os'
 
 const pty = require("node-pty");
@@ -64,10 +65,15 @@ const createWindow = (): void => {
   });
 
   ptyProcess.on('data', function (data) {
+    console.log(data)
     mainWindow.webContents.send("terminal:incomingdata", data);
   });
   ipcMain.on("terminal:keystroke", (event, key) => {
     ptyProcess.write(key);
+  });
+  ipcMain.on("terminal:exec", (event, { exec, path }) => {
+    const binary = store.get(`pkgs.${exec}`)
+    ptyProcess.write(`${binary} ${path} \r`);
   });
   ipcMain.on('terminal:fit', async (event, data) => {
     event.reply('terminal:fit', data)

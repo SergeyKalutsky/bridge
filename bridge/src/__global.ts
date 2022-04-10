@@ -26,7 +26,7 @@ declare global {
             deleteTreeElement(activePath: ActivePath): any;
             mkprojectdir(project_name: string): any;
             copyFile(args: { src: string, destination: string, root: boolean }): any
-            renameFile(data: { newName: string, activePath: ActivePath}): any
+            renameFile(data: { newName: string, activePath: ActivePath }): any
         };
         git: {
             clone(project: Project): void;
@@ -38,9 +38,9 @@ declare global {
             init(project_name: string): void;
         };
         terminal: {
-            keystoke(e): any;
+            keystoke(e: string): any;
             fit(data: { x?: number, y?: number }): any;
-
+            exec(data: { exec: string, path: string }): void
         };
         pkg: {
             install(pkgs: Package[]): any;
