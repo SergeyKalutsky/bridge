@@ -20,10 +20,7 @@ const Editor = (): JSX.Element => {
             const ext = activePath.path.split(".")[1]
             const excecutable = CMD[ext]
             if (excecutable !== undefined) {
-                // window.terminal.keystoke('\x03')
                 window.terminal.exec({exec: excecutable, path: activePath.path})
-                // window.terminal.keystoke(`${excecutable} ${activePath.path}`)
-                // window.terminal.keystoke('\r')
             }
         }
     }
