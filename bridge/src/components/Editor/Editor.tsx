@@ -12,8 +12,8 @@ import FileTreeView from "./tree_viewer/FileTreeView";
 const Editor = (): JSX.Element => {
     const [activeToggle, setActiveToggle] = useState(false)
     const handleToggle = () => { setActiveToggle(!activeToggle) }
-    const [activePath, setActivePath] = useState<ActivePath>(null)
-    const [editor, setEditor] = useState(buildEditor())
+    const [activePath, setActivePath] = useState<ActivePath>(window.settings.get('active_project.activePath'))
+    const [editor, setEditor] = useState(null)
 
     const handleClick = () => {
         if (!activePath.isDirectory) {
@@ -54,9 +54,7 @@ const Editor = (): JSX.Element => {
 
     useEffect(() => {
         if (activePath !== null && !activePath.isDirectory) {
-
             window.projects.readActiveFile(activePath.path)
-
         }
     }, [activePath])
     return (
