@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Workspace from '../common/Workspace'
 import ReactDiffViewer from 'react-diff-viewer';
 import ToolBar from '../common/ToolBar'
