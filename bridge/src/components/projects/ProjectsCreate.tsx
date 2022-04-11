@@ -28,6 +28,11 @@ const dummyProject: Project = {
     http: templates[libs[0]].http
 }
 
+const getWidth = (): number => {
+    const sideWidth = JSON.parse(window.localStorage.getItem('sideWidth'))
+    return window.innerWidth - sideWidth - 80
+}
+
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
     const [error, setError] = useState<string>()
@@ -37,7 +42,25 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
     const [btnText, setBtnText] = useState('Установить')
+    const [width, setWidth] = useState(getWidth())
     const ref = useRef(null)
+
+    useEffect(() => {
+        window.shared.incomingData("terminal:fit", (data) => {
+            if (data.x !== undefined) {
+                setWidth(width => width - data.x)
+            }
+        });
+        return () => window.shared.removeListeners("terminal:fit")
+    }, [])
+
+    useEffect(() => {
+        function updateSize({ target }) {
+            setWidth(target.innerWidth - JSON.parse(window.localStorage.getItem('sideWidth')) - 80)
+        }
+        window.addEventListener('resize', updateSize)
+        return () => window.removeEventListener('resize', updateSize)
+    }, []);
 
     useEffect(() => {
         window.pkg.check(templates[libs[0]].pkgs)
@@ -88,21 +111,9 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     }
 
     useEffect(() => {
-        const splitLogs = (logs: string[]): string[] => {
-            const newLogs = []
-            for (const log of logs) {
-                if (log.length > 90) {
-                    newLogs.push(log.slice(0, log.length / 2))
-                    newLogs.push(log.slice(log.length / 2))
-                } else {
-                    newLogs.push(log)
-                }
-            }
-            return newLogs
-        }
         window.shared.incomingData("pkg:getlogs", (data: string) => {
             let logs = data.split(/\r?\n/)
-            logs = splitLogs(logs.slice(logs.length - 10))
+            logs = logs.slice(logs.length - 10)
             setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
         });
         return () => window.shared.removeListeners('pkg:getlogs')
@@ -134,8 +145,8 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         <div className='text-lg text-slate-50 font-medium'>Создание/установка проекта...</div></>
     return (
         <>
-            <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline'>Создание проекта</h1>
-            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center'>
+            <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline' style={{ width: width }}>Создание проекта</h1>
+            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center' style={{ width: width }}>
                 <div className='w-3/5 h-2/3'>
                     <div className='w-full h-4/7 gap-y-2 flex flex-col'>
                         <span className='text-red-400 font-medium text-xl'>{error}</span>
