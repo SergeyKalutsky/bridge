@@ -32,6 +32,14 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
   }, [])
 
   useEffect(() => {
+    function updateSize({ target }) {
+      setDiffViewWidth(target.innerWidth - JSON.parse(window.localStorage.getItem('sideWidth')) - 80)
+    }
+    window.addEventListener('resize', updateSize)
+    return () => window.removeEventListener('resize', updateSize)
+  }, []);
+
+  useEffect(() => {
     setDiffViewFileIndex(0)
   }, [gitDiffs])
 
