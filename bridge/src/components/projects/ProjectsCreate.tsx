@@ -92,9 +92,8 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             const newLogs = []
             for (const log of logs) {
                 if (log.length > 90) {
-                    const splitedLog = log.split(/\s/g)
-                    newLogs.push(splitedLog.slice(0, splitedLog.length / 2).join(' '))
-                    newLogs.push(splitedLog.slice(splitedLog.length / 2).join(' '))
+                    newLogs.push(log.slice(0, log.length / 2))
+                    newLogs.push(log.slice(log.length / 2))
                 } else {
                     newLogs.push(log)
                 }
