@@ -22,9 +22,9 @@ const SideMenu = ({ children, activeToggle, terminal }: Props): JSX.Element => {
                 ((!(ref.current.clientWidth >= 500) && (e.movementX > 0)))) {
                 setSize(size => size + e.movementX)
                 window.localStorage.setItem('sideWidth', JSON.stringify(ref.current.clientWidth))
-                if (terminal) {
-                    window.terminal.fit({x: e.movementX})
-                }
+                // if (terminal) {
+                window.terminal.fit({ x: e.movementX })
+                // }
             }
         }
         function onMouseUp() {
