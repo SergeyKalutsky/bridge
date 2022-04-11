@@ -11,7 +11,9 @@ interface Props {
 }
 
 const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
+  const open = JSON.parse(window.localStorage.getItem(path))
+  console.log(path, open)
+  const [isOpen, setIsOpen] = useState(open === null ? false : open);
   const [color, setColor] = useState('bg-transperent')
   const ref = useRef(null)
   const handleToggle = e => {
@@ -21,6 +23,7 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
     window.settings.set({ active_project: activeProject })
     e.preventDefault()
     setIsOpen(!isOpen)
+    window.localStorage.setItem(path, JSON.stringify(!isOpen))
   };
 
   useEffect(() => {
