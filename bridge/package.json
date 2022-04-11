@@ -104,6 +104,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.0.1",
     "file-loader": "^6.2.0",
+    "ncp": "^2.0.0",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "node-pty": "^0.10.1",
     "path-browserify": "^1.0.1",

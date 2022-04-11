@@ -3,7 +3,7 @@ import { store, BASE_DIR } from './storage'
 import util from 'util'
 import path from 'path'
 import fs from 'fs'
-
+import ncp from 'ncp'
 
 const readFileAsync = util.promisify(fs.readFile)
 
@@ -155,7 +155,7 @@ function copyFile() {
             arg.destination = path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
         }
         arg.destination = path.join(arg.destination, path.parse(arg.src).base)
-        fs.copyFile(arg.src, arg.destination, (err) => {
+        ncp(arg.src, arg.destination, (err) => {
             if (err) throw err;
             const project_name = store.get('active_project.name')
             const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
