@@ -4,15 +4,22 @@ import React from 'react'
 interface Props {
     children: React.ReactNode
     activeToggle: boolean
-    terminal?: boolean
 }
 
+const setSideMenuStartWidth = () => {
+    const sideMenuWidth = JSON.parse(window.localStorage.getItem('sideWidth'))
+    if (sideMenuWidth === null) {
+        window.localStorage.setItem('sideWidth', JSON.stringify(350))
+        return 350
+    }
+    return sideMenuWidth
+}
 
-const SideMenu = ({ children, activeToggle, terminal }: Props): JSX.Element => {
-    const [size, setSize] = useState(350);
+const SideMenu = ({ children, activeToggle }: Props): JSX.Element => {
+    const [size, setSize] = useState(setSideMenuStartWidth());
     const ref = useRef<HTMLDivElement>();
     useEffect(() => {
-        window.localStorage.setItem('sideWidth', JSON.stringify(350))
+        
         if (!activeToggle) {
             return
         }
@@ -22,9 +29,7 @@ const SideMenu = ({ children, activeToggle, terminal }: Props): JSX.Element => {
                 ((!(ref.current.clientWidth >= 500) && (e.movementX > 0)))) {
                 setSize(size => size + e.movementX)
                 window.localStorage.setItem('sideWidth', JSON.stringify(ref.current.clientWidth))
-                // if (terminal) {
                 window.terminal.fit({ x: e.movementX })
-                // }
             }
         }
         function onMouseUp() {
