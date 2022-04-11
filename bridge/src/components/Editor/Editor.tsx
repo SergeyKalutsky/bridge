@@ -13,7 +13,7 @@ const Editor = (): JSX.Element => {
     const [activeToggle, setActiveToggle] = useState(false)
     const handleToggle = () => { setActiveToggle(!activeToggle) }
     const [activePath, setActivePath] = useState<ActivePath>(window.settings.get('active_project.activePath'))
-    const [editor, setEditor] = useState(null)
+    const [editor, setEditor] = useState(buildEditor())
 
     const handleClick = () => {
         if (!activePath.isDirectory) {
@@ -53,7 +53,8 @@ const Editor = (): JSX.Element => {
     }, [])
 
     useEffect(() => {
-        if (activePath !== null && !activePath.isDirectory) {
+        console.log(activePath)
+        if (activePath !== undefined && !activePath.isDirectory) {
             window.projects.readActiveFile(activePath.path)
         }
     }, [activePath])
