@@ -61,10 +61,6 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     }, [])
 
     const handleClick = (e) => {
-        if (e.target.innerText === 'Создать') {
-            addProject(project)
-            return
-        }
         if (project.name === '') {
             setError('Название проекта не может быть пустым')
             return
@@ -82,6 +78,10 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                 setError('Проект с таким именем уже есть')
                 return
             }
+        }
+        if (e.target.innerText === 'Создать') {
+            addProject(project)
+            return
         }
         setError('')
         setVisible(true)
