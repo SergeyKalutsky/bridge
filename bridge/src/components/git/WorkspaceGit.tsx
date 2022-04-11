@@ -64,7 +64,7 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
           </div>
         </ToolBar>
 
-        <div className='overflow-scroll h-[calc(100%-30px)' style={{ width: diffViewWidth }}>
+        <div className='overflow-scroll h-[calc(100%-40px)]' style={{ width: diffViewWidth }}>
           <ReactDiffViewer styles={darkModeStyle}
             oldValue={diff !== undefined ? diff.oldFile : ''}
             newValue={diff !== undefined ? diff.newFile : ''}
