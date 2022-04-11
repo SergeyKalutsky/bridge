@@ -11,7 +11,7 @@ const setSideMenuStartWidth = () => {
     if (sideMenuWidth === null) {
         window.localStorage.setItem('sideWidth', JSON.stringify(350))
         return 350
-    }
+}
     return sideMenuWidth
 }
 

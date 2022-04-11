@@ -83,7 +83,7 @@ const Editor = (): JSX.Element => {
                 </ToolBar>
                 <div className="w-full flex-1 flex flex-col">
                     {editor}
-                    <Xterm activeToggle={activeToggle} />
+                    <Xterm />
                 </div>
             </Workspace>
         </>

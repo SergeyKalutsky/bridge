@@ -3,11 +3,14 @@ import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css'
 
-interface Props {
-    activeToggle: boolean
-}
 
-const Xterm = ({ activeToggle }: Props): JSX.Element => {
+
+const getDXtermWidth = (): number => {
+    const sideWidth = JSON.parse(window.localStorage.getItem('sideWidth'))
+    return window.innerWidth - sideWidth - 80
+  }
+
+const Xterm = (): JSX.Element => {
     const term = new Terminal({
         fontSize: 16,
         cursorBlink: true
@@ -16,7 +19,7 @@ const Xterm = ({ activeToggle }: Props): JSX.Element => {
     term.loadAddon(fitAddon)
     const ref = useRef<HTMLDivElement>();
     const [height, setHeight] = useState(200)
-    const [width, setWidth] = useState(window.innerWidth - 430)
+    const [width, setWidth] = useState(getDXtermWidth())
 
     const handleToggle = () => {
         function onMouseMove(e) {
