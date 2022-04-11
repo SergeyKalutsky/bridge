@@ -184,6 +184,9 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             theme={btnText == 'Создать' ? 'teal' : 'default'} />
                         {visible ? loadInfo : null}
                     </div>
+                    <div>
+                        <span className="text-white font-medium text-xl">{'Лог Файл: ' + window.settings.logPath()}</span>
+                    </div>
                 </div>
             </div >
         </>

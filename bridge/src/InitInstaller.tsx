@@ -116,8 +116,11 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                 </div>
                 <div className="w-full h-1/6 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled} theme={btnTheme}>
-                        {btnTheme === 'default' ? 'Установить' : 'Продолжить' }
+                        {btnTheme === 'default' ? 'Установить' : 'Продолжить'}
                     </Button>
+                </div>
+                <div>
+                    <span className="text-white font-medium text-xl">{'Лог Файл: ' + window.settings.logPath()}</span>
                 </div>
             </div>
         </div>

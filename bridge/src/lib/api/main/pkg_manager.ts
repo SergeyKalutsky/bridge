@@ -1,10 +1,10 @@
 import { shell, checkInstalled, commandBuilder } from '../../pkg_manager'
-import { app, ipcMain } from 'electron';
-import path from 'path'
+import { ipcMain } from 'electron';
+import { LOG_PATH } from './storage';
 import util from 'util'
 import fs from 'fs'
 
-const LOG_PATH = path.join(app.getPath('userData'), 'bridge.log')
+
 const readFileAsync = util.promisify(fs.readFile)
 
 function check() {

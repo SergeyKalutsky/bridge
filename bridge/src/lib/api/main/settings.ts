@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron';
 import { store } from './storage'
+import { LOG_PATH } from './storage';
 
 function get() {
     return ipcMain.on('settings:get', (event, field) => {
@@ -13,6 +14,11 @@ function set() {
     })
 }
 
+function logPath() {
+    return ipcMain.on('settings:logpath', (event, field) => {
+        event.returnValue = LOG_PATH
+    })
+}
 
 function del () {
     return ipcMain.handle('settings:del', (event, data) => {
@@ -24,6 +30,7 @@ function settingsAPI(): void {
     get()
     set()
     del()
+    logPath()
 }
 
 export default settingsAPI
