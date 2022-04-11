@@ -37,7 +37,7 @@ const Tree = ({ children }) => {
             setColor("bg-slate-700")
         });
     }, [])
-    return <div ref={ref} className={`leading-8 h-2/3 ${color}`}>{children}</div>
+    return <div ref={ref} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>
 };
 
 Tree.File = File;
