@@ -37,7 +37,14 @@ const Tree = ({ children }) => {
             setColor("bg-slate-700")
         });
     }, [])
-    return <div ref={ref} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>
+    const handleClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('here')
+        window.settings.del('active_project.activePath')
+        window.projects.showFiles()
+    }
+    return <div ref={ref} onClick={handleClick} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>
 };
 
 Tree.File = File;
@@ -128,7 +135,7 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
                 </div>
                 <div className="w-[100px] flex rounded-full cursor-pointer justify-end mx-3">
                     <IconContext.Provider value={{ color: 'white', size: '25', className: 'file-icon' }}>
-                        <RenameFile activePath={activePath} forceUpdate={forceUpdate}/>
+                        <RenameFile activePath={activePath} forceUpdate={forceUpdate} />
                         <NewFile activePath={activePath} forceUpdate={forceUpdate} />
                         <NewFolder activePath={activePath} forceUpdate={forceUpdate} />
                         <DeleteTreeElement activePath={activePath} forceUpdate={forceUpdate} />

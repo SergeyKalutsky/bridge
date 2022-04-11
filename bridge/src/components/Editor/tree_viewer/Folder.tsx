@@ -12,11 +12,12 @@ interface Props {
 
 const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX.Element => {
   const open = JSON.parse(window.localStorage.getItem(path))
-  console.log(path, open)
   const [isOpen, setIsOpen] = useState(open === null ? false : open);
   const [color, setColor] = useState('bg-transperent')
   const ref = useRef(null)
   const handleToggle = e => {
+    e.preventDefault();
+    e.stopPropagation();
     setActivePath({ path: path, isDirectory: true })
     const activeProject = window.settings.get('active_project')
     activeProject.activePath = { path: path, isDirectory: false }
@@ -50,7 +51,7 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
       setColor("bg-slate-700")
     });
   }, [])
-  const bgColor = activePath !== null && path === activePath.path ? "bg-slate-700" : "bg-transperent"
+  const bgColor = activePath !== undefined && path === activePath.path ? "bg-slate-700" : "bg-transperent"
   const height = isOpen ? "h-0" : "h-auto"
   return (
     <div ref={ref} className={`pl-[20px] ${color}`}>

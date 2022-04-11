@@ -95,7 +95,7 @@ function writeActiveFile() {
 
 function createFolder() {
     return ipcMain.on('projects:createfolder', (event, data) => {
-        if (data.activePath === null) {
+        if (data.activePath === undefined) {
             const project_name = store.get('active_project.name')
             const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
             const folderPath = path.join(project_dir, data.name)
@@ -112,7 +112,7 @@ function createFolder() {
 
 function createFile() {
     return ipcMain.on('projects:createfile', (event, data) => {
-        if (data.activePath === null) {
+        if (data.activePath === undefined) {
             const project_name = store.get('active_project.name')
             const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
             const filePath = path.join(project_dir, data.name)
@@ -129,7 +129,8 @@ function createFile() {
 
 function readActiveFile() {
     return ipcMain.on('projects:readactivefile', async (event, filepath) => {
-        const ext = filepath.split(".")[1];
+        const extList = filepath.split(".")
+        const ext = extList[extList.length - 1]
         if (filepath === '') {
             event.reply('projects:readactivefile', { ext: ext, content: '', path: filepath })
         } else {

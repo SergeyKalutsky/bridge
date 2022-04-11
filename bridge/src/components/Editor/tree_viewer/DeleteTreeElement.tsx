@@ -23,6 +23,7 @@ const DeleteTreeElement = ({ activePath, forceUpdate }: Props): JSX.Element => {
                     window.projects.deleteTreeElement(activePath)
                     window.settings.del('active_project.activePath')
                     forceUpdate()
+                    window.projects.readActiveFile('')
                     setOpen(false)
                 }} btnText="Удалить" />
                 <Button onClick={() => { setOpen(false) }} btnText="Закрыть" />

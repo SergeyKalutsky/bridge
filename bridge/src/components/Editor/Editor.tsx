@@ -20,7 +20,7 @@ const Editor = (): JSX.Element => {
             const ext = activePath.path.split(".")[1]
             const excecutable = CMD[ext]
             if (excecutable !== undefined) {
-                window.terminal.exec({exec: excecutable, path: activePath.path})
+                window.terminal.exec({ exec: excecutable, path: activePath.path })
             }
         }
     }
@@ -45,15 +45,19 @@ const Editor = (): JSX.Element => {
                 // if its an image folder we don't load editor
                 setEditor(<><div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
                     <img src={data.path} alt="" className="max-w-lg" /></div></>)
-            } else {
-                setEditor(buildEditor(ACE_MODS[data.ext], data.content, false, onChange))
+                return
             }
+            if (data.path === '') {
+                setEditor(buildEditor())
+                return
+            }
+            setEditor(buildEditor(ACE_MODS[data.ext], data.content, false, onChange))
+
         })
         return () => window.shared.removeListeners('projects:readactivefile')
     }, [])
 
     useEffect(() => {
-        console.log(activePath)
         if (activePath !== undefined && !activePath.isDirectory) {
             window.projects.readActiveFile(activePath.path)
         }
