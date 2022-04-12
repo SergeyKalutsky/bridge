@@ -114,21 +114,18 @@ function createFolder() {
 
 function createFile() {
     return ipcMain.handle('projects:createfile', (event, data) => {
+        let filePath: string
         if (data.activePath === undefined) {
             const project_name = store.get('active_project.name')
             const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-            const filePath = path.join(project_dir, data.name)
-            fs.closeSync(fs.openSync(filePath, 'w'))
-            event.returnValue = filePath
+            filePath = path.join(project_dir, data.name)
         } else if (data.activePath.isDirectory) {
-            const filePath = path.join(data.activePath.path, data.name)
-            fs.closeSync(fs.openSync(filePath, 'w'))
-            event.returnValue = filePath
+            filePath = path.join(data.activePath.path, data.name)
         } else {
-            const filePath = path.join(path.dirname(data.activePath.path), data.name)
-            fs.closeSync(fs.openSync(filePath, 'w'))
-            event.returnValue = filePath
+            filePath = path.join(path.dirname(data.activePath.path), data.name)
         }
+        fs.closeSync(fs.openSync(filePath, 'w'))
+        return filePath
     })
 }
 

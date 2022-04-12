@@ -6,7 +6,7 @@ import { InputForm, PopUp, Button } from "../../common";
 
 interface Props {
     ide: IDE
-    updateFileTree: (ide: IDE, files: FileObject[]) => void
+    updateFileTree: (ide: IDE) => void
 }
 
 
@@ -14,8 +14,26 @@ const NewFolder = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [foldername, setfoldername] = useState('')
     const [open, setOpen] = useState(false)
     const handleClick = async () => {
-    const filePath = await window.projects.createFolder({ activePath: ide.activePath, name: foldername });
-        // setIDE({ ...ide, activePath: { isDirectory: ide.activePath.isDirectory, path: filePath } })
+        const filePath = await window.projects.createFolder({ activePath: ide.activePath, name: foldername });
+        const updateFiles = (files: FileObject[]) => {
+            const newfiles = []
+            for (const file of files) {
+                if (file.path === ide.activePath.path) {
+                    newfiles.push({ name: foldername, path: filePath, isDirectory: true, files: [] })
+                }
+                if (file.isDirectory) {
+                    newfiles.push({ ...file, files: updateFiles(file.files) })
+                } else {
+                    newfiles.push(file)
+                }
+            }
+            return newfiles
+        }
+        updateFileTree({
+            ...ide,
+            files: updateFiles(ide.files)
+        })
+        setOpen(false)
         setOpen(false)
     }
     return (
