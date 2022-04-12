@@ -40,7 +40,6 @@ const Tree = ({ children }) => {
     const handleClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('here')
         window.settings.del('active_project.activePath')
         window.projects.showFiles()
     }
@@ -81,8 +80,8 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
     }
 
     useEffect(() => {
-        window.shared.incomingData('projects:listfiles', (data) => {
-            setIDE({ ...ide, fileTree: buildFileTree(data) })
+        window.shared.incomingData('projects:listfiles', (files: FileObject[]) => {
+            setIDE({ ...ide, fileTree: buildFileTree(files), files: files })
         })
         return () => window.shared.removeListeners('projects:listfiles')
     }, [])
@@ -90,7 +89,7 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
     // sets initial file structure
     useEffect(() => {
         window.projects.showFiles()
-    }, [ide])
+    }, [])
 
 
     const active_project = window.settings.get('active_project')

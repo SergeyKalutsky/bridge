@@ -18,12 +18,12 @@ declare global {
         projects: {
             createFile(createInfo: CreateInfo): Promise<string>;
             createFolder(createInfo: CreateInfo): Promise<string>;
+            readActiveFile(filepath: string): Promise<string>;
             
             mkbasedir(data: any): Promise<any>;
             getLocalProjectsNames(): string[];
             delete(name: string): void;
             showFiles(): Promise<any>;
-            readActiveFile(filepath: string): Promise<any>;
             writeActiveFile(fileChange: FileChanges): any;
             deleteTreeElement(activePath: ActivePath): any;
             mkprojectdir(project_name: string): any;

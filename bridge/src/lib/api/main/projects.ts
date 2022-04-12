@@ -132,15 +132,8 @@ function createFile() {
 }
 
 function readActiveFile() {
-    return ipcMain.on('projects:readactivefile', async (event, filepath) => {
-        const extList = filepath.split(".")
-        const ext = extList[extList.length - 1]
-        if (filepath === '') {
-            event.reply('projects:readactivefile', { ext: ext, content: '', path: filepath })
-        } else {
-            const fileContent = await readFileAsync(filepath, 'utf-8')
-            event.reply('projects:readactivefile', { ext: ext, content: fileContent, path: filepath })
-        }
+    return ipcMain.handle('projects:readactivefile', async (event, filepath) => {
+        return await readFileAsync(filepath, 'utf-8')
     })
 
 }

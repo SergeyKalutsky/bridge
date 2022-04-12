@@ -22,7 +22,7 @@ contextBridge.exposeInMainWorld('projects', {
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
     delete: (project_name): void => ipcRenderer.send('projects:delete', project_name),
     showFiles: (): void => ipcRenderer.send('projects:listfiles'),
-    readActiveFile: (filepath: string): void => ipcRenderer.send('projects:readactivefile', filepath),
+    readActiveFile: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:readactivefile', filepath),
     writeActiveFile: (fileChange: FileChanges): void => ipcRenderer.send('projects:writeactivefile', fileChange),
     createFile: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfile', createInfo),
     createFolder: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfolder', createInfo),

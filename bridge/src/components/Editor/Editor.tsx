@@ -38,35 +38,12 @@ const Editor = (): JSX.Element => {
         window.terminal.keystoke('\x03')
     }
 
-    useEffect(() => {
-
-        window.shared.incomingData('projects:readactivefile', (data) => {
-            const onChange = (newValue: string) => {
-                window.projects.writeActiveFile({ filepath: data.path, fileContent: newValue })
-            }
-            if (IMG_FORMATS.includes(data.ext)) {
-                // if its an image folder we don't load editor
-                const imgDisplay = <><div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
-                    <img src={data.path} alt="" className="max-w-lg" /></div></>
-                setIDE({ ...ide, editor: imgDisplay })
-                return
-            }
-            if (data.path === '') {
-                setIDE({ ...ide, editor: buildEditor() })
-                return
-            }
-            setIDE({ ...ide, editor: buildEditor(ACE_MODS[data.ext], data.content, false, onChange) })
-
-        })
-        return () => window.shared.removeListeners('projects:readactivefile')
-    }, [])
-
-
-    useEffect(() => {
-        if (ide.activePath !== undefined && !ide.activePath.isDirectory) {
-            window.projects.readActiveFile(ide.activePath.path)
-        }
-    }, [ide])
+    // useEffect(() => {
+    //     console.log(ide)
+    //     if (ide.activePath !== undefined && !ide.activePath.isDirectory) {
+    //         window.projects.readActiveFile(ide.activePath.path)
+    //     }
+    // }, [ide])
     return (
         <>
             <SideMenu activeToggle={activeToggle}>
