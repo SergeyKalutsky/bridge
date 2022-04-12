@@ -52,7 +52,7 @@ interface Props {
 
 const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
 
-    const buildFileTree = (files: FileObject[]): JSX.Element[] => {
+    const buildFileTree = (ide: IDE, files: FileObject[]): JSX.Element[] => {
         const elements = []
         for (const file of files) {
             if (!file.isDirectory) {
@@ -66,12 +66,21 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
                     key={file.path}
                     ide={ide}
                     setIDE={setIDE}
-                    path={file.path}>
-                    {buildFileTree(file.files)}
-                </Tree.Folder>)
+                    path={file.path}
+                    children={buildFileTree(ide, file.files)} />)
             }
         }
         return elements
+    }
+
+    const updateFileTree = (ide: IDE, files: FileObject[]): void => {
+        setIDE(
+            {
+                ...ide,
+                files: files,
+                fileTree: buildFileTree(ide, files)
+            }
+        )
     }
 
     useEffect(() => {
@@ -82,7 +91,6 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
         setInitFileTree()
     }, [])
 
-
     const active_project = window.settings.get('active_project')
     return (
         <>
@@ -92,15 +100,15 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
                 </div>
                 <div className="w-[100px] flex rounded-full cursor-pointer justify-end mx-3">
                     <IconContext.Provider value={{ color: 'white', size: '25', className: 'file-icon' }}>
-                        <RenameFile ide={ide} setIDE={setIDE} />
-                        <NewFile ide={ide} setIDE={setIDE} />
-                        <NewFolder ide={ide} setIDE={setIDE} />
-                        <DeleteTreeElement ide={ide} setIDE={setIDE} />
+                        <RenameFile ide={ide} updateFileTree={updateFileTree} />
+                        <NewFile ide={ide} updateFileTree={updateFileTree} />
+                        <NewFolder ide={ide} updateFileTree={updateFileTree} />
+                        <DeleteTreeElement ide={ide} updateFileTree={updateFileTree} />
                     </IconContext.Provider>
                 </div>
             </SideMenuHeader>
             <Tree>
-                {ide.files !== null ? buildFileTree(ide.files) : null}
+                {ide.files !== null ? buildFileTree(ide, ide.files) : null}
             </Tree>
         </>
     );

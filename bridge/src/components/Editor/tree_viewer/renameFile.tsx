@@ -1,20 +1,32 @@
 import { useState } from "react";
-import { IDE } from "../types";
+import { IDE, FileObject } from "../types";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { InputForm, PopUp, Button } from "../../common";
 
 interface Props {
     ide: IDE
-    setIDE: React.Dispatch<React.SetStateAction<IDE>>
+    updateFileTree: (ide: IDE, files: FileObject[]) => void
 }
 
 
-const RenameFile = ({ ide, setIDE }: Props): JSX.Element => {
+const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
     const handleClick = () => {
+        console.log(ide)
         const filePath = window.projects.renameFile({ activePath: ide.activePath, newName: filename });
-        setIDE({ ...ide, activePath: { isDirectory: ide.activePath.isDirectory, path: filePath } })
+        const files = [...ide.files]
+        for (const file of files) {
+            if (file.path === ide.activePath.path) {
+                file.path = filePath
+            }
+        }
+        updateFileTree({
+            ...ide,
+            activePath: { isDirectory: ide.activePath.isDirectory, path: filePath }
+        },
+            files)
+        setOpen(false)
     }
     return (
         <>

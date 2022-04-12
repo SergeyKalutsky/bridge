@@ -8,6 +8,7 @@ import buildEditor from '../TextEditor'
 interface Props {
   name: string
   path: string
+  children?: JSX.Element
   ide: IDE
   setIDE: React.Dispatch<React.SetStateAction<IDE>>
 }
@@ -32,7 +33,6 @@ const File = ({ name, path, ide, setIDE }: Props): JSX.Element => {
           window.projects.writeActiveFile({ filepath: path, fileContent: newValue })
         }
         const content = await window.projects.readActiveFile(path)
-        console.log(ide)
         setIDE({
           ...ide,
           activePath: { path: path, isDirectory: false },
