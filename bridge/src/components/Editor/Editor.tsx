@@ -38,12 +38,6 @@ const Editor = (): JSX.Element => {
         window.terminal.keystoke('\x03')
     }
 
-    // useEffect(() => {
-    //     console.log(ide)
-    //     if (ide.activePath !== undefined && !ide.activePath.isDirectory) {
-    //         window.projects.readActiveFile(ide.activePath.path)
-    //     }
-    // }, [ide])
     return (
         <>
             <SideMenu activeToggle={activeToggle}>

@@ -37,13 +37,8 @@ const Tree = ({ children }) => {
             setColor("bg-slate-700")
         });
     }, [])
-    const handleClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        window.settings.del('active_project.activePath')
-        window.projects.showFiles()
-    }
-    return <div ref={ref} onClick={handleClick} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>
+    
+    return <div ref={ref} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>
 };
 
 Tree.File = File;
@@ -81,7 +76,7 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
 
     useEffect(() => {
         window.shared.incomingData('projects:listfiles', (files: FileObject[]) => {
-            setIDE({ ...ide, fileTree: buildFileTree(files), files: files })
+            setIDE({ ...ide, files: files })
         })
         return () => window.shared.removeListeners('projects:listfiles')
     }, [])
@@ -109,7 +104,7 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
                 </div>
             </SideMenuHeader>
             <Tree>
-                {ide.fileTree}
+                {ide.files !== null ? buildFileTree(ide.files): null}
             </Tree>
         </>
     );

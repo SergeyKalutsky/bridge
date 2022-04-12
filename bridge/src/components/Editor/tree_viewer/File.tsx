@@ -1,7 +1,7 @@
 import { FILE_ICONS } from "../Constants";
 import { AiOutlineFile } from "react-icons/ai";
 import { IDE } from "../types";
-import { ACE_MODS } from '../Constants'
+import { ACE_MODS, IMG_FORMATS } from '../Constants'
 import buildEditor from '../TextEditor'
 
 
@@ -12,25 +12,6 @@ interface Props {
   setIDE: React.Dispatch<React.SetStateAction<IDE>>
 }
 
-// window.shared.incomingData('projects:readactivefile', (data) => {
-//   const onChange = (newValue: string) => {
-//       window.projects.writeActiveFile({ filepath: data.path, fileContent: newValue })
-//   }
-//   if (IMG_FORMATS.includes(data.ext)) {
-//       // if its an image folder we don't load editor
-//       const imgDisplay = <><div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
-//           <img src={data.path} alt="" className="max-w-lg" /></div></>
-//       setIDE({ ...ide, editor: imgDisplay })
-//       return
-//   }
-//   if (data.path === '') {
-//       setIDE({ ...ide, editor: buildEditor() })
-//       return
-//   }
-//   setIDE({ ...ide, editor: buildEditor(ACE_MODS[data.ext], data.content, false, onChange) })
-
-// })
-// return () => window.shared.removeListeners('projects:readactivefile')
 
 const File = ({ name, path, ide, setIDE }: Props): JSX.Element => {
   const savePath = () => {
@@ -51,11 +32,14 @@ const File = ({ name, path, ide, setIDE }: Props): JSX.Element => {
           window.projects.writeActiveFile({ filepath: path, fileContent: newValue })
         }
         const content = await window.projects.readActiveFile(path)
-        console.log(content)
+        console.log(ide)
         setIDE({
           ...ide,
           activePath: { path: path, isDirectory: false },
-          editor: buildEditor(ACE_MODS[ext], content, false, onChange)
+          editor: IMG_FORMATS.includes(ext) ?
+            (<div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
+              <img src={path} alt="" className="max-w-lg" /></div>) :
+            buildEditor(ACE_MODS[ext], content, false, onChange)
         });
         savePath()
       }}>
