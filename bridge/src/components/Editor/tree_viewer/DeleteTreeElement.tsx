@@ -6,7 +6,7 @@ import { PopUp, Button } from "../../common";
 
 interface Props {
     ide: IDE
-    updateFileTree: (ide: IDE, files: FileObject[]) => void
+    updateFileTree: (ide: IDE) => void
 }
 
 
@@ -17,7 +17,24 @@ const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
     const handleClick = () => {
         window.projects.deleteTreeElement(ide.activePath)
         window.settings.del('active_project.activePath')
-        // setIDE({ ...ide, activePath: undefined })
+        const updateFiles = (files: FileObject[]) => {
+            const newfiles = []
+            for (const file of files) {
+                if (file.path === ide.activePath.path) {
+                    continue
+                }
+                if (file.isDirectory) {
+                    newfiles.push({ ...file, files: updateFiles(file.files) })
+                } else {
+                    newfiles.push(file)
+                }
+            }
+            return newfiles
+        }
+        updateFileTree({
+            ...ide,
+            files: updateFiles(ide.files)
+        })
         setOpen(false)
     }
     return (
