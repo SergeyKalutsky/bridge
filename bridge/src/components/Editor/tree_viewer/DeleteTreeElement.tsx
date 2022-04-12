@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { IDE, FileObject } from "../types";
 import { PopUp, Button } from "../../common";
+import buildEditor from "../TextEditor";
 
 
 interface Props {
@@ -33,7 +34,8 @@ const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
         }
         updateFileTree({
             ...ide,
-            files: updateFiles(ide.files)
+            files: updateFiles(ide.files),
+            editor: buildEditor()
         })
         setOpen(false)
     }
