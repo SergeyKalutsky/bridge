@@ -18,7 +18,8 @@ const NewFile = ({ ide, updateFileTree }: Props): JSX.Element => {
             const newfiles = []
             for (const file of files) {
                 if (file.path === ide.activePath.path) {
-                    newfiles.push({ name: filename, path: filePath, isDirectory: false })
+                    const newFile = { name: filename, path: filePath, isDirectory: false }
+                    file.isDirectory ? file.files.push(newFile) : newfiles.push(newFile)
                 }
                 if (file.isDirectory) {
                     newfiles.push({ ...file, files: updateFiles(file.files) })

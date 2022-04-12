@@ -97,18 +97,18 @@ function writeActiveFile() {
 
 function createFolder() {
     return ipcMain.handle('projects:createfolder', (event, data) => {
+        let folderPath: string
         if (data.activePath === undefined) {
             const project_name = store.get('active_project.name')
             const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-            const folderPath = path.join(project_dir, data.name)
-            fs.mkdirSync(folderPath)
+            folderPath = path.join(project_dir, data.name)
         } else if (data.activePath.isDirectory) {
-            const folderPath = path.join(data.activePath.path, data.name)
-            fs.mkdirSync(folderPath)
+            folderPath = path.join(data.activePath.path, data.name)
         } else {
-            const folderPath = path.join(path.dirname(data.activePath.path), data.name)
-            fs.mkdirSync(folderPath)
+            folderPath = path.join(path.dirname(data.activePath.path), data.name)
         }
+        fs.mkdirSync(folderPath)
+        return folderPath
     })
 }
 

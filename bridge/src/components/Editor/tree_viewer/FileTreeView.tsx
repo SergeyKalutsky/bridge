@@ -85,6 +85,7 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
     useEffect(() => {
         const setInitFileTree = async () => {
             const files = await window.projects.showFiles()
+            console.log(files)
             setIDE({ ...ide, files: files })
         }
         setInitFileTree()
