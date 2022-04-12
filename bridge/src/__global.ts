@@ -1,3 +1,4 @@
+import { FileObject } from './components/Editor/types';
 import { Commit } from './components/git/types';
 import { Project } from './components/projects/types';
 import { Package, FileChanges, CreateInfo, ActivePath, ParsedGitDiff } from './types';
@@ -23,7 +24,7 @@ declare global {
             mkbasedir(data: any): Promise<any>;
             getLocalProjectsNames(): string[];
             delete(name: string): void;
-            showFiles(): Promise<any>;
+            showFiles(): Promise<FileObject[]>;
             writeActiveFile(fileChange: FileChanges): any;
             deleteTreeElement(activePath: ActivePath): any;
             mkprojectdir(project_name: string): any;

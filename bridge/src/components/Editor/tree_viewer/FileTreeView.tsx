@@ -37,7 +37,7 @@ const Tree = ({ children }) => {
             setColor("bg-slate-700")
         });
     }, [])
-    
+
     return <div ref={ref} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>
 };
 
@@ -75,15 +75,12 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
     }
 
     useEffect(() => {
-        window.shared.incomingData('projects:listfiles', (files: FileObject[]) => {
+        // set init file Tree
+        const fetchFileTree = async () => {
+            const files = await window.projects.showFiles()
             setIDE({ ...ide, files: files })
-        })
-        return () => window.shared.removeListeners('projects:listfiles')
-    }, [])
-
-    // sets initial file structure
-    useEffect(() => {
-        window.projects.showFiles()
+        }
+        fetchFileTree()
     }, [])
 
 
@@ -104,7 +101,7 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
                 </div>
             </SideMenuHeader>
             <Tree>
-                {ide.files !== null ? buildFileTree(ide.files): null}
+                {ide.files !== null ? buildFileTree(ide.files) : null}
             </Tree>
         </>
     );

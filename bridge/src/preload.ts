@@ -1,8 +1,8 @@
+import { FileChanges, CreateInfo, ActivePath, Package } from './types'
 import { contextBridge, ipcRenderer } from "electron"
-import { Project } from "./components/projects/types"
-import { FileChanges, CreateInfo, ActivePath } from './types'
 import { ParsedGitDiff } from './components/git/types'
-import { Package } from './types'
+import { FileObject } from './components/Editor/types'
+import { Project } from "./components/projects/types"
 
 contextBridge.exposeInMainWorld('shared', {
     incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) },
@@ -21,7 +21,7 @@ contextBridge.exposeInMainWorld('projects', {
     mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
     delete: (project_name): void => ipcRenderer.send('projects:delete', project_name),
-    showFiles: (): void => ipcRenderer.send('projects:listfiles'),
+    showFiles: (): Promise<FileObject[]> => ipcRenderer.invoke('projects:listfiles'),
     readActiveFile: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:readactivefile', filepath),
     writeActiveFile: (fileChange: FileChanges): void => ipcRenderer.send('projects:writeactivefile', fileChange),
     createFile: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfile', createInfo),

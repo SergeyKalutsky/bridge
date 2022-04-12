@@ -5,6 +5,7 @@ import path from 'path'
 import fs from 'fs'
 import ncp from 'ncp'
 
+const fsPromises = fs.promises;
 const readFileAsync = util.promisify(fs.readFile)
 
 interface FileObject {
@@ -14,15 +15,15 @@ interface FileObject {
     isDirectory: boolean
 }
 
-function walkSync(dir: string): FileObject[] {
+async function walkAsync(dir: string): Promise<FileObject[]> {
     const folderFiles = []
-    const files = fs.readdirSync(dir, { withFileTypes: true });
+    const files = await fsPromises.readdir(dir, { withFileTypes: true });
     for (const file of files) {
         if (file.name === '.git') { continue }
         if (file.isDirectory()) {
             folderFiles.push({
                 name: file.name,
-                files: walkSync(path.join(dir, file.name)),
+                files: await walkAsync(path.join(dir, file.name)),
                 isDirectory: true,
                 path: path.join(dir, file.name)
             })
@@ -139,11 +140,10 @@ function readActiveFile() {
 }
 
 function listFiles() {
-    return ipcMain.on('projects:listfiles', async (event) => {
+    return ipcMain.handle('projects:listfiles', async (event) => {
         const project_name = store.get('active_project.name')
         const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        const result = walkSync(project_dir)
-        event.reply('projects:listfiles', result)
+        return await walkAsync(project_dir)
     })
 }
 
@@ -153,11 +153,11 @@ function copyFile() {
             arg.destination = path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
         }
         arg.destination = path.join(arg.destination, path.parse(arg.src).base)
-        ncp(arg.src, arg.destination, (err) => {
+        ncp(arg.src, arg.destination, async (err) => {
             if (err) throw err;
             const project_name = store.get('active_project.name')
             const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-            const result = walkSync(project_dir)
+            const result = await walkAsync(project_dir)
             event.reply('projects:listfiles', result)
         });
     })
