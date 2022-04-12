@@ -16,14 +16,15 @@ declare global {
             logPath(): string
         };
         projects: {
+            createFile(createInfo: CreateInfo): Promise<string>;
+            createFolder(createInfo: CreateInfo): Promise<string>;
+            
             mkbasedir(data: any): Promise<any>;
             getLocalProjectsNames(): string[];
             delete(name: string): void;
             showFiles(): Promise<any>;
             readActiveFile(filepath: string): Promise<any>;
             writeActiveFile(fileChange: FileChanges): any;
-            createFile(createInfo: CreateInfo): any;
-            createFolder(createInfo: CreateInfo): any;
             deleteTreeElement(activePath: ActivePath): any;
             mkprojectdir(project_name: string): any;
             copyFile(args: { src: string, destination: string, root: boolean }): any

@@ -82,6 +82,7 @@ function renameFile() {
     return ipcMain.on('projects:renamefile', (event, data) => {
         const newPath = path.join(path.parse(data.activePath.path).dir, data.newName)
         fs.renameSync(data.activePath.path, newPath);
+        event.returnValue = newPath
     })
 }
 
@@ -94,7 +95,7 @@ function writeActiveFile() {
 }
 
 function createFolder() {
-    return ipcMain.on('projects:createfolder', (event, data) => {
+    return ipcMain.handle('projects:createfolder', (event, data) => {
         if (data.activePath === undefined) {
             const project_name = store.get('active_project.name')
             const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
@@ -111,18 +112,21 @@ function createFolder() {
 }
 
 function createFile() {
-    return ipcMain.on('projects:createfile', (event, data) => {
+    return ipcMain.handle('projects:createfile', (event, data) => {
         if (data.activePath === undefined) {
             const project_name = store.get('active_project.name')
             const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
             const filePath = path.join(project_dir, data.name)
             fs.closeSync(fs.openSync(filePath, 'w'))
+            event.returnValue = filePath
         } else if (data.activePath.isDirectory) {
             const filePath = path.join(data.activePath.path, data.name)
             fs.closeSync(fs.openSync(filePath, 'w'))
+            event.returnValue = filePath
         } else {
             const filePath = path.join(path.dirname(data.activePath.path), data.name)
             fs.closeSync(fs.openSync(filePath, 'w'))
+            event.returnValue = filePath
         }
     })
 }

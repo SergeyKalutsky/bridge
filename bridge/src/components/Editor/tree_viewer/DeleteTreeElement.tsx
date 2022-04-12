@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { ActivePath } from "../types";
+import { IDE } from "../types";
 import { PopUp, Button } from "../../common";
 
 
 interface Props {
-    activePath: ActivePath
-    forceUpdate: () => void
+    ide: IDE
+    setIDE: React.Dispatch<React.SetStateAction<IDE>>
 }
 
 
-const DeleteTreeElement = ({ activePath, forceUpdate }: Props): JSX.Element => {
+
+const DeleteTreeElement = ({ ide, setIDE }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     return (
         <>
@@ -20,10 +21,9 @@ const DeleteTreeElement = ({ activePath, forceUpdate }: Props): JSX.Element => {
                 onClose={() => { setOpen(false) }}>
                 <div>Файл/Директория будут удалены</div>
                 <Button onClick={() => {
-                    window.projects.deleteTreeElement(activePath)
+                    window.projects.deleteTreeElement(ide.activePath)
                     window.settings.del('active_project.activePath')
-                    forceUpdate()
-                    window.projects.readActiveFile('')
+                    setIDE({ ...ide, activePath: undefined })
                     setOpen(false)
                 }} btnText="Удалить" />
                 <Button onClick={() => { setOpen(false) }} btnText="Закрыть" />

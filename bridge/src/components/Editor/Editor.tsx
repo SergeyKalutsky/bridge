@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivePath } from "./types";
+import { IDE } from "./types";
 import { CMD, ACE_MODS, IMG_FORMATS } from './Constants'
 import { ToggleBar, SideMenu, Workspace, ToolBar, IconButton } from "../common";
 import { IoMdGitCommit, IoMdPlay } from 'react-icons/io'
@@ -9,31 +9,34 @@ import Xterm from "./Xterm";
 import buildEditor from "./TextEditor";
 import FileTreeView from "./tree_viewer/FileTreeView";
 
+
+
+const ideDefault: IDE = {
+    editor: buildEditor(),
+    activePath: window.settings.get('active_project.activePath'),
+    files: null,
+    fileTree: null
+}
+
 const Editor = (): JSX.Element => {
     const [activeToggle, setActiveToggle] = useState(false)
-    const handleToggle = () => { setActiveToggle(!activeToggle) }
-    const [activePath, setActivePath] = useState<ActivePath>(window.settings.get('active_project.activePath'))
-    const [editor, setEditor] = useState(buildEditor())
+    const [ide, setIDE] = useState(ideDefault)
 
-    const handleClick = () => {
-        if (!activePath.isDirectory) {
-            const ext = activePath.path.split(".")[1]
+    const handleToggle = () => { setActiveToggle(!activeToggle) }
+
+    const handlePlayButtonClick = () => {
+        if (!ide.activePath.isDirectory) {
+            const extList = ide.activePath.path.split(".")
+            const ext = extList[extList.length - 1]
             const excecutable = CMD[ext]
             if (excecutable !== undefined) {
-                window.terminal.exec({ exec: excecutable, path: activePath.path })
+                window.terminal.exec({ exec: excecutable, path: ide.activePath.path })
             }
         }
     }
-    const handeCansel = () => {
+    const handeCanselBattonClick = () => {
         window.terminal.keystoke('\x03')
     }
-
-    useEffect(() => {
-        const activeProject = window.settings.get('active_project')
-        if (activeProject.activePath !== undefined) {
-            setActivePath(activeProject.activePath)
-        }
-    }, [])
 
     useEffect(() => {
 
@@ -43,39 +46,41 @@ const Editor = (): JSX.Element => {
             }
             if (IMG_FORMATS.includes(data.ext)) {
                 // if its an image folder we don't load editor
-                setEditor(<><div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
-                    <img src={data.path} alt="" className="max-w-lg" /></div></>)
+                const imgDisplay = <><div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
+                    <img src={data.path} alt="" className="max-w-lg" /></div></>
+                setIDE({ ...ide, editor: imgDisplay })
                 return
             }
             if (data.path === '') {
-                setEditor(buildEditor())
+                setIDE({ ...ide, editor: buildEditor() })
                 return
             }
-            setEditor(buildEditor(ACE_MODS[data.ext], data.content, false, onChange))
+            setIDE({ ...ide, editor: buildEditor(ACE_MODS[data.ext], data.content, false, onChange) })
 
         })
         return () => window.shared.removeListeners('projects:readactivefile')
     }, [])
 
+
     useEffect(() => {
-        if (activePath !== undefined && !activePath.isDirectory) {
-            window.projects.readActiveFile(activePath.path)
+        if (ide.activePath !== undefined && !ide.activePath.isDirectory) {
+            window.projects.readActiveFile(ide.activePath.path)
         }
-    }, [activePath])
+    }, [ide])
     return (
         <>
             <SideMenu activeToggle={activeToggle}>
-                <FileTreeView activePath={activePath} setActivePath={setActivePath} />
+                <FileTreeView ide={ide} setIDE={setIDE} />
             </SideMenu>
             <ToggleBar handleToggle={handleToggle} />
             <Workspace>
                 <ToolBar>
                     <div className="w-full flex justify-end">
                         <div className="flex justify-between w-[150px] mr-10 h-1/5">
-                            <IconButton onClick={handleClick}>
+                            <IconButton onClick={handlePlayButtonClick}>
                                 <IoMdPlay style={{ color: '#76de85', height: 30, width: 30 }} />
                             </IconButton>
-                            <IconButton onClick={handeCansel}>
+                            <IconButton onClick={handeCanselBattonClick}>
                                 <FaStop style={{ color: '#d91a1a', height: 25, width: 25 }} />
                             </IconButton>
                             <IconButton onClick={() => { window.git.commit() }}>
@@ -85,7 +90,7 @@ const Editor = (): JSX.Element => {
                     </div>
                 </ToolBar>
                 <div className="w-full flex-1 flex flex-col">
-                    {editor}
+                    {ide.editor}
                     <Xterm />
                 </div>
             </Workspace>

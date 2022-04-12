@@ -24,9 +24,9 @@ contextBridge.exposeInMainWorld('projects', {
     showFiles: (): void => ipcRenderer.send('projects:listfiles'),
     readActiveFile: (filepath: string): void => ipcRenderer.send('projects:readactivefile', filepath),
     writeActiveFile: (fileChange: FileChanges): void => ipcRenderer.send('projects:writeactivefile', fileChange),
-    createFile: (createInfo: CreateInfo): void => ipcRenderer.send('projects:createfile', createInfo),
-    renameFile: (data: { new_name: string, path: ActivePath }): void => ipcRenderer.send('projects:renamefile', data),
-    createFolder: (createInfo: CreateInfo): void => ipcRenderer.send('projects:createfolder', createInfo),
+    createFile: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfile', createInfo),
+    createFolder: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfolder', createInfo),
+    renameFile: (data: { new_name: string, path: ActivePath }): string => ipcRenderer.sendSync('projects:renamefile', data),
     deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
     mkprojectdir: (project_name: string): void => ipcRenderer.send('projects:mkprojectdir', project_name),
     copyFile: (args: { src: string, destination: string, root: boolean }): void => ipcRenderer.send('projects:copyfile', args)

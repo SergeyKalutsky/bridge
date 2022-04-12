@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { AiOutlineFolderAdd } from "react-icons/ai";
-import { ActivePath } from "../types";
+import { IDE } from "../types";
 import { InputForm, PopUp, Button } from "../../common";
 
 interface Props {
-    activePath: ActivePath
-    forceUpdate: () => void
+    ide: IDE
+    setIDE: React.Dispatch<React.SetStateAction<IDE>>
 }
 
 
-const NewFolder = ({ activePath, forceUpdate }: Props): JSX.Element => {
+const NewFolder = ({ ide, setIDE }: Props): JSX.Element => {
     const [foldername, setfoldername] = useState('')
     const [open, setOpen] = useState(false)
-    const handleClick = () => {
-        window.projects.createFolder({ activePath: activePath, name: foldername });
-        forceUpdate()
+    const handleClick = async () => {
+    const filePath = await window.projects.createFolder({ activePath: ide.activePath, name: foldername });
+        setIDE({ ...ide, activePath: { isDirectory: ide.activePath.isDirectory, path: filePath } })
         setOpen(false)
     }
     return (

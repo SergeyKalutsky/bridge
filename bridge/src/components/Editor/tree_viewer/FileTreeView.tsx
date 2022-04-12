@@ -3,7 +3,7 @@ import File from "./File"
 import NewFile from "./NewFile";
 import NewFolder from './newFolder'
 import RenameFile from "./renameFile";
-import { ActivePath, FileObject } from '../types'
+import { FileObject, IDE } from '../types'
 import SideMenuHeader from "../../common/SideMenuHeader";
 import { IconContext } from "react-icons";
 import { useEffect, useState, useRef } from "react";
@@ -52,27 +52,26 @@ Tree.Folder = Folder;
 
 
 interface Props {
-    activePath: ActivePath
-    setActivePath: React.Dispatch<React.SetStateAction<ActivePath>>
+    ide: IDE
+    setIDE: React.Dispatch<React.SetStateAction<IDE>>
 }
 
-const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
-    const [update, setUpdate] = useState(false)
-    const [fileTree, setFileTree] = useState<JSX.Element[]>(null)
+const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
+
     const buildFileTree = (files: FileObject[]): JSX.Element[] => {
         const elements = []
         for (const file of files) {
             if (!file.isDirectory) {
                 elements.push(<Tree.File name={file.name}
                     path={file.path}
-                    activePath={activePath}
-                    setActivePath={setActivePath}
+                    ide={ide}
+                    setIDE={setIDE}
                     key={file.path} />)
             } else {
                 elements.push(<Tree.Folder name={file.name}
                     key={file.path}
-                    activePath={activePath}
-                    setActivePath={setActivePath}
+                    ide={ide}
+                    setIDE={setIDE}
                     path={file.path}>
                     {buildFileTree(file.files)}
                 </Tree.Folder>)
@@ -81,35 +80,9 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
         return elements
     }
 
-    const forceUpdate = () => {
-        setUpdate(!update)
-    }
-
-    const updateFileTree = (fileTree: JSX.Element[]): JSX.Element[] => {
-        const elements = []
-        for (const file of fileTree) {
-            if (file.props.children === undefined) {
-                elements.push(<Tree.File name={file.props.name}
-                    path={file.props.path}
-                    activePath={activePath}
-                    setActivePath={setActivePath}
-                    key={file.props.path} />)
-            } else {
-                elements.push(<Tree.Folder name={file.props.name}
-                    key={file.props.path}
-                    activePath={activePath}
-                    setActivePath={setActivePath}
-                    path={file.props.path}>
-                    {updateFileTree(file.props.children)}
-                </Tree.Folder>)
-            }
-        }
-        return elements
-    }
-
     useEffect(() => {
         window.shared.incomingData('projects:listfiles', (data) => {
-            setFileTree(buildFileTree(data))
+            setIDE({ ...ide, fileTree: buildFileTree(data) })
         })
         return () => window.shared.removeListeners('projects:listfiles')
     }, [])
@@ -117,14 +90,8 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
     // sets initial file structure
     useEffect(() => {
         window.projects.showFiles()
-    }, [update])
+    }, [ide])
 
-    // updates active selected path
-    useEffect(() => {
-        if (fileTree !== null) {
-            setFileTree(updateFileTree(fileTree))
-        }
-    }, [activePath])
 
     const active_project = window.settings.get('active_project')
     return (
@@ -135,15 +102,15 @@ const FileTreeView = ({ activePath, setActivePath }: Props): JSX.Element => {
                 </div>
                 <div className="w-[100px] flex rounded-full cursor-pointer justify-end mx-3">
                     <IconContext.Provider value={{ color: 'white', size: '25', className: 'file-icon' }}>
-                        <RenameFile activePath={activePath} forceUpdate={forceUpdate} />
-                        <NewFile activePath={activePath} forceUpdate={forceUpdate} />
-                        <NewFolder activePath={activePath} forceUpdate={forceUpdate} />
-                        <DeleteTreeElement activePath={activePath} forceUpdate={forceUpdate} />
+                        <RenameFile ide={ide} setIDE={setIDE} />
+                        <NewFile ide={ide} setIDE={setIDE} />
+                        <NewFolder ide={ide} setIDE={setIDE} />
+                        <DeleteTreeElement ide={ide} setIDE={setIDE} />
                     </IconContext.Provider>
                 </div>
             </SideMenuHeader>
             <Tree>
-                {fileTree}
+                {ide.fileTree}
             </Tree>
         </>
     );

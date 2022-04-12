@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { ActivePath } from "../types";
+import { IDE } from "../types";
 import { AiOutlineFolder } from "react-icons/ai";
 
 interface Props {
   children: JSX.Element[] | JSX.Element
   name: string
   path: string
-  activePath: ActivePath
-  setActivePath: React.Dispatch<React.SetStateAction<ActivePath>>
+  ide: IDE
+  setIDE: React.Dispatch<React.SetStateAction<IDE>>
 }
 
-const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX.Element => {
+const Folder = ({ name, children, path, ide, setIDE }: Props): JSX.Element => {
   const open = JSON.parse(window.localStorage.getItem(path))
   const [isOpen, setIsOpen] = useState(open === null ? false : open);
   const [color, setColor] = useState('bg-transperent')
@@ -18,7 +18,7 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
   const handleToggle = e => {
     e.preventDefault();
     e.stopPropagation();
-    setActivePath({ path: path, isDirectory: true })
+    setIDE({ ...ide, activePath: { path: path, isDirectory: true } })
     const activeProject = window.settings.get('active_project')
     activeProject.activePath = { path: path, isDirectory: false }
     window.settings.set({ active_project: activeProject })
@@ -51,7 +51,7 @@ const Folder = ({ name, children, path, activePath, setActivePath }: Props): JSX
       setColor("bg-slate-700")
     });
   }, [])
-  const bgColor = activePath !== undefined && path === activePath.path ? "bg-slate-700" : "bg-transperent"
+  const bgColor = ide.activePath !== undefined && path === ide.activePath.path ? "bg-slate-700" : "bg-transperent"
   const height = isOpen ? "h-0" : "h-auto"
   return (
     <div ref={ref} className={`pl-[20px] ${color}`}>
