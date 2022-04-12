@@ -73,12 +73,11 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
         return elements
     }
 
-    const updateFileTree = (ide: IDE, files: FileObject[]): void => {
+    const updateFileTree = (ide: IDE): void => {
         setIDE(
             {
                 ...ide,
-                files: files,
-                fileTree: buildFileTree(ide, files)
+                fileTree: buildFileTree(ide, ide.files)
             }
         )
     }

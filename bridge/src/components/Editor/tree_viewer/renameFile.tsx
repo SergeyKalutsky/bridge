@@ -5,7 +5,7 @@ import { InputForm, PopUp, Button } from "../../common";
 
 interface Props {
     ide: IDE
-    updateFileTree: (ide: IDE, files: FileObject[]) => void
+    updateFileTree: (ide: IDE) => void
 }
 
 
@@ -13,7 +13,6 @@ const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
     const handleClick = () => {
-        console.log(ide)
         const filePath = window.projects.renameFile({ activePath: ide.activePath, newName: filename });
         const updateFiles = (files: FileObject[]) => {
             const newfiles = []
@@ -32,9 +31,9 @@ const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
         }
         updateFileTree({
             ...ide,
-            activePath: { isDirectory: ide.activePath.isDirectory, path: filePath }
-        },
-            updateFiles(ide.files))
+            activePath: { isDirectory: ide.activePath.isDirectory, path: filePath },
+            files: updateFiles(ide.files)
+        })
         setOpen(false)
     }
     return (
