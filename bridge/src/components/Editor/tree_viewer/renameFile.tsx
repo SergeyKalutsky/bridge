@@ -15,22 +15,26 @@ const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
     const handleClick = () => {
         console.log(ide)
         const filePath = window.projects.renameFile({ activePath: ide.activePath, newName: filename });
-        const updateFiles = (ide: IDE) => {
-            const files = []
-            for (const file of ide.files) {
+        const updateFiles = (files: FileObject[]) => {
+            const newfiles = []
+            for (const file of files) {
                 if (file.path === ide.activePath.path) {
                     file.path = filePath
                     file.name = filename
                 }
-                files.push(file)
+                if (file.isDirectory) {
+                    newfiles.push({ ...file, files: updateFiles(file.files) })
+                } else {
+                    newfiles.push(file)
+                }
             }
-            return files
+            return newfiles
         }
         updateFileTree({
             ...ide,
             activePath: { isDirectory: ide.activePath.isDirectory, path: filePath }
         },
-            updateFiles(ide))
+            updateFiles(ide.files))
         setOpen(false)
     }
     return (
