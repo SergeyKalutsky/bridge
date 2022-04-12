@@ -14,6 +14,12 @@ interface Props {
 
 const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
+    const handleClick = () => {
+        window.projects.deleteTreeElement(ide.activePath)
+        window.settings.del('active_project.activePath')
+        // setIDE({ ...ide, activePath: undefined })
+        setOpen(false)
+    }
     return (
         <>
             <AiFillDelete onClick={() => { setOpen(true) }} className="hover:bg-neutral-500 hover:rounded-full" />
@@ -21,12 +27,7 @@ const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
                 open={open}
                 onClose={() => { setOpen(false) }}>
                 <div>Файл/Директория будут удалены</div>
-                <Button onClick={() => {
-                    window.projects.deleteTreeElement(ide.activePath)
-                    window.settings.del('active_project.activePath')
-                    // setIDE({ ...ide, activePath: undefined })
-                    setOpen(false)
-                }} btnText="Удалить" />
+                <Button onClick={handleClick} btnText="Удалить" />
                 <Button onClick={() => { setOpen(false) }} btnText="Закрыть" />
             </PopUp>
         </>

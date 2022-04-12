@@ -17,7 +17,7 @@ const PopUp = ({ open, children, onClose }: Props): JSX.Element => {
             closeOnDocumentClick
             position="right center"
             modal>
-            <div className="p-3 gap-y-2 h-fit flex flex-col justify-center items-center bg-slate-300 rounded-md opacity-80 text-slate-900 text-2xl text-bold">
+            <div className="p-3 gap-y-2 h-fit flex flex-col justify-center items-center bg-slate-300 rounded-md opacity-95 text-slate-900 text-2xl text-bold">
                 {children}
             </div>
         </Popup>
