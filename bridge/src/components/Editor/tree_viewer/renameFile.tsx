@@ -21,8 +21,8 @@ const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
                 if (file.path === ide.activePath.path) {
                     file.path = filePath
                     file.name = filename
-                    files.push(file)
                 }
+                files.push(file)
             }
             return files
         }
