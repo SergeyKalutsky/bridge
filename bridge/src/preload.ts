@@ -29,7 +29,7 @@ contextBridge.exposeInMainWorld('projects', {
     renameFile: (data: { new_name: string, path: ActivePath }): string => ipcRenderer.sendSync('projects:renamefile', data),
     deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
     mkprojectdir: (project_name: string): void => ipcRenderer.send('projects:mkprojectdir', project_name),
-    copyFile: (args: { src: string, destination: string, root: boolean }): void => ipcRenderer.send('projects:copyfile', args)
+    copyFile: (args: { src: string, destination: string, root: boolean }): Promise<void> => ipcRenderer.invoke('projects:copyfile', args)
 })
 
 contextBridge.exposeInMainWorld('git', {

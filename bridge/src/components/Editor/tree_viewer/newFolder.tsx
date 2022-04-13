@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiOutlineFolderAdd } from "react-icons/ai";
-import { IDE, FileObject } from "../types";
+import { IDE } from "../types";
 import { InputForm, PopUp, Button } from "../../common";
 
 
@@ -14,25 +14,10 @@ const NewFolder = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [foldername, setfoldername] = useState('')
     const [open, setOpen] = useState(false)
     const handleClick = async () => {
-        const filePath = await window.projects.createFolder({ activePath: ide.activePath, name: foldername });
-        const updateFiles = (files: FileObject[]) => {
-            const newfiles = []
-            for (const file of files) {
-                if (file.path === ide.activePath.path) {
-                    const newFile = { name: foldername, path: filePath, isDirectory: true, files: [] }
-                    file.isDirectory ? file.files.push(newFile) : newfiles.push(newFile)
-                }
-                if (file.isDirectory) {
-                    newfiles.push({ ...file, files: updateFiles(file.files) })
-                } else {
-                    newfiles.push(file)
-                }
-            }
-            return newfiles
-        }
+        await window.projects.createFolder({ activePath: ide.activePath, name: foldername });
         updateFileTree({
             ...ide,
-            files: updateFiles(ide.files)
+            files: await window.projects.showFiles()
         })
         setOpen(false)
     }

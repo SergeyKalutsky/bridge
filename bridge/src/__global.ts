@@ -28,7 +28,7 @@ declare global {
             writeActiveFile(fileChange: FileChanges): any;
             deleteTreeElement(activePath: ActivePath): any;
             mkprojectdir(project_name: string): any;
-            copyFile(args: { src: string, destination: string, root: boolean }): any
+            copyFile(args: { src: string, destination: string, root: boolean }): Promise<void>
             renameFile(data: { newName: string, activePath: ActivePath }): any
         };
         git: {

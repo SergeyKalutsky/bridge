@@ -7,6 +7,7 @@ import ncp from 'ncp'
 
 const fsPromises = fs.promises;
 const readFileAsync = util.promisify(fs.readFile)
+const ncpPromise = util.promisify(ncp)
 
 interface FileObject {
     name: string
@@ -140,23 +141,23 @@ function listFiles() {
     return ipcMain.handle('projects:listfiles', async (event) => {
         const project_name = store.get('active_project.name')
         const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        return await walkAsync(project_dir)
+        const files = {
+            name: project_name,
+            isDirectory: true,
+            path: project_dir,
+            files: await walkAsync(project_dir)
+        }
+        return [files]
     })
 }
 
 function copyFile() {
-    return ipcMain.on('projects:copyfile', async (event, arg) => {
+    return ipcMain.handle('projects:copyfile', async (event, arg) => {
         if (arg.root) {
             arg.destination = path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
         }
         arg.destination = path.join(arg.destination, path.parse(arg.src).base)
-        ncp(arg.src, arg.destination, async (err) => {
-            if (err) throw err;
-            const project_name = store.get('active_project.name')
-            const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-            const result = await walkAsync(project_dir)
-            event.reply('projects:listfiles', result)
-        });
+        await ncpPromise(arg.src, arg.destination)
     })
 }
 

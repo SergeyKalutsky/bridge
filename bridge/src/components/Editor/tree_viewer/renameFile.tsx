@@ -12,27 +12,12 @@ interface Props {
 const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
-    const handleClick = () => {
+    const handleClick = async () => {
         const filePath = window.projects.renameFile({ activePath: ide.activePath, newName: filename });
-        const updateFiles = (files: FileObject[]) => {
-            const newfiles = []
-            for (const file of files) {
-                if (file.path === ide.activePath.path) {
-                    file.path = filePath
-                    file.name = filename
-                }
-                if (file.isDirectory) {
-                    newfiles.push({ ...file, files: updateFiles(file.files) })
-                } else {
-                    newfiles.push(file)
-                }
-            }
-            return newfiles
-        }
         updateFileTree({
             ...ide,
             activePath: { isDirectory: ide.activePath.isDirectory, path: filePath },
-            files: updateFiles(ide.files)
+            files: await window.projects.showFiles()
         })
         setOpen(false)
     }

@@ -15,26 +15,13 @@ interface Props {
 
 const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
-    const handleClick = () => {
+    const handleClick = async () => {
         window.projects.deleteTreeElement(ide.activePath)
         window.settings.del('active_project.activePath')
-        const updateFiles = (files: FileObject[]) => {
-            const newfiles = []
-            for (const file of files) {
-                if (file.path === ide.activePath.path) {
-                    continue
-                }
-                if (file.isDirectory) {
-                    newfiles.push({ ...file, files: updateFiles(file.files) })
-                } else {
-                    newfiles.push(file)
-                }
-            }
-            return newfiles
-        }
         updateFileTree({
             ...ide,
-            files: updateFiles(ide.files),
+            activePath: { path: ide.files[0].path, isDirectory: true },
+            files: await window.projects.showFiles(),
             editor: buildEditor()
         })
         setOpen(false)

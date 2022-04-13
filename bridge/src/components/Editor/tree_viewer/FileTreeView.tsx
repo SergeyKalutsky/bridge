@@ -10,7 +10,7 @@ import { useEffect, useState, useRef } from "react";
 import DeleteTreeElement from './DeleteTreeElement'
 
 
-const Tree = ({ children }) => {
+const Tree = ({ children, ide, setIDE }) => {
     const [color, setColor] = useState('bg-transperent')
     const ref = useRef(null)
     useEffect(() => {
@@ -21,14 +21,16 @@ const Tree = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        const drop = (e) => {
+        const drop = async (e) => {
             e.preventDefault();
             e.stopPropagation();
             setColor("bg-transperent")
 
             for (const f of e.dataTransfer.files) {
-                window.projects.copyFile({ src: f.path, destination: '', root: true })
+                await window.projects.copyFile({ src: f.path, destination: '', root: true })
             }
+            const files = await window.projects.showFiles()
+            setIDE({ ...ide, files: files })
         }
         ref.current.addEventListener('drop', drop)
         ref.current.addEventListener('dragover', (e) => {
@@ -38,7 +40,17 @@ const Tree = ({ children }) => {
         });
     }, [])
 
-    return <div ref={ref} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>
+    const handleClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIDE({
+            ...ide,
+            activePath: { path: ide.files[0].path, isDirectory: true }
+        })
+
+    }
+
+    return <div ref={ref} onClick={handleClick} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>
 };
 
 Tree.File = File;
@@ -77,7 +89,7 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
         setIDE(
             {
                 ...ide,
-                fileTree: buildFileTree(ide, ide.files)
+                fileTree: buildFileTree(ide, ide.files[0].files)
             }
         )
     }
@@ -85,7 +97,6 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
     useEffect(() => {
         const setInitFileTree = async () => {
             const files = await window.projects.showFiles()
-            console.log(files)
             setIDE({ ...ide, files: files })
         }
         setInitFileTree()
@@ -107,8 +118,8 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
                     </IconContext.Provider>
                 </div>
             </SideMenuHeader>
-            <Tree>
-                {ide.files !== null ? buildFileTree(ide, ide.files) : null}
+            <Tree ide={ide} setIDE={setIDE}>
+                {ide.files !== null ? buildFileTree(ide, ide.files[0].files) : null}
             </Tree>
         </>
     );

@@ -13,25 +13,11 @@ const NewFile = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
     const handleClick = async () => {
-        const filePath = await window.projects.createFile({ activePath: ide.activePath, name: filename });
-        const updateFiles = (files: FileObject[]) => {
-            const newfiles = []
-            for (const file of files) {
-                if (file.path === ide.activePath.path) {
-                    const newFile = { name: filename, path: filePath, isDirectory: false }
-                    file.isDirectory ? file.files.push(newFile) : newfiles.push(newFile)
-                }
-                if (file.isDirectory) {
-                    newfiles.push({ ...file, files: updateFiles(file.files) })
-                } else {
-                    newfiles.push(file)
-                }
-            }
-            return newfiles
-        }
+        console.log(ide.activePath)
+        await window.projects.createFile({ activePath: ide.activePath, name: filename });
         updateFileTree({
             ...ide,
-            files: updateFiles(ide.files)
+            files: await window.projects.showFiles()
         })
         setOpen(false)
     }
