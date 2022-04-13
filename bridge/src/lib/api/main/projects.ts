@@ -16,11 +16,16 @@ interface FileObject {
     isDirectory: boolean
 }
 
+const walkIgnore = [
+    '.git',
+    '__pycache__'
+]
+
 async function walkAsync(dir: string): Promise<FileObject[]> {
     const folderFiles = []
     const files = await fsPromises.readdir(dir, { withFileTypes: true });
     for (const file of files) {
-        if (file.name === '.git') { continue }
+        if (walkIgnore.includes(file.name)) { continue }
         if (file.isDirectory()) {
             folderFiles.push({
                 name: file.name,
