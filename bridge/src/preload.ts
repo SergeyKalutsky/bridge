@@ -1,6 +1,6 @@
 import { FileChanges, CreateInfo, ActivePath, Package } from './types'
 import { contextBridge, ipcRenderer } from "electron"
-import { ParsedGitDiff } from './components/git/types'
+import { GitDiff } from './components/git/types'
 import { FileObject } from './components/Editor/types'
 import { Project } from "./components/projects/types"
 
@@ -38,7 +38,7 @@ contextBridge.exposeInMainWorld('git', {
     push: () => ipcRenderer.send('git:push'),
     commit: () => ipcRenderer.send('git:commit'),
     log: () => ipcRenderer.sendSync('git:log'),
-    diff: (hash: string): ParsedGitDiff[] => ipcRenderer.sendSync('git:diff', hash),
+    diff: (hash: string): GitDiff[] => ipcRenderer.sendSync('git:diff', hash),
     init: (project_name: string) => ipcRenderer.send('git:init', project_name)
 })
 

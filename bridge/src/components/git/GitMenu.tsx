@@ -1,9 +1,7 @@
-import ToggleBar from '../common/ToggleBar';
-import SideMenu from '../common/SideMenu';
-import SideMenuHeader from '../common/SideMenuHeader';
-import { useState } from 'react'
-import CommitRow from './CommitRow'
+import {ToggleBar, SideMenu, SideMenuHeader} from '../common';
 import { GitDiff, Commit } from './types'
+import CommitRow from './CommitRow'
+import { useState } from 'react'
 
 
 type Props = {

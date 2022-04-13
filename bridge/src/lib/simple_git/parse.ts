@@ -1,8 +1,8 @@
-import { ParsedGitDiff } from "../../components/git/types"
+import { GitDiff } from "../../components/git/types"
 
 
-const parseGitDiff = (diffOutput: string): ParsedGitDiff[] => {
-  const output: ParsedGitDiff[] = []
+const parseGitDiff = (diffOutput: string): GitDiff[] => {
+  const output: GitDiff[] = []
   const files: string[][] = [[]]
   let fileIndex = 0
   let doPush = false

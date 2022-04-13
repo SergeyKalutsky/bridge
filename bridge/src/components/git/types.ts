@@ -15,14 +15,9 @@ type Commit = {
     activeHashRow?: string,
 }
 
-type ParsedGitDiff = {
-    filename: string
-    oldFile: string
-    newFile: string
-}
+
 
 export {
     GitDiff,
-    ParsedGitDiff,
     Commit
 }

@@ -9,12 +9,6 @@ interface CreateInfo {
     activePath: ActivePath
 }
 
-type ParsedGitDiff = {
-    filename: string
-    oldFile: string
-    newFile: string
-}
-
 type FileChanges = {
     filepath: string
     fileContent: string
@@ -45,7 +39,6 @@ interface Package {
 
 export {
     FileChanges,
-    ParsedGitDiff,
     CreateInfo,
     ActivePath,
     Settings,

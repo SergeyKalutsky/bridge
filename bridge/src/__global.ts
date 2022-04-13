@@ -1,7 +1,7 @@
 import { FileObject } from './components/Editor/types';
-import { Commit } from './components/git/types';
+import { Commit, GitDiff } from './components/git/types';
 import { Project } from './components/projects/types';
-import { Package, FileChanges, CreateInfo, ActivePath, ParsedGitDiff } from './types';
+import { Package, FileChanges, CreateInfo, ActivePath } from './types';
 
 
 declare global {
@@ -37,7 +37,7 @@ declare global {
             push(): void;
             commit(): void;
             log(): Commit[];
-            diff(hash: string): ParsedGitDiff[];
+            diff(hash: string): GitDiff[];
             init(project_name: string): void;
         };
         terminal: {
