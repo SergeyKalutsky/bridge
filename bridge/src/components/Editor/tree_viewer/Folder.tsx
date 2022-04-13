@@ -35,14 +35,16 @@ const Folder = ({ name, children, path, ide, setIDE }: Props): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    const drop = (e) => {
+    const drop = async (e) => {
       e.preventDefault();
       e.stopPropagation();
       setColor("bg-transperent")
 
       for (const f of e.dataTransfer.files) {
-        window.projects.copyFile({ src: f.path, destination: path, root: false })
+        await window.projects.copyFile({ src: f.path, destination: path, root: false })
       }
+      const files = await window.projects.showFiles()
+      setIDE({ ...ide, files: files })
     }
     ref.current.addEventListener('drop', drop)
     ref.current.addEventListener('dragover', (e) => {

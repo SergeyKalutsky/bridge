@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IDE, FileObject } from "../types";
+import { IDE } from "../types";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { InputForm, PopUp, Button } from "../../common";
 
