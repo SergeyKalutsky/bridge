@@ -5,7 +5,6 @@ import path from 'path'
 import fs from 'fs'
 
 
-
 function clone() {
     return ipcMain.on('git:clone', (event, project) => {
         const project_name = project.name.replace(/ /g, '-')
@@ -51,6 +50,16 @@ function push() {
     })
 }
 
+
+function revert() {
+    return ipcMain.handle('git:revert', async (event, hash: string) => {
+        const project_name = store.get('active_project.name').replace(/ /g, '-')
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        await git.cwd(project_dir).raw(['checkout', hash, '.'])
+        await git.cwd(project_dir).add('./*').commit('test')
+    })
+}
+
 function diff() {
     return ipcMain.on('git:diff', (event, hash) => {
         git.show(hash)
@@ -73,6 +82,7 @@ function init() {
 
 
 function gitAPI(): void {
+    revert()
     clone()
     log()
     pull()

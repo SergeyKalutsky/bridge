@@ -18,15 +18,18 @@ const Git = (): JSX.Element => {
   const [git, setGit] = useState<Git>(gitDefault)
 
   useEffect(() => {
-    setGit({
-      ...git,
-      commits: window.git.log()
-    })
+    const setInitGit = async () => {
+      setGit({
+        ...git,
+        commits: await window.git.log()
+      })
+    }
+    setInitGit()
   }, [])
   return (
     <>
       <GitMenu git={git} setGit={setGit} />
-      <WorkspaceGit git={git} setGit={setGit}/>
+      <WorkspaceGit git={git} setGit={setGit} />
     </>
   )
 }

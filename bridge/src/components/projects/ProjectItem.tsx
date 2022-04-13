@@ -4,7 +4,7 @@ import ActivateProjectPopUp from './popups/ActivateProjectPopUp'
 import DeleteProjectPopUp from './popups/DeleteProjectPopUp'
 import SelectActiveProjectPopUp from './popups/SelectActiveProjectPopUp'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
     project: Project

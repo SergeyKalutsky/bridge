@@ -39,7 +39,8 @@ contextBridge.exposeInMainWorld('git', {
     commit: () => ipcRenderer.send('git:commit'),
     log: () => ipcRenderer.sendSync('git:log'),
     diff: (hash: string): GitDiff[] => ipcRenderer.sendSync('git:diff', hash),
-    init: (project_name: string) => ipcRenderer.send('git:init', project_name)
+    init: (project_name: string) => ipcRenderer.send('git:init', project_name),
+    revert: (hash: string) => ipcRenderer.invoke('git:revert', hash)
 })
 
 

@@ -33,10 +33,11 @@ declare global {
         };
         git: {
             clone(project: Project): void;
+            revert(hash: string): Promise<void>
             pull(): void;
             push(): void;
             commit(): void;
-            log(): Commit[];
+            log(): Promise<Commit[]>;
             diff(hash: string): GitDiff[];
             init(project_name: string): void;
         };
