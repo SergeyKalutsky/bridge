@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IDE } from "./types";
-import { CMD, ACE_MODS, IMG_FORMATS } from './Constants'
+import { CMD } from './Constants'
 import { ToggleBar, SideMenu, Workspace, ToolBar, IconButton } from "../common";
 import { IoMdGitCommit, IoMdPlay } from 'react-icons/io'
 import { FaStop } from 'react-icons/fa'
