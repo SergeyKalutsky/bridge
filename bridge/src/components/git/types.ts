@@ -16,6 +16,7 @@ type Commit = {
 }
 
 interface Git {
+    activeHash: string
     commits: Commit[]
     gitDiffs: GitDiff[]
 }

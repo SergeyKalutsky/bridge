@@ -43,6 +43,10 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
     setDiffViewFileIndex(0)
   }, [git.gitDiffs])
 
+  const handleIconClick = ()=>{
+    console.log(git)
+  }
+
   const diff = git.gitDiffs[diffViewFileIndex]
   return (
     <Workspace>
@@ -60,7 +64,7 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
                 offHandleColor={'#C7C3C3'}
                 onHandleColor={'#C7C3C3'}
                 checked={splitView} />
-              <IconButton >
+              <IconButton onClick={handleIconClick}>
                 <HiRefresh style={{ color: '#ffffff', height: 30, width: 30 }} />
               </IconButton>
             </div>

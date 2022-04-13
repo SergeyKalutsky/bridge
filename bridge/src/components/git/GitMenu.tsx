@@ -11,22 +11,21 @@ type Props = {
 
 
 const GitMenu = ({ git, setGit }: Props): JSX.Element => {
-  const [activeHashRow, setActiveHashRow] = useState<string>()
   const [activeToggle, setActiveToggle] = useState(false)
   const handleToggle = () => { setActiveToggle(!activeToggle) }
   const onClickCallback = (hash: string) => {
     const gitDiffs = window.git.diff(hash)
     setGit({
       ...git,
-      gitDiffs: gitDiffs
+      gitDiffs: gitDiffs,
+      activeHash: hash
     })
-    setActiveHashRow(hash)
   }
 
   const elements = git.commits.map((commit) =>
     <CommitRow hash={commit.hash}
       key={commit.hash}
-      active={activeHashRow === commit.hash}
+      active={git.activeHash === commit.hash}
       onClickCallback={onClickCallback}
     />
   )

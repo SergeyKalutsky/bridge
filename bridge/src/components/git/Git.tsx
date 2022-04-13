@@ -6,6 +6,7 @@ import { Git } from './types'
 
 const gitDefault = {
   commits: [],
+  activeHash: '',
   gitDiffs: [{
     filename: '',
     newFile: '',
