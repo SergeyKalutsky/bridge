@@ -1,7 +1,7 @@
+import { Workspace, ToolBar, IconButton } from "../common";
+import { HiRefresh } from 'react-icons/hi'
 import { useEffect, useState } from 'react';
-import Workspace from '../common/Workspace'
 import ReactDiffViewer from 'react-diff-viewer';
-import ToolBar from '../common/ToolBar'
 import darkModeStyle from './DiffViewerStyles'
 import { GitDiff } from './types'
 import Switch from "react-switch";
@@ -49,7 +49,7 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
       <div className='h-full w-[calc(100%-430)] bg-neutral-900 flex flex-col'>
         <ToolBar>
           <div className='flex justify-start items-center w-full h-[30px]'>
-            <div className='flex justify-between items-center w-[300px] ml-10'>
+            <div className='flex justify-between items-center w-[350px] ml-10'>
               <DropDown gitDiffs={gitDiffs}
                 diffViewFileIndex={diffViewFileIndex}
                 setDiffViewFileIndex={setDiffViewFileIndex} />
@@ -60,6 +60,9 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
                 offHandleColor={'#C7C3C3'}
                 onHandleColor={'#C7C3C3'}
                 checked={splitView} />
+              <IconButton >
+                <HiRefresh style={{ color: '#ffffff', height: 30, width: 30 }} />
+              </IconButton>
             </div>
           </div>
         </ToolBar>
