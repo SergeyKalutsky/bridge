@@ -3,13 +3,13 @@ import { HiRefresh } from 'react-icons/hi'
 import { useEffect, useState } from 'react';
 import ReactDiffViewer from 'react-diff-viewer';
 import darkModeStyle from './DiffViewerStyles'
-import { GitDiff } from './types'
+import { Git } from './types'
 import Switch from "react-switch";
 import DropDown from './DropDown';
 
-
 type Props = {
-  gitDiffs: GitDiff[]
+  git: Git
+  setGit: React.Dispatch<React.SetStateAction<Git>>
 }
 
 const getDiffViewWidth = (): number => {
@@ -17,7 +17,7 @@ const getDiffViewWidth = (): number => {
   return window.innerWidth - sideWidth - 80
 }
 
-const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
+const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
   const [diffViewFileIndex, setDiffViewFileIndex] = useState(0)
   const [splitView, setSplitView] = useState(true)
   const [diffViewWidth, setDiffViewWidth] = useState(getDiffViewWidth())
@@ -41,16 +41,16 @@ const WorkspaceGit = ({ gitDiffs }: Props): JSX.Element => {
 
   useEffect(() => {
     setDiffViewFileIndex(0)
-  }, [gitDiffs])
+  }, [git.gitDiffs])
 
-  const diff = gitDiffs[diffViewFileIndex]
+  const diff = git.gitDiffs[diffViewFileIndex]
   return (
     <Workspace>
       <div className='h-full w-[calc(100%-430)] bg-neutral-900 flex flex-col'>
         <ToolBar>
           <div className='flex justify-start items-center w-full h-[30px]'>
             <div className='flex justify-between items-center w-[350px] ml-10'>
-              <DropDown gitDiffs={gitDiffs}
+              <DropDown gitDiffs={git.gitDiffs}
                 diffViewFileIndex={diffViewFileIndex}
                 setDiffViewFileIndex={setDiffViewFileIndex} />
               <Switch

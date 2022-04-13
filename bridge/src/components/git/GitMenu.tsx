@@ -1,32 +1,35 @@
-import {ToggleBar, SideMenu, SideMenuHeader} from '../common';
-import { GitDiff, Commit } from './types'
+import { ToggleBar, SideMenu, SideMenuHeader } from '../common';
+import { Git } from './types'
 import CommitRow from './CommitRow'
 import { useState } from 'react'
 
 
 type Props = {
-  setGitDiffs: React.Dispatch<React.SetStateAction<GitDiff[]>>
-  commitList: Commit[]
+  git: Git
+  setGit: React.Dispatch<React.SetStateAction<Git>>
 }
 
 
-const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
+const GitMenu = ({ git, setGit }: Props): JSX.Element => {
   const [activeHashRow, setActiveHashRow] = useState<string>()
   const [activeToggle, setActiveToggle] = useState(false)
   const handleToggle = () => { setActiveToggle(!activeToggle) }
   const onClickCallback = (hash: string) => {
     const gitDiffs = window.git.diff(hash)
-    setGitDiffs(gitDiffs)
+    setGit({
+      ...git,
+      gitDiffs: gitDiffs
+    })
     setActiveHashRow(hash)
   }
 
-  const elements = commitList !== undefined ? commitList.map((commit) =>
+  const elements = git.commits.map((commit) =>
     <CommitRow hash={commit.hash}
       key={commit.hash}
       active={activeHashRow === commit.hash}
       onClickCallback={onClickCallback}
     />
-  ) : null
+  )
 
   return (
     <>
@@ -34,7 +37,7 @@ const GitMenu = ({ setGitDiffs, commitList }: Props): JSX.Element => {
         <SideMenuHeader>
           <span className='text-white text-2xl'>ЛЕНТА</span>
         </SideMenuHeader>
-          {elements}
+        {elements}
       </SideMenu>
       <ToggleBar handleToggle={handleToggle} />
     </>

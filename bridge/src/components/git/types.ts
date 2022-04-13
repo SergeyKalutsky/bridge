@@ -15,9 +15,14 @@ type Commit = {
     activeHashRow?: string,
 }
 
+interface Git {
+    commits: Commit[]
+    gitDiffs: GitDiff[]
+}
 
 
 export {
     GitDiff,
-    Commit
+    Commit,
+    Git
 }
