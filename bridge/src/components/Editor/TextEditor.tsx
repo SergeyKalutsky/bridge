@@ -11,26 +11,37 @@ import "ace-builds/src-noconflict/mode-plain_text";
 import "ace-builds/src-noconflict/theme-monokai";
 
 
-const buildEditor = (mode='plain_text',
-    value = 'Cоздайте или выберите файл, чтобы начать работу',
-    readOnly = false,
-    onChange=null): JSX.Element => {
-    return <AceEditor
-        mode={mode}
-        theme="monokai"
-        value={value}
-        name="aceEditor"
-        style={{ width: 'none', height: 'none', flexGrow: 1 }}
-        readOnly={readOnly}
-        editorProps={{ $blockScrolling: true }}
-        onLoad={editorInstance => {
-            document.addEventListener("mouseup", e => (
-                editorInstance.resize()
-            ));
-        }}
-        onChange={onChange}
-        fontSize={18}
-    />
+const buildEditor = async (mode = 'plain_text',
+    readOnly = true,
+    path = null): Promise<JSX.Element> => {
+    let fileContent = 'Выберите или создайте файл, чтобы начать работать'
+    if (path !== null) {
+        fileContent = await window.projects.readActiveFile(path)
+    }
+    const onChange = (newValue: string) => {
+        window.projects.writeActiveFile({ filepath: path, fileContent: newValue })
+    }
+    const editorView = mode === 'image' ?
+        <div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
+            <img src={path} alt="" className="max-w-lg" /></div> :
+        <AceEditor
+            mode={mode}
+            theme="monokai"
+            value={fileContent}
+            name="aceEditor"
+            style={{ width: 'none', height: 'none', flexGrow: 1 }}
+            readOnly={readOnly}
+            editorProps={{ $blockScrolling: true }}
+            onLoad={editorInstance => {
+                document.addEventListener("mouseup", e => (
+                    editorInstance.resize()
+                ));
+            }}
+            onChange={onChange}
+            fontSize={18}
+        />
+
+    return editorView
 }
 
 export default buildEditor

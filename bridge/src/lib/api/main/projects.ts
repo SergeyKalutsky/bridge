@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron';
 import { store, BASE_DIR } from './storage'
+import { FileObject } from '../../../components/Editor/types';
 import util from 'util'
 import path from 'path'
 import fs from 'fs'
@@ -8,13 +9,6 @@ import ncp from 'ncp'
 const fsPromises = fs.promises;
 const readFileAsync = util.promisify(fs.readFile)
 const ncpPromise = util.promisify(ncp)
-
-interface FileObject {
-    name: string
-    files?: string[]
-    path: string
-    isDirectory: boolean
-}
 
 const walkIgnore = [
     '.git',

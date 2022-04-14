@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IDE } from "./types";
-import { CMD } from './Constants'
+import { CMD, ACE_MODS } from './Constants'
 import { ToggleBar, SideMenu, Workspace, ToolBar, IconButton } from "../common";
 import { IoMdGitCommit, IoMdPlay } from 'react-icons/io'
 import { FaStop } from 'react-icons/fa'
@@ -10,17 +10,9 @@ import buildEditor from "./TextEditor";
 import FileTreeView from "./tree_viewer/FileTreeView";
 
 
-
-const ideDefault: IDE = {
-    editor: buildEditor(),
-    activePath: window.settings.get('active_project.activePath'),
-    files: null,
-    fileTree: null
-}
-
 const Editor = (): JSX.Element => {
     const [activeToggle, setActiveToggle] = useState(false)
-    const [ide, setIDE] = useState(ideDefault)
+    const [ide, setIDE] = useState<IDE>()
 
     const handleToggle = () => { setActiveToggle(!activeToggle) }
 
@@ -37,6 +29,25 @@ const Editor = (): JSX.Element => {
     const handeCanselBattonClick = () => {
         window.terminal.keystoke('\x03')
     }
+    useEffect(() => {
+        const loadActiveFile = async () => {
+            let editor = await buildEditor()
+            const activePath = window.settings.get('active_project.activePath')
+            console.log(activePath)
+            if (activePath !== undefined && activePath.isDirectory === false) {
+                const extList = activePath.path.split(".")
+                const ext = extList[extList.length - 1]
+                editor = await buildEditor(ACE_MODS[ext], false, activePath.path)
+            }
+            setIDE({
+                ...ide,
+                activePath: activePath,
+                files: await window.projects.showFiles(),
+                editor: editor
+            })
+        }
+        loadActiveFile()
+    }, [])
 
     return (
         <>
@@ -61,7 +72,7 @@ const Editor = (): JSX.Element => {
                     </div>
                 </ToolBar>
                 <div className="w-full flex-1 flex flex-col">
-                    {ide.editor}
+                    {ide !== undefined? ide.editor : null}
                     <Xterm />
                 </div>
             </Workspace>

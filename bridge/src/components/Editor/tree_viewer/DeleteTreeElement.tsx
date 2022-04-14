@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { IDE, FileObject } from "../types";
+import { IDE } from "../types";
 import { PopUp, Button } from "../../common";
 import buildEditor from "../TextEditor";
 
@@ -9,9 +9,6 @@ interface Props {
     ide: IDE
     updateFileTree: (ide: IDE) => void
 }
-
-
-
 
 const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
@@ -22,7 +19,7 @@ const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
             ...ide,
             activePath: { path: ide.files[0].path, isDirectory: true },
             files: await window.projects.showFiles(),
-            editor: buildEditor()
+            editor: await buildEditor()
         })
         setOpen(false)
     }

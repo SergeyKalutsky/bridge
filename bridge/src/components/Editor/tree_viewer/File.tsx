@@ -1,7 +1,7 @@
 import { FILE_ICONS } from "../Constants";
 import { AiOutlineFile } from "react-icons/ai";
 import { IDE } from "../types";
-import { ACE_MODS, IMG_FORMATS } from '../Constants'
+import { ACE_MODS } from '../Constants'
 import buildEditor from '../TextEditor'
 
 
@@ -29,17 +29,10 @@ const File = ({ name, path, ide, setIDE }: Props): JSX.Element => {
         e.preventDefault();
         e.stopPropagation();
 
-        const onChange = (newValue: string) => {
-          window.projects.writeActiveFile({ filepath: path, fileContent: newValue })
-        }
-        const content = await window.projects.readActiveFile(path)
         setIDE({
           ...ide,
           activePath: { path: path, isDirectory: false },
-          editor: IMG_FORMATS.includes(ext) ?
-            (<div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
-              <img src={path} alt="" className="max-w-lg" /></div>) :
-            buildEditor(ACE_MODS[ext], content, false, onChange)
+          editor: await buildEditor(ACE_MODS[ext], false, path)
         });
         savePath()
       }}>
