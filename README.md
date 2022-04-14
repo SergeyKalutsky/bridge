@@ -1,5 +1,6 @@
 # Bridge
 ## Desktop first app built  for teaching code to kids
+![](images/1.png)
 
 The goal is to make teaching code as good as in pearson or better.
 
