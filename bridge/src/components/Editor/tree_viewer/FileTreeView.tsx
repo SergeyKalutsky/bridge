@@ -78,7 +78,6 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
                     key={file.path}
                     ide={ide}
                     setIDE={setIDE}
-                    isOpen={file.isOpen}
                     path={file.path}
                     children={buildFileTree(ide, file.files)} />)
             }

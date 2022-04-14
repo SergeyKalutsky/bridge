@@ -24,7 +24,6 @@ async function walkAsync(dir: string): Promise<FileObject[]> {
             folderFiles.push({
                 name: file.name,
                 files: await walkAsync(path.join(dir, file.name)),
-                isOpen: false,
                 isDirectory: true,
                 path: path.join(dir, file.name)
             })

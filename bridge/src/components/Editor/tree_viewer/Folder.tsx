@@ -7,12 +7,12 @@ interface Props {
   name: string
   path: string
   ide: IDE
-  isOpen: boolean
   setIDE: React.Dispatch<React.SetStateAction<IDE>>
 }
 
-const Folder = ({ name, children, isOpen, path, ide, setIDE }: Props): JSX.Element => {
-  const [isOpenLocal, setIsOpenLocal] = useState(isOpen);
+const Folder = ({ name, children,  path, ide, setIDE }: Props): JSX.Element => {
+  const open = JSON.parse(window.localStorage.getItem(path))
+  const [isOpen, setIsOpen] = useState(open === null ? false : open);
   const [color, setColor] = useState('bg-transperent')
   const ref = useRef(null)
   const handleToggle = e => {
@@ -21,9 +21,10 @@ const Folder = ({ name, children, isOpen, path, ide, setIDE }: Props): JSX.Eleme
     setIDE({ ...ide, activePath: { path: path, isDirectory: true } })
 
     const activeProject = window.settings.get('active_project')
-    activeProject.activePath = { path: path, isDirectory: false }
+    activeProject.activePath = { path: path, isDirectory: true }
     window.settings.set({ active_project: activeProject })
-    setIsOpenLocal(!isOpenLocal)
+    setIsOpen(!isOpen)
+    window.localStorage.setItem(path, JSON.stringify(!isOpen))
   };
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const Folder = ({ name, children, isOpen, path, ide, setIDE }: Props): JSX.Eleme
     });
   }, [])
   const bgColor = ide.activePath !== undefined && path === ide.activePath.path ? "bg-slate-700" : "bg-transperent"
-  const height = isOpenLocal ? "h-auto" : "h-0"
+  const height = isOpen ? "h-0" :  "h-auto"
   return (
     <div ref={ref} className={`pl-[20px] ${color}`}>
       <div className={`${bgColor} flex items-center hover:bg-slate-700 hover:cursor-pointer`}
