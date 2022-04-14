@@ -10,9 +10,6 @@ interface Props {
     updateFileTree: (ide: IDE) => void
 }
 
-
-
-
 const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const handleClick = async () => {

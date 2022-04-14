@@ -11,10 +11,10 @@ import "ace-builds/src-noconflict/mode-plain_text";
 import "ace-builds/src-noconflict/theme-monokai";
 
 
-const buildEditor = async (mode='plain_text',
-    readOnly = false,
+const buildEditor = async (mode = 'plain_text',
+    readOnly = true,
     path = null): Promise<JSX.Element> => {
-    let fileContent = ''
+    let fileContent = 'Выберите или создайте файл, чтобы начать работать'
     if (path !== null) {
         fileContent = await window.projects.readActiveFile(path)
     }
