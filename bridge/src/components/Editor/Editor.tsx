@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IDE } from "./types";
-import { CMD } from './Constants'
+import { CMD, ACE_MODS } from './Constants'
 import { ToggleBar, SideMenu, Workspace, ToolBar, IconButton } from "../common";
 import { IoMdGitCommit, IoMdPlay } from 'react-icons/io'
 import { FaStop } from 'react-icons/fa'
@@ -37,6 +37,24 @@ const Editor = (): JSX.Element => {
     const handeCanselBattonClick = () => {
         window.terminal.keystoke('\x03')
     }
+    useEffect(() => {
+        const loadActiveFile = async () => {
+            if (ide.activePath !== undefined) {
+                const extList = ide.activePath.path.split(".")
+                const ext = extList[extList.length - 1]
+                const content = await window.projects.readActiveFile(ide.activePath.path)
+                const onChange = (newValue: string) => {
+                    window.projects.writeActiveFile({ filepath: ide.activePath.path, fileContent: newValue })
+                }
+                setIDE({
+                    ...ide,
+                    editor: buildEditor(ACE_MODS[ext], content, false, onChange),
+                    files: await window.projects.showFiles()
+                })
+            }
+        }
+        loadActiveFile()
+    }, [])
 
     return (
         <>

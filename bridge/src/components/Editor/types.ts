@@ -5,6 +5,7 @@ interface ActivePath {
 
 interface FileObject {
     name: string
+    isOpen?: boolean
     files?: FileObject[]
     path: string
     isDirectory: boolean
