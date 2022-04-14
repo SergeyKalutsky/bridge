@@ -16,19 +16,6 @@ import {
     AiOutlineFileText
 } from "react-icons/ai"
 
-const IMG_FORMATS = [
-    'apng',
-    'avif',
-    'gif',
-    'jpg',
-    'jpeg',
-    'jfif',
-    'pjpeg',
-    'pjp',
-    'png',
-    'svg',
-    'webp'
-]
 
 const FILE_ICONS = {
     js: <DiJavascript1 style={{ color: '#f5f551' }}/>,
@@ -62,12 +49,22 @@ const ACE_MODS = {
     jsx: 'javascript',
     py: 'python',
     md: 'markdown',
-    txt: 'plain_text'
+    txt: 'plain_text',
+    apng: 'image',
+    avif: 'image',
+    gif: 'image',
+    jpg: 'image',
+    jpeg: 'image',
+    jfif: 'image',
+    pjpeg: 'image',
+    pjp: 'image',
+    png: 'image',
+    svg: 'image',
+    webp:'image'
 };
 
 export {
     FILE_ICONS,
     CMD,
-    ACE_MODS,
-    IMG_FORMATS
+    ACE_MODS
 }

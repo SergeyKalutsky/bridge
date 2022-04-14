@@ -10,17 +10,9 @@ import buildEditor from "./TextEditor";
 import FileTreeView from "./tree_viewer/FileTreeView";
 
 
-
-const ideDefault: IDE = {
-    editor: buildEditor(),
-    activePath: window.settings.get('active_project.activePath'),
-    files: null,
-    fileTree: null
-}
-
 const Editor = (): JSX.Element => {
     const [activeToggle, setActiveToggle] = useState(false)
-    const [ide, setIDE] = useState(ideDefault)
+    const [ide, setIDE] = useState<IDE>()
 
     const handleToggle = () => { setActiveToggle(!activeToggle) }
 
@@ -39,19 +31,19 @@ const Editor = (): JSX.Element => {
     }
     useEffect(() => {
         const loadActiveFile = async () => {
-            if (ide.activePath !== undefined) {
-                const extList = ide.activePath.path.split(".")
+            let editor = await buildEditor()
+            const activePath = window.settings.get('active_project.activePath')
+            if (activePath !== undefined && activePath.isDirectory === false) {
+                const extList = activePath.path.split(".")
                 const ext = extList[extList.length - 1]
-                const content = await window.projects.readActiveFile(ide.activePath.path)
-                const onChange = (newValue: string) => {
-                    window.projects.writeActiveFile({ filepath: ide.activePath.path, fileContent: newValue })
-                }
-                setIDE({
-                    ...ide,
-                    editor: buildEditor(ACE_MODS[ext], content, false, onChange),
-                    files: await window.projects.showFiles()
-                })
+                editor = await buildEditor(ACE_MODS[ext], false, activePath.path)
             }
+            setIDE({
+                ...ide,
+                activePath: activePath,
+                files: await window.projects.showFiles(),
+                editor: editor
+            })
         }
         loadActiveFile()
     }, [])
@@ -79,7 +71,7 @@ const Editor = (): JSX.Element => {
                     </div>
                 </ToolBar>
                 <div className="w-full flex-1 flex flex-col">
-                    {ide.editor}
+                    {ide !== undefined? ide.editor : null}
                     <Xterm />
                 </div>
             </Workspace>

@@ -112,7 +112,7 @@ const FileTreeView = ({ ide, setIDE }: Props): JSX.Element => {
                 </div>
             </SideMenuHeader>
             <Tree ide={ide} setIDE={setIDE}>
-                {ide.files !== null ? buildFileTree(ide, ide.files[0].files) : null}
+                {ide !== undefined ? buildFileTree(ide, ide.files[0].files) : null}
             </Tree>
         </>
     );

@@ -22,7 +22,7 @@ const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
             ...ide,
             activePath: { path: ide.files[0].path, isDirectory: true },
             files: await window.projects.showFiles(),
-            editor: buildEditor()
+            editor: await buildEditor()
         })
         setOpen(false)
     }
