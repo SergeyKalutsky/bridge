@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { IDE, FileObject } from "../types";
+import { IDE } from "../types";
 import { PopUp, Button } from "../../common";
 import buildEditor from "../TextEditor";
 
