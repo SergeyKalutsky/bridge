@@ -46,9 +46,9 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const ref = useRef(null)
 
     useEffect(() => {
-        window.shared.incomingData("terminal:fit", (data) => {
-            if (data.x !== undefined) {
-                setWidth(width => width - data.x)
+        window.shared.incomingData("terminal:fit", ({x, y}) => {
+            if (x !== undefined) {
+                setWidth(width => width - x)
             }
         });
         return () => window.shared.removeListeners("terminal:fit")

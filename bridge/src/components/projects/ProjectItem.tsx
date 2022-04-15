@@ -8,14 +8,13 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
     project: Project
-    dispatch: React.Dispatch<any>
     removeProject: (project_id: number) => void
     updateProjects: (project: Project) => void
     setActiveProject: (project_id: number) => void
 }
 
 
-const ProjectDiv = ({ children, project, icons }) => {
+const ProjectNameRow = ({ children, project, icons }) => {
     const [active, setActive] = useState(false)
     const activeProject = project.isactive ? 'border-l-4 border-zinc-50' : ''
     const localProject = project.islocal ? '' : 'after:content-["🔥"] opacity-30'
@@ -38,7 +37,6 @@ const ProjectDiv = ({ children, project, icons }) => {
 
 const ProjectItem = ({ project,
     removeProject,
-    dispatch,
     updateProjects,
     setActiveProject }: Props): JSX.Element => {
     const [open, setOpenSelectActive] = useState(false)
@@ -61,12 +59,12 @@ const ProjectItem = ({ project,
     </>)
     return (
         <>
-            <ProjectDiv project={project} icons={icons}>
+            <ProjectNameRow project={project} icons={icons}>
                 <span className='ml-5 font-medium text-white w-full'
                     onClick={() => { !project.islocal ? setOpenActivate(true) : setOpenSelectActive(true) }}>
                     {project.name}
                 </span>
-            </ProjectDiv>
+            </ProjectNameRow>
             {/* Popups */}
             <SelectActiveProjectPopUp
                 project={project}
