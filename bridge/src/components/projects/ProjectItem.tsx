@@ -1,17 +1,11 @@
 import { useState } from "react"
-import { Project } from './types'
+import { Project, UserProjects } from './types'
 import ActivateProjectPopUp from './popups/ActivateProjectPopUp'
 import DeleteProjectPopUp from './popups/DeleteProjectPopUp'
 import SelectActiveProjectPopUp from './popups/SelectActiveProjectPopUp'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
-type Props = {
-    project: Project
-    removeProject: (project_id: number) => void
-    updateProjects: (project: Project) => void
-    setActiveProject: (project_id: number) => void
-}
 
 
 const ProjectNameRow = ({ children, project, icons }) => {
@@ -20,8 +14,8 @@ const ProjectNameRow = ({ children, project, icons }) => {
     const localProject = project.islocal ? '' : 'after:content-["🔥"] opacity-30'
     return (
         <div className={`${activeProject} ${localProject} 
-                mt-2 h-18 flex justify-between items-center 
-                text-3xl cursor-pointer hover:bg-slate-500`}
+        mt-2 h-18 flex justify-between items-center 
+        text-3xl cursor-pointer hover:bg-slate-500`}
             onMouseEnter={() => { project.islocal ? setActive(true) : null }}
             onMouseLeave={() => { project.islocal ? setActive(false) : null }}
             onClick={() => { setActive(false) }}>
@@ -35,17 +29,27 @@ const ProjectNameRow = ({ children, project, icons }) => {
 }
 
 
+
+type Props = {
+    project: Project
+    userProjects: UserProjects
+    setUserProjects: React.Dispatch<React.SetStateAction<UserProjects>>
+}
+
 const ProjectItem = ({ project,
-    removeProject,
-    updateProjects,
-    setActiveProject }: Props): JSX.Element => {
+    userProjects,
+    setUserProjects }: Props): JSX.Element => {
     const [open, setOpenSelectActive] = useState(false)
     const [openActivate, setOpenActivate] = useState(false)
     const [openDelete, setDeleteOpen] = useState(false)
-    const setPopUp = (active_project: Project) => {
-        window.settings.set({ active_project: active_project })
+    
+    const setPopUp = (activeProject: Project) => {
+        window.settings.set({ active_project: activeProject })
         setOpenSelectActive(false)
-        setActiveProject(active_project.id)
+        setUserProjects({
+            ...userProjects,
+            activeProject: activeProject
+        })
     }
     const icons = (<>
         {/* <div className='hover:text-white'>
@@ -71,17 +75,18 @@ const ProjectItem = ({ project,
                 setOpen={setOpenSelectActive}
                 open={open}
                 setPopUp={setPopUp} />
-            <ActivateProjectPopUp
-                project={project}
-                setOpen={setOpenActivate}
-                open={openActivate}
-                updateProjects={updateProjects} />
             <DeleteProjectPopUp
-                name={project.name}
-                id={project.id}
-                removeProject={removeProject}
+                projectDelete={project}
+                userProjects={userProjects}
+                setUserProjects={setUserProjects}
                 open={openDelete}
                 setOpen={setDeleteOpen} />
+                {/* <ActivateProjectPopUp
+                    project={project}
+                    setOpen={setOpenActivate}
+                    open={openActivate}
+                    updateProjects={userProjects} 
+                    setUserProjects={setUserProjects}/> */}
         </>
     )
 }

@@ -8,6 +8,11 @@ type Project = {
     isactive?: boolean
 }
 
+interface UserProjects {
+    projects: Project[]
+    activeProject: Project
+}
+
 interface Member {
     id: number
     name: string
@@ -15,4 +20,4 @@ interface Member {
 }
 
 
-export { Project, Member }
+export { Project, Member, UserProjects }

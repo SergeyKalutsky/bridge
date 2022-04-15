@@ -1,28 +1,27 @@
 import PopUp from '../../common/PopuUp';
 import Button from '../../common/Button';
-import { deleteProject } from '../../../lib/api/gitlab/index'
+import { UserProjects, Project } from '../types'
 
 type Props = {
-    id: number
-    name: string
+    projectDelete: Project
     open: boolean
+    userProjects: UserProjects
+    setUserProjects: React.Dispatch<React.SetStateAction<UserProjects>>
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
-    removeProject: (project_id: number) => void
 }
 
-const DeleteProjectPopUp = ({ name, id, removeProject, open, setOpen }: Props): JSX.Element => {
+const DeleteProjectPopUp = ({ projectDelete, userProjects, setUserProjects, open, setOpen }: Props): JSX.Element => {
 
     const handleClick = () => {
-        const active_project = window.settings.get('active_project')
-        if (active_project !== undefined && active_project.name === name) {
+        if (projectDelete.name === userProjects.activeProject.name) {
             window.settings.del('active_project')
         }
-        // const user = window.settings.get('user')
-        // if (user.login != 'guest') {
-        //     deleteProject(window.settings.get('user'), id)
-        // }
-        window.projects.delete(name)
-        removeProject(id)
+        window.projects.delete(projectDelete.name)
+        setUserProjects({
+            ...userProjects,
+            projects: userProjects.projects.filter((project) => { return project.name != projectDelete.name })
+        })
+
         setOpen(false)
     }
     return (

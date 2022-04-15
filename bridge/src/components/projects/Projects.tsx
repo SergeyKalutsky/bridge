@@ -5,7 +5,7 @@ import ProjectItem from './ProjectItem';
 import ProjectMembers from './members/ProjectMembers'
 import MenuHeader from './MenuHeader';
 import { createProject } from '../../lib/api/gitlab'
-import { Project } from './types';
+import { UserProjects, Project } from './types';
 
 
 type State = {
@@ -28,10 +28,7 @@ function reducer(state: State, action: Action) {
     }
 }
 
-interface UserProjects {
-    projects: Project[]
-    activeProject: Project
-}
+
 
 
 
@@ -127,12 +124,11 @@ const Projects = (): JSX.Element => {
         })
     }
 
-    const projects_list = projects.map((project) =>
+    const projects_list = userProjects.projects.map((project, indx) =>
         <ProjectItem project={project}
-            key={project.id}
-            removeProject={removeProject}
-            updateProjects={updateProjects}
-            setActiveProject={setActiveProject} />
+            key={indx}
+            userProjects={userProjects}
+            setUserProjects={setUserProjects} />
     )
     return (
         <>
