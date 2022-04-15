@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Project, UserProjects } from './types'
-import ActivateProjectPopUp from './popups/ActivateProjectPopUp'
 import DeleteProjectPopUp from './popups/DeleteProjectPopUp'
 import SelectActiveProjectPopUp from './popups/SelectActiveProjectPopUp'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

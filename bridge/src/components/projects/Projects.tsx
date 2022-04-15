@@ -29,24 +29,11 @@ function reducer(state: State, action: Action) {
 }
 
 
-
-
-
 const Projects = (): JSX.Element => {
     const [userProjects, setUserProjects] = useState<UserProjects>(null)
     const [state, dispatch] = useReducer(reducer, { page: null });
     const [activeToggle, setActiveToggle] = useState(false)
     const handleToggle = () => { setActiveToggle(!activeToggle) }
-
-    const removeProject = (project_id: number) => {
-        const newProjects = []
-        for (const project of projects) {
-            if (project.id !== project_id) {
-                newProjects.push(project)
-            }
-        }
-        setProjects(newProjects)
-    }
 
     const addProject = (project: Project) => {
 
@@ -72,18 +59,6 @@ const Projects = (): JSX.Element => {
                 project.isactive = false
             }
             newProjects.push(project)
-        }
-        setProjects(newProjects)
-    }
-
-    const updateProjects = (project: Project) => {
-        const newProjects = []
-        for (const oldProject of projects) {
-            if (oldProject.id === project.id) {
-                newProjects.push(project)
-            } else {
-                newProjects.push(oldProject)
-            }
         }
         setProjects(newProjects)
     }
