@@ -16,3 +16,17 @@ App consists of three main parts:
 - Electron
 - Chocolotey(windows pkg manager)
 - brew(mac os pkg manager)(TODO)
+
+## Installation
+
+Dependencies 
+    1. Node.js
+    2. yarn
+
+Install for development:
+```console
+git clone https://github.com/SergeyKalutsky/bridge.git
+cd bridge/bride
+yarn install
+yarn start
+```
