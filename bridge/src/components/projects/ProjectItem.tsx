@@ -7,9 +7,9 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 
 
-const ProjectNameRow = ({ children, project, icons }) => {
+const ProjectNameRow = ({ children, project, userProjects, icons }) => {
     const [active, setActive] = useState(false)
-    const activeProject = project.isactive ? 'border-l-4 border-zinc-50' : ''
+    const activeProject = project.name == userProjects.activeProject.name ? 'border-l-4 border-zinc-50' : ''
     const localProject = project.islocal ? '' : 'after:content-["🔥"] opacity-30'
     return (
         <div className={`${activeProject} ${localProject} 
@@ -56,7 +56,7 @@ const ProjectItem = ({ project,
     </>)
     return (
         <>
-            <ProjectNameRow project={project} icons={icons}>
+            <ProjectNameRow project={project} userProjects={userProjects} icons={icons}>
                 <span className='ml-5 font-medium text-white w-full'
                     onClick={() => { setOpenSelectActive(true) }}>
                     {project.name}

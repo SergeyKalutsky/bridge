@@ -5,7 +5,6 @@ type Project = {
     islocal: boolean
     http: string
     description?: string
-    isactive?: boolean
 }
 
 interface UserProjects {
