@@ -45,24 +45,13 @@ const Projects = (): JSX.Element => {
                 .then(data => window.git.clone(data['project']))
         }
         project.islocal = true
-        setProjects([...projects, project])
+        setUserProjects({
+            ...userProjects,
+            projects: [...userProjects.projects, project]
+        })
         dispatch({ type: 'home' })
 
     }
-
-    const setActiveProject = (project_id: number) => {
-        const newProjects = []
-        for (const project of projects) {
-            if (project.id === project_id) {
-                project.isactive = true
-            } else {
-                project.isactive = false
-            }
-            newProjects.push(project)
-        }
-        setProjects(newProjects)
-    }
-
 
     useEffect(() => {
         const user = window.settings.get('user')
@@ -80,16 +69,6 @@ const Projects = (): JSX.Element => {
                 activeProject: window.settings.get('active_project')
             })
         }
-        // gitlab related stuff -->  2 release
-        // fetchProjects(user)
-        //     .then(data => {
-        //         const projects = data.map((project: Project) => {
-        //             project.islocal = localProjects.includes(project.name)
-        //             project.isactive = active_project !== undefined && active_project.id == project.id
-        //             return project
-        //         })
-        //         setProjects(projects)
-        //     })
     }, [])
 
     const dispatchCreateProject = () => {
@@ -99,17 +78,16 @@ const Projects = (): JSX.Element => {
         })
     }
 
-    const projects_list = userProjects.projects.map((project, indx) =>
-        <ProjectItem project={project}
-            key={indx}
-            userProjects={userProjects}
-            setUserProjects={setUserProjects} />
-    )
     return (
         <>
             <SideMenu activeToggle={activeToggle}>
                 <MenuHeader onClick={dispatchCreateProject} />
-                {projects_list}
+                {userProjects !== null ? userProjects.projects.map((project, indx) =>
+                    <ProjectItem project={project}
+                        key={indx}
+                        userProjects={userProjects}
+                        setUserProjects={setUserProjects} />
+                ): null}
             </SideMenu>
             <ToggleBar handleToggle={handleToggle} />
             <Workspace>

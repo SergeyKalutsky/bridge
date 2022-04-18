@@ -39,9 +39,8 @@ const ProjectItem = ({ project,
     userProjects,
     setUserProjects }: Props): JSX.Element => {
     const [open, setOpenSelectActive] = useState(false)
-    const [openActivate, setOpenActivate] = useState(false)
     const [openDelete, setDeleteOpen] = useState(false)
-    
+
     const setPopUp = (activeProject: Project) => {
         window.settings.set({ active_project: activeProject })
         setOpenSelectActive(false)
@@ -51,11 +50,6 @@ const ProjectItem = ({ project,
         })
     }
     const icons = (<>
-        {/* <div className='hover:text-white'>
-            <FontAwesomeIcon icon={faUserEdit}
-                onClick={() => { dispatch({ type: 'memberFind', payload: project.id }) }}
-            />
-        </div> */}
         <div className='hover:text-white'>
             <FontAwesomeIcon icon={faTrashAlt} onClick={() => { setDeleteOpen(true) }} />
         </div>
@@ -64,10 +58,11 @@ const ProjectItem = ({ project,
         <>
             <ProjectNameRow project={project} icons={icons}>
                 <span className='ml-5 font-medium text-white w-full'
-                    onClick={() => { !project.islocal ? setOpenActivate(true) : setOpenSelectActive(true) }}>
+                    onClick={() => { setOpenSelectActive(true) }}>
                     {project.name}
                 </span>
             </ProjectNameRow>
+
             {/* Popups */}
             <SelectActiveProjectPopUp
                 project={project}
@@ -80,12 +75,6 @@ const ProjectItem = ({ project,
                 setUserProjects={setUserProjects}
                 open={openDelete}
                 setOpen={setDeleteOpen} />
-                {/* <ActivateProjectPopUp
-                    project={project}
-                    setOpen={setOpenActivate}
-                    open={openActivate}
-                    updateProjects={userProjects} 
-                    setUserProjects={setUserProjects}/> */}
         </>
     )
 }
