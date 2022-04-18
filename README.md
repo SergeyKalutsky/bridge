@@ -26,7 +26,7 @@ Dependencies
 Install for development:
 ```console
 git clone https://github.com/SergeyKalutsky/bridge.git
-cd bridge/bride
+cd bridge/bridge
 yarn install
 yarn start
 ```
