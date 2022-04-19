@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Project } from './types'
-import { InputForm, Button } from '../common'
+import { InputForm, Button, Logs } from '../common'
 import { LoadingIcon } from '../common/Icons'
 import templates from './templates'
 import { Package } from '../../types'
@@ -37,7 +37,6 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
     const [error, setError] = useState<string>()
     const [visible, setVisible] = useState(false)
-    const [logs, setLogs] = useState<JSX.Element[]>([])
     const [pkgs, setPkgs] = useState<Package[]>(templates[libs[0]].pkgs)
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
@@ -111,25 +110,6 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     }
 
     useEffect(() => {
-        window.shared.incomingData("pkg:getlogs", (data: string) => {
-            let logs = data.split(/\r?\n/)
-            logs = logs.slice(logs.length - 10)
-            setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
-        });
-        return () => window.shared.removeListeners('pkg:getlogs')
-    }, [])
-
-    useEffect(() => {
-        const scrollToBottom = () => {
-            ref.current.scrollIntoView({
-                behavior: "smooth", block: 'end',
-                inline: 'nearest'
-            })
-        }
-        scrollToBottom()
-    }, [logs])
-
-    useEffect(() => {
         const fileContent = setInterval(() => {
             window.pkg.getlogs()
         }, 1000)
@@ -183,10 +163,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             </select>
                         </div>
                     </div>
-                    <div className="w-full h-2/6 flex justify-center flex-col overflow-scroll bg-zinc-600">
-                        {logs}
-                        <div ref={ref} />
-                    </div>
+                    <Logs bgColor='bg-zinc-600'/>
                     <div className='w-full gap-y-2 h-1/6 flex flex-row mt-2 gap-x-2 items-center'>
                         <Button onClick={e => handleClick(e)}
                             btnText={btnText}
