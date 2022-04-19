@@ -26,6 +26,15 @@ async function initSudoTemp(sudoPassword: string): Promise<boolean> {
     return true
 }
 
+async function sudoIsSet(){
+    while(process.env.SUDO_STATUS === undefined) {
+        await new Promise(r => setTimeout(r, 300));
+    }
+    console.log(JSON.parse(process.env.SUDO_STATUS))
+    return true
+}
+
+
 async function darvin(instance: instance): Promise<void> {
     const command = []
     command.push(instance.command)
@@ -43,12 +52,12 @@ async function darvin(instance: instance): Promise<void> {
             const sudoCorrect = await initSudoTemp(password)
             if (sudoCorrect) {
                 mainWindow.webContents.send('pkg:sudo', { open: false, error: null })
-                await promisifiedExec(strCommand)
+                process.env.SUDO_STATUS = JSON.stringify({updateTime: new Date().getTime()})
                 return
             }
             mainWindow.webContents.send('pkg:sudo', { open: true, error: 'Неверный пароль' })
         })
-        return
+        await sudoIsSet()
     }
     await promisifiedExec(strCommand)
 }
