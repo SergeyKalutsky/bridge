@@ -9,7 +9,7 @@ import ToolBar from "./ToolBar";
 import Workspace from "./Workspace";
 import SideMenuHeader from "./SideMenuHeader";
 import PackageSpan from "./PackageSpan";
-
+import Logs from "./Logs";
 
 export {
     Button,
@@ -22,5 +22,6 @@ export {
     ToolBar,
     SideMenuHeader,
     Workspace,
-    PackageSpan
+    PackageSpan,
+    Logs
 }

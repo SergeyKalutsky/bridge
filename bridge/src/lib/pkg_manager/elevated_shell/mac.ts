@@ -2,11 +2,13 @@ import { exec } from 'child_process'
 import util from 'util'
 import { instance } from './types'
 
+
 const promisifiedExec = util.promisify(exec);
 
-async function initSudoTemp(sudoPassword: string): Promise<boolean> {
+async function initSudoTemp(): Promise<boolean> {
     // We use sudo passwd in a bash shell, which is not secure
     // to avoid cousing vulnerabilities we do not store history of using sudo pswd
+    const sudoPassword = ''
     const histIgnoreCmd = "export HISTIGNORE='*sudo -S*'"
     await promisifiedExec(histIgnoreCmd)
     try {
@@ -18,6 +20,9 @@ async function initSudoTemp(sudoPassword: string): Promise<boolean> {
 }
 
 async function darvin(instance: instance): Promise<void> {
+    if (instance.elevate) {
+        const paswdCheck = await initSudoTemp()
+    }
     const command = []
     command.push(instance.command)
     command.push('>>')

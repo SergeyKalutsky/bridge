@@ -1,13 +1,12 @@
 import { PackageSpan } from "./components/common";
-import { useRef, useEffect, useState } from "react";
-import { Button } from "./components/common"
+import { useEffect, useState } from "react";
+import { Button, Logs } from "./components/common"
 import { LoadingIcon, LogoIcon } from './components/common/Icons';
 import { Package } from './types'
 
 interface Props {
     setIsFirstLoad: React.Dispatch<React.SetStateAction<boolean>>
 }
-
 
 const startInfo = <><LoadingIcon />Проверяем установлены ли программы...</>
 
@@ -27,21 +26,9 @@ const pkgsToInstall = [
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [pkgsMenu, setPkgsMenu] = useState<JSX.Element[]>(null)
     const [info, setInfo] = useState<JSX.Element>(startInfo)
-    const [logs, setLogs] = useState<JSX.Element[]>([])
     const [pkgs, setPkgs] = useState<Package[]>(pkgsToInstall)
     const [btnTheme, setBtnTheme] = useState('default')
     const [disabled, setDisabled] = useState(true)
-    const ref = useRef(null)
-
-    useEffect(() => {
-        window.shared.incomingData("pkg:getlogs", (data: string) => {
-            let logs = data.split(/\r?\n/)
-            logs = logs.slice(logs.length - 10)
-            setLogs(logs.map((log: string, indx: number) => <p key={indx} className="text-white font-medium ml-3">{log}</p>))
-        });
-
-        return () => window.shared.removeListeners('pkg:getlogs')
-    }, [])
 
     useEffect(() => {
         window.pkg.check(pkgs)
@@ -50,16 +37,6 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         });
         return () => window.shared.removeListeners('pkg:check')
     }, [])
-
-    useEffect(() => {
-        const scrollToBottom = () => {
-            ref.current.scrollIntoView({
-                behavior: "smooth", block: 'end',
-                inline: 'nearest'
-            })
-        }
-        scrollToBottom()
-    }, [logs])
 
     useEffect(() => {
         const fileContent = setInterval(() => {
@@ -110,10 +87,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                 <div className="flex flex-col">
                     {pkgsMenu}
                 </div>
-                <div className="w-3/4 h-2/5 flex justify-center flex-col overflow-scroll bg-slate-800" >
-                    {logs}
-                    <div ref={ref} />
-                </div>
+                <Logs />
                 <div className="w-full h-1/6 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled} theme={btnTheme}>
                         {btnTheme === 'default' ? 'Установить' : 'Продолжить'}
