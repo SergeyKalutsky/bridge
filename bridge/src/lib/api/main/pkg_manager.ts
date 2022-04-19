@@ -21,6 +21,7 @@ function getLogs() {
     return ipcMain.on('pkg:getlogs', async (event) => {
         if (fs.existsSync(LOG_PATH)) {
             fs.stat(LOG_PATH, async (err, stats) => {
+                // We only read and send logs if logs were updated less then 3 seconds ago
                 const currentDate = new Date(); 
                 const updateFileDate =  new Date(stats.mtime)
                 const timeDiff = Math.abs(updateFileDate.getTime() - currentDate.getTime()) / 1000

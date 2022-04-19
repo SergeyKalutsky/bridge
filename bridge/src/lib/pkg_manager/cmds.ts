@@ -44,6 +44,13 @@ function checkInstalled(manager: string, pkgName: string): boolean {
     return false
 }
 
+const brewCommand = (pkgName: string, version: string | null): Command => {
+    const cmd = []
+    cmd.push(store.get('pkgs.brew'))
+    cmd.push(pkgName)
+    return { elevate: false, install: cmd.join(' ') }
+}
+
 const chocoCommand = (pkgName: string, version: string | null): Command => {
 
     const cmd = []
@@ -85,7 +92,8 @@ const customCommand = (pkgName: string, version?: string): Command => {
 const commandBuilder = {
     'pip': pipCommand,
     'choco': chocoCommand,
-    'custom': customCommand
+    'custom': customCommand,
+    'brew': brewCommand
 }
 
 export { commandBuilder, checkInstalled }

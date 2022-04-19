@@ -42,8 +42,8 @@ async function darvin(instance: instance): Promise<void> {
         ipcMain.on('pkg:sudo', async (event, password: string) => {
             const sudoCorrect = await initSudoTemp(password)
             if (sudoCorrect) {
-                await promisifiedExec(strCommand)
                 mainWindow.webContents.send('pkg:sudo', { open: false, error: null })
+                await promisifiedExec(strCommand)
                 return
             }
             mainWindow.webContents.send('pkg:sudo', { open: true, error: 'Неверный пароль' })
