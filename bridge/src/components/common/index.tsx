@@ -10,6 +10,7 @@ import Workspace from "./Workspace";
 import SideMenuHeader from "./SideMenuHeader";
 import PackageSpan from "./PackageSpan";
 import Logs from "./Logs";
+import SudoPopUp from "./SudoPopUp";
 
 export {
     Button,
@@ -23,5 +24,6 @@ export {
     SideMenuHeader,
     Workspace,
     PackageSpan,
-    Logs
+    Logs,
+    SudoPopUp
 }

@@ -47,6 +47,8 @@ const createWindow = (): void => {
 
   mainWindow.webContents.openDevTools();
 
+  process.env.MAIN_WINDOW_ID = mainWindow.id.toString();
+
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {

@@ -50,6 +50,7 @@ declare global {
             install(pkgs: Package[]): any;
             getlogs(): any;
             check(pkgs: Package[]): void
+            sudo(password: string): void
         };
     }
 }

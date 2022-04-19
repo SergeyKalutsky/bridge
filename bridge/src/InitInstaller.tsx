@@ -1,6 +1,6 @@
 import { PackageSpan } from "./components/common";
 import { useEffect, useState } from "react";
-import { Button, Logs } from "./components/common"
+import { Button, Logs, SudoPopUp } from "./components/common"
 import { LoadingIcon, LogoIcon } from './components/common/Icons';
 import { Package } from './types'
 
@@ -79,25 +79,28 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         setPkgsMenu(pkgsMenu)
     }, [pkgs])
     return (
-        <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">
-            <LogoIcon />
-            <div className="w-full h-3/5 flex flex-col items-center gap-4">
-                <span className="text-white font-medium text-3xl text-ellipsis overflow-hidden whitespace-nowrap">Для работы 🌉Bridge требуется установка стороних программ</span>
-                <span className="text-white font-medium text-2xl flex flex-row items-center justify-center">{info}</span>
-                <div className="flex flex-col">
-                    {pkgsMenu}
-                </div>
-                <Logs bgColor="bg-slate-800"/>
-                <div className="w-full h-1/6 flex items-center justify-center">
-                    <Button onClick={handleClick} disabled={disabled} theme={btnTheme}>
-                        {btnTheme === 'default' ? 'Установить' : 'Продолжить'}
-                    </Button>
-                </div>
-                <div>
-                    <span className="text-white font-medium text-xl">{'Лог Файл: ' + window.settings.logPath()}</span>
+        <>
+            <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">
+                <LogoIcon />
+                <div className="w-full h-3/5 flex flex-col items-center gap-4">
+                    <span className="text-white font-medium text-3xl text-ellipsis overflow-hidden whitespace-nowrap">Для работы 🌉Bridge требуется установка стороних программ</span>
+                    <span className="text-white font-medium text-2xl flex flex-row items-center justify-center">{info}</span>
+                    <div className="flex flex-col">
+                        {pkgsMenu}
+                    </div>
+                    <Logs bgColor="bg-slate-800" />
+                    <div className="w-full h-1/6 flex items-center justify-center">
+                        <Button onClick={handleClick} disabled={disabled} theme={btnTheme}>
+                            {btnTheme === 'default' ? 'Установить' : 'Продолжить'}
+                        </Button>
+                    </div>
+                    <div>
+                        <span className="text-white font-medium text-xl">{'Лог Файл: ' + window.settings.logPath()}</span>
+                    </div>
                 </div>
             </div>
-        </div>
+            <SudoPopUp />
+        </>
     )
 }
 
