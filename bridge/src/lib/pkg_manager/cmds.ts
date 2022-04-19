@@ -74,7 +74,10 @@ const pipCommand = (pkgName: string, version: string): Command => {
 
 const customCommand = (pkgName: string, version?: string): Command => {
     const cmds = {
-        'choco': "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))"
+        'choco': "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))",
+        // -- it only prompts if stdin is a TTY. So we echo the output
+        'brew': `echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
+        
     }
     return { elevate: true, install: cmds[pkgName] }
 }

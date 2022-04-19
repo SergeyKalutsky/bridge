@@ -1,9 +1,10 @@
 import { exec } from 'child_process'
 import util from 'util'
+import { instance } from './types'
 
 const promisifiedExec = util.promisify(exec);
 
-async function initSudoTemp(sudoPassword: string): Promise<boolean>{
+async function initSudoTemp(sudoPassword: string): Promise<boolean> {
     // We use sudo passwd in a bash shell, which is not secure
     // to avoid cousing vulnerabilities we do not store history of using sudo pswd
     const histIgnoreCmd = "export HISTIGNORE='*sudo -S*'"
@@ -16,6 +17,14 @@ async function initSudoTemp(sudoPassword: string): Promise<boolean>{
     return true
 }
 
-// brew install script
-// -- it only prompts if stdin is a TTY. So we echo the output
-// const cmd = `echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
+async function darvin(instance: instance): Promise<void> {
+    const command = []
+    command.push(instance.command)
+    command.push('>>')
+    command.push(`'${instance.path}'`)
+    command.push('2>&1')
+    const strCommand = command.join(' ')
+    await promisifiedExec(strCommand)
+}
+
+export { darvin, initSudoTemp }
