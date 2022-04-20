@@ -45,6 +45,11 @@ function checkInstalled(manager: string, pkgName: string): boolean {
             }
         }
     }
+    if (manager === 'brew') {
+        const bynary = path.join(path.parse(store.get('pkgs.brew')).dir + pkgName)
+        store.set(`pkgs.${pkgName}`, bynary)
+        return true
+    }
     return false
 }
 
