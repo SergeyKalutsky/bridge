@@ -13,13 +13,13 @@ const startInfo = <><LoadingIcon />Проверяем установлены л�
 const pkgsToInstall = [
     {
         installed: null,
-        name: 'choco',
+        name: 'brew',
         manager: 'custom',
     },
     {
         installed: null,
         name: 'git',
-        manager: 'choco'
+        manager: 'brew'
     },
 ]
 
