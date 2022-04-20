@@ -51,6 +51,7 @@ function checkInstalled(manager: string, pkgName: string): boolean {
 const brewCommand = (pkgName: string, version: string | null): Command => {
     const cmd = []
     cmd.push(store.get('pkgs.brew'))
+    cmd.push('install')
     cmd.push(pkgName)
     return { elevate: false, install: cmd.join(' ') }
 }
