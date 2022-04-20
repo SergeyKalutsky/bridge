@@ -15,7 +15,7 @@ const getMainWindow = () => {
 
 async function initSudoTemp(sudoPassword: string): Promise<boolean> {
     // We use sudo passwd in a bash shell, which is not secure
-    // to avoid cousing vulnerabilities we do not store history of using sudo pswd
+    // to avoid causing vulnerabilities we do not store history of using sudo pswd
     const histIgnoreCmd = "export HISTIGNORE='*sudo -S*'"
     await promisifiedExec(histIgnoreCmd)
     try {
