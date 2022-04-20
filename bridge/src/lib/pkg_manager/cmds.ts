@@ -21,7 +21,10 @@ const installationPaths = {
 
 
 function checkInstalled(manager: string, pkgName: string): boolean {
-
+    // If we install custom we need to find the installation path, because its a pkg manager
+    // and that will save as from reloading applicaitions env values as well as different version
+    // conflicts. On windows there is no "good" way to find installation path
+    // so we resort to searching in all default paths as a lesser evel for all apps
     if (['choco', 'custom'].includes(manager)) {
         for (const installPath of installationPaths[pkgName]) {
             if (fs.existsSync(installPath)) {
@@ -84,6 +87,7 @@ const customCommand = (pkgName: string, version?: string): Command => {
     const cmds = {
         'choco': "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(''https://community.chocolatey.org/install.ps1''))",
         // -- it only prompts if stdin is a TTY. So we echo the output
+        // to run script in a noninteractive mode
         'brew': `echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
         
     }
