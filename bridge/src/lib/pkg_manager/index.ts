@@ -1,4 +1,4 @@
-import shell from "./elevated_shell";
+import shell from "./shell";
 import { checkInstalled, commandBuilder } from "./cmds";
 
 export {
