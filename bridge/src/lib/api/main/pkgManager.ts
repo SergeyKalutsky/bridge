@@ -1,4 +1,4 @@
-import { shell, checkInstalled, commandBuilder } from '../../pkg_manager'
+import { shell, checkInstalled, commandBuilder } from '../../pkgManager'
 import { ipcMain } from 'electron';
 import { LOG_PATH } from './storage';
 import util from 'util'
