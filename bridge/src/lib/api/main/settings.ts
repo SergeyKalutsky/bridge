@@ -20,6 +20,12 @@ function logPath() {
     })
 }
 
+function platform() {
+    return ipcMain.on('settings:platform', (event, field) => {
+        event.returnValue = process.platform
+    })
+}
+
 function del () {
     return ipcMain.handle('settings:del', (event, data) => {
         store.delete(data)
@@ -31,6 +37,7 @@ function settingsAPI(): void {
     set()
     del()
     logPath()
+    platform()
 }
 
 export default settingsAPI

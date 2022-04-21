@@ -1,9 +1,22 @@
+const platform = window.settings.platform()
 const templates = {
+    'init': {
+        pkgs: [{
+            installed: null,
+            name: platform === 'win32' ? 'choco' : 'brew',
+            manager: 'custom',
+        },
+        {
+            installed: null,
+            name: 'git',
+            manager: platform === 'win32' ? 'choco' : 'brew',
+        }]
+    },
     'Python': {
         pkgs: [{
             installed: null,
             name: 'python3',
-            manager: process.platform === 'win32' ? 'choco': 'brew',
+            manager: platform === 'win32' ? 'choco' : 'brew',
             version: '10.0.1'
         }],
         http: 'https://github.com/SergeyKalutsky/python_base.git',
@@ -12,12 +25,11 @@ const templates = {
         pkgs: [{
             installed: null,
             name: 'python3',
-            manager: process.platform === 'win32' ? 'choco': 'brew',
+            manager: platform === 'win32' ? 'choco' : 'brew',
             version: '10.0.1'
         },
         {
             installed: null,
-        pkgs: ['choco python3=10.0.1', 'pip pgzero'],
             name: 'flask',
             manager: 'pip',
         },
@@ -32,7 +44,7 @@ const templates = {
         pkgs: [{
             installed: null,
             name: 'python3',
-            manager: process.platform === 'win32' ? 'choco': 'brew',
+            manager: platform === 'win32' ? 'choco' : 'brew',
             version: '10.0.1'
         },
         {
@@ -46,7 +58,7 @@ const templates = {
         pkgs: [{
             installed: null,
             name: 'python3',
-            manager: process.platform === 'win32' ? 'choco': 'brew',
+            manager: platform === 'win32' ? 'choco' : 'brew',
             version: '10.0.1'
         },
         {

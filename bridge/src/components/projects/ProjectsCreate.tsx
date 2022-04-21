@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Project } from './types'
 import { InputForm, Button, Logs } from '../common'
 import { LoadingIcon } from '../common/Icons'
-import templates from './templates'
+import templates from '../../templates'
 import { Package } from '../../types'
 
 interface Prop {

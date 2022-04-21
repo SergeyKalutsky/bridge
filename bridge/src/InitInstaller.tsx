@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button, Logs, SudoPopUp } from "./components/common"
 import { LoadingIcon, LogoIcon } from './components/common/Icons';
 import { Package } from './types'
+import templates from "./templates";
 
 interface Props {
     setIsFirstLoad: React.Dispatch<React.SetStateAction<boolean>>
@@ -10,23 +11,11 @@ interface Props {
 
 const startInfo = <><LoadingIcon />Проверяем установлены ли программы...</>
 
-const pkgsToInstall = [
-    {
-        installed: null,
-        name: 'brew',
-        manager: 'custom',
-    },
-    {
-        installed: null,
-        name: 'git',
-        manager: 'brew'
-    },
-]
 
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
     const [pkgsMenu, setPkgsMenu] = useState<JSX.Element[]>(null)
     const [info, setInfo] = useState<JSX.Element>(startInfo)
-    const [pkgs, setPkgs] = useState<Package[]>(pkgsToInstall)
+    const [pkgs, setPkgs] = useState<Package[]>(templates.init.pkgs)
     const [btnTheme, setBtnTheme] = useState('default')
     const [disabled, setDisabled] = useState(true)
 

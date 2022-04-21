@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('settings', {
     get: (key: string): any => ipcRenderer.sendSync('settings:get', key),
     del: (key: string): any => ipcRenderer.invoke('settings:del', key),
     logPath: (): string => ipcRenderer.sendSync('settings:logpath'),
+    platform:  (): string => ipcRenderer.sendSync('settings:platform'),
 
 })
 

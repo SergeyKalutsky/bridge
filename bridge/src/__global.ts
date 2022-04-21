@@ -15,6 +15,7 @@ declare global {
             get(key: string): any;
             del(key: string): Promise<any>
             logPath(): string
+            platform(): string
         };
         projects: {
             createFile(createInfo: CreateInfo): Promise<string>;
