@@ -3,8 +3,6 @@ import simpleGit, { SimpleGit } from 'simple-git';
 import { store, BASE_DIR } from './storage'
 import { ipcMain } from 'electron';
 import path from 'path'
-import fs from 'fs'
-import { Project } from "../../../components/projects/types";
 
 const parseGitDiff = (diffOutput: string): GitDiff[] => {
   const output: GitDiff[] = []
