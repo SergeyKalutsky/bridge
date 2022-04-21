@@ -112,7 +112,9 @@ function revert() {
 
 function diff() {
     return ipcMain.on('git:diff', (event, hash) => {
-        const git: SimpleGit = simpleGit(path.join(BASE_DIR, store.get('user.login')), { binary: store.get('pkg.git') });
+        const project_name = store.get('active_project.name').replace(/ /g, '-')
+        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
         git.show(hash)
             .then(result => {
                 event.returnValue = parseGitDiff(result)
