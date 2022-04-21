@@ -48,9 +48,11 @@ function checkInstalled(manager: string, pkgName: string): boolean {
     // My guess is all binaryes in brew are accesseble where brew is itself
     //  works for Montery, need to test for the rest 
     if (manager === 'brew') {
-        const bynary = path.join(path.parse(store.get('pkgs.brew')).dir + pkgName)
-        store.set(`pkgs.${pkgName}`, bynary)
-        return true
+        const binary = path.join(path.parse(store.get('pkgs.brew')).dir, pkgName)
+        if (fs.existsSync(binary)) {
+            store.set(`pkgs.${pkgName}`, binary)
+            return true
+        }
     }
     return false
 }

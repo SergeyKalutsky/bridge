@@ -45,9 +45,13 @@ const Projects = (): JSX.Element => {
                 .then(data => window.git.clone(data['project']))
         }
         project.islocal = true
+        if (userProjects.activeProject === undefined) {
+            window.settings.set({active_project: project})
+        }
         setUserProjects({
             ...userProjects,
-            projects: [...userProjects.projects, project]
+            projects: [...userProjects.projects, project],
+            activeProject: userProjects.activeProject === undefined ? project : userProjects.activeProject
         })
         dispatch({ type: 'home' })
 

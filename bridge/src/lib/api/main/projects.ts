@@ -12,7 +12,8 @@ const ncpPromise = util.promisify(ncp)
 
 const walkIgnore = [
     '.git',
-    '__pycache__'
+    '__pycache__',
+    '.DS_Store'
 ]
 
 async function walkAsync(dir: string): Promise<FileObject[]> {

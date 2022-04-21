@@ -3,7 +3,7 @@ const templates = {
         pkgs: [{
             installed: null,
             name: 'python3',
-            manager: 'choco',
+            manager: process.platform === 'win32' ? 'choco': 'brew',
             version: '10.0.1'
         }],
         http: 'https://github.com/SergeyKalutsky/python_base.git',
@@ -12,7 +12,7 @@ const templates = {
         pkgs: [{
             installed: null,
             name: 'python3',
-            manager: 'choco',
+            manager: process.platform === 'win32' ? 'choco': 'brew',
             version: '10.0.1'
         },
         {
@@ -32,7 +32,7 @@ const templates = {
         pkgs: [{
             installed: null,
             name: 'python3',
-            manager: 'choco',
+            manager: process.platform === 'win32' ? 'choco': 'brew',
             version: '10.0.1'
         },
         {
@@ -46,7 +46,7 @@ const templates = {
         pkgs: [{
             installed: null,
             name: 'python3',
-            manager: 'choco',
+            manager: process.platform === 'win32' ? 'choco': 'brew',
             version: '10.0.1'
         },
         {
