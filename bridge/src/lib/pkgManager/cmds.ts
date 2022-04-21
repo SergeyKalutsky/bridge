@@ -36,7 +36,7 @@ function checkInstalled(manager: string, pkgName: string): boolean {
     if (manager === 'pip') {
         for (const pythonPath of installationPaths.python3) {
             const pythonDir = path.parse(pythonPath).dir
-            pkgName = pkgName.replace('.py', '') //because discord.py creator is a fucking moron
+            pkgName = pkgName.replace('.py', '')
             if (fs.existsSync(path.join(pythonDir, 'site-packages', pkgName))) {
                 return true
             }
@@ -45,7 +45,7 @@ function checkInstalled(manager: string, pkgName: string): boolean {
             }
         }
     }
-    // My guess is all binaryes in brew are accesseble where brew is itself
+    // My guess is all binaries in brew are accesseble where brew is itself
     //  works for Montery, need to test for the rest 
     if (manager === 'brew') {
         const binary = path.join(path.parse(store.get('pkgs.brew')).dir, pkgName)
