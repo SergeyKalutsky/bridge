@@ -42,8 +42,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [project, setProject] = useState<Project>(dummyProject)
     const [btnText, setBtnText] = useState('Установить')
     const [width, setWidth] = useState(getWidth())
-    const ref = useRef(null)
-
+    
     useEffect(() => {
         window.shared.incomingData("terminal:fit", ({x, y}) => {
             if (x !== undefined) {
