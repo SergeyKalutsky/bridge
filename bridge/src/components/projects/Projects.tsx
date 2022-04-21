@@ -35,11 +35,11 @@ const Projects = (): JSX.Element => {
     const [activeToggle, setActiveToggle] = useState(false)
     const handleToggle = () => { setActiveToggle(!activeToggle) }
 
-    const addProject = (project: Project) => {
+    const addProject = async (project: Project) => {
 
         const user = window.settings.get('user')
         if (user.type == 'guest') {
-            window.git.clone(project)
+            await window.git.clone(project)
         } else {
             createProject(user, project)
                 .then(data => window.git.clone(data['project']))

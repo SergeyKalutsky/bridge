@@ -32,11 +32,11 @@ declare global {
             renameFile(data: { newName: string, activePath: ActivePath }): any
         };
         git: {
-            clone(project: Project): void;
+            clone(project: Project): Promise<void>;
             revert(hash: string): Promise<void>
-            pull(): void;
-            push(): void;
-            commit(): void;
+            pull(): Promise<void>;
+            push(): Promise<void>;
+            commit(): Promise<void>;
             log(): Promise<Commit[]>;
             diff(hash: string): GitDiff[];
             init(project_name: string): void;

@@ -33,14 +33,14 @@ contextBridge.exposeInMainWorld('projects', {
 })
 
 contextBridge.exposeInMainWorld('git', {
-    clone: (project: Project) => ipcRenderer.send('git:clone', project),
-    pull: (): void => ipcRenderer.send('git:pull'),
-    push: (): void => ipcRenderer.send('git:push'),
-    commit: (): void => ipcRenderer.send('git:commit'),
+    clone: (project: Project) => ipcRenderer.invoke('git:clone', project),
+    pull: (): Promise<void> => ipcRenderer.invoke('git:pull'),
+    push: (): Promise<void> => ipcRenderer.invoke('git:push'),
+    commit: (): Promise<void> => ipcRenderer.invoke('git:commit'),
     log: () => ipcRenderer.sendSync('git:log'),
     diff: (hash: string): GitDiff[] => ipcRenderer.sendSync('git:diff', hash),
     init: (project_name: string) => ipcRenderer.send('git:init', project_name),
-    revert: (hash: string) => ipcRenderer.invoke('git:revert', hash)
+    revert: (hash: string): Promise<void> => ipcRenderer.invoke('git:revert', hash)
 })
 
 

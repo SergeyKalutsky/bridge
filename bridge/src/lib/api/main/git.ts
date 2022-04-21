@@ -4,6 +4,7 @@ import { store, BASE_DIR } from './storage'
 import { ipcMain } from 'electron';
 import path from 'path'
 import fs from 'fs'
+import { Project } from "../../../components/projects/types";
 
 const parseGitDiff = (diffOutput: string): GitDiff[] => {
   const output: GitDiff[] = []
@@ -48,102 +49,87 @@ const parseGitDiff = (diffOutput: string): GitDiff[] => {
 }
 
 
+function formGit(basedir = false): SimpleGit {
+  const projectName = basedir ? '' : store.get('active_project.name')
+  const projectDir = path.join(BASE_DIR, store.get('user.login'), projectName)
+  const git = simpleGit(projectDir, { binary: store.get('pkg.git') });
+  return git
+}
+
 
 function clone() {
-    return ipcMain.on('git:clone', (event, project) => {
-        const project_name = project.name.replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        if (!fs.existsSync(project_dir)) {
-            const git: SimpleGit = simpleGit(path.join(BASE_DIR, store.get('user.login')), { binary: store.get('pkg.git') });
-            git.clone(project.http, project_name)
-        }
-    })
+  return ipcMain.handle('git:clone', async (event, project) => {
+    await formGit(true).clone(project.http, project.name).catch(err => console.log(err))
+  })
 }
 
 function log() {
-    return ipcMain.on('git:log', (event) => {
-        const project_name = store.get('active_project.name').replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
-        git.log().then(result => {
-            event.returnValue = result['all']
-        })
-            .catch(err => { event.returnValue = []; console.log(err) })
+  return ipcMain.on('git:log', async (event) => {
+    await formGit().log().then(result => {
+      event.returnValue = result['all']
     })
+      .catch(err => { event.returnValue = []; console.log(err) })
+  })
 }
 
 function pull() {
-    return ipcMain.on('git:pull', () => {
-        const project_name = store.get('active_project.name').replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
-        git.pull()
-    })
+  return ipcMain.handle('git:pull', async () => {
+    await formGit().pull()
+  })
 }
 
 function commit() {
-    return ipcMain.on('git:commit', () => {
-        const project_name = store.get('active_project.name').replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
-        git.add('./*').commit('test')
-    })
+  return ipcMain.handle('git:commit', async () => {
+    await formGit().add('./*').commit('test')
+  })
 }
 
 function push() {
-    return ipcMain.on('git:push', () => {
-        const project_name = store.get('active_project.name').replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
-        git.add('./*').commit('test').push()
-    })
+  return ipcMain.on('git:push', async () => {
+    await formGit().add('./*').commit('test').push()
+  })
 }
 
 
 function revert() {
-    return ipcMain.handle('git:revert', async (event, hash: string) => {
-        const project_name = store.get('active_project.name').replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
-        await git.raw(['checkout', hash, '.'])
-        await git.add('./*').commit('test')
-    })
+  return ipcMain.handle('git:revert', async (event, hash: string) => {
+    const git = formGit()
+    await git.raw(['checkout', hash, '.'])
+    await git.add('./*').commit('test')
+  })
 }
 
 function diff() {
-    return ipcMain.on('git:diff', (event, hash) => {
-        const project_name = store.get('active_project.name').replace(/ /g, '-')
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
-        git.show(hash)
-            .then(result => {
-                event.returnValue = parseGitDiff(result)
-            })
-            .catch(err => {
-                event.returnValue = undefined
-            });
-    })
+  return ipcMain.on('git:diff', (event, hash) => {
+    formGit().show(hash)
+      .then(result => {
+        event.returnValue = parseGitDiff(result)
+      })
+      .catch(err => {
+        event.returnValue = undefined
+      });
+  })
 
 }
 
 function init() {
-    return ipcMain.on('git:init', (event, project_name) => {
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
-        const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
-        git.init()
-    })
+  return ipcMain.on('git:init', (event, project_name) => {
+    const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+    const git: SimpleGit = simpleGit(project_dir, { binary: store.get('pkg.git') });
+    git.init()
+  })
 }
 
 
 function gitAPI(): void {
-    revert()
-    clone()
-    log()
-    pull()
-    push()
-    diff()
-    init()
-    commit()
+  revert()
+  clone()
+  log()
+  pull()
+  push()
+  diff()
+  init()
+  commit()
 }
 
 export default gitAPI
