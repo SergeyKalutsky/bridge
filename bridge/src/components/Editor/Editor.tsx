@@ -22,7 +22,7 @@ const Editor = (): JSX.Element => {
             const ext = extList[extList.length - 1]
             const excecutable = CMD[ext]
             if (excecutable !== undefined) {
-                window.terminal.exec({ exec: excecutable, path: ide.activePath.path })
+                window.terminal.exec({ exec: excecutable, path: '"'+ide.activePath.path+'"' })
             }
         }
     }
