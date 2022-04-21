@@ -13,7 +13,6 @@ const NewFile = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
     const handleClick = async () => {
-        console.log(ide.activePath)
         await window.projects.createFile({ activePath: ide.activePath, name: filename });
         updateFileTree({
             ...ide,

@@ -2,6 +2,11 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 import { store } from '../api/main/storage'
+import { exec } from 'child_process'
+import util from 'util'
+
+
+const promisifiedExec = util.promisify(exec);
 
 interface Command {
     elevate: boolean,
@@ -20,7 +25,7 @@ const installationPaths = {
 
 
 
-function checkInstalled(manager: string, pkgName: string): boolean {
+async function checkInstalled(manager: string, pkgName: string): Promise<boolean> {
     // If we install custom we need to find the installation path, because its a pkg manager
     // and that will save as from reloading applicaitions env values as well as different version
     // conflicts. On windows there is no "good" way to find installation path
@@ -34,16 +39,12 @@ function checkInstalled(manager: string, pkgName: string): boolean {
         }
     }
     if (manager === 'pip') {
-        for (const pythonPath of installationPaths.python3) {
-            const pythonDir = path.parse(pythonPath).dir
-            pkgName = pkgName.replace('.py', '')
-            if (fs.existsSync(path.join(pythonDir, 'site-packages', pkgName))) {
-                return true
-            }
-            if (fs.existsSync(path.join(pythonDir, 'Lib/site-packages', pkgName))) {
-                return true
-            }
+        try {
+            await promisifiedExec(store.get('pkgs.python3') + ` -m pip show ${pkgName}`)
+        } catch (error) {
+            return false
         }
+        return true
     }
     // My guess is all binaries in brew are accesseble where brew is itself
     //  works for Montery, need to test for the rest 
@@ -99,7 +100,7 @@ const customCommand = (pkgName: string, version?: string): Command => {
         // -- it only prompts if stdin is a TTY. So we echo the output
         // to run script in a noninteractive mode
         'brew': `echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
-        
+
     }
     return { elevate: true, install: cmds[pkgName] }
 }

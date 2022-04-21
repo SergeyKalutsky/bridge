@@ -9,10 +9,10 @@ const readFileAsync = util.promisify(fs.readFile)
 
 function check() {
     return ipcMain.on('pkg:check', async (event, pkgs) => {
-        pkgs = pkgs.map(pkg => {
-            pkg.installed = checkInstalled(pkg.manager, pkg.name)
+        pkgs = await Promise.all(pkgs.map(async (pkg) => {
+            pkg.installed = await checkInstalled(pkg.manager, pkg.name)
             return pkg
-        })
+        }))
         event.reply('pkg:check', pkgs)
     })
 }
@@ -43,7 +43,7 @@ function pkgInstall() {
             if (!pkg.installed) {
                 const cmd = commandBuilder[pkg.manager](pkg.name, pkg.verison)
                 await shell({ command: cmd.install, path: LOG_PATH, elevate: cmd.elevate })
-                pkg.installed = checkInstalled(pkg.manager, pkg.name)
+                pkg.installed = await checkInstalled(pkg.manager, pkg.name)
             }
             updatePkgs.push(pkg)
         }
