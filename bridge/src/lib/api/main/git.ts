@@ -90,10 +90,15 @@ function push() {
 
 
 function revert() {
+  // git revert 8394daf.. --no-edit --no-commit 
+  // to revert to a specific commit we use hash[:8].. that will revert all commit changes
+  // prior to the commit indicated by hash
+  // to avoid editing commit msg we path --no-edit
+  // to avoid commiting every reversion of the commit(it can be too large) we pass --no-commit
   return ipcMain.handle('git:revert', async (event, hash: string) => {
     const git = formGit()
-    await git.raw(['checkout', hash, '.'])
-    await git.add('./*').commit('test')
+    await git.raw(['revert', hash.substring(0, 7)+'..', '--no-edit', '--no-commit'])
+    await git.add('./*').commit('revert')
   })
 }
 
