@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 
 interface Props {
-    bgColor: string
+    className: string
 }
-const Logs = ({ bgColor }: Props): JSX.Element => {
+const Logs = ({ className }: Props): JSX.Element => {
     const [logs, setLogs] = useState<JSX.Element[]>([])
     const ref = useRef(null)
 
@@ -27,7 +27,7 @@ const Logs = ({ bgColor }: Props): JSX.Element => {
     }, [logs])
 
     return (
-        <div className={`w-3/4 h-2/5 flex justify-center flex-col overflow-scroll ${bgColor}`} >
+        <div className={`h-2/5 flex justify-center flex-col overflow-scroll ${className}`} >
             {logs}
             <div ref={ref} />
         </div>

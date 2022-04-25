@@ -77,7 +77,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                 <div className="flex flex-col">
                     {pkgsMenu}
                 </div>
-                <Logs bgColor="bg-slate-800"/>
+                <Logs className="bg-slate-800"/>
                 <div className="w-full h-1/6 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled} theme={btnTheme}>
                         {btnTheme === 'default' ? 'Установить' : 'Продолжить'}

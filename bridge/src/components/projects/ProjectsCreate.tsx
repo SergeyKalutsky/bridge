@@ -37,7 +37,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
     const [btnText, setBtnText] = useState('Установить')
-    
+
 
 
     useEffect(() => {
@@ -105,13 +105,15 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     return (
         <>
             <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline' >Создание проекта</h1>
-            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center' >
+            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll' >
                 <div className='w-3/5 h-2/3'>
                     <div className='w-full h-4/7 gap-y-2 flex flex-col'>
                         <span className='text-red-400 font-medium text-xl'>{error}</span>
-                        <InputForm type="text" placeholder='Название'
-                            onChange={(e) => { setProject({ ...project, name: e.target.value }) }} />
-                        <textarea placeholder='Описание' className='w-full h-[150px] text-xl rounded-lg focus:outline-none'
+                        <div className='w-[450px]'>
+                            <InputForm type="text" placeholder='Название'
+                                onChange={(e) => { setProject({ ...project, name: e.target.value }) }} />
+                        </div>
+                        <textarea placeholder='Описание' className='w-[450px] h-[150px] text-xl rounded-lg focus:outline-none'
                             onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                     </div>
                     <div className='w-full h-1/7 gap-y-2 flex flex-col'>
@@ -142,7 +144,9 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             </select>
                         </div>
                     </div>
-                    <Logs bgColor='bg-zinc-600'/>
+                    {/* <div className='w-[450px]'> */}
+                        <Logs className='bg-zinc-600 w-[450px]' />
+                    {/* </div> */}
                     <div className='w-full gap-y-2 h-1/6 flex flex-row mt-2 gap-x-2 items-center'>
                         <Button onClick={e => handleClick(e)}
                             btnText={btnText}
