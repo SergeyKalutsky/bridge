@@ -28,10 +28,6 @@ const dummyProject: Project = {
     http: templates[libs[0]].http
 }
 
-const getWidth = (): number => {
-    const sideWidth = JSON.parse(window.localStorage.getItem('sideWidth'))
-    return window.innerWidth - sideWidth - 80
-}
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     // const [checked, setChecked] = useState<number>(0)
@@ -41,24 +37,8 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [option, setOption] = useState('Python')
     const [project, setProject] = useState<Project>(dummyProject)
     const [btnText, setBtnText] = useState('Установить')
-    const [width, setWidth] = useState(getWidth())
     
-    useEffect(() => {
-        window.shared.incomingData("terminal:fit", ({x, y}) => {
-            if (x !== undefined) {
-                setWidth(width => width - x)
-            }
-        });
-        return () => window.shared.removeListeners("terminal:fit")
-    }, [])
 
-    useEffect(() => {
-        function updateSize({ target }) {
-            setWidth(target.innerWidth - JSON.parse(window.localStorage.getItem('sideWidth')) - 80)
-        }
-        window.addEventListener('resize', updateSize)
-        return () => window.removeEventListener('resize', updateSize)
-    }, []);
 
     useEffect(() => {
         window.pkg.check(templates[libs[0]].pkgs)
@@ -124,8 +104,8 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         <div className='text-lg text-slate-50 font-medium'>Создание/установка проекта...</div></>
     return (
         <>
-            <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline' style={{ width: width }}>Создание проекта</h1>
-            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center' style={{ width: width }}>
+            <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline' >Создание проекта</h1>
+            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center' >
                 <div className='w-3/5 h-2/3'>
                     <div className='w-full h-4/7 gap-y-2 flex flex-col'>
                         <span className='text-red-400 font-medium text-xl'>{error}</span>
