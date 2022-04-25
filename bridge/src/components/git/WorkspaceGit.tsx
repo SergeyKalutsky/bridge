@@ -22,6 +22,7 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
 
   const handleIconClick = async () => {
     await window.git.revert(git.activeHash)
+    window.settings.del('active_project.activePath')
     setGit({
       ...git,
       commits: await window.git.log()
