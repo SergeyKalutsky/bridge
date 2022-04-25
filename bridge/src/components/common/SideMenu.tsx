@@ -25,7 +25,7 @@ const SideMenu = ({ children, activeToggle }: Props): JSX.Element => {
         }
         function onMouseMove(e) {
 
-            if ((!(ref.current.clientWidth <= 200) && (e.movementX < 0)) ||
+            if ((!(ref.current.clientWidth <= 240) && (e.movementX < 0)) ||
                 ((!(ref.current.clientWidth >= 500) && (e.movementX > 0)))) {
                 setSize(size => size + e.movementX)
                 window.localStorage.setItem('sideWidth', JSON.stringify(ref.current.clientWidth))

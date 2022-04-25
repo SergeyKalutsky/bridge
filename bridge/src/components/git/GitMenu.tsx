@@ -36,7 +36,9 @@ const GitMenu = ({ git, setGit }: Props): JSX.Element => {
         <SideMenuHeader>
           <span className='text-white text-2xl'>ЛЕНТА</span>
         </SideMenuHeader>
-        {elements}
+        <div className='overflow-scroll h-[calc(100%-40px)]'>
+          {elements}
+        </div>
       </SideMenu>
       <ToggleBar handleToggle={handleToggle} />
     </>
