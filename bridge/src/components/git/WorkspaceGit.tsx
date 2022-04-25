@@ -12,32 +12,9 @@ type Props = {
   setGit: React.Dispatch<React.SetStateAction<Git>>
 }
 
-const getDiffViewWidth = (): number => {
-  const sideWidth = JSON.parse(window.localStorage.getItem('sideWidth'))
-  return window.innerWidth - sideWidth - 80
-}
-
 const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
   const [diffViewFileIndex, setDiffViewFileIndex] = useState(0)
   const [splitView, setSplitView] = useState(true)
-  const [diffViewWidth, setDiffViewWidth] = useState(getDiffViewWidth())
-
-  useEffect(() => {
-    window.shared.incomingData("terminal:fit", (data) => {
-      if (data.x !== undefined) {
-        setDiffViewWidth(diffViewWidth => diffViewWidth - data.x)
-      }
-    });
-    return () => window.shared.removeListeners("terminal:fit")
-  }, [])
-
-  useEffect(() => {
-    function updateSize({ target }) {
-      setDiffViewWidth(target.innerWidth - JSON.parse(window.localStorage.getItem('sideWidth')) - 80)
-    }
-    window.addEventListener('resize', updateSize)
-    return () => window.removeEventListener('resize', updateSize)
-  }, []);
 
   useEffect(() => {
     setDiffViewFileIndex(0)
@@ -75,7 +52,7 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
           </div>
         </ToolBar>
 
-        <div className='overflow-scroll h-[calc(100%-40px)]' style={{ width: diffViewWidth }}>
+        <div className='overflow-scroll h-[calc(100%-40px)]'>
           <ReactDiffViewer styles={darkModeStyle}
             oldValue={diff !== undefined ? diff.oldFile : ''}
             newValue={diff !== undefined ? diff.newFile : ''}
