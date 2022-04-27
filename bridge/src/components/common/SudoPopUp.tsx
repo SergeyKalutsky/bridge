@@ -14,9 +14,9 @@ const SudoPopUp = (): JSX.Element => {
         })
         return () => window.shared.removeListeners('pkg:sudo')
     }, [])
-    
+
     return (
-        < PopUp open={open} onClose={() => setOpen(false)}>
+        < PopUp open={open} onClose={() => { setOpen(false); window.pkg.sudo(sudoPassword) }}>
             <span className='text-red-400 font-medium text-base'>{error}</span>
             <div className="w-4/5">
                 <InputForm type="password" onChange={(e) => { setSudoPassword(e.target.value) }} placeholder="Введите sudo пароль" />

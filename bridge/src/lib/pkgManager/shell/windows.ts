@@ -28,7 +28,12 @@ async function windows(instance: instance): Promise<void> {
   command.push('-Wait');
   command.push('"')
   const strCommand = command.join(' ');
-  await promisifiedExec(strCommand)
+  // In case if elivating privilages fail
+  try {
+    await promisifiedExec(strCommand)
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export { windows }
