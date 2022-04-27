@@ -9,9 +9,7 @@ interface Props {
 
 const Packages = ({ pkgs }: Props): JSX.Element => {
     const [pkgsMenu, setPkgsMenu] = useState<JSX.Element[]>(null)
-
     useEffect(() => {
-
         const pkgsMenu = pkgs.map((pkg, indx) =>
             <PackageSpan key={indx} icon={pkg.installed ? 'installed' : 'not installed'}>{pkg.name}</PackageSpan>
         )

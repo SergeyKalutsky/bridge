@@ -148,7 +148,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                         {visible ? loadInfo : null}
                     </div>
                     <div>
-                        <span className="text-white font-medium text-xl">{'Лог Файл: ' + window.settings.logPath()}</span>
+                        <span className="text-white font-medium text-sm">{'Лог Файл: ' + window.settings.logPath()}</span>
                     </div>
                 </div>
             </div >

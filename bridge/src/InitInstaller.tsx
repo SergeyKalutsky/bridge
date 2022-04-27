@@ -11,7 +11,7 @@ interface Props {
 
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
 
-    const [info, setInfo] = useState<JSX.Element>(<><LoadingIcon />Проверяем установлены ли программы...</>)
+    const [info, setInfo] = useState<JSX.Element>(<><LoadingIcon />Проверяем установку...</>)
     const [pkgs, setPkgs] = useState<Package[]>(templates.init.pkgs)
     const [btnTheme, setBtnTheme] = useState('default')
     const [disabled, setDisabled] = useState(true)
@@ -66,7 +66,7 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
                     </Button>
                 </div>
                 <div>
-                    <span className="text-white font-medium text-xl">{'Лог Файл: ' + window.settings.logPath()}</span>
+                    <span className="text-white font-medium text-sm">{'Лог Файл: ' + window.settings.logPath()}</span>
                 </div>
             </div>
         </div>
