@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
+import { InputForm, Button, Logs, Packages } from '../common'
 import { Project } from './types'
-import { InputForm, Button, Logs } from '../common'
 import { LoadingIcon } from '../common/Icons'
 import templates from '../../templates'
 import { Package } from '../../types'
@@ -94,7 +94,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         </option>
     )
     const loadInfo = <><LoadingIcon />
-        <div className='text-lg text-slate-50 font-medium'>Создание/установка проекта...</div></>
+        <div className='text-lg text-slate-50 font-medium'>Установка...</div></>
     return (
         <>
             <h1 className='font-medium bg-zinc-500 pl-2 text-xl text-gray-200 underline drop-shadow-md' >Создание проекта</h1>
@@ -137,9 +137,8 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             </select>
                         </div>
                     </div>
-                    {/* <div className='w-[450px]'> */}
-                        <Logs className='bg-zinc-600 w-[450px]' />
-                    {/* </div> */}
+                    <Packages pkgs={pkgs} className='w-[200px]' />
+                    <Logs className='bg-zinc-600 w-[450px] mt-2' />
                     <div className='w-full gap-y-2 h-1/6 flex flex-row mt-2 gap-x-2 items-center'>
                         <Button onClick={e => handleClick(e)}
                             btnText={btnText}

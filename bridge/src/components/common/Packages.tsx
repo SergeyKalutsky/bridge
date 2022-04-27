@@ -4,10 +4,11 @@ import { Package } from '../../types'
 
 interface Props {
     pkgs: Package[]
+    className?: string
 }
 
 
-const Packages = ({ pkgs }: Props): JSX.Element => {
+const Packages = ({ pkgs, className }: Props): JSX.Element => {
     const [pkgsMenu, setPkgsMenu] = useState<JSX.Element[]>(null)
     useEffect(() => {
         const pkgsMenu = pkgs.map((pkg, indx) =>
@@ -17,7 +18,7 @@ const Packages = ({ pkgs }: Props): JSX.Element => {
     }, [pkgs])
 
     return (
-        <div className="flex flex-col w-[120px] h-[80px] overflow-scroll">
+        <div className={`flex flex-col w-[120px] h-[80px] overflow-scroll ${className}`}>
             {pkgsMenu}
         </div>
     )
