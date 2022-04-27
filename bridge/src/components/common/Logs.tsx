@@ -6,6 +6,14 @@ interface Props {
 const Logs = ({ className }: Props): JSX.Element => {
     const [logs, setLogs] = useState<JSX.Element[]>([])
     const ref = useRef(null)
+    
+    useEffect(() => {
+        const fileContent = setInterval(() => {
+            window.pkg.getlogs()
+        }, 1000)
+
+        return () => clearInterval(fileContent);
+    });
 
     useEffect(() => {
         window.shared.incomingData("pkg:getlogs", (data: string) => {

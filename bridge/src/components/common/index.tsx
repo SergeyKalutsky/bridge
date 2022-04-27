@@ -8,9 +8,9 @@ import ToggleBar from "./ToggleBar";
 import ToolBar from "./ToolBar";
 import Workspace from "./Workspace";
 import SideMenuHeader from "./SideMenuHeader";
-import PackageSpan from "./PackageSpan";
 import Logs from "./Logs";
 import SudoPopUp from "./SudoPopUp";
+import Packages from "./Packages";
 
 export {
     Button,
@@ -23,7 +23,7 @@ export {
     ToolBar,
     SideMenuHeader,
     Workspace,
-    PackageSpan,
     Logs,
-    SudoPopUp
+    SudoPopUp,
+    Packages
 }

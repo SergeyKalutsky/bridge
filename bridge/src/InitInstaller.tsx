@@ -1,6 +1,5 @@
-import { PackageSpan } from "./components/common";
 import { useEffect, useState } from "react";
-import { Button, Logs, SudoPopUp } from "./components/common"
+import { Button, Logs, SudoPopUp, Packages } from "./components/common"
 import { LoadingIcon, LogoIcon } from './components/common/Icons';
 import { Package } from './types'
 import templates from "./templates";
@@ -9,12 +8,10 @@ interface Props {
     setIsFirstLoad: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const startInfo = <><LoadingIcon />Проверяем установлены ли программы...</>
-
 
 const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
-    const [pkgsMenu, setPkgsMenu] = useState<JSX.Element[]>(null)
-    const [info, setInfo] = useState<JSX.Element>(startInfo)
+
+    const [info, setInfo] = useState<JSX.Element>(<><LoadingIcon />Проверяем установлены ли программы...</>)
     const [pkgs, setPkgs] = useState<Package[]>(templates.init.pkgs)
     const [btnTheme, setBtnTheme] = useState('default')
     const [disabled, setDisabled] = useState(true)
@@ -26,14 +23,6 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         });
         return () => window.shared.removeListeners('pkg:check')
     }, [])
-
-    useEffect(() => {
-        const fileContent = setInterval(() => {
-            window.pkg.getlogs()
-        }, 1000)
-
-        return () => clearInterval(fileContent);
-    });
 
     useEffect(() => {
         let count = 0
@@ -61,23 +50,16 @@ const InitInstaller = ({ setIsFirstLoad }: Props): JSX.Element => {
         setInfo(<><LoadingIcon />Выполняется установка не закрывайте окно...</>)
         window.pkg.install(pkgs)
     }
-    useEffect(() => {
-        const pkgsMenu = pkgs.map((pkg, indx) =>
-            <PackageSpan key={indx} icon={pkg.installed ? 'installed' : 'not installed'}>{pkg.name}</PackageSpan>
-        )
-        setPkgsMenu(pkgsMenu)
-    }, [pkgs])
+
     return (
         <>
         <div className="w-full h-full flex flex-col gap-2 items-center justify-center bg-slate-900">
             <LogoIcon />
             <div className="w-full h-3/5 flex flex-col items-center gap-4">
-                <span className="text-white font-medium text-3xl text-ellipsis overflow-hidden whitespace-nowrap">Для работы 🌉Bridge требуется установка стороних программ</span>
+                <span className="text-white h-[60px] font-medium text-3xl text-ellipsis overflow-hidden whitespace-nowrap">Для работы 🌉Bridge требуется установка стороних программ</span>
                 <span className="text-white font-medium text-2xl flex flex-row items-center justify-center">{info}</span>
-                <div className="flex flex-col">
-                    {pkgsMenu}
-                </div>
-                <Logs className="bg-slate-800"/>
+                <Packages pkgs={pkgs} />
+                <Logs className="bg-slate-800 h-[200px]"/>
                 <div className="w-full h-1/6 flex items-center justify-center">
                     <Button onClick={handleClick} disabled={disabled} theme={btnTheme}>
                         {btnTheme === 'default' ? 'Установить' : 'Продолжить'}

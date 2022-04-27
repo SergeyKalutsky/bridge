@@ -88,13 +88,6 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         window.pkg.install(pkgs)
     }
 
-    useEffect(() => {
-        const fileContent = setInterval(() => {
-            window.pkg.getlogs()
-        }, 1000)
-        return () => clearInterval(fileContent);
-    }, []);
-
     const options = libs.map((option, indx) =>
         <option value={indx} key={option}>
             {option}
