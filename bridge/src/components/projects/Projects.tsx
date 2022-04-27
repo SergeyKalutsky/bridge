@@ -63,10 +63,12 @@ const Projects = (): JSX.Element => {
             const projects = []
             const localProjectNames = window.projects.getLocalProjectsNames()
             for (const localProjectName of localProjectNames) {
-                projects.push({
-                    name: localProjectName,
-                    islocal: true
-                })
+                if (localProjectName !== '.DS_Store') {
+                    projects.push({
+                        name: localProjectName,
+                        islocal: true
+                    })
+                }
             }
             setUserProjects({
                 projects: projects,

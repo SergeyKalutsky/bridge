@@ -26,6 +26,7 @@ const installationPaths = {
 
 
 async function checkInstalled(manager: string, pkgName: string): Promise<boolean> {
+    console.log('here')
     // If we install custom we need to find the installation path, because its a pkg manager
     // and that will save as from reloading applicaitions env values as well as different version
     // conflicts. On windows there is no "good" way to find installation path
@@ -46,9 +47,12 @@ async function checkInstalled(manager: string, pkgName: string): Promise<boolean
         }
         return true
     }
-    // My guess is all binaries in brew are accesseble where brew is itself
-    //  works for Montery, need to test for the rest 
+    // My guess is all binaries in brew are accesseble {brew_paht}/bin is itself
+    //  works for Montery, need to test for the rest macOSs
     if (manager === 'brew') {
+        if (store.get('pkgs.brew') === undefined) {
+            return false
+        }
         const binary = path.join(path.parse(store.get('pkgs.brew')).dir, pkgName)
         if (fs.existsSync(binary)) {
             store.set(`pkgs.${pkgName}`, binary)
