@@ -30,7 +30,7 @@ async function checkInstalled(manager: string, pkgName: string): Promise<boolean
     // If we install custom we need to find the installation path, because its a pkg manager
     // and that will save as from reloading applicaitions env values as well as different version
     // conflicts. On windows there is no "good" way to find installation path
-    // so we resort to searching in all default paths as a lesser evel for all apps
+    // so we resort to searching in all default paths as a lesser evil for all apps
     if (['choco', 'custom'].includes(manager)) {
         for (const installPath of installationPaths[pkgName]) {
             if (fs.existsSync(installPath)) {
