@@ -205,6 +205,11 @@ interface StartAppResponse {
     appInfo: ElectronAppInfo;
 }
 
+export async function pause(ms: number): Promise<any> {
+    return new Promise(f => setTimeout(f, ms));
+}
+
+
 export async function startApp(): Promise<StartAppResponse> {
     // find the latest build in the out directory
     const latestBuild = findLatestBuild();
@@ -215,7 +220,7 @@ export async function startApp(): Promise<StartAppResponse> {
         args: [appInfo.main],
         executablePath: appInfo.executable,
         recordVideo: {
-            dir: 'recording',
+            dir: 'recordings',
             size: {
                 width: 1200,
                 height: 800
@@ -223,16 +228,16 @@ export async function startApp(): Promise<StartAppResponse> {
         },
     });
 
-    // // wait for splash-screen to pass
-    // await electronApp.firstWindow();
-    // while (electronApp.windows().length === 2) {
-    // // eslint-disable-next-line no-await-in-loop
-    // await pause(100);
-    // }
+    // wait for splash-screen to pass
+    await electronApp.firstWindow();
+    while (electronApp.windows().length === 2) {
+        // eslint-disable-next-line no-await-in-loop
+        await pause(100);
+    }
     const windows = electronApp.windows();
-    // if (windows.length !== 1) {
-    //     throw new Error('too many windows open');
-    // }
+    if (windows.length !== 1) {
+        throw new Error('too many windows open');
+    }
     const appWindow: Page = windows[0];
     appWindow.on('console', console.log);
 
