@@ -1,9 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 import * as ASAR from 'asar';
-import { app } from 'electron';
 import * as fs from 'fs';
 import log from 'loglevel';
 import * as path from 'path';
+import { _electron as electron, Page, ElectronApplication } from '@playwright/test'
+
 
 
 type Architecture = 'x64' | 'x32' | 'arm64';
@@ -132,7 +133,7 @@ export function parseElectronApp(buildDir: string): ElectronAppInfo {
         let appBundle = list.find(fileName => {
             return fileName.endsWith('.app');
         });
-        appBundle = appBundle === undefined? '' : appBundle
+        appBundle = appBundle === undefined ? '' : appBundle
         const appDir = path.join(buildDir, appBundle, 'Contents', 'MacOS');
         const appName = fs.readdirSync(appDir)[0];
         executable = path.join(appDir, appName);
@@ -198,7 +199,48 @@ export function parseElectronApp(buildDir: string): ElectronAppInfo {
     };
 }
 
-const latestBuild = findLatestBuild();
-// parse the directory and find paths and other info
-const appInfo = parseElectronApp(latestBuild);
-console.log(appInfo)
+interface StartAppResponse {
+    electronApp: ElectronApplication;
+    appWindow: Page;
+    appInfo: ElectronAppInfo;
+}
+
+export async function startApp(): Promise<StartAppResponse> {
+    // find the latest build in the out directory
+    const latestBuild = findLatestBuild();
+    // parse the directory and find paths and other info
+    const appInfo = parseElectronApp(latestBuild);
+    console.log(appInfo)
+    const electronApp = await electron.launch({
+        args: [appInfo.main],
+        executablePath: appInfo.executable,
+        recordVideo: {
+            dir: 'recording',
+            size: {
+                width: 1200,
+                height: 800
+            },
+        },
+    });
+
+    // // wait for splash-screen to pass
+    // await electronApp.firstWindow();
+    // while (electronApp.windows().length === 2) {
+    // // eslint-disable-next-line no-await-in-loop
+    // await pause(100);
+    // }
+    const windows = electronApp.windows();
+    // if (windows.length !== 1) {
+    //     throw new Error('too many windows open');
+    // }
+    const appWindow: Page = windows[0];
+    appWindow.on('console', console.log);
+
+    // Capture a screenshot.
+    await appWindow.screenshot({
+        path: 'screenshots/initial-screen.png'
+    });
+    return { appWindow, appInfo, electronApp }
+}
+
+startApp()
