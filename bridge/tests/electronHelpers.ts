@@ -27,7 +27,7 @@ export interface ElectronAppInfo {
 
 export function findLatestBuild(): string {
     // root of your project
-    const rootDir = path.resolve('../');
+    const rootDir = path.resolve('./');
     // directory where the builds are stored
     const outDir = path.join(rootDir, 'out');
     // list of files in the out directory
@@ -215,37 +215,21 @@ export async function startApp(): Promise<StartAppResponse> {
     const latestBuild = findLatestBuild();
     // parse the directory and find paths and other info
     const appInfo = parseElectronApp(latestBuild);
-    console.log(appInfo)
     const electronApp = await electron.launch({
         args: [appInfo.main],
         executablePath: appInfo.executable,
         recordVideo: {
             dir: 'recordings',
             size: {
-                width: 1200,
+                width: 800,
                 height: 800
             },
         },
     });
 
-    // wait for splash-screen to pass
-    await electronApp.firstWindow();
-    while (electronApp.windows().length === 2) {
-        // eslint-disable-next-line no-await-in-loop
-        await pause(100);
-    }
+    await pause(500);
     const windows = electronApp.windows();
-    if (windows.length !== 1) {
-        throw new Error('too many windows open');
-    }
     const appWindow: Page = windows[0];
     appWindow.on('console', console.log);
-
-    // Capture a screenshot.
-    await appWindow.screenshot({
-        path: 'screenshots/initial-screen.png'
-    });
     return { appWindow, appInfo, electronApp }
 }
-
-startApp()
