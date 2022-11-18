@@ -27,7 +27,7 @@ export interface ElectronAppInfo {
 
 export function findLatestBuild(): string {
     // root of your project
-    const rootDir = path.resolve('./');
+    const rootDir = path.resolve('../');
     // directory where the builds are stored
     const outDir = path.join(rootDir, 'out');
     // list of files in the out directory

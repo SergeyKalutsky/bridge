@@ -9,7 +9,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx .",
+    "test": "mocha --require ts-node/register tests/mocha.spec.ts"
   },
   "keywords": [],
   "author": {
@@ -115,14 +116,18 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.2.3",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.0",
     "ace-builds": "^1.4.13",
     "autoprefixer": "^10.4.0",
+    "chai": "^4.3.7",
     "electron-context-menu": "^3.1.2",
     "electron-json-storage": "^4.5.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.0.1",
     "file-loader": "^6.2.0",
     "loglevel": "^1.8.1",
+    "mocha": "^10.1.0",
     "ncp": "^2.0.0",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "node-pty": "^0.10.1",
@@ -141,6 +146,7 @@
     "simple-git": "^2.39.0",
     "styled-components": "^5.3.3",
     "tailwindcss": "^3.0.7",
+    "ts-node": "^10.9.1",
     "xterm": "^4.15.0",
     "xterm-addon-fit": "^0.5.0"
   }
