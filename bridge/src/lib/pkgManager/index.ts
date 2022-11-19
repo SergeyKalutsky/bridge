@@ -1,8 +1,7 @@
 import shell from "./shell";
-import { checkInstalled, commandBuilder } from "./cmds";
+import { checkScriptExists } from "./install";
 
 export {
     shell,
-    checkInstalled,
-    commandBuilder
+    checkScriptExists
 }
