@@ -3,10 +3,9 @@ import fs from 'fs'
 
 
 export const checkScriptExists = (pkg: string): boolean => {
-    const platform = os.platform()
-    if (platform === 'win32' && fs.existsSync(`src/lib/pkgManager/scripts/${pkg}.ps1`) ) {
-        return true
-    } else if ((platform === 'darwin' || platform === 'linux') && fs.existsSync(`src/lib/pkgManager/scripts/${pkg}.sh`)) {
+    const ext = os.platform() === 'win32' ? 'ps1' : 'sh'
+    const scriptPath = `src/lib/pkgManager/scripts/${pkg}.${ext}`
+    if (fs.existsSync(scriptPath)) {
         return true
     }
     return false
