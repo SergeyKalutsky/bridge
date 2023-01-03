@@ -28,7 +28,6 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
       oids: await window.git.log()
     })
   }
-  console.log(git.gitDiffs)
   const diff = git.gitDiffs[diffViewFileIndex]
   return (
     <Workspace>

@@ -45,9 +45,10 @@ function Utf8ArrayToStr(array) {
 }
 
 const getFileChanges = async (oid: string, oid_prev: string) => {
-
+  console.log(getProjectDir())
   const A = git.TREE({ ref: oid })
   const B = git.TREE({ ref: oid_prev })
+  console.log('here', A, B, oid, oid_prev)
   // Get a list of the files that changed
   const fileChanges = [];
   await git.walk({
@@ -57,7 +58,15 @@ const getFileChanges = async (oid: string, oid_prev: string) => {
     map: async function (filename, [A, B]) {
 
       if (await A.type() === 'tree') return
-
+      if (B === null) {
+        const Auint8array = await A.content()
+        fileChanges.push({
+          filename: filename,
+          newFile: Utf8ArrayToStr(Auint8array),
+          oldFile: ''
+        })
+        return
+      }
       const Aoid = await A.oid();
       const Boid = await B.oid();
       const Auint8array = await A.content()
@@ -106,6 +115,7 @@ function pull() {
 // done
 function commit() {
   return ipcMain.handle('git:commit', async () => {
+    await git.add({ fs, dir: getProjectDir(), filepath: '.' })
     await git.commit({ fs, dir: getProjectDir(), message: 'test', author })
   })
 }
@@ -141,6 +151,7 @@ function diff() {
   return ipcMain.on('git:diff', async (event, args) => {
     console.log(args)
     const res = await getFileChanges(args.oid, args.oid_prev)
+    console.log(res)
     event.returnValue = res
   })
 }

@@ -21,9 +21,10 @@ const GitMenu = ({ git, setGit }: Props): JSX.Element => {
         break
       }
     }
-    const args = {oid: oid, oid_prev: git.oids[i]}
+    const oid_prev = git.oids[i] === undefined ? '' : git.oids[i]
+    const args = {oid: oid, oid_prev: oid_prev}
     const gitDiffs = await window.git.diff(args)
-    console.log(gitDiffs)
+
     setGit({
       ...git,
       gitDiffs: gitDiffs,
