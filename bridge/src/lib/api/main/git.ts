@@ -60,7 +60,7 @@ function clone() {
     await formGit(true).clone(project.http, project.name).catch(err => console.log(err))
   })
 }
-
+// done (sort of need to replase hash with oid later)
 function log() {
   return ipcMain.on('git:log', async (event) => {
     await formGit().log().then(result => {
@@ -69,19 +69,19 @@ function log() {
       .catch(err => { event.returnValue = []; console.log(err) })
   })
 }
-
+// done
 function pull() {
   return ipcMain.handle('git:pull', async () => {
     await formGit().pull()
   })
 }
-
+// done
 function commit() {
   return ipcMain.handle('git:commit', async () => {
     await formGit().add('./*').commit('test')
   })
 }
-
+// done
 function push() {
   return ipcMain.on('git:push', async () => {
     await formGit().add('./*').commit('test').push()
