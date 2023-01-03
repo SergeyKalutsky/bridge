@@ -59,26 +59,23 @@ const getFileChanges = async (oid: string, oid_prev: string) => {
 
       if (await A.type() === 'tree') return
       if (B === null) {
-        const Auint8array = await A.content()
         fileChanges.push({
           filename: filename,
-          newFile: Utf8ArrayToStr(Auint8array),
+          newFile: Utf8ArrayToStr(await A.content()),
           oldFile: ''
         })
         return
       }
       const Aoid = await A.oid();
       const Boid = await B.oid();
-      const Auint8array = await A.content()
-      const Buint8array = await B.content()
 
       // Skip pairs where the oids are the same
       if (Aoid === Boid) return
 
       fileChanges.push({
         filename: filename,
-        newFile: Utf8ArrayToStr(Auint8array),
-        oldFile: Utf8ArrayToStr(Buint8array)
+        newFile: Utf8ArrayToStr(await A.content()),
+        oldFile: Utf8ArrayToStr(await B.content())
       })
 
     }
