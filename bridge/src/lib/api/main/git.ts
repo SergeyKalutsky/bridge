@@ -56,8 +56,8 @@ const getFileChanges = async (oid: string, oid_prev: string) => {
     dir: getProjectDir(),
     trees: [A, B],
     map: async function (filename, [A, B]) {
+      if (A === null || await A.type() === 'tree') return
 
-      if (await A.type() === 'tree') return
       if (B === null) {
         fileChanges.push({
           filename: filename,
