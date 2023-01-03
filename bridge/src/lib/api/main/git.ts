@@ -54,7 +54,7 @@ function formGit(basedir = false): SimpleGit {
   return git
 }
 
-
+// done
 function clone() {
   return ipcMain.handle('git:clone', async (event, project) => {
     await formGit(true).clone(project.http, project.name).catch(err => console.log(err))
