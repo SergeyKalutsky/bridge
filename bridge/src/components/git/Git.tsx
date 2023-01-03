@@ -5,8 +5,8 @@ import { Git } from './types'
 
 
 const gitDefault = {
-  commits: [],
-  activeHash: '',
+  oids: [],
+  activeOid: '',
   gitDiffs: [{
     filename: '',
     newFile: '',
@@ -21,7 +21,7 @@ const Git = (): JSX.Element => {
     const setInitGit = async () => {
       setGit({
         ...git,
-        commits: await window.git.log()
+        oids: await window.git.log()
       })
     }
     setInitGit()

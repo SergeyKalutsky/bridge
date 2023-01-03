@@ -13,19 +13,28 @@ type Props = {
 const GitMenu = ({ git, setGit }: Props): JSX.Element => {
   const [activeToggle, setActiveToggle] = useState(false)
   const handleToggle = () => { setActiveToggle(!activeToggle) }
-  const onClickCallback = (hash: string) => {
-    const gitDiffs = window.git.diff(hash)
+  const onClickCallback = async (oid: string) => {
+    let i = 0
+    for (const oidA of git.oids) {
+      i += 1
+      if (oid == oidA) {
+        break
+      }
+    }
+    const args = {oid: oid, oid_prev: git.oids[i]}
+    const gitDiffs = await window.git.diff(args)
+    console.log(gitDiffs)
     setGit({
       ...git,
       gitDiffs: gitDiffs,
-      activeHash: hash
+      activeOid: oid
     })
   }
 
-  const elements = git.commits.map((commit) =>
-    <CommitRow hash={commit.hash}
-      key={commit.hash}
-      active={git.activeHash === commit.hash}
+  const elements = git.oids.map((oid) =>
+    <CommitRow oid={oid}
+      key={oid}
+      active={git.activeOid === oid}
       onClickCallback={onClickCallback}
     />
   )

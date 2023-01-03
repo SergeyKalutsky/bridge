@@ -4,26 +4,15 @@ type GitDiff = {
     oldFile: string
 }
 
-type Commit = {
-    author_email?: string,
-    author_name?: string,
-    body?: string,
-    date?: string,
-    hash?: string,
-    message?: string,
-    refs?: string,
-    activeHashRow?: string,
-}
 
 interface Git {
-    activeHash: string
-    commits: Commit[]
+    activeOid: string
+    oids: string[]
     gitDiffs: GitDiff[]
 }
 
 
 export {
     GitDiff,
-    Commit,
     Git
 }

@@ -21,14 +21,14 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
   }, [git.gitDiffs])
 
   const handleIconClick = async () => {
-    await window.git.revert(git.activeHash)
+    // await window.git.revert(git.activeOid)
     window.settings.del('active_project.activePath')
     setGit({
       ...git,
-      commits: await window.git.log()
+      oids: await window.git.log()
     })
   }
-
+  console.log(git.gitDiffs)
   const diff = git.gitDiffs[diffViewFileIndex]
   return (
     <Workspace>

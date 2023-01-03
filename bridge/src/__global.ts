@@ -1,5 +1,5 @@
 import { FileObject } from './components/Editor/types';
-import { Commit, GitDiff } from './components/git/types';
+import { GitDiff } from './components/git/types';
 import { Project } from './components/projects/types';
 import { Package, FileChanges, CreateInfo, ActivePath } from './types';
 
@@ -38,8 +38,8 @@ declare global {
             pull(): Promise<void>;
             push(): Promise<void>;
             commit(): Promise<void>;
-            log(): Promise<Commit[]>;
-            diff(hash: string): GitDiff[];
+            log(): Promise<string[]>;
+            diff(args: {oid: string, oid_prev: string}): Promise<GitDiff[]>;
             init(project_name: string): void;
         };
         terminal: {

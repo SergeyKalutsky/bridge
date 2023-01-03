@@ -9,7 +9,7 @@ interface Props {
 const DropDown = ({ gitDiffs,
     setDiffViewFileIndex,
     diffViewFileIndex }: Props): JSX.Element => {
-
+    console.log(gitDiffs)
     const options = gitDiffs.map((diff, indx) =>
         <option value={indx} key={diff.filename}>
             {diff.filename}
