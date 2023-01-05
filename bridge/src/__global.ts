@@ -34,7 +34,7 @@ declare global {
         };
         git: {
             clone(project: Project): Promise<void>;
-            revert(hash: string): Promise<void>
+            revert(args: {oid: string, oid_prev: string}): Promise<void>
             pull(): Promise<void>;
             push(): Promise<void>;
             commit(): Promise<void>;

@@ -21,7 +21,9 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
   }, [git.gitDiffs])
 
   const handleIconClick = async () => {
-    // await window.git.revert(git.activeOid)
+    const args = {oid: git.oids[0], oid_prev: git.activeOid}
+
+    await window.git.revert(args)
     window.settings.del('active_project.activePath')
     setGit({
       ...git,

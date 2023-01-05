@@ -1,10 +1,26 @@
 import { ipcMain } from 'electron';
-import { store, BASE_DIR } from './storage'
+import { store, BASE_DIR, getProjectDir } from './storage'
 import { FileObject } from '../../../components/Editor/types';
+import git from 'isomorphic-git'
 import util from 'util'
 import path from 'path'
 import fs from 'fs'
 import ncp from 'ncp'
+import glob from 'glob'
+
+
+const removeFromGit = (dir: string) => {
+    const listFiles = function (src, callback) {
+        glob(src + '/**/*.*', callback);
+    };
+    listFiles(dir, async (err, res) => {
+        if (err) throw err
+        for (const filePath of res) {
+            await git.remove({ fs, dir: getProjectDir(), filepath: filePath.replace(getProjectDir() + '/', '') })
+        }
+    });
+}
+
 
 const fsPromises = fs.promises;
 const readFileAsync = util.promisify(fs.readFile)
@@ -71,11 +87,18 @@ function deleteProject() {
 }
 
 function deleteTreeElement() {
-    return ipcMain.on('projects:deletetreeelement', (event, activePath) => {
+    return ipcMain.on('projects:deletetreeelement', async (event, activePath) => {
+        // We need to remove(add) files from git after deleting
+        // since its a isomorphic git, it won't be able to add file to staging
+        // unless we use remove, git.add(..., '.') can only add existing files
         if (activePath.isDirectory) {
             fs.rmSync(activePath.path, { recursive: true });
+            removeFromGit(activePath.path)
         } else {
             fs.unlinkSync(activePath.path)
+            const relFilePath = activePath.path.replace(getProjectDir() + '/', '')
+            console.log(relFilePath)
+            await git.remove({ fs, dir: getProjectDir(), filepath: relFilePath })
         }
     })
 }

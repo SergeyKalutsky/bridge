@@ -1,4 +1,4 @@
-import { store, BASE_DIR } from './storage'
+import { store, BASE_DIR, getProjectDir } from './storage'
 import { ipcMain } from 'electron';
 import path from 'path'
 import git from 'isomorphic-git'
@@ -6,10 +6,6 @@ import http from 'isomorphic-git/http/node'
 import fs from 'fs'
 
 const author = { name: 'SergeyKalutsky', email: 'skalutsky@gmail.com' }
-
-function getProjectDir(): string {
-  return path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
-}
 
 function Utf8ArrayToStr(array) {
   let out, i, c;
@@ -44,11 +40,34 @@ function Utf8ArrayToStr(array) {
   return out;
 }
 
+
+function cleanEmptyFoldersRecursively(folder) {
+  const isDir = fs.statSync(folder).isDirectory();
+  if (!isDir) {
+    return;
+  }
+  let files = fs.readdirSync(folder);
+  if (files.length > 0) {
+    files.forEach(function (file) {
+      const fullPath = path.join(folder, file);
+      cleanEmptyFoldersRecursively(fullPath);
+    });
+
+    // re-evaluate files; after deleting subfolder
+    // we may have parent folder empty now
+    files = fs.readdirSync(folder);
+  }
+  if (files.length == 0) {
+    console.log("removing: ", folder);
+    fs.rmdirSync(folder);
+    return;
+  }
+}
+
+
 const getFileChanges = async (oid: string, oid_prev: string) => {
-  console.log(getProjectDir())
   const A = git.TREE({ ref: oid })
   const B = git.TREE({ ref: oid_prev })
-  console.log('here', A, B, oid, oid_prev)
   // Get a list of the files that changed
   const fileChanges = [];
   await git.walk({
@@ -66,6 +85,7 @@ const getFileChanges = async (oid: string, oid_prev: string) => {
         })
         return
       }
+      if (await A.oid() === await B.oid()) return
 
       fileChanges.push({
         filename: filename,
@@ -78,10 +98,59 @@ const getFileChanges = async (oid: string, oid_prev: string) => {
   return fileChanges
 }
 
-// done
+
+const revertChanges = async (oid: string, oid_revert: string, dir: string) => {
+  console.log({ 'A': oid, 'B': oid_revert })
+  const A = git.TREE({ ref: oid })
+  const B = git.TREE({ ref: oid_revert })
+  await git.walk({
+    fs: fs,
+    dir: dir,
+    trees: [A, B],
+    map: async function (filename, [A, B]) {
+
+      const filePath = path.join(dir, filename)
+      const dirPath = path.dirname(filePath)
+      // If file is now deleted we recreate path(all folders) recursively
+      // and populate file with old content
+      if (A === null) {
+        const oldContent = Utf8ArrayToStr(await B.content())
+        console.log('A', filename, 'recreate with ', oldContent)
+        if (!fs.existsSync(dirPath)) {
+          fs.mkdir(dirPath, { recursive: true }, async (err) => {
+            if (err) throw err;
+          });
+        }
+        fs.writeFile(filePath, oldContent, 'utf8', function (err) {
+          if (err) return console.log(err);
+        });
+        return
+      }
+
+      if (await A.type() === 'tree') return
+      // if the file didn't exist or was deleted we do the same
+      if (B === null) {
+        if (!fs.existsSync(filePath)) return
+        console.log('B', filename, 'delete')
+        fs.unlinkSync(filePath);
+        await git.remove({ fs, dir: getProjectDir(), filepath: filename })
+        return
+      }
+      if (await A.oid() === await B.oid()) return
+      const oldContent = Utf8ArrayToStr(await B.content())
+      console.log('Rectreate', filename, 'with', oldContent)
+      fs.writeFile(filePath, oldContent, 'utf8', function (err) {
+        if (err) return console.log(err);
+      });
+    }
+  })
+  // clean up all remaining empty folders recursively
+  cleanEmptyFoldersRecursively(dir)
+}
+
+
 function clone() {
   return ipcMain.handle('git:clone', async (event, project) => {
-    const dir = getProjectDir()
     await git.clone({
       fs, http,
       dir: path.join(BASE_DIR, store.get('user.login'), project.name),
@@ -89,7 +158,8 @@ function clone() {
     }).then(console.log)
   })
 }
-// done (sort of need to replase hash with oid later)
+
+
 function log() {
   return ipcMain.on('git:log', async (event) => {
     const commits = await git.log({ fs, dir: getProjectDir() })
@@ -98,20 +168,22 @@ function log() {
   })
 }
 
+
 function pull() {
   return ipcMain.handle('git:pull', async () => {
     await git.pull({ fs, http, dir: getProjectDir(), author }).then(console.log)
   })
 }
 
-// done
+
 function commit() {
   return ipcMain.handle('git:commit', async () => {
     await git.add({ fs, dir: getProjectDir(), filepath: '.' })
     await git.commit({ fs, dir: getProjectDir(), message: 'test', author })
   })
 }
-// done
+
+
 function push() {
   return ipcMain.on('git:push', async () => {
     await git.push({
@@ -125,11 +197,17 @@ function push() {
   })
 }
 
+function revert() {
+  return ipcMain.handle('git:revert', async (event, args) => {
+    await revertChanges(args.oid, args.oid_prev, getProjectDir())
+    await git.add({ fs, dir: getProjectDir(), filepath: '.' })
+    await git.commit({ fs, dir: getProjectDir(), message: 'revert', author })
+  })
+}
+
 function diff() {
   return ipcMain.on('git:diff', async (event, args) => {
-    console.log(args)
     const res = await getFileChanges(args.oid, args.oid_prev)
-    console.log(res)
     event.returnValue = res
   })
 }
@@ -142,7 +220,7 @@ function init() {
 
 
 function gitAPI(): void {
-  // revert()
+  revert()
   clone()
   log()
   pull()

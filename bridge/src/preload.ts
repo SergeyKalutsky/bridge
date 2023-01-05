@@ -41,7 +41,7 @@ contextBridge.exposeInMainWorld('git', {
     log: () => ipcRenderer.sendSync('git:log'),
     diff: (args: {oid: string, oid_prev: string}): GitDiff[] => ipcRenderer.sendSync('git:diff', args),
     init: (project_name: string) => ipcRenderer.send('git:init', project_name),
-    revert: (hash: string): Promise<void> => ipcRenderer.invoke('git:revert', hash)
+    revert: (args: {oid: string, oid_prev: string}): Promise<void> => ipcRenderer.invoke('git:revert', args)
 })
 
 

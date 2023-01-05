@@ -26,7 +26,6 @@ const installationPaths = {
 
 
 async function checkInstalled(manager: string, pkgName: string): Promise<boolean> {
-    console.log('here')
     // If we install custom we need to find the installation path, because its a pkg manager
     // and that will save as from reloading applicaitions env values as well as different version
     // conflicts. On windows there is no "good" way to find installation path

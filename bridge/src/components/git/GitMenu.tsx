@@ -25,6 +25,7 @@ const GitMenu = ({ git, setGit }: Props): JSX.Element => {
     const args = {oid: oid, oid_prev: oid_prev}
     const gitDiffs = await window.git.diff(args)
 
+    console.log(oid)
     setGit({
       ...git,
       gitDiffs: gitDiffs,
