@@ -14,6 +14,7 @@ const InputForm = ({ children,
     handleKeyPress,
     onChange }: Props): JSX.Element => {
     const handleFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (value === undefined) return
         event.target.value = value
         event.target.setSelectionRange(0, event.target.value.lastIndexOf('.'))
     }
