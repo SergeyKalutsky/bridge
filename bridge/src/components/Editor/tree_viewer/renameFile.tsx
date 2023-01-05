@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { IDE, FileObject } from "../types";
+import { IDE } from "../types";
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import { InputForm, PopUp, Button } from "../../common";
+import { InputForm, PopUp } from "../../common";
 import path from 'path'
 
 
