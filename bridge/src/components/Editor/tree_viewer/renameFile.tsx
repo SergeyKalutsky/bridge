@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IDE, FileObject } from "../types";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { InputForm, PopUp, Button } from "../../common";
+import path from 'path'
+
 
 interface Props {
     ide: IDE
@@ -21,6 +23,11 @@ const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
         })
         setOpen(false)
     }
+    useEffect(() => {
+        if (ide === undefined) return
+        const setFileName = () => setFilename(path.parse(ide.activePath.path).base)
+        setFileName()
+    })
     return (
         <>
             <MdDriveFileRenameOutline onClick={() => { setOpen(true) }} className="hover:bg-neutral-500 hover:rounded-full h-[25px]" />
@@ -28,7 +35,7 @@ const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
                 open={open}
                 onClose={() => { setOpen(false) }}>
                 <div className="w-4/5">
-                    <InputForm type="text" onChange={(e) => { setFilename(e.target.value) }} placeholder="Введите новое название файла" />
+                    <InputForm value={filename} type="text" onChange={(e) => { setFilename(e.target.value) }} placeholder="Название файла" />
                 </div>
                 <Button onClick={handleClick} btnText="Ок" />
             </PopUp>
