@@ -11,7 +11,6 @@ function Utf8ArrayToStr(array) {
   let out, i, c;
   let char2, char3;
 
-
   out = "";
   const len = array.length;
   i = 0;
