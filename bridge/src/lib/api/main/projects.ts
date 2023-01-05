@@ -107,6 +107,8 @@ function renameFile() {
     return ipcMain.on('projects:renamefile', (event, data) => {
         const newPath = path.join(path.parse(data.activePath.path).dir, data.newName)
         fs.renameSync(data.activePath.path, newPath);
+        store.set('active_project.activePath', { path: newPath, isDirectory: data.activePath.isDirectory })
+        git.remove({ fs, dir: getProjectDir(), filepath: data.activePath.path.replace(getProjectDir() + '/', '') })
         event.returnValue = newPath
     })
 }

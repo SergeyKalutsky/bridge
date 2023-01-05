@@ -14,8 +14,9 @@ interface Props {
 const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
-    const handleClick = async () => {
-        const filePath = window.projects.renameFile({ activePath: ide.activePath, newName: filename });
+    const handleEnter = async (event) => {
+        if (event.key !== 'Enter') return
+        const filePath = window.projects.renameFile({ activePath: ide.activePath, newName: event.target.value });
         updateFileTree({
             ...ide,
             activePath: { isDirectory: ide.activePath.isDirectory, path: filePath },
@@ -24,7 +25,7 @@ const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
         setOpen(false)
     }
     useEffect(() => {
-        if (ide === undefined) return
+        if (ide === undefined || ide.activePath === undefined) return
         const setFileName = () => setFilename(path.parse(ide.activePath.path).base)
         setFileName()
     })
@@ -35,9 +36,8 @@ const RenameFile = ({ ide, updateFileTree }: Props): JSX.Element => {
                 open={open}
                 onClose={() => { setOpen(false) }}>
                 <div className="w-4/5">
-                    <InputForm value={filename} type="text" onChange={(e) => { setFilename(e.target.value) }} placeholder="Название файла" />
+                    <InputForm value={filename} handleKeyPress={handleEnter} type="text" placeholder="Название файла" />
                 </div>
-                <Button onClick={handleClick} btnText="Ок" />
             </PopUp>
         </>
     )

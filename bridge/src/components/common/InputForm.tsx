@@ -3,6 +3,7 @@ interface Props {
     placeholder: string
     type: string
     value?: string
+    handleKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -10,6 +11,7 @@ const InputForm = ({ children,
     placeholder,
     type,
     value,
+    handleKeyPress,
     onChange }: Props): JSX.Element => {
     const handleFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.target.value = value
@@ -22,7 +24,8 @@ const InputForm = ({ children,
                 type={type}
                 placeholder={placeholder}
                 onChange={onChange}
-                onFocus={handleFocus} />
+                onFocus={handleFocus}
+                onKeyDown={handleKeyPress} />
         </div>
     )
 }
