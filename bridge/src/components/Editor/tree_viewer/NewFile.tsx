@@ -10,10 +10,10 @@ interface Props {
 
 
 const NewFile = ({ ide, updateFileTree }: Props): JSX.Element => {
-    const [filename, setFilename] = useState('')
     const [open, setOpen] = useState(false)
-    const handleClick = async () => {
-        await window.projects.createFile({ activePath: ide.activePath, name: filename });
+    const handleEnter = async (event) => {
+        if (event.key !== 'Enter') return
+        await window.projects.createFile({ activePath: ide.activePath, name: event.target.value });
         updateFileTree({
             ...ide,
             files: await window.projects.showFiles()
@@ -27,9 +27,8 @@ const NewFile = ({ ide, updateFileTree }: Props): JSX.Element => {
                 open={open}
                 onClose={() => { setOpen(false) }}>
                 <div className="w-4/5">
-                    <InputForm type="text" onChange={(e) => { setFilename(e.target.value) }} placeholder="Введите название файла" />
+                    <InputForm type="text" handleKeyPress={handleEnter} placeholder="Название файла" />
                 </div>
-                <Button onClick={handleClick} btnText="ОК" />
             </PopUp>
         </>
     )

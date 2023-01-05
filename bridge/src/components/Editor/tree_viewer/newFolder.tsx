@@ -11,10 +11,10 @@ interface Props {
 
 
 const NewFolder = ({ ide, updateFileTree }: Props): JSX.Element => {
-    const [foldername, setfoldername] = useState('')
     const [open, setOpen] = useState(false)
-    const handleClick = async () => {
-        await window.projects.createFolder({ activePath: ide.activePath, name: foldername });
+    const handleEnter = async (event) => {
+        if (event.key !== 'Enter') return
+        await window.projects.createFolder({ activePath: ide.activePath, name: event.target.value });
         updateFileTree({
             ...ide,
             files: await window.projects.showFiles()
@@ -28,9 +28,8 @@ const NewFolder = ({ ide, updateFileTree }: Props): JSX.Element => {
                 open={open}
                 onClose={() => { setOpen(false) }}>
                 <div className="w-4/5">
-                    <InputForm type="text" onChange={(e) => { setfoldername(e.target.value) }} placeholder="Введите название папки" />
+                    <InputForm type="text" handleKeyPress={handleEnter} placeholder="Название папки" />
                 </div>
-                <Button onClick={handleClick} btnText="ОК" />
             </PopUp>
         </>
     )
