@@ -115,14 +115,13 @@ const revertChanges = async (oid: string, oid_revert: string, dir: string) => {
       // and populate file with old content
       if (A === null) {
         const oldContent = Utf8ArrayToStr(await B.content())
-        console.log('A', filename, 'recreate with ', oldContent)
         if (!fs.existsSync(dirPath)) {
           fs.mkdir(dirPath, { recursive: true }, async (err) => {
             if (err) throw err;
           });
         }
         fs.writeFile(filePath, oldContent, 'utf8', function (err) {
-          if (err) return console.log(err);
+          if (err) throw err;
         });
         return
       }
@@ -131,14 +130,14 @@ const revertChanges = async (oid: string, oid_revert: string, dir: string) => {
       // if the file didn't exist or was deleted we do the same
       if (B === null) {
         if (!fs.existsSync(filePath)) return
-        console.log('B', filename, 'delete')
         fs.unlinkSync(filePath);
+        // since add in isomorphic git cant track removed files,
+        // we remove the file manually
         await git.remove({ fs, dir: getProjectDir(), filepath: filename })
         return
       }
       if (await A.oid() === await B.oid()) return
       const oldContent = Utf8ArrayToStr(await B.content())
-      console.log('Rectreate', filename, 'with', oldContent)
       fs.writeFile(filePath, oldContent, 'utf8', function (err) {
         if (err) return console.log(err);
       });
