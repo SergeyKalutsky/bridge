@@ -21,9 +21,10 @@ const buildEditor = async (mode = 'plain_text',
     const onChange = (newValue: string) => {
         window.projects.writeActiveFile({ filepath: path, fileContent: newValue })
     }
+    // If file of type image we do not build AceEditor, just show image instead
     const editorView = mode === 'image' ?
         <div className="position: relative flex-grow flex-shrink basis-0 overflow-scroll">
-            <img src={path} alt="" className="max-w-lg" /></div> :
+            <img src={`data:image/jpeg;base64,${await window.projects.loadimagebase64(path)}`} alt="" className="max-w-lg" /></div> :
         <AceEditor
             mode={mode}
             theme="monokai"

@@ -21,7 +21,8 @@ declare global {
             createFile(createInfo: CreateInfo): Promise<string>;
             createFolder(createInfo: CreateInfo): Promise<string>;
             readActiveFile(filepath: string): Promise<string>;
-            
+            loadimagebase64(filepath: string): Promise<string>
+
             mkbasedir(data: any): Promise<any>;
             getLocalProjectsNames(): string[];
             delete(name: string): void;
@@ -34,12 +35,12 @@ declare global {
         };
         git: {
             clone(project: Project): Promise<void>;
-            revert(args: {oid: string, oid_prev: string}): Promise<void>
+            revert(args: { oid: string, oid_prev: string }): Promise<void>
             pull(): Promise<void>;
             push(): Promise<void>;
             commit(): Promise<void>;
             log(): Promise<string[]>;
-            diff(args: {oid: string, oid_prev: string}): Promise<GitDiff[]>;
+            diff(args: { oid: string, oid_prev: string }): Promise<GitDiff[]>;
             init(project_name: string): void;
         };
         terminal: {

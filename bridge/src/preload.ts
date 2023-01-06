@@ -14,11 +14,12 @@ contextBridge.exposeInMainWorld('settings', {
     get: (key: string): any => ipcRenderer.sendSync('settings:get', key),
     del: (key: string): any => ipcRenderer.invoke('settings:del', key),
     logPath: (): string => ipcRenderer.sendSync('settings:logpath'),
-    platform:  (): string => ipcRenderer.sendSync('settings:platform'),
+    platform: (): string => ipcRenderer.sendSync('settings:platform'),
 
 })
 
 contextBridge.exposeInMainWorld('projects', {
+    loadimagebase64: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:loadimagebase64', filepath),
     mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
     delete: (project_name): void => ipcRenderer.send('projects:delete', project_name),
@@ -39,9 +40,9 @@ contextBridge.exposeInMainWorld('git', {
     push: (): Promise<void> => ipcRenderer.invoke('git:push'),
     commit: (): Promise<void> => ipcRenderer.invoke('git:commit'),
     log: () => ipcRenderer.sendSync('git:log'),
-    diff: (args: {oid: string, oid_prev: string}): GitDiff[] => ipcRenderer.sendSync('git:diff', args),
+    diff: (args: { oid: string, oid_prev: string }): GitDiff[] => ipcRenderer.sendSync('git:diff', args),
     init: (project_name: string) => ipcRenderer.send('git:init', project_name),
-    revert: (args: {oid: string, oid_prev: string}): Promise<void> => ipcRenderer.invoke('git:revert', args)
+    revert: (args: { oid: string, oid_prev: string }): Promise<void> => ipcRenderer.invoke('git:revert', args)
 })
 
 

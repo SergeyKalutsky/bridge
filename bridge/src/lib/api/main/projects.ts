@@ -56,6 +56,13 @@ async function walkAsync(dir: string): Promise<FileObject[]> {
 }
 
 
+function loadimagebase64() {
+    return ipcMain.handle('projects:loadimagebase64', async (event, filepath) => {
+        return await readFileAsync(filepath, { encoding: 'base64' });
+    })
+}
+
+
 function mkbasedir() {
     return ipcMain.on('projects:mkbasedir', (event, arg) => {
         const filePath = path.join(BASE_DIR, arg.user.login)
@@ -187,6 +194,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    loadimagebase64()
     renameFile()
     copyFile()
     mkbasedir()
