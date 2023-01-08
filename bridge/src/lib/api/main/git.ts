@@ -65,6 +65,7 @@ function cleanEmptyFoldersRecursively(folder) {
 
 
 const getFileChanges = async (oid: string, oid_prev: string) => {
+  const imgExt = ['apng', 'avif', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp']
   const A = git.TREE({ ref: oid })
   const B = git.TREE({ ref: oid_prev })
   // Get a list of the files that changed
@@ -75,6 +76,17 @@ const getFileChanges = async (oid: string, oid_prev: string) => {
     trees: [A, B],
     map: async function (filename, [A, B]) {
       if (A === null || await A.type() === 'tree') return
+      const arr = filename.split('.')
+      const ext = arr[arr.length - 1]
+
+      if (imgExt.includes(ext)) {
+        fileChanges.push({
+          filename: filename,
+          newFile: 'raw bytes++',
+          oldFile: ''
+        })
+        return
+      }
 
       if (B === null) {
         fileChanges.push({
