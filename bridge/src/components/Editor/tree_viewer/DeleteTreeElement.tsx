@@ -29,9 +29,8 @@ const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
             <PopUp
                 open={open}
                 onClose={() => { setOpen(false) }}>
-                <div>Файл/Директория будут удалены</div>
+                <div>Удалить папку/файл?</div>
                 <Button onClick={handleClick} btnText="Удалить" />
-                <Button onClick={() => { setOpen(false) }} btnText="Закрыть" />
             </PopUp>
         </>
     )
