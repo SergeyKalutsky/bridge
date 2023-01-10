@@ -1,10 +1,9 @@
 import shell from "./shell";
-import { checkScriptExists } from "./install";
-import { checkInstalled, commandBuilder  } from "./cmds";
+import * as installCommand from "./installCommand";
+import * as checkInstalled from './checkInstalled'
 
 export {
     shell,
-    checkScriptExists, 
     checkInstalled,
-    commandBuilder
+    installCommand
 }

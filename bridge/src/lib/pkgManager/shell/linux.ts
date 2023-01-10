@@ -1,3 +1,4 @@
+// LINUX HAS NOT BEEN REFACTORED
 import { spawn } from 'child_process';
 import { instance } from './types'
 import fs from 'fs';

@@ -1,4 +1,5 @@
-import { shell, checkInstalled, commandBuilder } from '../../pkgManager'
+/*eslint import/namespace: ['error', { allowComputed: true }]*/
+import { shell, installCommand, checkInstalled } from '../../pkgManager'
 import { ipcMain } from 'electron';
 import { LOG_PATH } from './storage';
 import util from 'util'
@@ -10,7 +11,7 @@ const readFileAsync = util.promisify(fs.readFile)
 function check() {
     return ipcMain.on('pkg:check', async (event, pkgs) => {
         pkgs = await Promise.all(pkgs.map(async (pkg) => {
-            pkg.installed = await checkInstalled(pkg.manager, pkg.name)
+            pkg.installed = await checkInstalled[pkg.manager]({ name: pkg.name })
             return pkg
         }))
         event.reply('pkg:check', pkgs)
@@ -41,9 +42,9 @@ function pkgInstall() {
         const updatePkgs = []
         for (const pkg of pkgs) {
             if (!pkg.installed) {
-                const cmd = commandBuilder[pkg.manager](pkg.name, pkg.verison)
+                const cmd = installCommand[pkg.manager]({ name: pkg.name, version: pkg.verison })
                 await shell({ command: cmd.install, path: LOG_PATH, elevate: cmd.elevate })
-                pkg.installed = await checkInstalled(pkg.manager, pkg.name)
+                pkg.installed = await checkInstalled[pkg.manager]({ pkgName: pkg.name })
             }
             updatePkgs.push(pkg)
         }
