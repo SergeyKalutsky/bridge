@@ -110,20 +110,6 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                             onChange={(e) => { setProject({ ...project, description: e.target.value }) }} />
                     </div>
                     <div className='w-full h-1/7 gap-y-2 flex flex-col'>
-                        {/* <div>
-                            <input type="checkbox"
-                                className='scale-150'
-                                checked={checked == 0}
-                                onChange={() => { setChecked(0); setProject({ ...project, isclassroom: 0 }) }} />
-                            <label className='ml-2 text-xl font-medium text-white'>Личный проект</label>
-                        </div>
-                        <div>
-                            <input type="checkbox"
-                                className='scale-150'
-                                checked={checked == 1}
-                                onChange={() => { setChecked(1); setProject({ ...project, isclassroom: 1 }) }} />
-                            <label className='ml-2 text-xl font-medium text-white'>Для обучения</label>
-                        </div> */}
                         <div className='flex justify-center items-center w-[300px] h-[44px]'>
                             <select className="text-black w-full bg-white h-3/5 rounded-lg" value={option}
                                 onChange={(e) => {

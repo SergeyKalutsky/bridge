@@ -42,8 +42,11 @@ function pkgInstall() {
         const updatePkgs = []
         for (const pkg of pkgs) {
             if (!pkg.installed) {
-                const cmd = installCommand[pkg.manager]({ name: pkg.name, version: pkg.verison })
-                await shell({ command: cmd.install, path: LOG_PATH, elevate: cmd.elevate })
+                // check if been installed previously
+                if (!(await checkInstalled[pkg.manager]({ pkgName: pkg.name }))){
+                    const cmd = installCommand[pkg.manager]({ name: pkg.name, version: pkg.verison })
+                    await shell({ command: cmd.install, path: LOG_PATH, elevate: cmd.elevate })
+                }
                 pkg.installed = await checkInstalled[pkg.manager]({ pkgName: pkg.name })
             }
             updatePkgs.push(pkg)
