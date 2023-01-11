@@ -12,7 +12,6 @@ interface Prop {
     addProject: (project: Project) => void
 }
 
-const libs = ['Python', 'Python Flask', 'Python Discord', 'Python Pgzero']
 const dummyProject: Project = {
     id: null,
     islocal: true,
@@ -60,9 +59,9 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             <HeaderPath path={`Создание проекта / ${stageMap[stage].name}`} />
             <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll' >
                 <div className='w-3/5 h-2/3'>
-                    <div className='w-full h-1/7 gap-y-2 flex flex-col'>
+                    {/* <div className='w-full h-1/7 gap-y-2 flex flex-col'> */}
                         {stageMap[stage].jsx}
-                    </div>
+                    {/* </div> */}
                 </div>
             </div >
             <div className='bg-zinc-600 h-[50px] px-20 flex items-center drop-shadow-md'>
