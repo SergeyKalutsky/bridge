@@ -29,19 +29,31 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [stage, setStage] = useState(0)
     const stageMap = [{
         name: 'Тип проекта',
-        jsx: <ProjectsSelectType projectCreate={projectCreate} setProjectCreate={setProjectCreate} setDisabled={setDisabled}/>
+        jsx: <ProjectsSelectType
+            projectCreate={projectCreate}
+            setProjectCreate={setProjectCreate}
+            setDisabled={setDisabled} />
     },
     {
         name: 'Описание',
-        jsx: <ProjectsDescription projectCreate={projectCreate} setProjectCreate={setProjectCreate} setDisabled={setDisabled}/>
+        jsx: <ProjectsDescription
+            projectCreate={projectCreate}
+            setProjectCreate={setProjectCreate}
+            setDisabled={setDisabled} />
     },
     {
         name: 'GitHub',
-        jsx: <ProjectsGithub projectCreate={projectCreate} setProjectCreate={setProjectCreate} setDisabled={setDisabled}/>
+        jsx: <ProjectsGithub
+            projectCreate={projectCreate}
+            setProjectCreate={setProjectCreate}
+            setDisabled={setDisabled} />
     },
     {
         name: 'Установка',
-        jsx: <ProjectsInstall projectCreate={projectCreate} setProjectCreate={setProjectCreate} setDisabled={setDisabled}/>
+        jsx: <ProjectsInstall
+            projectCreate={projectCreate}
+            setProjectCreate={setProjectCreate}
+            setDisabled={setDisabled} />
     }]
     return (
         <>
