@@ -1,11 +1,7 @@
-import { Project } from '../types'
+import { createProjectProp } from './types'
 
-interface Prop {
-    projectCreate: Project,
-    setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
-}
 
-export function ProjectsSelectType({ projectCreate, setProjectCreate }: Prop) {
+export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
     return (
         <>{projectCreate.name}</>
     )

@@ -1,14 +1,10 @@
-import { Project } from '../types'
+import { createProjectProp } from './types'
 import { useState, useEffect } from 'react'
 import { Packages, Logs, Button } from '../../../components/common'
 
-interface Prop {
-    projectCreate: Project,
-    setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
-}
 
 
-export function ProjectsInstall({ projectCreate, setProjectCreate }: Prop): JSX.Element {
+export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
     // const [pkgs, setPkgs] = useState<Package[]>(templates[libs[0]].pkgs)
     useEffect(() => {
         // window.pkg.check(templates[libs[0]].pkgs)

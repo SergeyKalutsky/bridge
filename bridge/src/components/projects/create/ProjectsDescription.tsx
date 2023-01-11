@@ -1,12 +1,8 @@
-import { Project } from '../types'
+import { createProjectProp } from './types' 
 import { InputForm, } from '../../common'
 import { LoadingIcon } from '../../common/Icons'
 import { useState, useEffect } from 'react'
 
-interface Prop {
-    projectCreate: Project,
-    setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
-}
 
 function isLatinString(s: string): boolean {
     for (let i = s.length; i--;) {
@@ -36,7 +32,7 @@ function projectNameError(name: string): string {
 }
 
 
-export function ProjectsDescription({ projectCreate, setProjectCreate }: Prop) {
+export function ProjectsDescription({ projectCreate, setProjectCreate }: createProjectProp) {
     const [error, setError] = useState<string>('')
     const loadInfo = <><LoadingIcon />
         <div className='text-lg text-slate-50 font-medium'>Установка...</div></>

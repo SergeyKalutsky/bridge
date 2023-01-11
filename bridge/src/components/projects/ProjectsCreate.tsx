@@ -25,22 +25,23 @@ const dummyProject: Project = {
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [projectCreate, setProjectCreate] = useState<Project>(dummyProject)
+    const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
     const stageMap = [{
         name: 'Тип проекта',
-        jsx: <ProjectsSelectType projectCreate={projectCreate} setProjectCreate={setProjectCreate} />
+        jsx: <ProjectsSelectType projectCreate={projectCreate} setProjectCreate={setProjectCreate} setDisabled={setDisabled}/>
     },
     {
         name: 'Описание',
-        jsx: <ProjectsDescription projectCreate={projectCreate} setProjectCreate={setProjectCreate} />
+        jsx: <ProjectsDescription projectCreate={projectCreate} setProjectCreate={setProjectCreate} setDisabled={setDisabled}/>
     },
     {
         name: 'GitHub',
-        jsx: <ProjectsGithub projectCreate={projectCreate} setProjectCreate={setProjectCreate} />
+        jsx: <ProjectsGithub projectCreate={projectCreate} setProjectCreate={setProjectCreate} setDisabled={setDisabled}/>
     },
     {
         name: 'Установка',
-        jsx: <ProjectsInstall projectCreate={projectCreate} setProjectCreate={setProjectCreate} />
+        jsx: <ProjectsInstall projectCreate={projectCreate} setProjectCreate={setProjectCreate} setDisabled={setDisabled}/>
     }]
     return (
         <>
@@ -53,9 +54,9 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                 </div>
             </div >
             <div className='bg-zinc-600 h-[50px] px-20 flex items-center drop-shadow-md'>
-                <Button onClick={() => setStage(stage - 1)} disabled={stage < 1}>{'<- Назад'}</Button>
+                <Button onClick={() => setStage(stage - 1)} disabled={stage < 1 || disabled}>{'<- Назад'}</Button>
                 <div className='grow'></div>
-                <Button onClick={() => { setStage(stage + 1) }} disabled={stage > 2}>{'Далее ->'}</Button>
+                <Button onClick={() => { setStage(stage + 1) }} disabled={stage > 2 || disabled}>{'Далее ->'}</Button>
             </div>
         </>
     )

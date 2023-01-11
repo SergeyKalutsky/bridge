@@ -1,10 +1,5 @@
-import { Project } from '../types'
+import { createProjectProp } from './types'
 
-interface Prop {
-    projectCreate: Project,
-    setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
-}
-
-export function ProjectsGithub({ projectCreate, setProjectCreate }: Prop): JSX.Element {
+export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
     return (<></>)
 }
