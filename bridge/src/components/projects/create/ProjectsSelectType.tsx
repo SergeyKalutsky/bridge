@@ -1,8 +1,11 @@
+import { InputForm } from '../../../components/common'
 import { createProjectProp } from './types'
 
 
 export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
     return (
-        <>{projectCreate.name}</>
+        <><InputForm
+            placeholder='Введите тип проетка'
+            type='text'></InputForm></>
     )
 }
