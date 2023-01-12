@@ -21,17 +21,19 @@ function ProjectTypeRow({ projectName, roundTop, setProjectName }:
 
 }
 
-function ProjecTypeRowSelected({ projectName, setProjectName, projectCreate, setProjectCreate }:
+function ProjecTypeRowSelected({ projectName, setProjectName, projectCreate, setProjectCreate, setProjectRows }:
     {
         projectName: string,
         setProjectName: React.Dispatch<React.SetStateAction<string>>
         projectCreate: Project
         setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
+        setProjectRows: React.Dispatch<React.SetStateAction<JSX.Element[]>>
     }): JSX.Element {
     const onclick = () => {
         setProjectName('')
         projectCreate.typeName = ''
         setProjectCreate(projectCreate)
+        setProjectRows([])
     }
     return (
         <>
@@ -93,7 +95,8 @@ export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisable
             projectName={projectName}
             setProjectName={setProjectName}
             projectCreate={projectCreate}
-            setProjectCreate={setProjectCreate} />
+            setProjectCreate={setProjectCreate}
+            setProjectRows={setProjectRows} />
     }
     return (
         <>
@@ -104,9 +107,11 @@ export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisable
                 classInput='border-none pl-1'>
                 {<BiSearch style={{ color: '#5A5A6E', width: 28, height: 30, paddingLeft: 5, backgroundColor: '#fafafa' }} />}
             </InputForm>
-            <div className='mt-10  w-full h-4/5 bg-zinc-50 rounded-lg overflow-scroll'>
-                {projectRows}
-            </div>
+            {projectRows !== undefined && projectRows.length > 0 ?
+                <div className='mt-10  w-full h-4/5 bg-zinc-50 rounded-lg overflow-scroll'>
+                    {projectRows}
+                </div> :
+                null}
         </>
     )
 }
