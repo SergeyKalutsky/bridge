@@ -11,7 +11,7 @@ function ProjectTypeRow({ projectName, roundTop, setProjectName }:
         roundTop: boolean,
         setProjectName: React.Dispatch<React.SetStateAction<string>>
     }): JSX.Element {
-    const rounded = roundTop ? 'rounded-t-lg' : ''
+    const rounded = roundTop ? 'rounded-t-l-lg' : ''
     return (<div
         onClick={() => setProjectName(projectName)}
         className={`pl-5 hover: cursor-pointer hover:bg-sky-700/75 hover:text-slate-200 text-slate-700 flex items-center w-full h-[40px] ${rounded}`}>
@@ -39,28 +39,31 @@ function ProjecTypeRowSelected({ projectName, setProjectName }:
 
 
 export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
-    const libs = ['🐍 Python', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero']
+    const libs = ['🐍 Python', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero']
     const [projectRows, setProjectRows] = useState<JSX.Element[]>()
     const [projectName, setProjectName] = useState('')
 
-    useEffect(() => {
-        if (projectName !== '') {
-            console.log('here')
-            setDisabled(false)
-        }
-        setDisabled(true)
-    }, [projectName])
+    // useEffect(() => {
+    //     if (projectName !== '') {
+    //         console.log('here')
+    //         setDisabled(false)
+    //     }
+    //     setDisabled(true)
+    // }, [projectName])
 
     const onChange = (e) => {
         const projects = []
         for (const project of libs) {
+            console.log(project.toLowerCase().includes(e.target.value.toLowerCase()))
             if (e.target.value.length > 2 && project.toLowerCase().includes(e.target.value.toLowerCase())) {
                 projects.push(project)
+                console.log('here')
             }
         }
         const jsx = projects.map((name: string, index: number) =>
             <ProjectTypeRow projectName={name} roundTop={index == 0} key={index} setProjectName={setProjectName} />
         )
+        console.log(projects)
         setProjectRows(jsx)
     }
     if (projectName !== '') {
@@ -75,7 +78,7 @@ export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisable
                 classInput='border-none pl-1'>
                 {<BiSearch style={{ color: '#71717a', width: 28, height: 30, paddingLeft: 5, backgroundColor: '#d4d4d8' }} />}
             </InputForm>
-            <div className='mt-10  w-full h-4/5 bg-zinc-300 rounded-lg'>
+            <div className='mt-10  w-full h-4/5 bg-zinc-300 rounded-lg overflow-scroll'>
                 {projectRows}
             </div>
         </>
