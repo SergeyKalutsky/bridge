@@ -28,13 +28,13 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
     const stageMap = [
-        {
-            name: 'Тип проекта',
-            jsx: <ProjectsSelectType
-                projectCreate={projectCreate}
-                setProjectCreate={setProjectCreate}
-                setDisabled={setDisabled} />
-        },
+        // {
+        //     name: 'Тип проекта',
+        //     jsx: <ProjectsSelectType
+        //         projectCreate={projectCreate}
+        //         setProjectCreate={setProjectCreate}
+        //         setDisabled={setDisabled} />
+        // },
         {
             name: 'Описание',
             jsx: <ProjectsDescription
@@ -66,10 +66,14 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                     {/* </div> */}
                 </div>
             </div >
-            <div className='bg-zinc-600 h-[50px] px-20 flex items-center drop-shadow-md'>
-                <Button onClick={() => setStage(stage - 1)} disabled={stage < 1}>{'<- Назад'}</Button>
+            <div className='bg-zinc-600 h-[60px] px-20 flex items-center drop-shadow-md'>
+                <div className='w-[120px] h-[40px]'>
+                    <Button onClick={() => setStage(stage - 1)} disabled={stage < 1}>{'<- Назад'}</Button>
+                </div>
                 <div className='grow'></div>
-                <Button onClick={() => { setStage(stage + 1) }} disabled={stage > 2 || disabled}>{'Далее ->'}</Button>
+                <div className='w-[120px] h-[40px]'>
+                    <Button onClick={() => { setStage(stage + 1) }} disabled={stage > 2 || disabled}>{'Далее ->'}</Button>
+                </div>
             </div>
         </>
     )

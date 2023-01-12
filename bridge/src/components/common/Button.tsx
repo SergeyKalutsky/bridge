@@ -4,7 +4,7 @@ interface Props {
     onClick?: (e?) => void
     disabled?: boolean
     theme?: string
-    width?: string
+    width?: number
     height?: number
 }
 
@@ -32,8 +32,8 @@ const Button = ({ children,
     height }: Props): JSX.Element => {
     const style = theme === undefined ? themes['default'] : themes[theme]
     const disabledStyle = disabled ? 'cursor-not-allowed bg-slate-900' : style['hover']
-    const w = 'w-32'
-    const h = `h-${height}`
+    const w = `w-full`
+    const h = `h-full`
     return (
         <button disabled={disabled}
             className={`${disabledStyle} ${style['base']} ${w} ${h} font-medium text-xl focus:outline-none flex flex-row justify-center items-center`}

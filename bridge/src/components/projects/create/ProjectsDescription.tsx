@@ -1,6 +1,7 @@
 import { createProjectProp } from './types'
 import { InputForm, } from '../../common'
 import { useState, useEffect } from 'react'
+import { Button } from '../../common'
 
 
 function isLatinString(s: string): boolean {
@@ -49,8 +50,16 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
         setError('')
         setDisabled(false)
     }
+    const onClick = () => {
+        console.log('click')
+    }
     return (
-        <div className='w-full h-4/7 gap-y-6 flex flex-col'>
+        <div className='w-full h-4/7 gap-y-4 flex flex-col'>
+            <div className='w-full flex justify-center items-center'>
+                <div className='w-1/2 h-[40px]'>
+                    <Button width={24} btnText='Загрузить изображение' onClick={onClick}/>
+                </div>
+            </div>
             <span className='text-stone-50 font-medium text-xl h-[30px]'>{error}</span>
             <div className='w-full'>
                 <InputForm
@@ -62,9 +71,9 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
             </div>
             <textarea placeholder='Описание'
                 className='w-full pl-4 pt-2 bg-zinc-50 placeholder-slate-500 font-medium text-slate-700 h-[150px] text-xl rounded-lg focus:outline-none'
-                onChange={(e) => { setProjectCreate({ ...projectCreate, description: e.target.value }) }} 
+                onChange={(e) => { setProjectCreate({ ...projectCreate, description: e.target.value }) }}
                 value={projectCreate.description}
-                />
+            />
         </div>
     )
 }
