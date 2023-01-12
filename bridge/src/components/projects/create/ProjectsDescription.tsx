@@ -60,8 +60,11 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
                     value={projectCreate.name}
                     onChange={onChange} />
             </div>
-            <textarea placeholder='Описание' className='w-full pl-4 pt-2 bg-zinc-50 placeholder-slate-500 font-medium text-slate-700 h-[150px] text-xl rounded-lg focus:outline-none'
-                onChange={(e) => { setProjectCreate({ ...projectCreate, description: e.target.value }) }} />
+            <textarea placeholder='Описание'
+                className='w-full pl-4 pt-2 bg-zinc-50 placeholder-slate-500 font-medium text-slate-700 h-[150px] text-xl rounded-lg focus:outline-none'
+                onChange={(e) => { setProjectCreate({ ...projectCreate, description: e.target.value }) }} 
+                value={projectCreate.description}
+                />
         </div>
     )
 }
