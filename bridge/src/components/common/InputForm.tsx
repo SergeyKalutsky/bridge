@@ -24,7 +24,7 @@ export default function InputForm({ children,
         event.target.setSelectionRange(0, event.target.value.lastIndexOf('.'))
     }
     const defaultClassInput = 'bg-zinc-300 pl-3 pr-3 pt-2 pb-2 text-xl w-full text-slate-700 placeholder-slate-500 border border-neutral-400 rounded-lg focus:outline-none '
-    const defaultClassDiv = 'flex items-center justify-start bg-white w-full rounded-lg focus:outline-none bg-zinc-300 '
+    const defaultClassDiv = 'flex items-center justify-start w-full rounded-lg focus:outline-none bg-zinc-300 '
     return (
         <div className={defaultClassDiv + classDiv}>
             {children}
