@@ -33,7 +33,8 @@ export default function InputForm({ children,
                 placeholder={placeholder}
                 onChange={onChange}
                 onFocus={handleFocus}
-                onKeyDown={handleKeyPress} />
+                onKeyDown={handleKeyPress} 
+                value={value}/>
         </div>
     )
 }
