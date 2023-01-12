@@ -5,6 +5,7 @@ type Project = {
     islocal: boolean
     http: string
     description?: string
+    typeName?: string
 }
 
 interface UserProjects {

@@ -6,6 +6,8 @@ import { Packages, Logs, Button } from '../../../components/common'
 
 export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
     // const [pkgs, setPkgs] = useState<Package[]>(templates[libs[0]].pkgs)
+    // const loadInfo = <><LoadingIcon />
+    //     <div className='text-lg text-slate-50 font-medium'>Установка...</div></>
     useEffect(() => {
         // window.pkg.check(templates[libs[0]].pkgs)
         window.shared.incomingData("pkg:check", (pkgs) => {

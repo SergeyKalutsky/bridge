@@ -4,7 +4,6 @@ import { Project } from '../types'
 import { InputForm } from '../../../components/common'
 import { createProjectProp } from './types'
 import { useEffect, useState } from 'react'
-import ProjectsCreate from '../ProjectsCreate'
 
 
 function ProjectTypeRow({ projectName, roundTop, setProjectName }:
@@ -31,7 +30,7 @@ function ProjecTypeRowSelected({ projectName, setProjectName, projectCreate, set
     }): JSX.Element {
     const onclick = () => {
         setProjectName('')
-        projectCreate.name = ''
+        projectCreate.typeName = ''
         setProjectCreate(projectCreate)
     }
     return (
@@ -58,18 +57,18 @@ export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisable
     const [projectName, setProjectName] = useState('')
 
     useEffect(() => {
-        if (projectCreate.name !== '') {
+        if (projectCreate.typeName !== '') {
             setDisabled(false)
-            setProjectName(projectCreate.name)
+            setProjectName(projectCreate.typeName)
             return
         }
         if (projectName !== '') {
             setDisabled(false)
-            projectCreate.name = projectName
+            projectCreate.typeName = projectName
             setProjectCreate(projectCreate)
             return
         }
-        projectCreate.name = ''
+        projectCreate.typeName = ''
         setProjectCreate(projectCreate)
         setDisabled(true)
     }, [projectName])
@@ -103,9 +102,9 @@ export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisable
                 placeholder='Введите тип проекта'
                 type='text'
                 classInput='border-none pl-1'>
-                {<BiSearch style={{ color: '#5A5A6E', width: 28, height: 30, paddingLeft: 5, backgroundColor: '#d4d4d8' }} />}
+                {<BiSearch style={{ color: '#5A5A6E', width: 28, height: 30, paddingLeft: 5, backgroundColor: '#fafafa' }} />}
             </InputForm>
-            <div className='mt-10  w-full h-4/5 bg-zinc-300 rounded-lg overflow-scroll'>
+            <div className='mt-10  w-full h-4/5 bg-zinc-50 rounded-lg overflow-scroll'>
                 {projectRows}
             </div>
         </>

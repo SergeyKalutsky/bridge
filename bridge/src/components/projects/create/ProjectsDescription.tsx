@@ -1,6 +1,5 @@
-import { createProjectProp } from './types' 
+import { createProjectProp } from './types'
 import { InputForm, } from '../../common'
-import { LoadingIcon } from '../../common/Icons'
 import { useState, useEffect } from 'react'
 
 
@@ -32,22 +31,36 @@ function projectNameError(name: string): string {
 }
 
 
-export function ProjectsDescription({ projectCreate, setProjectCreate }: createProjectProp) {
+export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
     const [error, setError] = useState<string>('')
-    const loadInfo = <><LoadingIcon />
-        <div className='text-lg text-slate-50 font-medium'>Установка...</div></>
-    const handleClick = (e) => {
-        if (projectNameError(projectCreate.name) !== '') return
+    useEffect(() => {
+        if (projectCreate.name !== '') return
+        setDisabled(true)
+    }, [])
+
+    const onChange = (e) => {
+        setProjectCreate({ ...projectCreate, name: e.target.value })
+        const error = projectNameError(e.target.value)
+        if (error !== '') {
+            setError('⚠️ ' + error)
+            setDisabled(true)
+            return
+        }
         setError('')
+        setDisabled(false)
     }
     return (
-        <div className='w-full h-4/7 gap-y-2 flex flex-col'>
-            <span className='text-red-400 font-medium text-xl'>{error}</span>
-            <div className='w-[450px]'>
-                <InputForm type="text" placeholder='Название'
-                    onChange={(e) => { setProjectCreate({ ...projectCreate, name: e.target.value }) }} />
+        <div className='w-full h-4/7 gap-y-6 flex flex-col'>
+            <span className='text-stone-50 font-medium text-xl h-[30px]'>{error}</span>
+            <div className='w-full'>
+                <InputForm
+                    type="text"
+                    placeholder='Название'
+                    classInput='border-none pl-4'
+                    value={projectCreate.name}
+                    onChange={onChange} />
             </div>
-            <textarea placeholder='Описание' className='w-[450px] h-[150px] text-xl rounded-lg focus:outline-none'
+            <textarea placeholder='Описание' className='w-full pl-4 pt-2 bg-zinc-50 placeholder-slate-500 font-medium text-slate-700 h-[150px] text-xl rounded-lg focus:outline-none'
                 onChange={(e) => { setProjectCreate({ ...projectCreate, description: e.target.value }) }} />
         </div>
     )
