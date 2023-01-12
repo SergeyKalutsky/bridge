@@ -1,8 +1,10 @@
 import { ImCross } from 'react-icons/im'
 import { BiSearch } from 'react-icons/bi'
+import { Project } from '../types'
 import { InputForm } from '../../../components/common'
 import { createProjectProp } from './types'
 import { useEffect, useState } from 'react'
+import ProjectsCreate from '../ProjectsCreate'
 
 
 function ProjectTypeRow({ projectName, roundTop, setProjectName }:
@@ -20,18 +22,25 @@ function ProjectTypeRow({ projectName, roundTop, setProjectName }:
 
 }
 
-function ProjecTypeRowSelected({ projectName, setProjectName }:
+function ProjecTypeRowSelected({ projectName, setProjectName, projectCreate, setProjectCreate }:
     {
         projectName: string,
         setProjectName: React.Dispatch<React.SetStateAction<string>>
+        projectCreate: Project
+        setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
     }): JSX.Element {
+    const onclick = () => {
+        setProjectName('')
+        projectCreate.name = ''
+        setProjectCreate(projectCreate)
+    }
     return (
         <>
             <div className='w-full h-[60px] bg-sky-700/75 flex items-center rounded-lg border-2 border-sky-800'>
                 <div className='pl-5 w-1/2 text-slate-100 text-2xl'>{projectName}</div>
                 <div className='pr-6 w-1/2 text-slate-200 flex items-center justify-end'>
                     <div className='hover: cursor-pointer'>
-                        <ImCross onClick={() => setProjectName('')} style={{ justifySelf: 'end', width: 15, height: 15 }} />
+                        <ImCross onClick={onclick} style={{ justifySelf: 'end', width: 15, height: 15 }} />
                     </div>
                 </div>
             </div>
@@ -48,29 +57,44 @@ export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisable
     const [projectRows, setProjectRows] = useState<JSX.Element[]>()
     const [projectName, setProjectName] = useState('')
 
-    // useEffect(() => {
-    //     if (projectName !== '') {
-    //         console.log('here')
-    //         setDisabled(false)
-    //     }
-    //     setDisabled(true)
-    // }, [projectName])
+    useEffect(() => {
+        if (projectCreate.name !== '') {
+            setDisabled(false)
+            setProjectName(projectCreate.name)
+            return
+        }
+        if (projectName !== '') {
+            setDisabled(false)
+            projectCreate.name = projectName
+            setProjectCreate(projectCreate)
+            return
+        }
+        projectCreate.name = ''
+        setProjectCreate(projectCreate)
+        setDisabled(true)
+    }, [projectName])
 
     const onChange = (e) => {
         const projects = []
         for (const project of libs) {
-            console.log(project.toLowerCase().includes(e.target.value.toLowerCase()))
             if (e.target.value.length > 2 && project.toLowerCase().includes(e.target.value.toLowerCase())) {
                 projects.push(project)
             }
         }
         const jsx = projects.map((name: string, index: number) =>
-            <ProjectTypeRow projectName={name} roundTop={index == 0} key={index} setProjectName={setProjectName} />
+            <ProjectTypeRow projectName={name}
+                roundTop={index == 0}
+                key={index}
+                setProjectName={setProjectName} />
         )
         setProjectRows(jsx)
     }
     if (projectName !== '') {
-        return <ProjecTypeRowSelected projectName={projectName} setProjectName={setProjectName} />
+        return <ProjecTypeRowSelected
+            projectName={projectName}
+            setProjectName={setProjectName}
+            projectCreate={projectCreate}
+            setProjectCreate={setProjectCreate} />
     }
     return (
         <>
