@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
+import { Octokit } from "@octokit/core"
 import { store, BASE_DIR, getProjectDir } from './storage'
-import { FileObject } from '../../../components/Editor/types';
+import { FileObject } from '../../components/Editor/types';
 import git from 'isomorphic-git'
 import util from 'util'
 import path from 'path'
@@ -53,6 +54,23 @@ async function walkAsync(dir: string): Promise<FileObject[]> {
         }
     }
     return folderFiles
+}
+
+function tokenAccessPermintions() {
+    return ipcMain.handle('projects:tokenaccesspermintions', async (event, token) => {
+        const octokit = new Octokit({ auth: token });
+        try {
+            const { data } = await octokit.request("/user");
+            const pub = data.public_repos ? data.public_repos : 0
+            const priv = data.total_private_repos ? data.total_private_repos : 0
+            if (pub + priv > 1) {
+                return 'warning'
+            }
+            return 'warning'
+        } catch (httpError) {
+            return 'error'
+        }
+    })
 }
 
 

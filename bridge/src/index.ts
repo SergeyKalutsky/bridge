@@ -1,6 +1,6 @@
 import { app, dialog, BrowserWindow, ipcMain, session } from 'electron';
-import { projectAPI, gitAPI, settingsAPI, pkgAPI } from './lib/api/main'
-import { store } from './lib/api/main/storage';
+import { projectAPI, gitAPI, settingsAPI, pkgAPI } from './lib/api'
+import { store } from './lib/api/storage';
 import os from 'os'
 
 const pty = require("node-pty");
