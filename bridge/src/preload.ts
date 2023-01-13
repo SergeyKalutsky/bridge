@@ -9,6 +9,11 @@ contextBridge.exposeInMainWorld('shared', {
     removeListeners: (channel) => { ipcRenderer.removeAllListeners(channel) }
 })
 
+contextBridge.exposeInMainWorld('dialogue', {
+    openImageFile: () => ipcRenderer.send('dialogue:openimagefile'),
+
+})
+
 contextBridge.exposeInMainWorld('settings', {
     set: (val: any): Promise<any> => ipcRenderer.invoke('settings:set', val),
     get: (key: string): any => ipcRenderer.sendSync('settings:get', key),

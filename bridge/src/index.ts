@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, session } from 'electron';
+import { app, dialog, BrowserWindow, ipcMain, session } from 'electron';
 import { projectAPI, gitAPI, settingsAPI, pkgAPI } from './lib/api/main'
 import { store } from './lib/api/main/storage';
 import os from 'os'
@@ -81,6 +81,17 @@ const createWindow = (): void => {
   });
   ipcMain.on('terminal:fit', async (event, data) => {
     event.reply('terminal:fit', data)
+  })
+  ipcMain.on('dialogue:openimagefile', async (event, data) => {
+    dialog.showOpenDialog(mainWindow, {
+      properties: ['openFile'],
+      filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }]
+    }).then(result => {
+      console.log(result.canceled)
+      console.log(result.filePaths)
+    }).catch(err => {
+      console.log(err)
+    })
   })
 };
 

@@ -50,14 +50,14 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
         setError('')
         setDisabled(false)
     }
-    const onClick = () => {
-        console.log('click')
+    const onClick = async () => {
+        await window.dialogue.openImageFile()
     }
     return (
         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
             <div className='w-full flex justify-center items-center'>
                 <div className='w-1/2 h-[40px]'>
-                    <Button width={24} btnText='Загрузить изображение' onClick={onClick}/>
+                    <Button width={24} btnText='Загрузить изображение' onClick={onClick} />
                 </div>
             </div>
             <span className='text-stone-50 font-medium text-xl h-[30px]'>{error}</span>

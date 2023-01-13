@@ -6,6 +6,9 @@ import { Package, FileChanges, CreateInfo, ActivePath } from './types';
 
 declare global {
     interface Window {
+        dialogue: {
+            openImageFile(): void
+        }
         shared: {
             incomingData(channel, callback): any;
             removeListeners(channel): void;
