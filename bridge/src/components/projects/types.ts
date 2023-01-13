@@ -6,6 +6,7 @@ type Project = {
     http: string
     description?: string
     typeName?: string
+    thumbnailPath?: string
 }
 
 interface UserProjects {

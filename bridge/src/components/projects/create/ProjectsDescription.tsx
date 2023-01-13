@@ -37,6 +37,13 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
     const [error, setError] = useState<string>('')
     const [imgBase64, setImgBase64] = useState('')
     useEffect(() => {
+        const setImage = async () => {
+            if (projectCreate.thumbnailPath !== '') {
+                const imgBase64 = await window.projects.loadimagebase64(projectCreate.thumbnailPath)
+                setImgBase64(imgBase64)
+            }
+        }
+        setImage()
         if (projectCreate.name !== '') return
         setDisabled(true)
     }, [])
@@ -54,6 +61,7 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
     }
     useEffect(() => {
         window.shared.incomingData("dialogue:openimagefile", async (filepath: string) => {
+            setProjectCreate({ ...projectCreate, thumbnailPath: filepath })
             const imgBase64 = await window.projects.loadimagebase64(filepath)
             setImgBase64(imgBase64)
         });

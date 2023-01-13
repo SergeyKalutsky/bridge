@@ -19,7 +19,8 @@ const dummyProject: Project = {
     description: '',
     isclassroom: 0,
     http: '',
-    typeName: ''
+    typeName: '',
+    thumbnailPath: ''
     // http: templates[libs[0]].http
 }
 
