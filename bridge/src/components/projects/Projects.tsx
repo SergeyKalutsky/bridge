@@ -2,9 +2,7 @@ import { useState, useEffect, useReducer } from 'react'
 import { ToggleBar, SideMenu, Workspace } from '../common';
 import ProjectCreate from './ProjectsCreate'
 import ProjectItem from './ProjectItem';
-import ProjectMembers from './members/ProjectMembers'
 import MenuHeader from './MenuHeader';
-import { createProject } from '../../lib/api/gitlab'
 import { UserProjects, Project } from './types';
 
 
@@ -21,8 +19,6 @@ function reducer(state: State, action: Action) {
     switch (action.type) {
         case 'createProject':
             return { page: <ProjectCreate addProject={action.payload.addProject} /> }
-        case 'memberFind':
-            return { page: <ProjectMembers project_id={action.payload} /> }
         case 'home':
             return { page: null }
     }
@@ -40,9 +36,6 @@ const Projects = (): JSX.Element => {
         const user = window.settings.get('user')
         if (user.type == 'guest') {
             await window.git.clone(project)
-        } else {
-            createProject(user, project)
-                .then(data => window.git.clone(data['project']))
         }
         project.islocal = true
         if (userProjects.activeProject === undefined) {

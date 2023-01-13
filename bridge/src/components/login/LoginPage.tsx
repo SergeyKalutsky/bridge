@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { authUser } from '../../lib/api/gitlab/index'
 import ImputForm from '../common/InputForm'
 import Button from '../common/Button'
 import { LogoIcon, UserIcon, KeyIcon } from '../common/Icons';
@@ -39,11 +38,6 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
     const onPasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setloginData({ ...loginData, password: e.target.value })
     };
-    const sendAuthUser = (): void => {
-        authUser(loginData)
-            .then(response => response.json())
-            .then(data => handleData(data))
-    }
     const authGuest = (): void => {
         const data = { user: { type: 'guest', login: 'guest' } }
         window.settings.set(data)
@@ -64,7 +58,6 @@ const LoginPage = ({ setIslogin }: Props): JSX.Element => {
                     <ImputForm onChange={onPasswordInputChange} type='password' placeholder='Пароль'>
                         <KeyIcon />
                     </ImputForm>
-                    <Button btnText='Вход' onClick={sendAuthUser} />
                     <Button btnText='Гость' onClick={authGuest} theme='teal' />
                 </div>
             </div>

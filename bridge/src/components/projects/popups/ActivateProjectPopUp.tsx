@@ -1,7 +1,6 @@
 import PopUp from '../../common/PopuUp'
 import Button from '../../common/Button'
 import { Project } from '../types'
-import { deleteMember } from '../../../lib/api/gitlab/index'
 
 interface Props {
     open: boolean
@@ -19,7 +18,6 @@ const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects }: Props)
     }
     const onDeleteClick = () => {
         const user = window.settings.get('user')
-        deleteMember(user, project.id, user.id)
         setOpen(false)
     }
     return (

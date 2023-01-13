@@ -1,5 +1,5 @@
 /*eslint import/namespace: ['error', { allowComputed: true }]*/
-import { shell, installCommand, checkInstalled } from '../../pkgManager'
+import { shell, installCommand, checkInstalled } from '../pkgManager'
 import { ipcMain } from 'electron';
 import { LOG_PATH } from './storage';
 import util from 'util'

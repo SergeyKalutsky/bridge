@@ -3,7 +3,7 @@ import os from 'os'
 import path from 'path'
 import util from 'util'
 import { exec } from 'child_process'
-import { store } from '../api/main/storage'
+import { store } from '../api/storage'
 
 
 const promisifiedExec = util.promisify(exec);

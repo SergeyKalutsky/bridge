@@ -1,4 +1,4 @@
-import { store } from '../api/main/storage'
+import { store } from '../api/storage'
 
 export interface Command {
     elevate: boolean,
