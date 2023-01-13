@@ -29,20 +29,20 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
     const stageMap = [
-        {
-            name: 'Тип проекта',
-            jsx: <ProjectsSelectType
-                projectCreate={projectCreate}
-                setProjectCreate={setProjectCreate}
-                setDisabled={setDisabled} />
-        },
-        {
-            name: 'Описание',
-            jsx: <ProjectsDescription
-                projectCreate={projectCreate}
-                setProjectCreate={setProjectCreate}
-                setDisabled={setDisabled} />
-        },
+        // {
+        //     name: 'Тип проекта',
+        //     jsx: <ProjectsSelectType
+        //         projectCreate={projectCreate}
+        //         setProjectCreate={setProjectCreate}
+        //         setDisabled={setDisabled} />
+        // },
+        // {
+        //     name: 'Описание',
+        //     jsx: <ProjectsDescription
+        //         projectCreate={projectCreate}
+        //         setProjectCreate={setProjectCreate}
+        //         setDisabled={setDisabled} />
+        // },
         {
             name: 'GitHub',
             jsx: <ProjectsGithub
@@ -61,7 +61,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
         <>
             <HeaderPath path={`Создание проекта / ${stageMap[stage].name}`} />
             <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll' >
-                <div className='w-3/5 h-2/3'>
+                <div className='w-3/5 h-4/5'>
                     {/* <div className='w-full h-1/7 gap-y-2 flex flex-col'> */}
                     {stageMap[stage].jsx}
                     {/* </div> */}
