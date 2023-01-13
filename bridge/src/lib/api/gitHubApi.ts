@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { Octokit } from "@octokit/core"
 
-async function tokenAcces(token: string) {
+export async function tokenAcces(token: string) {
     const octokit = new Octokit({ auth: token });
     try {
         const { data } = await octokit.request("/user");
@@ -19,7 +19,7 @@ async function tokenAcces(token: string) {
     }
 }
 
-async function createRepoAuthToken({ name, token, description, templateHttp, dir }:
+export async function createRepoAuthToken({ name, token, description, templateHttp, dir }:
     {
         name: string,
         token: string,
@@ -62,7 +62,7 @@ async function pushTemplateRemote(token: string,
 
 }
 
-async function listRepos(token: string): Promise<string[]> {
+export async function listRepos(token: string): Promise<string[]> {
     const octokit = new Octokit({ auth: token })
     let i = 1
     const res = await octokit.request('GET /user/repos?per_page=100&page=1', {})
@@ -77,7 +77,7 @@ async function listRepos(token: string): Promise<string[]> {
 
 }
 
-async function isBare(url: string) {
+export async function isBare(url: string) {
     // The logic is simple, if repo is bare it doesn't have any commits
     // so when we clone it and try to get logs it should error out
     await git.clone({ fs, http, dir: 'test', url: url })
