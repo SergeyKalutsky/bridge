@@ -87,8 +87,10 @@ const createWindow = (): void => {
       properties: ['openFile'],
       filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }]
     }).then(result => {
-      console.log(result.canceled)
-      console.log(result.filePaths)
+      if (!result.canceled) {
+        event.reply('dialogue:openimagefile', result.filePaths[0])
+        console.log(result.filePaths)
+      }
     }).catch(err => {
       console.log(err)
     })

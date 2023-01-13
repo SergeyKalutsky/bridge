@@ -32,8 +32,10 @@ function projectNameError(name: string): string {
 }
 
 
-export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
+
+export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
     const [error, setError] = useState<string>('')
+    const [imgBase64, setImgBase64] = useState('')
     useEffect(() => {
         if (projectCreate.name !== '') return
         setDisabled(true)
@@ -50,16 +52,19 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
         setError('')
         setDisabled(false)
     }
+    useEffect(() => {
+        window.shared.incomingData("dialogue:openimagefile", async (filepath: string) => {
+            const imgBase64 = await window.projects.loadimagebase64(filepath)
+            setImgBase64(imgBase64)
+        });
+        return () => window.shared.removeListeners('dialogue:openimagefile')
+    }, [])
+
     const onClick = async () => {
-        await window.dialogue.openImageFile()
+        window.dialogue.openImageFile()
     }
     return (
         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
-            <div className='w-full flex justify-center items-center'>
-                <div className='w-1/2 h-[40px]'>
-                    <Button width={24} btnText='Загрузить изображение' onClick={onClick} />
-                </div>
-            </div>
             <span className='text-stone-50 font-medium text-xl h-[30px]'>{error}</span>
             <div className='w-full'>
                 <InputForm
@@ -74,6 +79,19 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
                 onChange={(e) => { setProjectCreate({ ...projectCreate, description: e.target.value }) }}
                 value={projectCreate.description}
             />
+            <div className='w-full flex flex-col'>
+
+                <img src={`data:image/jpeg;base64,${imgBase64}`} alt="" className="w-full hover:cursor-pointer pb-5" onClick={onClick} />
+                <div className='w-full flex justify-center items-center'>
+                    <div className='w-1/2 h-[40px]'>
+                        {imgBase64 ?
+                            null :
+                            <Button width={24} btnText='Загрузить изображение' onClick={onClick} />
+                        }
+
+                    </div>
+                </div>
+            </div>
         </div>
     )
-}
+}   
