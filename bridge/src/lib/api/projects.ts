@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
-import { Octokit } from "@octokit/core"
 import { store, BASE_DIR, getProjectDir } from './storage'
 import { FileObject } from '../../components/Editor/types';
+import * as gitHubApi from './gitHubApi'
 import git from 'isomorphic-git'
 import util from 'util'
 import path from 'path'
@@ -56,23 +56,40 @@ async function walkAsync(dir: string): Promise<FileObject[]> {
     return folderFiles
 }
 
-function tokenAccessPermintions() {
-    return ipcMain.handle('projects:tokenaccesspermintions', async (event, token) => {
-        const octokit = new Octokit({ auth: token });
-        try {
-            const { data } = await octokit.request("/user");
-            const pub = data.public_repos ? data.public_repos : 0
-            const priv = data.total_private_repos ? data.total_private_repos : 0
-            if (pub + priv > 1) {
-                return 'warning'
-            }
-            return 'warning'
-        } catch (httpError) {
-            return 'error'
+function checkGitHubToken() {
+    return ipcMain.on('projects:checkgithubproject', async (event, { token, projectName }) => {
+        const access = await gitHubApi.tokenAcces(token)
+        if (access === 'bad_token') {
+            const msg = 'Токен не существует или срок действия истек.'
+            event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
+            return
         }
+        const gitRepos = await gitHubApi.listRepos(token)
+        for (const gitRepo of gitRepos) {
+            if (gitRepo === projectName) {
+                const bare = await gitHubApi.isBare(gitRepo.url)
+                if (!bare) {
+                    const msg = 'GitHub репо уже существует и оно не пустое. Удалите GitHub репо или переименуйте проект.'
+                    event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
+                    return
+                } else {
+                    if (access === 'warning') {
+                        const msg = 'Токен позволяет получить доступ к более чем одному репозиторию на GitHub.'
+                        event.reply('projects:checkgithubproject', { type: 'warning', msg: msg })
+                        return
+                    }
+                }
+            }
+        }
+        const url = await gitHubApi.createRepoAuthToken({ name: projectName, token })
+        if (url !== 'fail') {
+            const msg = 'Репо не найден, а попытка создать проект на GitHub проволилась. Создайте GitHub репо самостоятельно и поменяйте доступ токена'
+            event.reply('projects:checkgithubproject', { type: 'error', message: msg })
+            return
+        }
+        event.reply('projects:checkgithubproject', { type: 'success', message: '' })
     })
 }
-
 
 function loadimagebase64() {
     return ipcMain.handle('projects:loadimagebase64', async (event, filepath) => {
@@ -212,6 +229,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    checkGitHubToken()
     loadimagebase64()
     renameFile()
     copyFile()

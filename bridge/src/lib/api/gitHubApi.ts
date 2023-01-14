@@ -19,31 +19,23 @@ export async function tokenAcces(token: string) {
     }
 }
 
-export async function createRepoAuthToken({ name, token, description, templateHttp, dir }:
-    {
-        name: string,
-        token: string,
-        description: string,
-        templateHttp: string,
-        dir: string,
-        url: string
-    }): Promise<void> {
+export async function createRepoAuthToken({ name, token }: { name: string, token: string }): Promise<string> {
     const octokit = new Octokit({ auth: token });
     try {
         const res = await octokit.request('POST /user/repos', {
             name: name,
-            description: description,
             homepage: 'https://github.com',
             'private': false,
             is_template: true
         })
-        await pushTemplateRemote(token, name, templateHttp, dir, res.url)
+        return res.data.clone_url
     } catch (HttpError) {
-        console.log(HttpError)
+        return 'fail'
     }
 }
 
-async function pushTemplateRemote(token: string,
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export async function pushTemplateRemote(token: string,
     username: string,
     templateHttp: string,
     dir: string,
@@ -62,19 +54,17 @@ async function pushTemplateRemote(token: string,
 
 }
 
-export async function listRepos(token: string): Promise<string[]> {
+export async function listRepos(token: string): Promise<{ name: string, url: string }[]> {
     const octokit = new Octokit({ auth: token })
     let i = 1
     const res = await octokit.request('GET /user/repos?per_page=100&page=1', {})
-    console.log(res)
-    const repoNames = res.data.map(repo => repo.name)
-    while (repoNames.length === 30) {
+    const repoNames = res.data.map(repo => ({ name: repo.name, url: repo.clone_url }))
+    while (repoNames.length === 100) {
         i += 1
         const res = await octokit.request(`GET /user/repos?per_page=100&page=${i}`, {})
-        repoNames.push(...res.data.map(repo => repo.name))
+        repoNames.push(...res.data.map(repo => ({ name: repo.name, url: repo.clone_url })))
     }
     return repoNames
-
 }
 
 export async function isBare(url: string) {
@@ -90,3 +80,6 @@ export async function isBare(url: string) {
     fs.rmSync(path.join('test', '.git'), { recursive: true, force: true });
     return false
 }
+
+listRepos('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')
+// createRepoAuthToken({ name: 'tttest', token: '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' })
