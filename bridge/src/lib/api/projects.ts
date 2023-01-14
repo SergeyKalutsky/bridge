@@ -58,32 +58,36 @@ async function walkAsync(dir: string): Promise<FileObject[]> {
 
 function checkGitHubToken() {
     return ipcMain.on('projects:checkgithubproject', async (event, { token, name }) => {
-        const access = await gitHubApi.tokenAcces(token)
-        if (access === 'bad_token') {
-            const msg = 'Токен не существует или срок действия истек.'
-            event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
-            return
-        }
-        const gitRepos = await gitHubApi.listRepos(token)
-        for (const gitRepo of gitRepos) {
-            if (gitRepo === name) {
-                const bare = await gitHubApi.isBare(gitRepo.url)
+        try {
+            const gitHubLogin = await gitHubApi.userLogin(token)
+            let statusCode = await gitHubApi.clone(name, gitHubLogin, token)
+            console.log('code', statusCode)
+            if (statusCode === 200) {
+                const bare = await gitHubApi.isBare(name)
+                console.log(bare)
                 if (!bare) {
-                    const msg = 'GitHub репо уже существует и оно не пустое. Удалите GitHub репо или переименуйте проект.'
+                    const msg = `GitHub репо ${name} уже существует и оно не пустое. Удалите ${name} или переименуйте проект.`
                     event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
                     return
                 }
             }
-        }
-        const url = await gitHubApi.createRepoAuthToken({ name: name, token: token })
-        if (url === 'fail') {
-            const msg = 'Репо не найден, а попытка создать проект на GitHub проволилась. Создайте GitHub репо самостоятельно и поменяйте доступ токена'
-            event.reply('projects:checkgithubproject', { type: 'error', message: msg })
-            return
-        }
-        if (access === 'warning') {
-            const msg = 'Токен позволяет получить доступ к более чем одному репозиторию на GitHub.'
-            event.reply('projects:checkgithubproject', { type: 'warning', msg: msg })
+            if (statusCode === 404) {
+                const statusCode = await gitHubApi.createGihHubRepo({ name: name, token: token })
+                if (statusCode === 403) {
+                    const msg = `Репо ${name} отсутствует и у токена недостаточно прав, чтобы создать его`
+                    event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
+                    return
+                }
+            }
+            if (statusCode === 403) {
+                const msg = `У токена недостаточно прав для доступа к репо ${name}`
+                event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
+                return
+            }
+
+        } catch {
+            const msg = 'Токен не существует или срок его действия истек.'
+            event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
             return
         }
         event.reply('projects:checkgithubproject', { type: 'success', message: '' })
