@@ -21,6 +21,7 @@ declare global {
             platform(): string
         };
         projects: {
+            checkGitHubToken({ name, token }: { name: string, token: string }): Promise<void>
             createFile(createInfo: CreateInfo): Promise<string>;
             createFolder(createInfo: CreateInfo): Promise<string>;
             readActiveFile(filepath: string): Promise<string>;

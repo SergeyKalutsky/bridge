@@ -1,10 +1,9 @@
 import { LoadingIcon } from '../../../components/common/Icons'
 import { InputForm } from '../../../components/common'
 import { createProjectProp } from './types'
+import { useState, useEffect } from 'react'
 
 
-// 'Токен не существует или срок его действия истек'
-// 'Токен позволяет получить доступ к более чем одному репозиторию на GitHub'
 function LinkText({ text }: { text: string }): JSX.Element {
     return <span className='font-semibold text-blue-600 underline hover:underline-offset-1 hover:cursor-pointer'>{text}</span>
 }
@@ -26,7 +25,7 @@ function WarningMessage({ text }: { text: string }): JSX.Element {
     )
 }
 
-function LoadingMessage({ text }: { text?: string }): JSX.Element {
+function LoadingMessage({ text }: { text: string }): JSX.Element {
     return (
         <div className='text-xl  w-full flex justify-start items-center mt-3 pt-2 pb-2 pr-2 pl-2'>
             <LoadingIcon />
@@ -36,13 +35,34 @@ function LoadingMessage({ text }: { text?: string }): JSX.Element {
 }
 
 export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
-    const onChange = (e)=> {
-        console.log(e.target.value)
+    const [messageJsx, setMessageJsx] = useState<JSX.Element>()
+    useEffect(() => {
+        window.shared.incomingData("projects:checkgithubproject", async ({ type, msg }) => {
+            if (type === 'error') {
+                setMessageJsx(<ErrorMessage text={msg} />)
+            } else if (type === 'warning') {
+                setMessageJsx(<WarningMessage text={msg} />)
+            } else {
+                console.log('success')
+            }
+        })
+        return () => window.shared.removeListeners('projects:checkgithubproject')
+    }, [])
+    const handleKeyPress = async (event) => {
+        if (event.key === 'Backspace') {
+            event.target.value = ''
+        }
+    }
+    const onChange = (e) => {
+        
         if (e.target.value === '') {
             setDisabled(false)
-            return  
-        } 
+            setMessageJsx(null)
+            return
+        }
         setDisabled(true)
+        setMessageJsx(<LoadingMessage text='Проверка токена' />)
+        window.projects.checkGitHubToken({ token: e.target.value, name: projectCreate.name })
 
     }
     return (<>
@@ -51,11 +71,11 @@ export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }:
             <p className='pl-2'>Вам потребуется <span className='font-bold'>github аккаунт</span> и <span className='font-bold'>токен</span> (<LinkText text='classic' /> или <LinkText text='fain-grain' />).</p>
         </div>
         <InputForm
+            handleKeyPress={handleKeyPress}
             onChange={onChange}
             placeholder='GitHub token'
             type='password'
             classInput='border-none pl-5 text-2xl text-security-disc' />
-        {/* <ErrorMessage text='Токен не существует или его срок действия истек' /> */}
-        {/* <LoadingMessage text='Проверка токена'/> */}
+        {messageJsx}
     </>)
 }
