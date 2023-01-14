@@ -72,6 +72,15 @@ export async function clone(repoName: string, gitHubLogin: string, token: string
     }
 }
 
+export async function getRepoStatus(token: string, ) {
+    const octokit = new Octokit({auth: token})
+    await octokit.request('GET /repos/{owner}/{repo}/commits?page=1', {
+        owner: 'OWNER',
+        repo: 'REPO'
+    })
+
+}
+
 export async function isBare(dir: string) {
     // The logic is simple, if repo is bare it doesn't have any commits
     // so when we clone it and try to get logs it should error out
