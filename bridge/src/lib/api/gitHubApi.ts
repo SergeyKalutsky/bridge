@@ -28,9 +28,11 @@ export async function createRepoAuthToken({ name, token }: { name: string, token
             'private': false,
             is_template: true
         })
+        console.log(res)
         return res.data.clone_url
     } catch (HttpError) {
-        return 'fail'
+        console.log(HttpError)
+        return HttpError
     }
 }
 
@@ -81,5 +83,5 @@ export async function isBare(url: string) {
     return false
 }
 
-listRepos('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')
-// createRepoAuthToken({ name: 'tttest', token: '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' })
+// listRepos('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')
+createRepoAuthToken({ name: 'tttest', token: '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' })

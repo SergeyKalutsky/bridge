@@ -57,7 +57,7 @@ async function walkAsync(dir: string): Promise<FileObject[]> {
 }
 
 function checkGitHubToken() {
-    return ipcMain.on('projects:checkgithubproject', async (event, { token, projectName }) => {
+    return ipcMain.on('projects:checkgithubproject', async (event, { token, name }) => {
         const access = await gitHubApi.tokenAcces(token)
         if (access === 'bad_token') {
             const msg = 'Токен не существует или срок действия истек.'
@@ -66,25 +66,24 @@ function checkGitHubToken() {
         }
         const gitRepos = await gitHubApi.listRepos(token)
         for (const gitRepo of gitRepos) {
-            if (gitRepo === projectName) {
+            if (gitRepo === name) {
                 const bare = await gitHubApi.isBare(gitRepo.url)
                 if (!bare) {
                     const msg = 'GitHub репо уже существует и оно не пустое. Удалите GitHub репо или переименуйте проект.'
                     event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
                     return
-                } else {
-                    if (access === 'warning') {
-                        const msg = 'Токен позволяет получить доступ к более чем одному репозиторию на GitHub.'
-                        event.reply('projects:checkgithubproject', { type: 'warning', msg: msg })
-                        return
-                    }
                 }
             }
         }
-        const url = await gitHubApi.createRepoAuthToken({ name: projectName, token })
-        if (url !== 'fail') {
+        const url = await gitHubApi.createRepoAuthToken({ name: name, token: token })
+        if (url === 'fail') {
             const msg = 'Репо не найден, а попытка создать проект на GitHub проволилась. Создайте GitHub репо самостоятельно и поменяйте доступ токена'
             event.reply('projects:checkgithubproject', { type: 'error', message: msg })
+            return
+        }
+        if (access === 'warning') {
+            const msg = 'Токен позволяет получить доступ к более чем одному репозиторию на GitHub.'
+            event.reply('projects:checkgithubproject', { type: 'warning', msg: msg })
             return
         }
         event.reply('projects:checkgithubproject', { type: 'success', message: '' })
