@@ -2,6 +2,7 @@ import { LoadingIcon } from '../../../components/common/Icons'
 import { InputForm } from '../../../components/common'
 import { createProjectProp } from './types'
 import { useState, useEffect } from 'react'
+import { BsCheckLg } from 'react-icons/bs'
 
 
 function LinkText({ text }: { text: string }): JSX.Element {
@@ -36,14 +37,19 @@ function LoadingMessage({ text }: { text: string }): JSX.Element {
 
 export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
+    const [showCheckMark, setShowCheckMark] = useState<boolean>(false)
     useEffect(() => {
         window.shared.incomingData("projects:checkgithubproject", async ({ type, msg }) => {
             if (type === 'error') {
                 setMessageJsx(<ErrorMessage text={msg} />)
             } else if (type === 'warning') {
                 setMessageJsx(<WarningMessage text={msg} />)
+                setShowCheckMark(true)
+                setDisabled(false)
             } else {
-                console.log('success')
+                setMessageJsx(null)
+                setShowCheckMark(true)
+                setDisabled(false)
             }
         })
         return () => window.shared.removeListeners('projects:checkgithubproject')
@@ -51,10 +57,13 @@ export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }:
     const handleKeyPress = async (event) => {
         if (event.key === 'Backspace') {
             event.target.value = ''
+            setDisabled(false)
+            setMessageJsx(null)
+            setShowCheckMark(false)
         }
     }
     const onChange = (e) => {
-        
+
         if (e.target.value === '') {
             setDisabled(false)
             setMessageJsx(null)
@@ -70,12 +79,16 @@ export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }:
             <p className='pl-2'>Этот шаг <span className='font-bold'>необязателен</span>.</p>
             <p className='pl-2'>Вам потребуется <span className='font-bold'>github аккаунт</span> и <span className='font-bold'>токен</span> (<LinkText text='classic' /> или <LinkText text='fain-grain' />).</p>
         </div>
-        <InputForm
-            handleKeyPress={handleKeyPress}
-            onChange={onChange}
-            placeholder='GitHub token'
-            type='password'
-            classInput='border-none pl-5 text-2xl text-security-disc' />
+        <div className='flex justify-center items-center '>
+            <InputForm
+                handleKeyPress={handleKeyPress}
+                onChange={onChange}
+                placeholder='GitHub token'
+                type='password'
+                classInput='border-none pl-5 text-2xl text-security-disc' >
+                {showCheckMark ? <BsCheckLg style={{ color: '#08d120', width: 36, height: 36, paddingLeft: 8, backgroundColor: '#fafafa' }} /> : null}
+            </InputForm>
+        </div>
         {messageJsx}
     </>)
 }
