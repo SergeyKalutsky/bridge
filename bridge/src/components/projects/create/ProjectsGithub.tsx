@@ -21,7 +21,7 @@ function ErrorMessage({ text }: { text: string }): JSX.Element {
 function WarningMessage({ text }: { text: string }): JSX.Element {
     return (
         <div className='w-full bg-orange-600/95 flex justify-start items-center mt-8 rounded-lg pt-2 pb-2 pr-2 pl-2'>
-            <p className='font-medium text-slate-100 pl-2'>{'⚠️'+text}</p>
+            <p className='font-medium text-slate-100 pl-2'>{'⚠️' + text}</p>
         </div>
     )
 }
@@ -35,7 +35,7 @@ export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }:
         <InputForm
             placeholder='GitHub token'
             type='password'
-            classInput='border-none pl-5' />
+            classInput='border-none pl-5 text-2xl text-security-disc'/>
         <ErrorMessage text='Токен не существует или его срок действия истек' />
     </>)
 }
