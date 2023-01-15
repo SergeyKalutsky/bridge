@@ -1,13 +1,29 @@
 import { createProjectProp } from './types'
 import { useState, useEffect } from 'react'
 import { Packages, Logs, Button } from '../../../components/common'
+import { Package } from '../../../types'
 
+const pkgsTest = [{
+    installed: null,
+    name: 'python3',
+    manager: 'brew',
+    version: '10.0.1'
+},
+{
+    installed: null,
+    name: 'flask',
+    manager: 'pip',
+},
+{
+    installed: null,
+    name: 'sqlalchemy',
+    manager: 'pip',
+}]
 
 
 export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
-    // const [pkgs, setPkgs] = useState<Package[]>(templates[libs[0]].pkgs)
-    // const loadInfo = <><LoadingIcon />
-    //     <div className='text-lg text-slate-50 font-medium'>Установка...</div></>
+
+    const [pkgs, setPkgs] = useState<Package[]>(pkgsTest)
     useEffect(() => {
         // window.pkg.check(templates[libs[0]].pkgs)
         window.shared.incomingData("pkg:check", (pkgs) => {
@@ -29,13 +45,16 @@ export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }
     }, [])
     return (
         <>
-            {/* <Packages pkgs={pkgs} className='w-[200px]' /> */}
-            <Logs className='bg-zinc-600 w-[450px] mt-2' />
-            <div className='w-full gap-y-2 h-1/6 flex flex-row mt-2 gap-x-2 items-center'>
-                <Button />
+            <span className="text-white font-medium text-2xl">Необходимые библиотеки и программы:</span>
+            <Packages pkgs={pkgs} className='w-full mt-5' />
+            <Logs className='bg-zinc-600 w-full mt-5' />
+            <div className='flex items-center justify-center h-[40px] mt-10'>
+                <div className='w-[120px] gap-y-2 h-full flex flex-row gap-x-2 items-center'>
+                    <Button btnText='Установить' />
+                </div>
             </div>
-            < div >
-                <span className="text-white font-medium text-sm">{'Лог Файл: ' + window.settings.logPath()}</span>
+            <div className='mt-3'>
+                <span className="text-white font-medium text-lg ">{'Лог Файл: ' + window.settings.logPath()}</span>
             </div >
         </>
     )

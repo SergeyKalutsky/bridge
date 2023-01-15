@@ -18,7 +18,7 @@ const Packages = ({ pkgs, className }: Props): JSX.Element => {
     }, [pkgs])
 
     return (
-        <div className={`flex flex-col w-[120px] h-[80px] overflow-scroll ${className}`}>
+        <div className={`flex flex-col w-full h-[150px] overflow-scroll ${className}`}>
             {pkgsMenu}
         </div>
     )

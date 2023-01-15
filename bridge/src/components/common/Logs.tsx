@@ -35,7 +35,7 @@ const Logs = ({ className }: Props): JSX.Element => {
     }, [logs])
 
     return (
-        <div className={`w-3/5 h-2/5 flex justify-center flex-col overflow-scroll ${className}`} >
+        <div className={`w-full h-2/5 flex justify-center flex-col overflow-scroll ${className}`} >
             {logs}
             <div ref={ref} />
         </div>
