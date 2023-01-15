@@ -1,6 +1,7 @@
 import { createProjectProp } from './types'
 import { useState, useEffect } from 'react'
-import { Packages, Logs, Button, SudoPopUp} from '../../../components/common'
+import { Packages, Logs, Button, SudoPopUp } from '../../../components/common'
+import { LoadingMessage } from '../../../components/common'
 import { Package } from '../../../types'
 
 const pkgsTest = [
@@ -29,12 +30,12 @@ const pkgsTest = [
 export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
 
     const [pkgs, setPkgs] = useState<Package[]>(pkgsTest)
-    const [btnText, setBtnText] = useState('')
+    const [btn, setBtn] = useState(false)
+    const [loadMessage, setLoadMessage] = useState<JSX.Element>(<LoadingMessage text='Проверка устновленных библиотек' />)
     useEffect(() => {
         setDisabled(true)
         window.pkg.check(pkgs)
         window.shared.incomingData("pkg:check", (pkgs) => {
-            console.log(pkgs)
             let count = 0
             for (const pkg of pkgs) {
                 if (pkg.installed === true) {
@@ -43,29 +44,31 @@ export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }
             }
             if (count === pkgs.length) {
                 setDisabled(false)
-                setBtnText('Создать')
             } else {
-                setBtnText('Установить')
+                setBtn(true)
             }
+            setLoadMessage(null)
             setPkgs(pkgs)
         });
         return () => window.shared.removeListeners('pkg:check')
     }, [])
     const onClick = () => {
+        setBtn(false)
         window.pkg.install(pkgs)
+        setLoadMessage(<LoadingMessage text='Установка. Это может занять длительное время' />)
     }
     return (
         <>
             <span className="text-white font-medium text-2xl">Необходимые библиотеки и программы:</span>
             <Packages pkgs={pkgs} className='w-full mt-5' />
             <Logs className='bg-zinc-600 w-full mt-5' />
-            <div className='flex items-center justify-center h-[40px] mt-10'>
-                <div className='w-[120px] gap-y-2 h-full flex flex-row gap-x-2 items-center'>
-                    <Button btnText={btnText} onClick={onClick} />
-                </div>
+            <div className='flex items-center justify-center h-[40px] mt-4'>
+                {loadMessage}
+                {btn ?
+                <div className='w-[120px] gap-y-2 h-full flex flex-row items-center'><Button btnText='Установить' onClick={onClick} /></div> : null}
             </div>
-            <div className='mt-3'>
-                <span className="text-white font-medium text-lg ">{'Лог Файл: ' + window.settings.logPath()}</span>
+            <div className='mt-20'>
+                <span className="text-white font-medium text-base ">{'Лог Файл: ' + window.settings.logPath()}</span>
             </div >
             <SudoPopUp />
         </>
