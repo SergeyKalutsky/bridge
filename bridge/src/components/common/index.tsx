@@ -9,7 +9,7 @@ import ToolBar from "./ToolBar";
 import Workspace from "./Workspace";
 import SideMenuHeader from "./SideMenuHeader";
 import Logs from "./Logs";
-import SudoPopUp from "./SudoPopUp";
+import { SudoPopUp } from "./SudoPopUp";
 import Packages from "./Packages";
 import { LoadingMessage } from "./LoadingMessage";
 import { ErrorMessage } from "./ErrorMessage";
@@ -21,7 +21,7 @@ export {
     LinkText,
     LoadingMessage,
     ErrorMessage,
-    IconButton, 
+    IconButton,
     WarningMessage,
     InputForm,
     PopUp,
