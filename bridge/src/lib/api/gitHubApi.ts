@@ -105,23 +105,29 @@ function tokenType(token: string): string {
     return 'classic'
 }
 
-// PushRejectedError { reason: 'not-fast-forward' } undefined
-// 200
-// 403 Forbidden
-// 404
-async function main() {
-    const repo = 'glory2'
-    const token = ''
+export async function checkGitHubToken(token: string, repo: string, ): Promise<number> {
+    // 409 PushRejectedError { reason: 'not-fast-forward' } undefined
+    // 200 ok
+    // 403 Forbidden
+    // 404 not found(or private and you dont have permission)
+    // 401 bad credentials
 
     makeStartDir(repo)
     await git.init({ fs, dir: repo })
     await commit(repo)
     try {
-        const res = await pushFirsCommit(repo, ClassicToken)
-        console.log(res)
+        await pushFirsCommit(repo, token)
+        fs.rmSync(repo, { recursive: true, force: true });
+        return 200
     } catch (HttpError) {
-        console.log(HttpError.code, HttpError.data, HttpError.data.statusCode)
+        fs.rmSync(repo, { recursive: true, force: true });
+        if ('response' in HttpError) {
+            return HttpError.response.status
+        }
+        if (HttpError.code === 'PushRejectedError') {
+            return 409 
+        }
+        console.log(HttpError.data.statusCode)
+        return HttpError.data.statusCode
     }
 }
-
-main()
