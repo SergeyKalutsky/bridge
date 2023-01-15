@@ -2,6 +2,7 @@ import { exec } from 'child_process'
 import util from 'util'
 import { instance } from './types'
 import { ipcMain, BrowserWindow } from 'electron';
+import fs from 'fs'
 
 
 const promisifiedExec = util.promisify(exec);
@@ -26,8 +27,8 @@ async function initSudoTemp(sudoPassword: string): Promise<boolean> {
     return true
 }
 
-async function sudoIsSet(){
-    while(process.env.SUDO_STATUS === undefined) {
+async function sudoIsSet() {
+    while (process.env.SUDO_STATUS === undefined) {
         await new Promise(r => setTimeout(r, 300));
     }
     console.log(JSON.parse(process.env.SUDO_STATUS))
@@ -44,7 +45,6 @@ async function darvin(instance: instance): Promise<void> {
     // log stderr to the same file
     command.push('2>&1')
     const strCommand = command.join(' ')
-
     if (instance.elevate) {
         const mainWindow = getMainWindow()
         mainWindow.webContents.send('pkg:sudo', { open: true, error: null })
@@ -52,14 +52,18 @@ async function darvin(instance: instance): Promise<void> {
             const sudoCorrect = await initSudoTemp(password)
             if (sudoCorrect) {
                 mainWindow.webContents.send('pkg:sudo', { open: false, error: null })
-                process.env.SUDO_STATUS = JSON.stringify({updateTime: new Date().getTime()})
+                process.env.SUDO_STATUS = JSON.stringify({ updateTime: new Date().getTime() })
                 return
             }
             mainWindow.webContents.send('pkg:sudo', { open: true, error: 'Неверный пароль' })
         })
         await sudoIsSet()
     }
-    await promisifiedExec(strCommand)
+    try {
+        await promisifiedExec(strCommand)
+    } catch (e) {
+        fs.appendFileSync(instance.path, e);
+    }
 }
 
 export { darvin, initSudoTemp }
