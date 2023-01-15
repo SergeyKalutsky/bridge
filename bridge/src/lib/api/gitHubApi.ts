@@ -112,11 +112,10 @@ function tokenType(token: string): string {
 async function main() {
     const repo = 'glory2'
     const token = ''
-    const ClassicToken = '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'
-    const FineGrainToken = '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'
-    // makeStartDir(repo)
-    // await git.init({ fs, dir: repo })
-    // await commit(repo)
+
+    makeStartDir(repo)
+    await git.init({ fs, dir: repo })
+    await commit(repo)
     try {
         const res = await pushFirsCommit(repo, ClassicToken)
         console.log(res)
