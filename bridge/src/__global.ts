@@ -1,7 +1,7 @@
 import { FileObject } from './components/Editor/types';
 import { GitDiff } from './components/git/types';
 import { Project } from './components/projects/types';
-import { Package, FileChanges, CreateInfo, ActivePath } from './types';
+import { Package, FileChanges, CreateInfo, ActivePath, Template } from './types';
 
 
 declare global {
@@ -21,6 +21,7 @@ declare global {
             platform(): string
         };
         projects: {
+            getProjectTemplates(): Promise<Template[]>
             checkGitHubToken({ repo, token }: { repo: string, token: string }): Promise<void>
             createFile(createInfo: CreateInfo): Promise<string>;
             createFolder(createInfo: CreateInfo): Promise<string>;

@@ -30,6 +30,13 @@ interface Settings {
     }
 }
 
+interface Template {
+    name: string
+    pkgs: Package[]
+    http: string
+    description: string
+}
+
 interface Package {
     installed: boolean,
     name: string,
@@ -42,5 +49,6 @@ export {
     CreateInfo,
     ActivePath,
     Settings,
-    Package
+    Package,
+    Template
 }

@@ -3,6 +3,7 @@ import { contextBridge, ipcRenderer } from "electron"
 import { GitDiff } from './components/git/types'
 import { FileObject } from './components/Editor/types'
 import { Project } from "./components/projects/types"
+import { Template } from './types'
 
 contextBridge.exposeInMainWorld('shared', {
     incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) },
@@ -24,6 +25,7 @@ contextBridge.exposeInMainWorld('settings', {
 })
 
 contextBridge.exposeInMainWorld('projects', {
+    getProjectTemplates: (): Promise<Template[]> => ipcRenderer.invoke('projects:getprojecttemplates'),
     checkGitHubToken: ({ repo, token }: { repo: string, token: string }): void => ipcRenderer.send('projects:checkgithubproject', { repo, token }),
     loadimagebase64: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:loadimagebase64', filepath),
     mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),

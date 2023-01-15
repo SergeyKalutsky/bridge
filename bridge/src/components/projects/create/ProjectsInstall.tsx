@@ -4,36 +4,14 @@ import { Packages, Logs, Button, SudoPopUp } from '../../../components/common'
 import { LoadingMessage } from '../../../components/common'
 import { Package } from '../../../types'
 
-const pkgsTest = [
-    {
-        installed: null,
-        name: 'brew',
-        manager: 'shell',
-    }, {
-        installed: null,
-        name: 'python3',
-        manager: 'brew',
-        version: '10.0.1'
-    },
-    {
-        installed: null,
-        name: 'flask',
-        manager: 'pip',
-    },
-    {
-        installed: null,
-        name: 'sqlalchemy',
-        manager: 'pip',
-    }]
-
 
 export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
-
-    const [pkgs, setPkgs] = useState<Package[]>(pkgsTest)
+    const [pkgs, setPkgs] = useState<Package[]>(projectCreate.template.pkgs)
     const [btn, setBtn] = useState(false)
     const [loadMessage, setLoadMessage] = useState<JSX.Element>(<LoadingMessage text='Проверка устновленных библиотек' />)
     useEffect(() => {
         setDisabled(true)
+        console.log(pkgs)
         window.pkg.check(pkgs)
         window.shared.incomingData("pkg:check", (pkgs) => {
             let count = 0
@@ -65,7 +43,7 @@ export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }
             <div className='flex items-center justify-center h-[40px] mt-4'>
                 {loadMessage}
                 {btn ?
-                <div className='w-[120px] gap-y-2 h-full flex flex-row items-center'><Button btnText='Установить' onClick={onClick} /></div> : null}
+                    <div className='w-[120px] gap-y-2 h-full flex flex-row items-center'><Button btnText='Установить' onClick={onClick} /></div> : null}
             </div>
             <div className='mt-20'>
                 <span className="text-white font-medium text-base ">{'Лог Файл: ' + window.settings.logPath()}</span>

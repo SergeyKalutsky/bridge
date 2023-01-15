@@ -4,41 +4,43 @@ import { Project } from '../types'
 import { InputForm } from '../../../components/common'
 import { createProjectProp } from './types'
 import { useEffect, useState } from 'react'
+import { Template } from '../../../types'
 
 
-function ProjectTypeRow({ projectName, roundTop, setProjectName }:
+function ProjectTypeRow({ project, roundTop, setProject }:
     {
-        projectName: string,
+        project: Template,
         roundTop: boolean,
-        setProjectName: React.Dispatch<React.SetStateAction<string>>
+        setProject: React.Dispatch<React.SetStateAction<Template>>
     }): JSX.Element {
     const rounded = roundTop ? 'rounded-t-l-lg' : ''
     return (<div
-        onClick={() => setProjectName(projectName)}
+        onClick={() => setProject(project)}
         className={`pl-5 hover: cursor-pointer hover:bg-sky-700/75 hover:text-slate-200 text-slate-800 font-medium flex items-center w-full h-[40px] ${rounded}`}>
-        {projectName}
+        {project.name}
     </div>)
 
 }
 
-function ProjecTypeRowSelected({ projectName, setProjectName, projectCreate, setProjectCreate, setProjectRows }:
+function ProjecTypeRowSelected({ project, setProject, projectCreate, setProjectCreate, setProjectRows }:
     {
-        projectName: string,
-        setProjectName: React.Dispatch<React.SetStateAction<string>>
+        project: Template,
+        setProject: React.Dispatch<React.SetStateAction<Template>>
         projectCreate: Project
         setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
         setProjectRows: React.Dispatch<React.SetStateAction<JSX.Element[]>>
     }): JSX.Element {
     const onclick = () => {
-        setProjectName('')
-        projectCreate.typeName = ''
+        const dummy = {name:'', http:'', pkgs:[], description:''}
+        setProject(dummy)
+        projectCreate.template = dummy
         setProjectCreate(projectCreate)
         setProjectRows([])
     }
     return (
         <>
             <div className='w-full h-[60px] bg-sky-700/75 flex items-center rounded-lg border-2 border-sky-800'>
-                <div className='pl-5 w-1/2 text-slate-100 text-2xl'>{projectName}</div>
+                <div className='pl-5 w-1/2 text-slate-100 text-2xl'>{project.name}</div>
                 <div className='pr-6 w-1/2 text-slate-200 flex items-center justify-end'>
                     <div className='hover: cursor-pointer'>
                         <ImCross onClick={onclick} style={{ justifySelf: 'end', width: 15, height: 15 }} />
@@ -46,7 +48,7 @@ function ProjecTypeRowSelected({ projectName, setProjectName, projectCreate, set
                 </div>
             </div>
             <div className='mt-10  w-full h-4/5 bg-sky-600/60 border-2 rounded-md border-sky-800 overflow-scroll'>
-                <span className='pl-2 text-slate-50 font-medium text-xl'>Здесь будет описание проекта...</span>
+                <span className='pl-2 text-slate-50 font-medium text-xl'>{project.description}</span>
             </div>
         </>
     )
@@ -54,46 +56,46 @@ function ProjecTypeRowSelected({ projectName, setProjectName, projectCreate, set
 
 
 export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
-    const libs = ['🐍 Python', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero', '🕸️ Python Flask', '🤖 Python Discord', '0️⃣ Python Pgzero']
     const [projectRows, setProjectRows] = useState<JSX.Element[]>()
-    const [projectName, setProjectName] = useState('')
+    const [project, setProject] = useState<Template>(projectCreate.template)
 
     useEffect(() => {
-        if (projectCreate.typeName !== '') {
+        if (projectCreate.template.name !== '') {
             setDisabled(false)
-            setProjectName(projectCreate.typeName)
+            setProject(projectCreate.template)
             return
         }
-        if (projectName !== '') {
+        if (project.name !== '') {
             setDisabled(false)
-            projectCreate.typeName = projectName
+            projectCreate.template = project
             setProjectCreate(projectCreate)
             return
         }
-        projectCreate.typeName = ''
+        projectCreate.template.name = ''
         setProjectCreate(projectCreate)
         setDisabled(true)
-    }, [projectName])
+    }, [project])
 
-    const onChange = (e) => {
+    const onChange = async (e) => {
         const projects = []
-        for (const project of libs) {
-            if (e.target.value.length > 2 && project.toLowerCase().includes(e.target.value.toLowerCase())) {
-                projects.push(project)
+        const templates = await window.projects.getProjectTemplates()
+        for (const template of templates) {
+            if (e.target.value.length > 2 && template.name.toLowerCase().includes(e.target.value.toLowerCase())) {
+                projects.push(template)
             }
         }
-        const jsx = projects.map((name: string, index: number) =>
-            <ProjectTypeRow projectName={name}
+        const jsx = projects.map((project: Template, index: number) =>
+            <ProjectTypeRow project={project}
                 roundTop={index == 0}
                 key={index}
-                setProjectName={setProjectName} />
+                setProject={setProject} />
         )
         setProjectRows(jsx)
     }
-    if (projectName !== '') {
+    if (project.name !== '') {
         return <ProjecTypeRowSelected
-            projectName={projectName}
-            setProjectName={setProjectName}
+            project={project}
+            setProject={setProject}
             projectCreate={projectCreate}
             setProjectCreate={setProjectCreate}
             setProjectRows={setProjectRows} />

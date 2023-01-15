@@ -20,8 +20,13 @@ const dummyProject: Project = {
     isclassroom: 0,
     http: '',
     typeName: '',
-    thumbnailPath: ''
-    // http: templates[libs[0]].http
+    thumbnailPath: '',
+    template: {
+        name: '',
+        pkgs: [],
+        description: '',
+        http: ''
+    }
 }
 
 const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
@@ -29,20 +34,20 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
     const stageMap = [
-        // {
-        //     name: 'Тип проекта',
-        //     jsx: <ProjectsSelectType
-        //         projectCreate={projectCreate}
-        //         setProjectCreate={setProjectCreate}
-        //         setDisabled={setDisabled} />
-        // },
-        // {
-        //     name: 'Описание',
-        //     jsx: <ProjectsDescription
-        //         projectCreate={projectCreate}
-        //         setProjectCreate={setProjectCreate}
-        //         setDisabled={setDisabled} />
-        // },
+        {
+            name: 'Тип проекта',
+            jsx: <ProjectsSelectType
+                projectCreate={projectCreate}
+                setProjectCreate={setProjectCreate}
+                setDisabled={setDisabled} />
+        },
+        {
+            name: 'Описание',
+            jsx: <ProjectsDescription
+                projectCreate={projectCreate}
+                setProjectCreate={setProjectCreate}
+                setDisabled={setDisabled} />
+        },
         {
             name: 'Установка',
             jsx: <ProjectsInstall

@@ -1,3 +1,5 @@
+import { Template } from "../../types"
+
 type Project = {
     id: number
     name: string
@@ -7,6 +9,7 @@ type Project = {
     description?: string
     typeName?: string
     thumbnailPath?: string
+    template?: Template
 }
 
 interface UserProjects {

@@ -8,6 +8,7 @@ import path from 'path'
 import fs from 'fs'
 import ncp from 'ncp'
 import glob from 'glob'
+import { templates } from './templates';
 
 
 const removeFromGit = (dir: string) => {
@@ -193,6 +194,14 @@ function createFile() {
     })
 }
 
+
+function getProjectTemplates() {
+    return ipcMain.handle('projects:getprojecttemplates', async (event) => {
+        return templates
+    })
+
+}
+
 function readActiveFile() {
     return ipcMain.handle('projects:readactivefile', async (event, filepath) => {
         return await readFileAsync(filepath, 'utf-8')
@@ -225,6 +234,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    getProjectTemplates()
     checkGitHubToken()
     loadimagebase64()
     renameFile()
