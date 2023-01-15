@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import PopUp from "./PopuUp"
 import InputForm from "./InputForm"
-import Button from "./Button"
 
 export function SudoPopUp(): JSX.Element {
     const [open, setOpen] = useState(false)
