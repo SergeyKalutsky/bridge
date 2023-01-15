@@ -44,15 +44,15 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
                 setDisabled={setDisabled} />
         },
         {
-            name: 'GitHub',
-            jsx: <ProjectsGithub
+            name: 'Установка',
+            jsx: <ProjectsInstall
                 projectCreate={projectCreate}
                 setProjectCreate={setProjectCreate}
                 setDisabled={setDisabled} />
         },
         {
-            name: 'Установка',
-            jsx: <ProjectsInstall
+            name: 'GitHub',
+            jsx: <ProjectsGithub
                 projectCreate={projectCreate}
                 setProjectCreate={setProjectCreate}
                 setDisabled={setDisabled} />
