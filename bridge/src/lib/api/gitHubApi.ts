@@ -34,9 +34,7 @@ export async function pushTemplateRemote(token: string,
     // we clone template, "reinit" it and push to the new origin
     await git.clone({ fs, http, dir: dir, url: templateHttp })
     fs.rmSync(path.join(dir, '.git'), { recursive: true, force: true });
-    await git.init({ fs, dir: dir })
-    await git.add({ fs, dir: dir, filepath: '.' })
-    await git.commit({ fs, dir: dir, message: 'first commit', author: { name: username } })
+
     await git.addRemote({ fs, dir: dir, remote: 'origin', url: url })
     await git.push({
         fs, http, dir: dir, remote: 'origin', ref: 'master',
@@ -72,23 +70,59 @@ export async function clone(repoName: string, gitHubLogin: string, token: string
     }
 }
 
-export async function getRepoStatus(token: string, ) {
-    const octokit = new Octokit({auth: token})
+export async function getRepoStatus(token: string,) {
+    const octokit = new Octokit({ auth: token })
     await octokit.request('GET /repos/{owner}/{repo}/commits?page=1', {
         owner: 'OWNER',
         repo: 'REPO'
     })
-
 }
 
-export async function isBare(dir: string) {
-    // The logic is simple, if repo is bare it doesn't have any commits
-    // so when we clone it and try to get logs it should error out
-    try { await git.log({ fs, dir: dir }) }
-    catch (error) { return true }
-    return false
+async function makeStartDir(repo: string) {
+    await fs.promises.mkdir(repo)
+    await fs.promises.writeFile(`${repo}/README.md`, 'first text')
 }
 
-// listRepos('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')
-clone('dddd', 'SergeyKalutsky', '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')
-// userLogin('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')
+async function commit(dir: string,
+    commitMessage: string = 'robot',
+    author: { name: string, email?: string } = { name: 'robot', }) {
+    await git.add({ fs, dir: dir, filepath: '.' })
+    await git.commit({ fs, dir: dir, message: commitMessage, author })
+}
+
+async function pushFirsCommit(dir: string, token: string) {
+    const gitHubLogin = await userLogin(token)
+    const url = `https://github.com/${gitHubLogin}/${dir}.git`
+    await git.addRemote({ fs, dir: dir, remote: 'origin', url: url })
+    await git.push({
+        fs, http, dir: dir, remote: 'origin', ref: 'master',
+        onAuth: () => ({ username: gitHubLogin, password: token }),
+    })
+}
+
+function tokenType(token: string): string {
+    if (token.includes('github_pat')) return 'fine-grain'
+    return 'classic'
+}
+
+// PushRejectedError { reason: 'not-fast-forward' } undefined
+// 200
+// 403 Forbidden
+// 404
+async function main() {
+    const repo = 'glory2'
+    const token = ''
+    const ClassicToken = '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'
+    const FineGrainToken = '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'
+    // makeStartDir(repo)
+    // await git.init({ fs, dir: repo })
+    // await commit(repo)
+    try {
+        const res = await pushFirsCommit(repo, ClassicToken)
+        console.log(res)
+    } catch (HttpError) {
+        console.log(HttpError.code, HttpError.data, HttpError.data.statusCode)
+    }
+}
+
+main()
