@@ -14,14 +14,18 @@ export function SudoPopUp(): JSX.Element {
         })
         return () => window.shared.removeListeners('pkg:sudo')
     }, [])
+    const onKeyPress = (event) => {
+        if (event.key !== 'Enter') return
+        window.pkg.sudo(sudoPassword);
+        setError(null)
+    }
 
     return (
         < PopUp open={open} onClose={() => { setOpen(false); window.pkg.sudo(sudoPassword) }}>
             <span className='text-red-400 font-medium text-base'>{error}</span>
             <div className="w-4/5">
-                <InputForm type="password" onChange={(e) => { setSudoPassword(e.target.value) }} placeholder="Введите sudo пароль" />
+                <InputForm type="password" handleKeyPress={onKeyPress} onChange={(e) => { setSudoPassword(e.target.value) }} placeholder="Введите sudo пароль" />
             </div>
-            <Button onClick={() => { window.pkg.sudo(sudoPassword); setError(null) }} btnText='OK' />
         </PopUp>
     )
 }
