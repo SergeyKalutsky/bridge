@@ -1,4 +1,4 @@
-import { InputForm, ErrorMessage, WarningMessage, LoadingMessage } from '../../../components/common'
+import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText } from '../../../components/common'
 import { createProjectProp } from './types'
 import { useState, useEffect } from 'react'
 import { BsCheckLg } from 'react-icons/bs'

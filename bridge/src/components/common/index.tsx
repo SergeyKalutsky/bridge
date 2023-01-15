@@ -14,9 +14,11 @@ import Packages from "./Packages";
 import { LoadingMessage } from "./LoadingMessage";
 import { ErrorMessage } from "./ErrorMessage";
 import { WarningMessage } from "./WarningMessage";
+import { LinkText } from "./LinkText";
 
 export {
     Button,
+    LinkText,
     LoadingMessage,
     ErrorMessage,
     IconButton, 
