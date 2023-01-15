@@ -71,7 +71,7 @@ export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }:
         }
         setDisabled(true)
         setMessageJsx(<LoadingMessage text='Проверка токена' />)
-        window.projects.checkGitHubToken({ token: e.target.value, name: projectCreate.name })
+        window.projects.checkGitHubToken({ token: e.target.value, repo: projectCreate.name })
 
     }
     return (<>

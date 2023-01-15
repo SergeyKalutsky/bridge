@@ -24,7 +24,7 @@ contextBridge.exposeInMainWorld('settings', {
 })
 
 contextBridge.exposeInMainWorld('projects', {
-    checkGitHubToken: ({ name, token }: { name: string, token: string }): void => ipcRenderer.send('projects:checkgithubproject', { name, token }),
+    checkGitHubToken: ({ repo, token }: { repo: string, token: string }): void => ipcRenderer.send('projects:checkgithubproject', { repo, token }),
     loadimagebase64: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:loadimagebase64', filepath),
     mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
