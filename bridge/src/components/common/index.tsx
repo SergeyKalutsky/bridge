@@ -11,10 +11,16 @@ import SideMenuHeader from "./SideMenuHeader";
 import Logs from "./Logs";
 import SudoPopUp from "./SudoPopUp";
 import Packages from "./Packages";
+import { LoadingMessage } from "./LoadingMessage";
+import { ErrorMessage } from "./ErrorMessage";
+import { WarningMessage } from "./WarningMessage";
 
 export {
     Button,
+    LoadingMessage,
+    ErrorMessage,
     IconButton, 
+    WarningMessage,
     InputForm,
     PopUp,
     SideNavBar,

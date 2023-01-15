@@ -1,39 +1,9 @@
-import { LoadingIcon } from '../../../components/common/Icons'
-import { InputForm } from '../../../components/common'
+import { InputForm, ErrorMessage, WarningMessage, LoadingMessage } from '../../../components/common'
 import { createProjectProp } from './types'
 import { useState, useEffect } from 'react'
 import { BsCheckLg } from 'react-icons/bs'
 
 
-function LinkText({ text }: { text: string }): JSX.Element {
-    return <span className='font-semibold text-blue-600 underline hover:underline-offset-1 hover:cursor-pointer'>{text}</span>
-}
-
-function ErrorMessage({ text }: { text: string }): JSX.Element {
-    return (
-        <div className='w-full bg-rose-400/70 flex justify-start items-center mt-8 rounded-lg pt-2 pb-2 pr-2 pl-2'>
-            <p className='font-medium pl-2'>{'🛑'}</p>
-            <p className='font-medium text-slate-100 pl-2'>{text}</p>
-        </div>
-    )
-}
-
-function WarningMessage({ text }: { text: string }): JSX.Element {
-    return (
-        <div className='w-full bg-orange-300/40 flex justify-start items-center mt-8 rounded-lg pt-2 pb-2 pr-2 pl-2'>
-            <p className='font-medium text-slate-100 pl-2'>{'⚠️' + text}</p>
-        </div>
-    )
-}
-
-function LoadingMessage({ text }: { text: string }): JSX.Element {
-    return (
-        <div className='text-xl  w-full flex justify-start items-center mt-3 pt-2 pb-2 pr-2 pl-2'>
-            <LoadingIcon />
-            <p className='font-medium text-slate-100 pl-2'>{text}</p>
-        </div>
-    )
-}
 
 export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
