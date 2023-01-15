@@ -20,7 +20,7 @@ function ErrorMessage({ text }: { text: string }): JSX.Element {
 
 function WarningMessage({ text }: { text: string }): JSX.Element {
     return (
-        <div className='w-full bg-orange-600/95 flex justify-start items-center mt-8 rounded-lg pt-2 pb-2 pr-2 pl-2'>
+        <div className='w-full bg-orange-300/40 flex justify-start items-center mt-8 rounded-lg pt-2 pb-2 pr-2 pl-2'>
             <p className='font-medium text-slate-100 pl-2'>{'⚠️' + text}</p>
         </div>
     )
@@ -39,15 +39,16 @@ export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }:
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [showCheckMark, setShowCheckMark] = useState<boolean>(false)
     useEffect(() => {
-        window.shared.incomingData("projects:checkgithubproject", async ({ type, msg }) => {
+        window.shared.incomingData("projects:checkgithubproject", async ({ type, msg, token }) => {
             if (type === 'error') {
                 setMessageJsx(<ErrorMessage text={msg} />)
-            } else if (type === 'warning') {
-                setMessageJsx(<WarningMessage text={msg} />)
-                setShowCheckMark(true)
-                setDisabled(false)
             } else {
-                setMessageJsx(null)
+                if (!token.includes('github_pat')) {
+                    const msg = 'Похоже что вы используете классический токен. Ради безопасности вашего GitHub аккаунта настоятельно рекомендуем перейти на Fine-Grain Token'
+                    setMessageJsx(<WarningMessage text={msg} />)
+                } else {
+                    setMessageJsx(null)
+                }
                 setShowCheckMark(true)
                 setDisabled(false)
             }

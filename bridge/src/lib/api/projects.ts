@@ -79,11 +79,11 @@ function checkGitHubToken() {
             return
         }
         if (statusCode === 409) {
-            const msg =  `GitHub репо ${repo} уже существует и оно не пустое. Удалите ${repo} или переименуйте проект.`
+            const msg = `GitHub репо ${repo} уже существует и оно не пустое. Удалите ${repo} или переименуйте проект.`
             event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
             return
         }
-        event.reply('projects:checkgithubproject', { type: 'success', message: '' })
+        event.reply('projects:checkgithubproject', { type: 'success', message: '', token: token })
     })
 }
 

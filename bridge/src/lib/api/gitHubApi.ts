@@ -127,7 +127,6 @@ export async function checkGitHubToken(token: string, repo: string, ): Promise<n
         if (HttpError.code === 'PushRejectedError') {
             return 409 
         }
-        console.log(HttpError.data.statusCode)
         return HttpError.data.statusCode
     }
 }
