@@ -3,7 +3,7 @@ import PopUp from "./PopuUp"
 import InputForm from "./InputForm"
 import Button from "./Button"
 
-const SudoPopUp = (): JSX.Element => {
+export function SudoPopUp(): JSX.Element {
     const [open, setOpen] = useState(false)
     const [error, setError] = useState<string>()
     const [sudoPassword, setSudoPassword] = useState<string>()
@@ -25,5 +25,3 @@ const SudoPopUp = (): JSX.Element => {
         </PopUp>
     )
 }
-
-export default SudoPopUp
