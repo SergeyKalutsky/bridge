@@ -196,8 +196,14 @@ function createFile() {
 
 
 function getProjectTemplates() {
-    return ipcMain.handle('projects:getprojecttemplates', async (event) => {
-        return templates
+    return ipcMain.handle('projects:getprojecttemplates', async (event, query) => {
+        const queryTemplates = []
+        for (const template of templates) {
+            if (template.name.toLowerCase().includes(query) && query.length > 0) {
+                queryTemplates.push(template)
+            }
+        }
+        return queryTemplates
     })
 
 }

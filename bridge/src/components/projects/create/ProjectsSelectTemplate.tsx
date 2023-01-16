@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from 'react'
 export function ProjectsSelectTemplate(): JSX.Element {
     const { projectCreate, setProjectCreate, setDisabled } = useContext(projectCreateContext)
     const [templateRows, setTemplateRows] = useState<JSX.Element[]>()
-    const [template, setTemplate] = useState<Template>(null)
+    const [template, setTemplate] = useState<Template>(projectCreate.template)
 
     useEffect(() => {
         if (projectCreate.template !== null) {
@@ -20,23 +20,16 @@ export function ProjectsSelectTemplate(): JSX.Element {
         }
         if (template !== null) {
             setDisabled(false)
-            projectCreate.template = template
-            setProjectCreate(projectCreate)
+            setProjectCreate({ ...projectCreate, template: template })
             return
         }
-        setProjectCreate({ ...projectCreate, template: template })
         setDisabled(true)
+        setProjectCreate({ ...projectCreate, template: template })
     }, [template])
 
     const onChange = async (e) => {
-        const templates_local = []
-        const templates = await window.projects.getProjectTemplates()
-        for (const template of templates) {
-            if (e.target.value.length > 2 && template.name.toLowerCase().includes(e.target.value.toLowerCase())) {
-                templates_local.push(template)
-            }
-        }
-        const jsx = templates_local.map((template: Template, index: number) =>
+        const templates = await window.projects.getProjectTemplates(e.target.value.toLowerCase())
+        const jsx = templates.map((template: Template, index: number) =>
             <ProjectTemplateRow template={template}
                 roundTop={index == 0}
                 key={index}

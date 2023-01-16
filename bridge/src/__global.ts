@@ -21,7 +21,7 @@ declare global {
             platform(): string
         };
         projects: {
-            getProjectTemplates(): Promise<Template[]>
+            getProjectTemplates(query: string): Promise<Template[]>
             checkGitHubToken({ repo, token }: { repo: string, token: string }): Promise<void>
             createFile(createInfo: CreateInfo): Promise<string>;
             createFolder(createInfo: CreateInfo): Promise<string>;

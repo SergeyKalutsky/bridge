@@ -10,10 +10,8 @@ export function ProjecTemplateRowSelected({ template, setTemplate, setTemplateRo
 }): JSX.Element {
     const { projectCreate, setProjectCreate } = useContext(projectCreateContext);
     const onclick = () => {
-        const dummy = { name: '', http: '', pkgs: [], description: '' };
-        setTemplate(dummy);
-        projectCreate.template = dummy;
-        setProjectCreate(projectCreate);
+        setTemplate(null);
+        setProjectCreate({ ...projectCreate, template: null });
         setTemplateRows([]);
     };
     return (
