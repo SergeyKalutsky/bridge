@@ -166,7 +166,7 @@ function clone() {
       dir: path.join(BASE_DIR, store.get('user.login'), repo),
       url: http
     }).then(console.log)
-    event.reply('pkg:check', { msg: 'cloned' })
+    event.reply('git:clone', { msg: 'cloned' })
   })
 }
 
