@@ -1,6 +1,6 @@
 import { Button } from '../common'
 import { ProjectsDescription } from './create/ProjectsDescription'
-import { ProjectsSelectType } from './create/ProjectsSelectType'
+import { ProjectsSelectTemplate } from './create/ProjectsSelectType'
 import { ProjectsGithub } from './create/ProjectsGithub'
 import { ProjectsInstall } from './create/ProjectsInstall'
 import { HeaderPath } from './create/HeaderPath'
@@ -15,7 +15,7 @@ function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Elemen
     const stageMap = [
         {
             name: 'Тип проекта',
-            jsx: <ProjectsSelectType
+            jsx: <ProjectsSelectTemplate
                 projectCreate={projectCreate}
                 setProjectCreate={setProjectCreate}
                 setDisabled={setDisabled} />

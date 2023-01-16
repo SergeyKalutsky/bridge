@@ -7,40 +7,40 @@ import { useEffect, useState } from 'react'
 import { Template } from '../../../types'
 
 
-function ProjectTypeRow({ project, roundTop, setProject }:
+function ProjectTemplateRow({ template, roundTop, setTemplate }:
     {
-        project: Template,
+        template: Template,
         roundTop: boolean,
-        setProject: React.Dispatch<React.SetStateAction<Template>>
+        setTemplate: React.Dispatch<React.SetStateAction<Template>>
     }): JSX.Element {
     const rounded = roundTop ? 'rounded-t-l-lg' : ''
     return (<div
-        onClick={() => setProject(project)}
+        onClick={() => setTemplate(template)}
         className={`pl-5 hover: cursor-pointer hover:bg-sky-700/75 hover:text-slate-200 text-slate-800 font-medium flex items-center w-full h-[40px] ${rounded}`}>
-        {project.name}
+        {template.name}
     </div>)
 
 }
 
-function ProjecTypeRowSelected({ project, setProject, projectCreate, setProjectCreate, setProjectRows }:
+function ProjecTemplateRowSelected({ template, setTemplate, projectCreate, setProjectCreate, setTemplateRows }:
     {
-        project: Template,
-        setProject: React.Dispatch<React.SetStateAction<Template>>
+        template: Template,
+        setTemplate: React.Dispatch<React.SetStateAction<Template>>
         projectCreate: Project
         setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
-        setProjectRows: React.Dispatch<React.SetStateAction<JSX.Element[]>>
+        setTemplateRows: React.Dispatch<React.SetStateAction<JSX.Element[]>>
     }): JSX.Element {
     const onclick = () => {
-        const dummy = {name:'', http:'', pkgs:[], description:''}
-        setProject(dummy)
+        const dummy = { name: '', http: '', pkgs: [], description: '' }
+        setTemplate(dummy)
         projectCreate.template = dummy
         setProjectCreate(projectCreate)
-        setProjectRows([])
+        setTemplateRows([])
     }
     return (
         <>
             <div className='w-full h-[60px] bg-sky-700/75 flex items-center rounded-lg border-2 border-sky-800'>
-                <div className='pl-5 w-1/2 text-slate-100 text-2xl'>{project.name}</div>
+                <div className='pl-5 w-1/2 text-slate-100 text-2xl'>{template.name}</div>
                 <div className='pr-6 w-1/2 text-slate-200 flex items-center justify-end'>
                     <div className='hover: cursor-pointer'>
                         <ImCross onClick={onclick} style={{ justifySelf: 'end', width: 15, height: 15 }} />
@@ -48,58 +48,57 @@ function ProjecTypeRowSelected({ project, setProject, projectCreate, setProjectC
                 </div>
             </div>
             <div className='mt-10  w-full h-4/5 bg-sky-600/60 border-2 rounded-md border-sky-800 overflow-scroll'>
-                <span className='pl-2 text-slate-50 font-medium text-xl'>{project.description}</span>
+                <span className='pl-2 text-slate-50 font-medium text-xl'>{template.description}</span>
             </div>
         </>
     )
 }
 
 
-export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
-    const [projectRows, setProjectRows] = useState<JSX.Element[]>()
-    const [project, setProject] = useState<Template>(projectCreate.template)
+export function ProjectsSelectTemplate({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
+    const [templateRows, setTemplateRows] = useState<JSX.Element[]>()
+    const [template, setTemplate] = useState<Template>(null)
 
     useEffect(() => {
-        console.log(projectCreate)
         if (projectCreate.template.name !== '') {
             setDisabled(false)
-            setProject(projectCreate.template)
+            setTemplate(projectCreate.template)
             return
         }
-        if (project.name !== '') {
+        if (template !== null) {
             setDisabled(false)
-            projectCreate.template = project
+            projectCreate.template = template
             setProjectCreate(projectCreate)
             return
         }
         projectCreate.template.name = ''
         setProjectCreate(projectCreate)
         setDisabled(true)
-    }, [project])
+    }, [template])
 
     const onChange = async (e) => {
-        const projects = []
+        const templates_local = []
         const templates = await window.projects.getProjectTemplates()
         for (const template of templates) {
             if (e.target.value.length > 2 && template.name.toLowerCase().includes(e.target.value.toLowerCase())) {
-                projects.push(template)
+                templates_local.push(template)
             }
         }
-        const jsx = projects.map((project: Template, index: number) =>
-            <ProjectTypeRow project={project}
+        const jsx = templates_local.map((template: Template, index: number) =>
+            <ProjectTemplateRow template={template}
                 roundTop={index == 0}
                 key={index}
-                setProject={setProject} />
+                setTemplate={setTemplate} />
         )
-        setProjectRows(jsx)
+        setTemplateRows(jsx)
     }
-    if (project.name !== '') {
-        return <ProjecTypeRowSelected
-            project={project}
-            setProject={setProject}
+    if (template !== null) {
+        return <ProjecTemplateRowSelected
+            template={template}
+            setTemplate={setTemplate}
             projectCreate={projectCreate}
             setProjectCreate={setProjectCreate}
-            setProjectRows={setProjectRows} />
+            setTemplateRows={setTemplateRows} />
     }
     return (
         <>
@@ -110,9 +109,9 @@ export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisable
                 classInput='border-none pl-1'>
                 {<BiSearch style={{ color: '#5A5A6E', width: 28, height: 30, paddingLeft: 5, backgroundColor: '#fafafa' }} />}
             </InputForm>
-            {projectRows !== undefined && projectRows.length > 0 ?
+            {templateRows !== undefined && templateRows.length > 0 ?
                 <div className='mt-10  w-full h-4/5 bg-zinc-50 rounded-lg overflow-scroll'>
-                    {projectRows}
+                    {templateRows}
                 </div> :
                 null}
         </>
