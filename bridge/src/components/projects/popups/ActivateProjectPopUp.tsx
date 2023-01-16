@@ -12,7 +12,7 @@ interface Props {
 const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects }: Props): JSX.Element => {
     const closeModal = () => { setOpen(false) }
     const onDownloadClick = () => {
-        window.git.clone({ repo: project.name, http: project.http })
+        window.git.clone({ repo: project.name, git_url: project.http })
         setOpen(false)
         updateProjects({ ...project, islocal: true })
     }

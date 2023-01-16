@@ -39,7 +39,7 @@ declare global {
             renameFile(data: { newName: string, activePath: ActivePath }): any
         };
         git: {
-            clone({ repo, http }: { repo: string, http: string }): Promise<void>;
+            clone({ repo, git_url }: { repo: string, git_url: string }): Promise<void>;
             revert(args: { oid: string, oid_prev: string }): Promise<void>
             pull(): Promise<void>;
             push(): Promise<void>;
