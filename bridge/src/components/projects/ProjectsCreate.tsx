@@ -1,6 +1,6 @@
 import { Button } from '../common'
 import { ProjectsDescription } from './create/ProjectsDescription'
-import { ProjectsSelectTemplate } from './create/ProjectsSelectType'
+import { ProjectsSelectTemplate } from './create/ProjectsSelectTemplate'
 import { ProjectsGithub } from './create/ProjectsGithub'
 import { ProjectsInstall } from './create/ProjectsInstall'
 import { HeaderPath } from './create/HeaderPath'

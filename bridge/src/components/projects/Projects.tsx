@@ -33,12 +33,7 @@ const dummyProject: Project = {
     http: '',
     typeName: '',
     thumbnailPath: '',
-    template: {
-        name: '',
-        pkgs: [],
-        description: '',
-        http: ''
-    }
+    template: null
 }
 
 export const projectContext = createContext(null)

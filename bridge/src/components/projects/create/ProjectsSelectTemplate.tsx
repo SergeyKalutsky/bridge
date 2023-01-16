@@ -1,7 +1,7 @@
 import { ImCross } from 'react-icons/im'
 import { BiSearch } from 'react-icons/bi'
 import { Project } from '../types'
-import { InputForm } from '../../../components/common'
+import { InputForm } from '../../common'
 import { createProjectProp } from './types'
 import { useEffect, useState } from 'react'
 import { Template } from '../../../types'
@@ -60,7 +60,7 @@ export function ProjectsSelectTemplate({ projectCreate, setProjectCreate, setDis
     const [template, setTemplate] = useState<Template>(null)
 
     useEffect(() => {
-        if (projectCreate.template.name !== '') {
+        if (projectCreate.template !== null) {
             setDisabled(false)
             setTemplate(projectCreate.template)
             return
@@ -71,7 +71,7 @@ export function ProjectsSelectTemplate({ projectCreate, setProjectCreate, setDis
             setProjectCreate(projectCreate)
             return
         }
-        projectCreate.template.name = ''
+        projectCreate = { ...projectCreate, template: template }
         setProjectCreate(projectCreate)
         setDisabled(true)
     }, [template])
