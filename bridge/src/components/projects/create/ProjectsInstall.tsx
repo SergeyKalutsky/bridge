@@ -2,9 +2,8 @@ import { Project } from '../types'
 import { Package } from '../../../types'
 import { projectContext } from '../Projects'
 import { projectCreateContext } from './ProjectsCreate'
-import { LoadingMessage } from '../../../components/common'
 import { useState, useEffect, useContext } from 'react'
-import { Packages, Logs, Button, SudoPopUp } from '../../../components/common'
+import { Packages, Logs, Button, SudoPopUp, LoadingMessage } from '../../../components/common'
 
 
 export function ProjectsInstall(): JSX.Element {
