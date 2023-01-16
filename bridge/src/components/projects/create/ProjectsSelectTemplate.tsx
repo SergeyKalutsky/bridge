@@ -13,12 +13,12 @@ export function ProjectsSelectTemplate(): JSX.Element {
     const [template, setTemplate] = useState<Template>(projectCreate.template)
 
     useEffect(() => {
-        if (projectCreate.template !== null) {
+        if (projectCreate.template) {
             setDisabled(false)
             setTemplate(projectCreate.template)
             return
         }
-        if (template !== null) {
+        if (template) {
             setDisabled(false)
             setProjectCreate({ ...projectCreate, template: template })
             return
@@ -37,7 +37,7 @@ export function ProjectsSelectTemplate(): JSX.Element {
         )
         setTemplateRows(jsx)
     }
-    if (template !== null) {
+    if (template) {
         return <ProjecTemplateRowSelected
             template={template}
             setTemplate={setTemplate}

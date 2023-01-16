@@ -44,13 +44,13 @@ export function ProjectsDescription(): JSX.Element {
 
     useEffect(() => {
         const setImage = async () => {
-            if (projectCreate.thumbnailPath !== '') {
+            if (projectCreate.thumbnailPath) {
                 const imgBase64 = await window.projects.loadimagebase64(projectCreate.thumbnailPath)
                 setImgBase64(imgBase64)
             }
         }
         setImage()
-        if (projectCreate.name !== '') {
+        if (projectCreate.name) {
             setRepo(projectCreate.name)
             return
         }
@@ -60,8 +60,8 @@ export function ProjectsDescription(): JSX.Element {
     const onChange = (e) => {
         setRepo(e.target.value)
         const error = projectNameError({ name: e.target.value })
-        if (error !== '') {
-            setError(<ErrorMessage text={error} classDiv='pt-2 pb-2 pr-2 pl-2'/>)
+        if (error) {
+            setError(<ErrorMessage text={error} classDiv='pt-2 pb-2 pr-2 pl-2' />)
             setDisabled(true)
             return
         }
