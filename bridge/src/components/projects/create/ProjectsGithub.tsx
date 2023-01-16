@@ -12,7 +12,7 @@ export function ProjectsGithub(): JSX.Element {
     useEffect(() => {
         window.shared.incomingData("projects:checkgithubproject", async ({ type, msg, token }) => {
             if (type === 'error') {
-                setMessageJsx(<ErrorMessage text={msg} />)
+                setMessageJsx(<ErrorMessage text={msg} classDiv='mt-8 pt-2 pb-2 pr-2 pl-2'/>)
             } else {
                 if (!token.includes('github_pat')) {
                     const msg = 'Похоже что вы используете классический токен. Ради безопасности вашего GitHub аккаунта настоятельно рекомендуем перейти на Fine-Grain Token'

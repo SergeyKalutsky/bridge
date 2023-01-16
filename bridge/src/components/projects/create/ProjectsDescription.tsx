@@ -1,5 +1,5 @@
 import { Button } from '../../common'
-import { InputForm, } from '../../common'
+import { InputForm, ErrorMessage } from '../../common'
 import { useState, useEffect, useContext } from 'react'
 import { projectCreateContext } from './ProjectsCreate'
 
@@ -35,7 +35,7 @@ export function ProjectsDescription(): JSX.Element {
     const { projectCreate, setProjectCreate, setDisabled } = useContext(projectCreateContext)
     const [repo, setRepo] = useState('')
     const [imgPath, setImagePath] = useState('')
-    const [error, setError] = useState<string>('')
+    const [error, setError] = useState<JSX.Element>(null)
     const [imgBase64, setImgBase64] = useState('')
 
     useEffect(() => {
@@ -61,11 +61,11 @@ export function ProjectsDescription(): JSX.Element {
         setRepo(e.target.value)
         const error = projectNameError({ name: e.target.value })
         if (error !== '') {
-            setError(' ❌ ' + error)
+            setError(<ErrorMessage text={error} classDiv='pt-2 pb-2 pr-2 pl-2'/>)
             setDisabled(true)
             return
         }
-        setError('')
+        setError(null)
         setDisabled(false)
     }
     useEffect(() => {
@@ -78,7 +78,7 @@ export function ProjectsDescription(): JSX.Element {
     }, [])
     return (
         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
-            <span className='text-stone-50 font-medium text-xl h-[30px]'>{error}</span>
+            {error ? error : <div className='w-full h-[40px]'></div>}
             <div className='w-full'>
                 <InputForm
                     type="text"
