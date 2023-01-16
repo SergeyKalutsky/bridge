@@ -12,18 +12,34 @@ type State = {
 
 type Action =
     | { type: 'memberFind', payload: number }
-    | { type: 'createProject' }
+    | { type: 'createProject', payload: Project }
     | { type: 'home' }
 
 function reducer(state: State, action: Action) {
     switch (action.type) {
         case 'createProject':
-            return { page: <ProjectCreate /> }
+            return { page: <ProjectCreate dummyProject={action.payload} /> }
         case 'home':
             return { page: null }
     }
 }
 
+const dummyProject: Project = {
+    id: null,
+    islocal: true,
+    name: '',
+    description: '',
+    isclassroom: 0,
+    http: '',
+    typeName: '',
+    thumbnailPath: '',
+    template: {
+        name: '',
+        pkgs: [],
+        description: '',
+        http: ''
+    }
+}
 
 export const projectContext = createContext(null)
 
@@ -55,7 +71,8 @@ const Projects = (): JSX.Element => {
 
     const dispatchCreateProject = () => {
         dispatch({
-            type: 'createProject'
+            type: 'createProject',
+            payload: dummyProject
         })
     }
 

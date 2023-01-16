@@ -5,32 +5,10 @@ import { ProjectsGithub } from './create/ProjectsGithub'
 import { ProjectsInstall } from './create/ProjectsInstall'
 import { HeaderPath } from './create/HeaderPath'
 import { Project } from './types'
-import { useState, useContext } from 'react'
-import { projectContext } from './Projects'
+import { useState } from 'react'
 
 
-interface Prop {
-    addProject: (project: Project) => void
-}
-
-const dummyProject: Project = {
-    id: null,
-    islocal: true,
-    name: '',
-    description: '',
-    isclassroom: 0,
-    http: '',
-    typeName: '',
-    thumbnailPath: '',
-    template: {
-        name: '',
-        pkgs: [],
-        description: '',
-        http: ''
-    }
-}
-
-const ProjectsCreate = (): JSX.Element => {
+function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Element {
     const [projectCreate, setProjectCreate] = useState<Project>(dummyProject)
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
@@ -62,15 +40,16 @@ const ProjectsCreate = (): JSX.Element => {
                 projectCreate={projectCreate}
                 setProjectCreate={setProjectCreate}
                 setDisabled={setDisabled} />
-        }]
+        }
+    ]
     return (
         <>
             <HeaderPath path={`Создание проекта / ${stageMap[stage].name}`} />
-            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll' >
+            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll'>
                 <div className='w-3/5 h-4/5'>
                     {stageMap[stage].jsx}
                 </div>
-            </div >
+            </div>
             <div className='bg-zinc-600 h-[60px] px-20 flex items-center drop-shadow-md'>
                 <div className='w-[120px] h-[40px]'>
                     <Button onClick={() => setStage(stage - 1)} disabled={stage < 1}>{'<- Назад'}</Button>
