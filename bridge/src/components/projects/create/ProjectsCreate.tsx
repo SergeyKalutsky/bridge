@@ -15,7 +15,7 @@ interface ProjectCreateContext {
 
 export const projectCreateContext = createContext<ProjectCreateContext>(null)
 
-function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Element {
+export function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Element {
     const [projectCreate, setProjectCreate] = useState<Project>(dummyProject)
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
@@ -61,4 +61,3 @@ function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Elemen
 
 }
 
-export default ProjectsCreate

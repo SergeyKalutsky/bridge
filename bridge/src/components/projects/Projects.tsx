@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer, createContext } from 'react'
 import { ToggleBar, SideMenu, Workspace } from '../common';
-import ProjectCreate from './create/ProjectsCreate'
+import { ProjectsCreate } from './create/ProjectsCreate'
 import ProjectItem from './ProjectItem';
 import MenuHeader from './MenuHeader';
 import { UserProjects, Project } from './types';
@@ -14,7 +14,7 @@ type Action =
 function reducer(state: { page: JSX.Element }, action: Action) {
     switch (action.type) {
         case 'createProject':
-            return { page: <ProjectCreate dummyProject={action.payload} /> }
+            return { page: <ProjectsCreate dummyProject={action.payload} /> }
         case 'home':
             return { page: null }
     }
