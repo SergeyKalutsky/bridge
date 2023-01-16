@@ -37,12 +37,9 @@ export function ProjectsDescription(): JSX.Element {
     const [error, setError] = useState<JSX.Element>(null)
 
     useEffect(() => {
-        setProjectCreate({ ...projectCreate, name: repo, thumbnailPath: img.path })
-    }, [repo, img])
-
-    useEffect(() => {
         setDisabled(!(repo && !error))
-    }, [repo, error])
+        setProjectCreate({ ...projectCreate, name: repo, thumbnailPath: img.path })
+    }, [repo, img, error])
 
     useEffect(() => {
         const loadBase64 = async () => {
@@ -54,6 +51,10 @@ export function ProjectsDescription(): JSX.Element {
         if (projectCreate.name) {
             setRepo(projectCreate.name)
         }
+        window.shared.incomingData("dialogue:openimagefile", async (filepath: string) => {
+            setImg({ path: filepath, base64: await window.projects.loadimagebase64(filepath) })
+        });
+        return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
 
     const onChange = (e) => {
@@ -65,12 +66,6 @@ export function ProjectsDescription(): JSX.Element {
         }
         setError(null)
     }
-    useEffect(() => {
-        window.shared.incomingData("dialogue:openimagefile", async (filepath: string) => {
-            setImg({ path: filepath, base64: await window.projects.loadimagebase64(filepath) })
-        });
-        return () => window.shared.removeListeners('dialogue:openimagefile')
-    }, [])
     return (
         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
             {error ? error : <div className='w-full h-[40px]'></div>}
