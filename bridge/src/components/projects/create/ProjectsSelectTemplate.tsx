@@ -13,17 +13,18 @@ export function ProjectsSelectTemplate(): JSX.Element {
     const [template, setTemplate] = useState<Template>(projectCreate.template)
 
     useEffect(() => {
+        setDisabled(!template)
+    }, [template])
+
+    useEffect(() => {
         if (projectCreate.template) {
-            setDisabled(false)
             setTemplate(projectCreate.template)
             return
         }
         if (template) {
-            setDisabled(false)
             setProjectCreate({ ...projectCreate, template: template })
             return
         }
-        setDisabled(true)
         setProjectCreate({ ...projectCreate, template: template })
     }, [template])
 
