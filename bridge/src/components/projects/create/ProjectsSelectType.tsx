@@ -60,6 +60,7 @@ export function ProjectsSelectType({ projectCreate, setProjectCreate, setDisable
     const [project, setProject] = useState<Template>(projectCreate.template)
 
     useEffect(() => {
+        console.log(projectCreate)
         if (projectCreate.template.name !== '') {
             setDisabled(false)
             setProject(projectCreate.template)

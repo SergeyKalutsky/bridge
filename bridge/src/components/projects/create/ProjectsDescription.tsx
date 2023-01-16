@@ -33,8 +33,15 @@ function projectNameError(name: string): string {
 
 
 export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
+    const [repo, setRepo] = useState('')
+    const [imgPath, setImagePath] = useState('')
     const [error, setError] = useState<string>('')
     const [imgBase64, setImgBase64] = useState('')
+
+    useEffect(() => {
+        setProjectCreate({ ...projectCreate, name: repo, thumbnailPath: imgPath })
+    }, [repo, imgPath])
+
     useEffect(() => {
         const setImage = async () => {
             if (projectCreate.thumbnailPath !== '') {
@@ -43,12 +50,15 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
             }
         }
         setImage()
-        if (projectCreate.name !== '') return
+        if (projectCreate.name !== '') {
+            setRepo(projectCreate.name)
+            return
+        }
         setDisabled(true)
     }, [])
 
     const onChange = (e) => {
-        setProjectCreate({ ...projectCreate, name: e.target.value })
+        setRepo(e.target.value)
         const error = projectNameError(e.target.value)
         if (error !== '') {
             setError(' ❌ ' + error)
@@ -60,16 +70,12 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
     }
     useEffect(() => {
         window.shared.incomingData("dialogue:openimagefile", async (filepath: string) => {
-            setProjectCreate({ ...projectCreate, thumbnailPath: filepath })
+            setImagePath(filepath)
             const imgBase64 = await window.projects.loadimagebase64(filepath)
             setImgBase64(imgBase64)
         });
         return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
-
-    const onClick = async () => {
-        window.dialogue.openImageFile()
-    }
     return (
         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
             <span className='text-stone-50 font-medium text-xl h-[30px]'>{error}</span>
@@ -78,7 +84,7 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
                     type="text"
                     placeholder='Название'
                     classInput='border-none pl-4'
-                    value={projectCreate.name}
+                    value={repo}
                     onChange={onChange} />
             </div>
             <textarea placeholder='Описание'
@@ -88,12 +94,12 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
             />
             <div className='w-full flex flex-col'>
 
-                <img src={`data:image/jpeg;base64,${imgBase64}`} alt="" className="w-full hover:cursor-pointer pb-5" onClick={onClick} />
+                <img src={`data:image/jpeg;base64,${imgBase64}`} alt="" className="w-full hover:cursor-pointer pb-5" onClick={() => { window.dialogue.openImageFile() }} />
                 <div className='w-full flex justify-center items-center'>
                     <div className='w-1/2 h-[40px]'>
                         {imgBase64 ?
                             null :
-                            <Button width={24} btnText='Загрузить изображение' onClick={onClick} />
+                            <Button width={24} btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
                         }
 
                     </div>
