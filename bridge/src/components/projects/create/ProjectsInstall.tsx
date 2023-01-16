@@ -9,6 +9,17 @@ export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }
     const [pkgs, setPkgs] = useState<Package[]>(projectCreate.template.pkgs)
     const [btn, setBtn] = useState(false)
     const [loadMessage, setLoadMessage] = useState<JSX.Element>(<LoadingMessage text='Проверка устновленных библиотек' />)
+
+    useEffect(() => {
+        window.shared.incomingData("git:clone", ({ msg }: { msg: string }) => {
+            if (msg === 'cloned') {
+                setDisabled(false)
+                setLoadMessage(null)
+            }
+        });
+        return () => window.shared.removeListeners('git:clone')
+    }, [])
+
     useEffect(() => {
         setDisabled(true)
         console.log(pkgs)
@@ -21,7 +32,10 @@ export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }
                 }
             }
             if (count === pkgs.length) {
-                setDisabled(false)
+                setLoadMessage(<LoadingMessage text='Клонируем шаблон проекта' />)
+                window.git.clone({ repo: projectCreate.name, git_url: projectCreate.template.http })
+                setPkgs(pkgs)
+                return
             } else {
                 setBtn(true)
             }
