@@ -28,7 +28,6 @@ export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }
 
         window.shared.incomingData("git:clone", ({ msg }: { msg: string }) => {
             if (msg === 'cloned') {
-                setUserProjects
                 setDisabled(false)
                 setLoadMessage(null)
                 addProject(projectCreate)
@@ -50,6 +49,14 @@ export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }
             }
             if (count === pkgs.length) {
                 setLoadMessage(<LoadingMessage text='Клонируем шаблон проекта' />)
+                for (const userProject of userProjects.projects) {
+                    if (userProject.name === projectCreate.name) {
+                        setDisabled(false)
+                        setLoadMessage(null)
+                        setPkgs(pkgs)
+                        return
+                    }
+                }
                 window.git.clone({ repo: projectCreate.name, git_url: projectCreate.template.http })
                 setPkgs(pkgs)
                 return

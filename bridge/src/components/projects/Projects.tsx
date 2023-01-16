@@ -35,8 +35,12 @@ const dummyProject: Project = {
     thumbnailPath: '',
     template: null
 }
+interface ProjectContext {
+    userProjects: UserProjects,
+    setUserProjects: React.Dispatch<React.SetStateAction<UserProjects>>
+}
 
-export const projectContext = createContext(null)
+export const projectContext = createContext<ProjectContext>(null)
 
 const Projects = (): JSX.Element => {
     const [userProjects, setUserProjects] = useState<UserProjects>(null)
