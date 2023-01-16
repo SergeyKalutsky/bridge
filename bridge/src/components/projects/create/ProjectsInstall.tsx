@@ -1,20 +1,37 @@
 import { createProjectProp } from './types'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Packages, Logs, Button, SudoPopUp } from '../../../components/common'
 import { LoadingMessage } from '../../../components/common'
 import { Package } from '../../../types'
-
+import { Project } from '../types'
+import { projectContext } from '../Projects'
 
 export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
+    const { userProjects, setUserProjects } = useContext(projectContext)
     const [pkgs, setPkgs] = useState<Package[]>(projectCreate.template.pkgs)
     const [btn, setBtn] = useState(false)
     const [loadMessage, setLoadMessage] = useState<JSX.Element>(<LoadingMessage text='Проверка устновленных библиотек' />)
 
     useEffect(() => {
+        const addProject = async (project: Project) => {
+
+            project.islocal = true
+            if (userProjects.activeProject === undefined) {
+                window.settings.set({ active_project: project })
+            }
+            setUserProjects({
+                ...userProjects,
+                projects: [...userProjects.projects, project],
+                activeProject: userProjects.activeProject === undefined ? project : userProjects.activeProject
+            })
+        }
+
         window.shared.incomingData("git:clone", ({ msg }: { msg: string }) => {
             if (msg === 'cloned') {
+                setUserProjects
                 setDisabled(false)
                 setLoadMessage(null)
+                addProject(projectCreate)
             }
         });
         return () => window.shared.removeListeners('git:clone')

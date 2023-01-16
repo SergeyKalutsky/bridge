@@ -5,7 +5,8 @@ import { ProjectsGithub } from './create/ProjectsGithub'
 import { ProjectsInstall } from './create/ProjectsInstall'
 import { HeaderPath } from './create/HeaderPath'
 import { Project } from './types'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { projectContext } from './Projects'
 
 
 interface Prop {
@@ -29,7 +30,7 @@ const dummyProject: Project = {
     }
 }
 
-const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
+const ProjectsCreate = (): JSX.Element => {
     const [projectCreate, setProjectCreate] = useState<Project>(dummyProject)
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
@@ -67,9 +68,7 @@ const ProjectsCreate = ({ addProject }: Prop): JSX.Element => {
             <HeaderPath path={`Создание проекта / ${stageMap[stage].name}`} />
             <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll' >
                 <div className='w-3/5 h-4/5'>
-                    {/* <div className='w-full h-1/7 gap-y-2 flex flex-col'> */}
                     {stageMap[stage].jsx}
-                    {/* </div> */}
                 </div>
             </div >
             <div className='bg-zinc-600 h-[60px] px-20 flex items-center drop-shadow-md'>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from 'react'
+import { useState, useEffect, useReducer, createContext } from 'react'
 import { ToggleBar, SideMenu, Workspace } from '../common';
 import ProjectCreate from './ProjectsCreate'
 import ProjectItem from './ProjectItem';
@@ -12,38 +12,26 @@ type State = {
 
 type Action =
     | { type: 'memberFind', payload: number }
-    | { type: 'createProject', payload: { addProject: (project: Project) => void } }
+    | { type: 'createProject' }
     | { type: 'home' }
 
 function reducer(state: State, action: Action) {
     switch (action.type) {
         case 'createProject':
-            return { page: <ProjectCreate addProject={action.payload.addProject} /> }
+            return { page: <ProjectCreate /> }
         case 'home':
             return { page: null }
     }
 }
 
 
+export const projectContext = createContext(null)
+
 const Projects = (): JSX.Element => {
     const [userProjects, setUserProjects] = useState<UserProjects>(null)
     const [state, dispatch] = useReducer(reducer, { page: null });
     const [activeToggle, setActiveToggle] = useState(false)
     const handleToggle = () => { setActiveToggle(!activeToggle) }
-
-    const addProject = async (project: Project) => {
-
-        project.islocal = true
-        if (userProjects.activeProject === undefined) {
-            window.settings.set({ active_project: project })
-        }
-        setUserProjects({
-            ...userProjects,
-            projects: [...userProjects.projects, project],
-            activeProject: userProjects.activeProject === undefined ? project : userProjects.activeProject
-        })
-        dispatch({ type: 'home' })
-    }
 
     useEffect(() => {
         const user = window.settings.get('user')
@@ -67,8 +55,7 @@ const Projects = (): JSX.Element => {
 
     const dispatchCreateProject = () => {
         dispatch({
-            type: 'createProject',
-            payload: { addProject: addProject }
+            type: 'createProject'
         })
     }
 
@@ -85,7 +72,9 @@ const Projects = (): JSX.Element => {
             </SideMenu>
             <ToggleBar handleToggle={handleToggle} />
             <Workspace>
-                {state.page}
+                <projectContext.Provider value={{ userProjects, setUserProjects }}>
+                    {state.page}
+                </projectContext.Provider>
             </Workspace>
         </>
 
