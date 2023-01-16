@@ -43,7 +43,7 @@ contextBridge.exposeInMainWorld('projects', {
 })
 
 contextBridge.exposeInMainWorld('git', {
-    clone: (project: Project) => ipcRenderer.invoke('git:clone', project),
+    clone: ({ repo, http }: { repo: string, http: string }): void => ipcRenderer.send('git:clone', { repo, http }),
     pull: (): Promise<void> => ipcRenderer.invoke('git:pull'),
     push: (): Promise<void> => ipcRenderer.invoke('git:push'),
     commit: (): Promise<void> => ipcRenderer.invoke('git:commit'),

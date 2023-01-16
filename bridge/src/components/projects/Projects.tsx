@@ -33,13 +33,9 @@ const Projects = (): JSX.Element => {
 
     const addProject = async (project: Project) => {
 
-        const user = window.settings.get('user')
-        if (user.type == 'guest') {
-            await window.git.clone(project)
-        }
         project.islocal = true
         if (userProjects.activeProject === undefined) {
-            window.settings.set({active_project: project})
+            window.settings.set({ active_project: project })
         }
         setUserProjects({
             ...userProjects,
@@ -47,7 +43,6 @@ const Projects = (): JSX.Element => {
             activeProject: userProjects.activeProject === undefined ? project : userProjects.activeProject
         })
         dispatch({ type: 'home' })
-
     }
 
     useEffect(() => {
@@ -86,7 +81,7 @@ const Projects = (): JSX.Element => {
                         key={indx}
                         userProjects={userProjects}
                         setUserProjects={setUserProjects} />
-                ): null}
+                ) : null}
             </SideMenu>
             <ToggleBar handleToggle={handleToggle} />
             <Workspace>

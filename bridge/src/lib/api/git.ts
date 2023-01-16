@@ -160,12 +160,13 @@ const revertChanges = async (oid: string, oid_revert: string, dir: string) => {
 
 
 function clone() {
-  return ipcMain.handle('git:clone', async (event, project) => {
+  return ipcMain.on('git:clone', async (event, { repo, http }) => {
     await git.clone({
       fs, http,
-      dir: path.join(BASE_DIR, store.get('user.login'), project.name),
-      url: project.http
+      dir: path.join(BASE_DIR, store.get('user.login'), repo),
+      url: http
     }).then(console.log)
+    event.reply('pkg:check', { msg: 'cloned' })
   })
 }
 
