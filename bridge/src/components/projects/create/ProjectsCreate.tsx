@@ -1,12 +1,19 @@
-import { Button } from '../common'
-import { ProjectsDescription } from './create/ProjectsDescription'
-import { ProjectsSelectTemplate } from './create/ProjectsSelectTemplate'
-import { ProjectsGithub } from './create/ProjectsGithub'
-import { ProjectsInstall } from './create/ProjectsInstall'
-import { HeaderPath } from './create/HeaderPath'
-import { Project } from './types'
-import { useState } from 'react'
+import { Project } from '../types'
+import { Button } from '../../common'
+import { HeaderPath } from './HeaderPath'
+import { createContext, useState } from 'react'
+import { ProjectsGithub } from './ProjectsGithub'
+import { ProjectsInstall } from './ProjectsInstall'
+import { ProjectsDescription } from './ProjectsDescription'
+import { ProjectsSelectTemplate } from './ProjectsSelectTemplate'
 
+interface ProjectCreateContext {
+    projectCreate: Project,
+    setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
+    setDisabled: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const projectCreateContext = createContext<ProjectCreateContext>(null)
 
 function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Element {
     const [projectCreate, setProjectCreate] = useState<Project>(dummyProject)
@@ -15,31 +22,19 @@ function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Elemen
     const stageMap = [
         {
             name: 'Тип проекта',
-            jsx: <ProjectsSelectTemplate
-                projectCreate={projectCreate}
-                setProjectCreate={setProjectCreate}
-                setDisabled={setDisabled} />
+            jsx: <ProjectsSelectTemplate />
         },
         {
             name: 'Описание',
-            jsx: <ProjectsDescription
-                projectCreate={projectCreate}
-                setProjectCreate={setProjectCreate}
-                setDisabled={setDisabled} />
+            jsx: <ProjectsDescription />
         },
         {
             name: 'Установка',
-            jsx: <ProjectsInstall
-                projectCreate={projectCreate}
-                setProjectCreate={setProjectCreate}
-                setDisabled={setDisabled} />
+            jsx: <ProjectsInstall />
         },
         {
             name: 'GitHub',
-            jsx: <ProjectsGithub
-                projectCreate={projectCreate}
-                setProjectCreate={setProjectCreate}
-                setDisabled={setDisabled} />
+            jsx: <ProjectsGithub />
         }
     ]
     return (
@@ -47,7 +42,9 @@ function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Elemen
             <HeaderPath path={`Создание проекта / ${stageMap[stage].name}`} />
             <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll'>
                 <div className='w-3/5 h-4/5'>
-                    {stageMap[stage].jsx}
+                    <projectCreateContext.Provider value={{ projectCreate, setProjectCreate, setDisabled }}>
+                        {stageMap[stage].jsx}
+                    </projectCreateContext.Provider>
                 </div>
             </div>
             <div className='bg-zinc-600 h-[60px] px-20 flex items-center drop-shadow-md'>

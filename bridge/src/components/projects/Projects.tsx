@@ -1,21 +1,17 @@
 import { useState, useEffect, useReducer, createContext } from 'react'
 import { ToggleBar, SideMenu, Workspace } from '../common';
-import ProjectCreate from './ProjectsCreate'
+import ProjectCreate from './create/ProjectsCreate'
 import ProjectItem from './ProjectItem';
 import MenuHeader from './MenuHeader';
 import { UserProjects, Project } from './types';
 
-
-type State = {
-    page: JSX.Element
-}
 
 type Action =
     | { type: 'memberFind', payload: number }
     | { type: 'createProject', payload: Project }
     | { type: 'home' }
 
-function reducer(state: State, action: Action) {
+function reducer(state: { page: JSX.Element }, action: Action) {
     switch (action.type) {
         case 'createProject':
             return { page: <ProjectCreate dummyProject={action.payload} /> }
@@ -29,9 +25,7 @@ const dummyProject: Project = {
     islocal: true,
     name: '',
     description: '',
-    isclassroom: 0,
     http: '',
-    typeName: '',
     thumbnailPath: '',
     template: null
 }

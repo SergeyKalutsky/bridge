@@ -1,11 +1,12 @@
+import { projectCreateContext } from './ProjectsCreate'
 import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText } from '../../../components/common'
-import { createProjectProp } from './types'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { BsCheckLg } from 'react-icons/bs'
 
 
 
-export function ProjectsGithub({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
+export function ProjectsGithub(): JSX.Element {
+    const { projectCreate, setDisabled } = useContext(projectCreateContext)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [showCheckMark, setShowCheckMark] = useState<boolean>(false)
     useEffect(() => {

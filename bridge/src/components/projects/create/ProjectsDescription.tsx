@@ -1,10 +1,10 @@
-import { createProjectProp } from './types'
-import { InputForm, } from '../../common'
-import { useState, useEffect } from 'react'
 import { Button } from '../../common'
+import { InputForm, } from '../../common'
+import { useState, useEffect, useContext } from 'react'
+import { projectCreateContext } from './ProjectsCreate'
 
 
-function isLatinString(s: string): boolean {
+function isLatinString({ s }: { s: string }): boolean {
     for (let i = s.length; i--;) {
         if (s[i] >= '0' && s[i] <= '9') return true
         if (s.charCodeAt(i) < 65 || s.charCodeAt(i) > 122) return false
@@ -12,14 +12,14 @@ function isLatinString(s: string): boolean {
     return true
 }
 
-function projectNameError(name: string): string {
+function projectNameError({ name }: { name: string }): string {
     if (name === '') {
         return 'Название проекта не может быть пустым'
     }
     if (name.includes(' ')) {
         return 'Название проекта не может содержать пробелы'
     }
-    if (!isLatinString(name)) {
+    if (!isLatinString({ s: name })) {
         return 'Название может содержать только латинские буквы и цифры'
     }
     for (const local of window.projects.getLocalProjectsNames()) {
@@ -31,8 +31,8 @@ function projectNameError(name: string): string {
 }
 
 
-
-export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
+export function ProjectsDescription(): JSX.Element {
+    const { projectCreate, setProjectCreate, setDisabled } = useContext(projectCreateContext)
     const [repo, setRepo] = useState('')
     const [imgPath, setImagePath] = useState('')
     const [error, setError] = useState<string>('')
@@ -59,7 +59,7 @@ export function ProjectsDescription({ projectCreate, setProjectCreate, setDisabl
 
     const onChange = (e) => {
         setRepo(e.target.value)
-        const error = projectNameError(e.target.value)
+        const error = projectNameError({ name: e.target.value })
         if (error !== '') {
             setError(' ❌ ' + error)
             setDisabled(true)

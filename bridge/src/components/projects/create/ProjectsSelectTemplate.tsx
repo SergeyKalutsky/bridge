@@ -1,61 +1,14 @@
-import { ImCross } from 'react-icons/im'
 import { BiSearch } from 'react-icons/bi'
-import { Project } from '../types'
 import { InputForm } from '../../common'
-import { createProjectProp } from './types'
-import { useEffect, useState } from 'react'
 import { Template } from '../../../types'
+import { ProjectTemplateRow } from './ProjectTemplateRow'
+import { projectCreateContext } from './ProjectsCreate'
+import { ProjecTemplateRowSelected } from './ProjecTemplateRowSelected'
+import { useContext, useEffect, useState } from 'react'
 
 
-function ProjectTemplateRow({ template, roundTop, setTemplate }:
-    {
-        template: Template,
-        roundTop: boolean,
-        setTemplate: React.Dispatch<React.SetStateAction<Template>>
-    }): JSX.Element {
-    const rounded = roundTop ? 'rounded-t-l-lg' : ''
-    return (<div
-        onClick={() => setTemplate(template)}
-        className={`pl-5 hover: cursor-pointer hover:bg-sky-700/75 hover:text-slate-200 text-slate-800 font-medium flex items-center w-full h-[40px] ${rounded}`}>
-        {template.name}
-    </div>)
-
-}
-
-function ProjecTemplateRowSelected({ template, setTemplate, projectCreate, setProjectCreate, setTemplateRows }:
-    {
-        template: Template,
-        setTemplate: React.Dispatch<React.SetStateAction<Template>>
-        projectCreate: Project
-        setProjectCreate: React.Dispatch<React.SetStateAction<Project>>
-        setTemplateRows: React.Dispatch<React.SetStateAction<JSX.Element[]>>
-    }): JSX.Element {
-    const onclick = () => {
-        const dummy = { name: '', http: '', pkgs: [], description: '' }
-        setTemplate(dummy)
-        projectCreate.template = dummy
-        setProjectCreate(projectCreate)
-        setTemplateRows([])
-    }
-    return (
-        <>
-            <div className='w-full h-[60px] bg-sky-700/75 flex items-center rounded-lg border-2 border-sky-800'>
-                <div className='pl-5 w-1/2 text-slate-100 text-2xl'>{template.name}</div>
-                <div className='pr-6 w-1/2 text-slate-200 flex items-center justify-end'>
-                    <div className='hover: cursor-pointer'>
-                        <ImCross onClick={onclick} style={{ justifySelf: 'end', width: 15, height: 15 }} />
-                    </div>
-                </div>
-            </div>
-            <div className='mt-10  w-full h-4/5 bg-sky-600/60 border-2 rounded-md border-sky-800 overflow-scroll'>
-                <span className='pl-2 text-slate-50 font-medium text-xl'>{template.description}</span>
-            </div>
-        </>
-    )
-}
-
-
-export function ProjectsSelectTemplate({ projectCreate, setProjectCreate, setDisabled }: createProjectProp) {
+export function ProjectsSelectTemplate(): JSX.Element {
+    const { projectCreate, setProjectCreate, setDisabled } = useContext(projectCreateContext)
     const [templateRows, setTemplateRows] = useState<JSX.Element[]>()
     const [template, setTemplate] = useState<Template>(null)
 
@@ -71,8 +24,7 @@ export function ProjectsSelectTemplate({ projectCreate, setProjectCreate, setDis
             setProjectCreate(projectCreate)
             return
         }
-        projectCreate = { ...projectCreate, template: template }
-        setProjectCreate(projectCreate)
+        setProjectCreate({ ...projectCreate, template: template })
         setDisabled(true)
     }, [template])
 
@@ -96,8 +48,6 @@ export function ProjectsSelectTemplate({ projectCreate, setProjectCreate, setDis
         return <ProjecTemplateRowSelected
             template={template}
             setTemplate={setTemplate}
-            projectCreate={projectCreate}
-            setProjectCreate={setProjectCreate}
             setTemplateRows={setTemplateRows} />
     }
     return (
