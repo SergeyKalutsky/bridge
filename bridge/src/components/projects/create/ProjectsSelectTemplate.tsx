@@ -21,10 +21,6 @@ export function ProjectsSelectTemplate(): JSX.Element {
             setTemplate(projectCreate.template)
             return
         }
-        if (template) {
-            setProjectCreate({ ...projectCreate, template: template })
-            return
-        }
         setProjectCreate({ ...projectCreate, template: template })
     }, [template])
 
