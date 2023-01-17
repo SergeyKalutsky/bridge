@@ -25,21 +25,35 @@ export async function createGihHubRepo({ name, token }: { name: string, token: s
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export async function pushTemplateRemote(token: string,
-    username: string,
-    templateHttp: string,
-    dir: string,
-    url: string) {
-    // we clone template, "reinit" it and push to the new origin
-    await git.clone({ fs, http, dir: dir, url: templateHttp })
-    fs.rmSync(path.join(dir, '.git'), { recursive: true, force: true });
-
+export async function pushRemote({ token, dir, url }:
+    {
+        token: string;
+        dir: string;
+        url: string
+    }
+): Promise<string> {
+    await git.deleteRemote({ fs, dir: dir, remote: 'origin' })
     await git.addRemote({ fs, dir: dir, remote: 'origin', url: url })
-    await git.push({
-        fs, http, dir: dir, remote: 'origin', ref: 'master',
-        onAuth: () => ({ username: username, password: token }),
-    })
+    try {
+        await git.push({
+            fs, http, dir: dir, remote: 'origin', ref: 'master',
+            onAuth: () => ({ username: 'guest', password: token }),
+        })
+        return null
+    } catch (e) {
+        if (e.name === 'HttpError') {
+            if (e?.data?.statusCode === 401) {
+                return 'BadToken'
+            }
+            if (e?.data?.statusCode === 404) {
+                return 'NotFound'
+            }
+            if (e?.data?.statusCode === 403) {
+                return 'Forbidden'
+            }
+        }
+        return e.name
+    }
 
 }
 
@@ -105,7 +119,7 @@ function tokenType(token: string): string {
     return 'classic'
 }
 
-export async function checkGitHubToken(token: string, repo: string, ): Promise<number> {
+export async function checkGitHubToken(token: string, repo: string,): Promise<number> {
     // 409 PushRejectedError { reason: 'not-fast-forward' } undefined
     // 200 ok
     // 403 Forbidden
@@ -125,7 +139,7 @@ export async function checkGitHubToken(token: string, repo: string, ): Promise<n
             return HttpError.response.status
         }
         if (HttpError.code === 'PushRejectedError') {
-            return 409 
+            return 409
         }
         return HttpError.data.statusCode
     }

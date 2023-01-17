@@ -58,33 +58,36 @@ async function walkAsync(dir: string): Promise<FileObject[]> {
 }
 
 
-function checkGitHubToken() {
-    return ipcMain.on('projects:checkgithubproject', async (event, { token, repo }) => {
-        const statusCode = await gitHubApi.checkGitHubToken(token, repo)
-        if (statusCode === 401) {
-            const msg = 'Токен не существует или срок его действия истек.'
-            event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
+function addGitHubRemote() {
+    return ipcMain.on('projects:pushremote', async (event, { token, repo, url }) => {
+        const dir = getProjectDir(repo)
+        const errorName = await gitHubApi.pushRemote({ token, dir, url })
+        if (errorName === 'UrlParseError') {
+            const msg = 'GitHub URL неправильный'
+            event.reply('projects:pushremote', { type: 'error', msg: msg })
             return
         }
-        if (statusCode === 404) {
-            const statusCode = await gitHubApi.createGihHubRepo({ name: repo, token: token })
-            if (statusCode === 403) {
-                const msg = `Репо ${repo} отсутствует и у токена недостаточно прав, чтобы создать его`
-                event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
-                return
-            }
-        }
-        if (statusCode === 403) {
-            const msg = `У токена недостаточно прав для доступа к репо ${repo}`
-            event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
+        if (errorName === 'BadToken') {
+            const msg = 'Токен не существует или его срок действия истек'
+            event.reply('projects:pushremote', { type: 'error', msg: msg })
             return
         }
-        if (statusCode === 409) {
-            const msg = `GitHub репо ${repo} уже существует и оно не пустое. Удалите ${repo} или переименуйте проект.`
-            event.reply('projects:checkgithubproject', { type: 'error', msg: msg })
+        if (errorName === 'PushRejectedError') {
+            const msg = 'Push отклонен. Скорее всего удаленное репо не пустое. Удалите и создайте его снова.'
+            event.reply('projects:pushremote', { type: 'error', msg: msg })
             return
         }
-        event.reply('projects:checkgithubproject', { type: 'success', message: '', token: token })
+        if (errorName === 'NotFound') {
+            const msg = 'Удаленный GitHub репо не найден.'
+            event.reply('projects:pushremote', { type: 'error', msg: msg })
+            return
+        }
+        if (errorName === 'Forbidden') {
+            const msg = 'У токена недостаточно прав для доступа к удаленному репо'
+            event.reply('projects:pushremote', { type: 'error', msg: msg })
+            return
+        }
+        event.reply('projects:pushremote', { type: 'success', message: '' })
     })
 }
 
@@ -241,7 +244,7 @@ function copyFile() {
 
 function projectAPI(): void {
     getProjectTemplates()
-    checkGitHubToken()
+    addGitHubRemote()
     loadimagebase64()
     renameFile()
     copyFile()

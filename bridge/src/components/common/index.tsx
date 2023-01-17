@@ -16,8 +16,10 @@ import { LoadingMessage } from "./LoadingMessage";
 import { ErrorMessage } from "./ErrorMessage";
 import { WarningMessage } from "./WarningMessage";
 import { LinkText } from "./LinkText";
+import { SuccessMessage } from "./SuccessMessage";
 
 export {
+    SuccessMessage,
     TextArea,
     Button,
     LinkText,

@@ -22,7 +22,7 @@ declare global {
         };
         projects: {
             getProjectTemplates(query: string): Promise<Template[]>
-            checkGitHubToken({ repo, token }: { repo: string, token: string }): Promise<void>
+            addGitHubRemote({ repo, token, url }: { repo: string, token: string, url: string }): Promise<void>
             createFile(createInfo: CreateInfo): Promise<string>;
             createFolder(createInfo: CreateInfo): Promise<string>;
             readActiveFile(filepath: string): Promise<string>;
