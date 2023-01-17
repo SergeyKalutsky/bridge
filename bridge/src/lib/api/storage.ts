@@ -6,7 +6,10 @@ const BASE_DIR = path.join(app.getPath('userData'), 'storage')
 const LOG_PATH = path.join(app.getPath('userData'), 'bridge.log')
 const store = new Store()
 
-function getProjectDir(): string {
+function getProjectDir(project?: string): string {
+    if (project) {
+        return path.join(BASE_DIR, store.get('user.login'), project)
+    }
     return path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
 }
 
