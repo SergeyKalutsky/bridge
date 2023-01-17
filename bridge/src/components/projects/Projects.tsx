@@ -71,21 +71,20 @@ const Projects = (): JSX.Element => {
 
     return (
         <>
-            <SideMenu activeToggle={activeToggle}>
-                <MenuHeader onClick={dispatchCreateProject} />
-                {userProjects !== null ? userProjects.projects.map((project, indx) =>
-                    <ProjectItem project={project}
-                        key={indx}
-                        userProjects={userProjects}
-                        setUserProjects={setUserProjects} />
-                ) : null}
-            </SideMenu>
-            <ToggleBar handleToggle={handleToggle} />
-            <Workspace>
-                <projectContext.Provider value={{ userProjects, setUserProjects }}>
+            <projectContext.Provider value={{ userProjects, setUserProjects }}>
+                <SideMenu activeToggle={activeToggle}>
+                    <MenuHeader onClick={dispatchCreateProject} />
+                    {userProjects !== null ? userProjects.projects.map((project, indx) =>
+                        <ProjectItem project={project}
+                            key={indx}
+                        />
+                    ) : null}
+                </SideMenu>
+                <ToggleBar handleToggle={handleToggle} />
+                <Workspace>
                     {state.page}
-                </projectContext.Provider>
-            </Workspace>
+                </Workspace>
+            </projectContext.Provider>
         </>
 
     )

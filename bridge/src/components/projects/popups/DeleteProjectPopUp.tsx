@@ -1,37 +1,35 @@
 import PopUp from '../../common/PopuUp';
 import Button from '../../common/Button';
 import { UserProjects, Project } from '../types'
+import { useContext } from 'react';
+import { projectContext } from '../Projects';
 
 type Props = {
-    projectDelete: Project
     open: boolean
-    userProjects: UserProjects
-    setUserProjects: React.Dispatch<React.SetStateAction<UserProjects>>
+    projectDelete: Project
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const DeleteProjectPopUp = ({ projectDelete, userProjects, setUserProjects, open, setOpen }: Props): JSX.Element => {
-
+export default function DeleteProjectPopUp({ projectDelete, open, setOpen }: Props): JSX.Element {
+    const { userProjects, setUserProjects } = useContext(projectContext);
     const handleClick = () => {
         if (projectDelete.name === userProjects.activeProject.name) {
-            window.settings.del('active_project')
+            window.settings.del('active_project');
         }
-        window.projects.delete(projectDelete.name)
+        window.projects.delete(projectDelete.name);
         setUserProjects({
             ...userProjects,
-            projects: userProjects.projects.filter((project) => { return project.name != projectDelete.name })
-        })
+            projects: userProjects.projects.filter((project) => { return project.name != projectDelete.name; })
+        });
 
-        setOpen(false)
-    }
+        setOpen(false);
+    };
     return (
         <PopUp
             open={open}
-            onClose={() => { setOpen(false) }}>
+            onClose={() => { setOpen(false); } }>
             <div>Вы уверены, что хотите удалить проект?</div>
             <Button onClick={handleClick} btnText='Удалить' />
         </PopUp>
-    )
+    );
 }
-
-export default DeleteProjectPopUp
