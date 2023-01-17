@@ -42,6 +42,32 @@ export const templates = [
 
     },
     {
+        name: '🕸️ Python Django',
+        pkgs: [{
+            installed: null,
+            name: platform === 'win32' ? 'choco' : 'brew',
+            manager: 'shell',
+        }, {
+            installed: null,
+            name: 'python3',
+            manager: platform === 'win32' ? 'choco' : 'brew',
+            version: '10.0.1'
+        },
+        {
+            installed: null,
+            name: 'django',
+            manager: 'pip',
+            version: '2.0'
+        },
+        {
+            installed: null,
+            name: 'sqlalchemy',
+            manager: 'pip',
+        }],
+        http: 'https://github.com/fasouto/django-starter-template.git',
+        description: 'Django is a free and open-source, Python-based web framework that follows the model–template–views architectural pattern. It is maintained by the Django Software Foundation'
+    },
+    {
         name: '🤖 Python Discord',
         pkgs: [{
             installed: null,
