@@ -2,7 +2,7 @@ import { Package } from '../../../types'
 import { projectContext } from '../Projects'
 import { projectCreateContext } from './ProjectsCreate'
 import { useState, useEffect, useContext } from 'react'
-import { Packages, Logs, Button, SudoPopUp, LoadingMessage } from '../../../components/common'
+import { Packages, Logs, SudoPopUp, LoadingMessage } from '../../../components/common'
 
 
 export function ProjectsInstall(): JSX.Element {
@@ -39,12 +39,10 @@ export function ProjectsInstall(): JSX.Element {
             if (!exist) {
                 window.pkg.install(pkgs)
                 setLoadMessage(<LoadingMessage text='Установка. Это может занять длительное время' />)
-
             }
         });
         return () => window.shared.removeListeners('pkg:check')
     }, [])
-
     return (
         <>
             <span className="text-white font-medium text-2xl">Необходимые библиотеки и программы:</span>
