@@ -8,33 +8,25 @@ import { UserProjects, Project } from './types';
 
 type Action =
     | { type: 'memberFind', payload: number }
-    | { type: 'createProject', payload: Project }
+    | { type: 'createProject' }
     | { type: 'home' }
 
 function reducer(state: { page: JSX.Element }, action: Action) {
     switch (action.type) {
         case 'createProject':
-            return { page: <ProjectsCreate dummyProject={action.payload} /> }
+            return { page: <ProjectsCreate /> }
         case 'home':
             return { page: null }
     }
 }
 
-const dummyProject: Project = {
-    id: null,
-    islocal: true,
-    name: '',
-    description: '',
-    http: '',
-    thumbnailPath: '',
-    template: null
-}
 
 interface ProjectContext {
     userProjects: UserProjects,
     deleteProject: (project: Project) => Promise<void>
     addProject: (project: Project) => Promise<void>
     setActiveProject: (project: Project) => void
+    dispatch: React.Dispatch<Action>
 }
 
 export const projectContext = createContext<ProjectContext>(null)
@@ -96,19 +88,12 @@ const Projects = (): JSX.Element => {
             activeProject: project
         });
     }
-
-    const dispatchCreateProject = () => {
-        dispatch({
-            type: 'createProject',
-            payload: dummyProject
-        })
-    }
-
+    
     return (
         <>
-            <projectContext.Provider value={{ userProjects, deleteProject, addProject, setActiveProject }}>
+            <projectContext.Provider value={{ userProjects, deleteProject, addProject, setActiveProject, dispatch }}>
                 <SideMenu activeToggle={activeToggle}>
-                    <MenuHeader onClick={dispatchCreateProject} />
+                    <MenuHeader />
                     {userProjects !== null ? userProjects.projects.map((project, indx) =>
                         <ProjectItem project={project}
                             key={indx}

@@ -1,11 +1,12 @@
 import { Project } from '../types'
 import { Button } from '../../common'
 import { HeaderPath } from './HeaderPath'
-import { createContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { ProjectsGithub } from './ProjectsGithub'
 import { ProjectsInstall } from './ProjectsInstall'
 import { ProjectsDescription } from './ProjectsDescription'
 import { ProjectsSelectTemplate } from './ProjectsSelectTemplate'
+import { projectContext } from '../Projects'
 
 interface ProjectCreateContext {
     projectCreate: Project,
@@ -15,8 +16,19 @@ interface ProjectCreateContext {
 
 export const projectCreateContext = createContext<ProjectCreateContext>(null)
 
-export function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX.Element {
+const dummyProject: Project = {
+    id: null,
+    islocal: true,
+    name: '',
+    description: '',
+    http: '',
+    thumbnailPath: '',
+    template: null
+}
+
+export function ProjectsCreate(): JSX.Element {
     const [projectCreate, setProjectCreate] = useState<Project>(dummyProject)
+    const { dispatch } = useContext(projectContext)
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
     const stageMap = [
@@ -37,6 +49,13 @@ export function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX
             jsx: <ProjectsGithub />
         }
     ]
+    function onClick() {
+        if (stage == 3) {
+            dispatch({ type: 'home' })
+            return
+        }
+        setStage(stage + 1)
+    }
     return (
         <>
             <HeaderPath path={`Создание проекта / ${stageMap[stage].name}`} />
@@ -53,7 +72,7 @@ export function ProjectsCreate({ dummyProject }: { dummyProject: Project }): JSX
                 </div>
                 <div className='grow'></div>
                 <div className='w-[120px] h-[40px]'>
-                    <Button onClick={() => { setStage(stage + 1) }} disabled={stage > 2 || disabled}>{'Далее ->'}</Button>
+                    <Button onClick={onClick} disabled={disabled}>{stage == 3 ? 'Завершить' : 'Далее ->'}</Button>
                 </div>
             </div>
         </>

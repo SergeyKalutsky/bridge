@@ -1,5 +1,5 @@
 import { projectCreateContext } from './ProjectsCreate'
-import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText } from '../../../components/common'
+import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText, Button } from '../../../components/common'
 import { useState, useEffect, useContext } from 'react'
 import { BsCheckLg } from 'react-icons/bs'
 
@@ -51,15 +51,27 @@ export function ProjectsGithub(): JSX.Element {
             <p className='pl-2'>Этот шаг <span className='font-bold'>необязателен</span>.</p>
             <p className='pl-2'>Вам потребуется <span className='font-bold'>github аккаунт</span> и <span className='font-bold'>токен</span> (<LinkText text='fain-grain-token' />).</p>
         </div>
-        <div className='flex justify-center items-center '>
+        <div className='flex-row justify-center items-center '>
+            <InputForm
+                // handleKeyPress={handleKeyPress}
+                // onChange={onChange}
+                placeholder='GitHub репо url'
+                type='text'
+                classInput='border-none pl-5 text-xl'
+                classDiv='mb-5' >
+                {showCheckMark ? <BsCheckLg style={{ color: '#08d120', width: 36, height: 36, paddingLeft: 8, backgroundColor: '#fafafa' }} /> : null}
+            </InputForm>
             <InputForm
                 handleKeyPress={handleKeyPress}
                 onChange={onChange}
-                placeholder='GitHub token'
+                placeholder='Token'
                 type='password'
-                classInput='border-none pl-5 text-2xl text-security-disc' >
+                classInput='border-none pl-5 text-xl text-security-disc' >
                 {showCheckMark ? <BsCheckLg style={{ color: '#08d120', width: 36, height: 36, paddingLeft: 8, backgroundColor: '#fafafa' }} /> : null}
             </InputForm>
+            <div>
+                <Button />
+            </div>
         </div>
         {messageJsx}
     </>)
