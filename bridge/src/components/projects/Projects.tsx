@@ -29,9 +29,12 @@ const dummyProject: Project = {
     thumbnailPath: '',
     template: null
 }
+
 interface ProjectContext {
     userProjects: UserProjects,
-    setUserProjects: React.Dispatch<React.SetStateAction<UserProjects>>
+    deleteProject: (project: Project) => Promise<void>
+    addProject: (project: Project) => Promise<void>
+    setActiveProject: (project: Project) => void
 }
 
 export const projectContext = createContext<ProjectContext>(null)
@@ -62,6 +65,38 @@ const Projects = (): JSX.Element => {
         }
     }, [])
 
+    async function addProject(project: Project): Promise<void> {
+
+        project.islocal = true;
+        if (userProjects.activeProject === undefined) {
+            window.settings.set({ active_project: project });
+        }
+        setUserProjects({
+            ...userProjects,
+            projects: [...userProjects.projects, project],
+            activeProject: userProjects.activeProject === undefined ? project : userProjects.activeProject
+        });
+    }
+
+    async function deleteProject(project: Project): Promise<void> {
+        if (project.name === userProjects.activeProject.name) {
+            window.settings.del('active_project');
+        }
+        window.projects.delete(project.name);
+        setUserProjects({
+            ...userProjects,
+            projects: userProjects.projects.filter((userProject) => { return userProject.name != project.name; })
+        });
+    }
+
+    function setActiveProject(project: Project): void {
+        window.settings.set({ active_project: project });
+        setUserProjects({
+            ...userProjects,
+            activeProject: project
+        });
+    }
+
     const dispatchCreateProject = () => {
         dispatch({
             type: 'createProject',
@@ -71,7 +106,7 @@ const Projects = (): JSX.Element => {
 
     return (
         <>
-            <projectContext.Provider value={{ userProjects, setUserProjects }}>
+            <projectContext.Provider value={{ userProjects, deleteProject, addProject, setActiveProject }}>
                 <SideMenu activeToggle={activeToggle}>
                     <MenuHeader onClick={dispatchCreateProject} />
                     {userProjects !== null ? userProjects.projects.map((project, indx) =>

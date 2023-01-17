@@ -9,25 +9,18 @@ import { projectContext } from "./Projects"
 
 const ProjectNameRow = ({ children, project, icons }) => {
     const [active, setActive] = useState(false)
-    const { userProjects, setUserProjects } = useContext(projectContext)
+    const { userProjects, setActiveProject } = useContext(projectContext)
 
     const activeProject = project.name == userProjects.activeProject?.name ? 'border-l-4 border-zinc-50' : ''
     const localProject = project.islocal ? '' : 'after:content-["🔥"] opacity-30'
 
-    const setActiveUserProject = (project: Project) => {
-        window.settings.set({ active_project: project })
-        setUserProjects({
-            ...userProjects,
-            activeProject: project
-        })
-    }
     return (
         <div className={`${activeProject} ${localProject} 
         mt-2 h-18 flex justify-between items-center 
         text-3xl cursor-pointer hover:bg-slate-500`}
             onMouseEnter={() => { project.islocal ? setActive(true) : null }}
             onMouseLeave={() => { project.islocal ? setActive(false) : null }}
-            onClick={() => { setActive(false); setActiveUserProject(project) }}>
+            onClick={() => { setActive(false); setActiveProject(project) }}>
             {children}
             {active && project.islocal &&
                 <div className='mr-8 w-80px flex flex-row justify-between cursor-pointer text-slate-900 text-2xl'>
