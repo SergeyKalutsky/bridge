@@ -32,18 +32,18 @@ export function ProjectsCreate(): JSX.Element {
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
     const stageMap = [
-        {
-            name: 'Тип проекта',
-            jsx: <ProjectsSelectTemplate />
-        },
-        {
-            name: 'Описание',
-            jsx: <ProjectsDescription />
-        },
-        {
-            name: 'Установка',
-            jsx: <ProjectsInstall />
-        },
+        // {
+        //     name: 'Тип проекта',
+        //     jsx: <ProjectsSelectTemplate />
+        // },
+        // {
+        //     name: 'Описание',
+        //     jsx: <ProjectsDescription />
+        // },
+        // {
+        //     name: 'Установка',
+        //     jsx: <ProjectsInstall />
+        // },
         {
             name: 'GitHub',
             jsx: <ProjectsGithub />
