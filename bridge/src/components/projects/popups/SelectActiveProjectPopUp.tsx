@@ -15,7 +15,6 @@ const SelectActiveProjectPopUp = ({ open, setOpen, project, setPopUp }: Props): 
         const active_project = {
             name: project.name,
             id: project.id,
-            isclassroom: project.isclassroom,
             isuserowner: 1,
             islocal: true,
             http: ''

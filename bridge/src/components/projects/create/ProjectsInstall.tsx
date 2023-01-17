@@ -1,12 +1,13 @@
-import { createProjectProp } from './types'
-import { useState, useEffect, useContext } from 'react'
-import { Packages, Logs, Button, SudoPopUp } from '../../../components/common'
-import { LoadingMessage } from '../../../components/common'
-import { Package } from '../../../types'
 import { Project } from '../types'
+import { Package } from '../../../types'
 import { projectContext } from '../Projects'
+import { projectCreateContext } from './ProjectsCreate'
+import { useState, useEffect, useContext } from 'react'
+import { Packages, Logs, Button, SudoPopUp, LoadingMessage } from '../../../components/common'
 
-export function ProjectsInstall({ projectCreate, setProjectCreate, setDisabled }: createProjectProp): JSX.Element {
+
+export function ProjectsInstall(): JSX.Element {
+    const { projectCreate, setDisabled } = useContext(projectCreateContext)
     const { userProjects, setUserProjects } = useContext(projectContext)
     const [pkgs, setPkgs] = useState<Package[]>(projectCreate.template.pkgs)
     const [btn, setBtn] = useState(false)

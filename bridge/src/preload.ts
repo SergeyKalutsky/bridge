@@ -25,7 +25,7 @@ contextBridge.exposeInMainWorld('settings', {
 })
 
 contextBridge.exposeInMainWorld('projects', {
-    getProjectTemplates: (): Promise<Template[]> => ipcRenderer.invoke('projects:getprojecttemplates'),
+    getProjectTemplates: (query: string): Promise<Template[]> => ipcRenderer.invoke('projects:getprojecttemplates', query),
     checkGitHubToken: ({ repo, token }: { repo: string, token: string }): void => ipcRenderer.send('projects:checkgithubproject', { repo, token }),
     loadimagebase64: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:loadimagebase64', filepath),
     mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),
