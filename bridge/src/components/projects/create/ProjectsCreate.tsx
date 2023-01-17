@@ -32,18 +32,18 @@ export function ProjectsCreate(): JSX.Element {
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
     const stageMap = [
-        // {
-        //     name: 'Тип проекта',
-        //     jsx: <ProjectsSelectTemplate />
-        // },
-        // {
-        //     name: 'Описание',
-        //     jsx: <ProjectsDescription />
-        // },
-        // {
-        //     name: 'Установка',
-        //     jsx: <ProjectsInstall />
-        // },
+        {
+            name: 'Тип проекта',
+            jsx: <ProjectsSelectTemplate />
+        },
+        {
+            name: 'Описание',
+            jsx: <ProjectsDescription />
+        },
+        {
+            name: 'Установка',
+            jsx: <ProjectsInstall />
+        },
         {
             name: 'GitHub',
             jsx: <ProjectsGithub />
@@ -68,7 +68,7 @@ export function ProjectsCreate(): JSX.Element {
             </div>
             <div className='bg-zinc-600 h-[60px] px-20 flex items-center drop-shadow-md'>
                 <div className='w-[120px] h-[40px]'>
-                    <Button onClick={() => setStage(stage - 1)} disabled={stage < 1}>{'<- Назад'}</Button>
+                    <Button onClick={() => setStage(stage - 1)} disabled={stage == 0 || stage > 1}>{'<- Назад'}</Button>
                 </div>
                 <div className='grow'></div>
                 <div className='w-[120px] h-[40px]'>
