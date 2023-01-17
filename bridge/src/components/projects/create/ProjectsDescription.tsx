@@ -5,7 +5,7 @@ import { projectCreateContext } from './ProjectsCreate'
 
 function isLatinString({ s }: { s: string }): boolean {
     for (let i = s.length; i--;) {
-        if (s[i] >= '0' && s[i] <= '9') return true
+        if ((s[i] >= '0' && s[i] <= '9') || s[i] === '-') return true
         if (s.charCodeAt(i) < 65 || s.charCodeAt(i) > 122) return false
     }
     return true
@@ -19,7 +19,7 @@ function projectNameError({ name }: { name: string }): string {
         return 'Название проекта не может содержать пробелы'
     }
     if (!isLatinString({ s: name })) {
-        return 'Название может содержать только латинские буквы и цифры'
+        return 'Название содержит недопустимые символы'
     }
     for (const local of window.projects.getLocalProjectsNames()) {
         if (name === local) {
