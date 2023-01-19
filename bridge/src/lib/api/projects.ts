@@ -162,6 +162,7 @@ function renameFile() {
     })
 }
 
+
 function writeActiveFile() {
     return ipcMain.on('projects:writeactivefile', (event, data) => {
         fs.writeFile(data.filepath, data.fileContent, (err) => {

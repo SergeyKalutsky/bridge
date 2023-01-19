@@ -1,6 +1,5 @@
 import { FileObject } from './components/Editor/types';
 import { GitDiff } from './components/git/types';
-import { Project } from './components/projects/types';
 import { Package, FileChanges, CreateInfo, ActivePath, Template } from './types';
 
 
@@ -21,6 +20,7 @@ declare global {
             platform(): string
         };
         projects: {
+            projectPath(): Promise<string>
             openSystemFolder(): void
             getProjectTemplates(query: string): Promise<Template[]>
             addGitHubRemote({ repo, token, url }: { repo: string, token: string, url: string }): Promise<void>
@@ -29,7 +29,7 @@ declare global {
             readActiveFile(filepath: string): Promise<string>;
             loadimagebase64(filepath: string): Promise<string>
 
-            mkbasedir(data: any): Promise<any>;
+            mkbasedir(data: any): Promise<void>;
             getLocalProjectsNames(): string[];
             delete(name: string): void;
             showFiles(): Promise<FileObject[]>;

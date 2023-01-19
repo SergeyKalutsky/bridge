@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import { store } from './storage'
-import { LOG_PATH } from './storage';
+import path from 'path'
+import { LOG_PATH, BASE_DIR } from './storage';
 
 function get() {
     return ipcMain.on('settings:get', (event, field) => {
@@ -20,13 +21,14 @@ function logPath() {
     })
 }
 
+
 function platform() {
     return ipcMain.on('settings:platform', (event, field) => {
         event.returnValue = process.platform
     })
 }
 
-function del () {
+function del() {
     return ipcMain.handle('settings:del', (event, data) => {
         store.delete(data)
     })

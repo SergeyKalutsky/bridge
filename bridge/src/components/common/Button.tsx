@@ -10,6 +10,10 @@ const themes = {
     teal: {
         base: 'rounded-md text-white bg-teal-500 font-medium',
         hover: 'hover:bg-teal-200'
+    },
+    danger: {
+        base: 'rounded-md text-white bg-red-600/80 font-medium',
+        hover: 'hover:bg-red-800'
     }
 }
 
@@ -17,6 +21,7 @@ interface Props {
     children?: React.ReactNode
     btnText?: string
     onClick?: (e?) => void
+    className?: string
     disabled?: boolean
     theme?: string
     w?: number
@@ -28,13 +33,14 @@ export default function Button({ children,
     onClick,
     disabled,
     theme,
+    className,
     w = 40,
     h = 50 }: Props): JSX.Element {
     const style = theme === undefined ? themes['default'] : themes[theme]
     const disabledStyle = disabled ? 'cursor-not-allowed bg-slate-900' : style['hover']
     return (
         <button disabled={disabled}
-            className={`${disabledStyle} ${style['base']} pl-2 pr-2 pb-2 pt-2 font-medium text-xl focus:outline-none flex flex-row justify-center items-center w-[${w}px] h-[${h}px] `}
+            className={`${disabledStyle} ${style['base']} pl-3 pr-3 pb-2 pt-2 font-medium text-xl focus:outline-none flex flex-row justify-center items-center w-[${w}px] h-[${h}px] ${className}`}
             onClick={e => onClick(e)}
         >{btnText}{children}</button>
 

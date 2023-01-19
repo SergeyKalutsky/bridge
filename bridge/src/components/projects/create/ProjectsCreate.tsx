@@ -67,13 +67,9 @@ export function ProjectsCreate(): JSX.Element {
                 </div>
             </div>
             <div className='bg-zinc-600 h-[60px] px-20 flex items-center drop-shadow-md'>
-                <div className='w-[120px] h-[40px]'>
-                    <Button onClick={() => setStage(stage - 1)} disabled={stage == 0 || stage > 1}>{'<- Назад'}</Button>
-                </div>
+                <Button w={200} onClick={() => setStage(stage - 1)} disabled={stage == 0 || stage > 1}>{'<- Назад'}</Button>
                 <div className='grow'></div>
-                <div className='w-[120px] h-[40px]'>
-                    <Button onClick={onClick} disabled={disabled}>{stage == 3 ? 'Завершить' : 'Далее ->'}</Button>
-                </div>
+                <Button w={200} onClick={onClick} disabled={disabled}>{stage == 3 ? 'Завершить' : 'Далее ->'}</Button>
             </div>
         </>
     )

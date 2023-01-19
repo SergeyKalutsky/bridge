@@ -84,15 +84,12 @@ export function ProjectsDescription(): JSX.Element {
                     value={projectCreate.description}
                     onChange={(e) => { setProjectCreate({ ...projectCreate, description: e.target.value }) }}
                 />
-                <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer pb-5" onClick={() => { window.dialogue.openImageFile() }} />
+                <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mt-5" onClick={() => { window.dialogue.openImageFile() }} />
                 <div className='w-full flex justify-center items-center'>
-                    <div className='w-1/2 h-[40px]'>
-                        {img.base64 ?
-                            null :
-                            <Button w={300} btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
-                        }
-
-                    </div>
+                    {img.base64 ?
+                        null :
+                        <Button w={300} btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
+                    }
                 </div>
             </div>
         </div>

@@ -1,8 +1,10 @@
 import { InputForm, Button, TextArea } from "../common"
 import { useContext, useState, useEffect } from "react"
+import { RowWithButton } from "./RowWithButton"
 import { HeaderPath } from "./create/HeaderPath"
 import { Project } from "./types"
 import { projectContext } from "./Projects"
+
 
 export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Element {
     const { updateProject } = useContext(projectContext)
@@ -39,15 +41,12 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
                 <div className='w-3/5 h-4/5'>
                     <div className='w-full h-4/7 gap-y-4 flex flex-col'>
                         <div className='w-full'>
-                            <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer pb-5" onClick={() => { window.dialogue.openImageFile() }} />
+                            <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mb-5" onClick={() => { window.dialogue.openImageFile() }} />
                             <div className='w-full flex justify-center items-center'>
-                                <div className='w-1/2 h-[40px]'>
-                                    {img.base64 ?
-                                        null :
-                                        <Button w={300} btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
-                                    }
-
-                                </div>
+                                {img.base64 ?
+                                    null :
+                                    <Button w={300} className='mb-10' btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
+                                }
                             </div>
                             <InputForm
                                 type="text"
@@ -65,25 +64,12 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
                             />
                         </div>
                         <span>Члены проекта</span>
-                        <div className='w-full h-[200px] flex flex-col bg-amber-200 rounded-sm'>
+                        <div className='w-full h-[200px] flex flex-col bg-amber-200/50 rounded-lg'>
                             {/* Члены проекта  */}
                         </div>
-                        <div className='w-full h-[100px] flex justify-between items-center border-2 border-slate-800 rounded-sm'>
-                            <span>Путь в системе до проекта:</span>
-                            <Button btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
-                        </div>
-                        <div className='w-full flex justify-between items-center'>
-                            <span>Удаленный серевер</span>
-                            <Button btnText="Добавить/Изменить" />
-                        </div>
-                        <div className='w-full flex justify-between items-center'>
-                            <span>Токен для удаленного сервера</span>
-                            <Button btnText="Добавить/Изменить" />
-                        </div>
-                        <div className='w-full flex justify-between items-center'>
-                            <span>Удалить проект</span>
-                            <Button btnText="Удалить" />
-                        </div>
+                        <RowWithButton text="Открыть проект в файловом проводнике"  btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
+                        <RowWithButton text="Удаленный серевер" btnText="Добавить" />
+                        <RowWithButton className='mb-10' text="Удалить проект без возможности восстановления" btnText="Удалить" btnTheme="danger" />
                     </div>
                 </div>
             </div>
