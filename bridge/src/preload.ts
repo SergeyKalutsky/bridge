@@ -25,6 +25,7 @@ contextBridge.exposeInMainWorld('settings', {
 })
 
 contextBridge.exposeInMainWorld('projects', {
+    openSystemFolder: (): void => ipcRenderer.send('projects:opensystemfolder'),
     getProjectTemplates: (query: string): Promise<Template[]> => ipcRenderer.invoke('projects:getprojecttemplates', query),
     addGitHubRemote: ({ repo, token, url }: { repo: string, token: string, url: string }): void => ipcRenderer.send('projects:pushremote', { repo, token, url }),
     loadimagebase64: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:loadimagebase64', filepath),

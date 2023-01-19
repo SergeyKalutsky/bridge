@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { ipcMain, shell } from 'electron';
 import { store, BASE_DIR, getProjectDir } from './storage'
 import { FileObject } from '../../components/Editor/types';
 import * as gitHubApi from './gitHubApi'
@@ -104,6 +104,14 @@ function mkbasedir() {
         fs.mkdirSync(filePath, { recursive: true })
     })
 }
+
+
+function openSystemFolder() {
+    return ipcMain.on('projects:opensystemfolder', (event) => {
+        shell.openPath(getProjectDir())
+    })
+}
+
 
 function mkprojectdir() {
     return ipcMain.on('projects:mkprojectdir', (event, project_name) => {
@@ -239,6 +247,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    openSystemFolder()
     getProjectTemplates()
     addGitHubRemote()
     loadimagebase64()

@@ -21,6 +21,7 @@ declare global {
             platform(): string
         };
         projects: {
+            openSystemFolder(): void
             getProjectTemplates(query: string): Promise<Template[]>
             addGitHubRemote({ repo, token, url }: { repo: string, token: string, url: string }): Promise<void>
             createFile(createInfo: CreateInfo): Promise<string>;

@@ -71,7 +71,7 @@ export function ProjectInfo(): JSX.Element {
                         </div>
                         <div className='w-full h-[100px] flex justify-between items-center border-2 border-slate-800 rounded-sm'>
                             <span>Путь в системе до проекта:</span>
-                            <Button btnText="Открыть" />
+                            <Button btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
                         </div>
                         <div className='w-full flex justify-between items-center'>
                             <span>Удаленный серевер</span>
