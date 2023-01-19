@@ -1,13 +1,3 @@
-interface Props {
-    children?: React.ReactNode
-    btnText?: string
-    onClick?: (e?) => void
-    disabled?: boolean
-    theme?: string
-    width?: number
-    height?: number
-}
-
 const themes = {
     default: {
         base: 'rounded-md text-gray-200 bg-sky-800 font-medium',
@@ -23,30 +13,30 @@ const themes = {
     }
 }
 
-const Button = ({ children,
+interface Props {
+    children?: React.ReactNode
+    btnText?: string
+    onClick?: (e?) => void
+    disabled?: boolean
+    theme?: string
+    w?: number
+    h?: number
+}
+
+export default function Button({ children,
     btnText,
     onClick,
     disabled,
     theme,
-    width,
-    height }: Props): JSX.Element => {
+    w = 40,
+    h = 50 }: Props): JSX.Element {
     const style = theme === undefined ? themes['default'] : themes[theme]
     const disabledStyle = disabled ? 'cursor-not-allowed bg-slate-900' : style['hover']
-    const w = `w-full`
-    const h = `h-full`
     return (
         <button disabled={disabled}
-            className={`${disabledStyle} ${style['base']} ${w} ${h} font-medium text-xl focus:outline-none flex flex-row justify-center items-center`}
+            className={`${disabledStyle} ${style['base']} pl-2 pr-2 pb-2 pt-2 font-medium text-xl focus:outline-none flex flex-row justify-center items-center w-[${w}px] h-[${h}px] `}
             onClick={e => onClick(e)}
         >{btnText}{children}</button>
 
     )
 }
-
-
-Button.defaultProps = {
-    width: 32,
-    height: 10
-}
-
-export default Button
