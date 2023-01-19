@@ -47,6 +47,16 @@ const Projects = (): JSX.Element => {
             projects = { activeProject: null, projectList: [] }
         }
         setUserProjects(projects)
+        if (projects.activeProject) {
+            // If we have a selected active project on 
+            // the load we are going to show the info about it
+            dispatch(
+                {
+                    type: 'projectInfo',
+                    payload: projects.activeProject
+                }
+            )
+        }
     }, [])
 
     useEffect(() => {
