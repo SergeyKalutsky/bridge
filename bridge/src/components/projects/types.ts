@@ -11,8 +11,8 @@ type Project = {
 }
 
 interface UserProjects {
-    projects: Project[]
     activeProject: Project
+    projectList: Project[]
 }
 
 interface Member {

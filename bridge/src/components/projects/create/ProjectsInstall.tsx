@@ -12,7 +12,7 @@ export function ProjectsInstall(): JSX.Element {
     const [loadMessage, setLoadMessage] = useState<JSX.Element>(<LoadingMessage text='Проверка устновленных библиотек' />)
 
     useEffect(() => {
-        const exist = userProjects.projects.filter((project) => project.name === projectCreate.name).length
+        const exist = userProjects.projectList.filter((project) => project.name === projectCreate.name).length
         setDisabled(!exist)
         setLoadMessage(null)
     }, [userProjects])
@@ -29,7 +29,7 @@ export function ProjectsInstall(): JSX.Element {
         window.shared.incomingData("pkg:check", (pkgs: Package[]) => {
             setPkgs(pkgs)
             const count = pkgs.filter((pkg: Package) => pkg.installed).length
-            const exist = userProjects.projects.filter((project) => project.name === projectCreate.name).length
+            const exist = userProjects.projectList.filter((project) => project.name === projectCreate.name).length
 
             if (count === pkgs.length && !exist) {
                 setLoadMessage(<LoadingMessage text='Клонируем шаблон проекта' />)

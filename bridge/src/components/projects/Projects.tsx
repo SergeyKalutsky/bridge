@@ -38,67 +38,47 @@ const Projects = (): JSX.Element => {
     const handleToggle = () => { setActiveToggle(!activeToggle) }
 
     useEffect(() => {
-        const user = window.settings.get('user')
-        if (user.type == 'guest') {
-            const projects = []
-            const localProjectNames = window.projects.getLocalProjectsNames()
-            for (const localProjectName of localProjectNames) {
-                if (localProjectName !== '.DS_Store') {
-                    projects.push({
-                        name: localProjectName,
-                        islocal: true
-                    })
-                }
-            }
-            setUserProjects({
-                projects: projects,
-                activeProject: window.settings.get('active_project')
-            })
-        }
+        const projects = window.settings.get('userProjects')
+        setUserProjects(projects)
     }, [])
 
-    async function addProject(project: Project): Promise<void> {
+    useEffect(() => {
+        window.settings.set({ userProjects: userProjects })
+    }, [userProjects])
 
-        project.islocal = true;
-        if (userProjects.activeProject === undefined) {
-            window.settings.set({ active_project: project });
-        }
+    async function addProject(project: Project): Promise<void> {
         setUserProjects({
             ...userProjects,
-            projects: [...userProjects.projects, project],
-            activeProject: userProjects.activeProject === undefined ? project : userProjects.activeProject
+            projectList: [...userProjects.projectList, project],
+            activeProject: project
         });
     }
 
     async function deleteProject(project: Project): Promise<void> {
-        if (project.name === userProjects.activeProject.name) {
-            window.settings.del('active_project');
-        }
-        window.projects.delete(project.name);
         setUserProjects({
             ...userProjects,
-            projects: userProjects.projects.filter((userProject) => { return userProject.name != project.name; })
+            projectList: userProjects.projectList.filter((userProject) => { return userProject.name != project.name; }),
+            activeProject: userProjects.activeProject.name == project.name ? null : userProjects.activeProject
         });
     }
 
     function setActiveProject(project: Project): void {
-        window.settings.set({ active_project: project });
         setUserProjects({
             ...userProjects,
             activeProject: project
         });
     }
-    
+
     return (
         <>
             <projectContext.Provider value={{ userProjects, deleteProject, addProject, setActiveProject, dispatch }}>
                 <SideMenu activeToggle={activeToggle}>
                     <MenuHeader />
-                    {userProjects !== null ? userProjects.projects.map((project, indx) =>
+                    {userProjects?.projectList?.map((project, indx) =>
                         <ProjectItem project={project}
                             key={indx}
                         />
-                    ) : null}
+                    )}
                 </SideMenu>
                 <ToggleBar handleToggle={handleToggle} />
                 <Workspace>
