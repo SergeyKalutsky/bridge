@@ -1,38 +1,37 @@
 import { InputForm, Button, TextArea } from "../common"
 import { useContext, useState, useEffect } from "react"
 import { HeaderPath } from "./create/HeaderPath"
-import { projectContext } from "./Projects"
 import { Project } from "./types"
+import { projectContext } from "./Projects"
 
-export function ProjectInfo(): JSX.Element {
-    const { userProjects } = useContext(projectContext)
-    const [project, setProject] = useState<Project>(null)
+export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Element {
+    const { updateProject } = useContext(projectContext)
+    const [newProject, setNewProject] = useState<Project>(oldProject)
     const [img, setImg] = useState<{ path: string, base64: string }>({ path: '', base64: '' })
 
     useEffect(() => {
-        setProject({ ...project, thumbnailPath: img.path })
+        setNewProject({ ...newProject, thumbnailPath: img.path })
     }, [img])
 
     useEffect(() => {
-        setProject(userProjects?.activeProject)
-    }, [userProjects])
-
-    useEffect(() => {
+        setNewProject({ ...oldProject })
         const loadBase64 = async () => {
-            if (project?.thumbnailPath) {
-                setImg({ ...img, base64: await window.projects.loadimagebase64(project.thumbnailPath) })
+            if (oldProject.thumbnailPath) {
+                setImg({ ...img, base64: await window.projects.loadimagebase64(oldProject.thumbnailPath) })
+            } else {
+                setImg({ path: '', base64: '' })
             }
         }
         loadBase64()
+    }, [oldProject])
+
+    useEffect(() => {
         window.shared.incomingData("dialogue:openimagefile", async (filepath: string) => {
             setImg({ path: filepath, base64: await window.projects.loadimagebase64(filepath) })
         });
         return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
 
-    if (!project) {
-        return null
-    }
     return (
         <div className="w-full h-full">
             <HeaderPath path='Информация о проекте' />
@@ -45,7 +44,7 @@ export function ProjectInfo(): JSX.Element {
                                 <div className='w-1/2 h-[40px]'>
                                     {img.base64 ?
                                         null :
-                                        <Button width={24} btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
+                                        <Button w={300} btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
                                     }
 
                                 </div>
@@ -54,15 +53,15 @@ export function ProjectInfo(): JSX.Element {
                                 type="text"
                                 placeholder='Название'
                                 classInput='border-none pl-4'
-                                value={project?.name}
-                                onChange={(e) => { setProject({ ...project, name: e.target.value }) }}
+                                value={newProject?.name}
+                                onChange={(e) => { setNewProject({ ...newProject, name: e.target.value }) }}
                             />
                         </div>
                         <div className='w-full flex flex-col'>
                             <TextArea
                                 placeholder='Описание'
-                                value={project?.description}
-                                onChange={(e) => { setProject({ ...project, description: e.target.value }) }}
+                                value={newProject?.description}
+                                onChange={(e) => { setNewProject({ ...newProject, description: e.target.value }) }}
                             />
                         </div>
                         <span>Члены проекта</span>

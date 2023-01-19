@@ -10,27 +10,22 @@ interface Props {
 }
 
 const ActivateProjectPopUp = ({ open, setOpen, project, updateProjects }: Props): JSX.Element => {
-    const closeModal = () => { setOpen(false) }
     const onDownloadClick = () => {
         window.git.clone({ repo: project.name, git_url: project.http })
         setOpen(false)
         updateProjects({ ...project, islocal: true })
     }
-    const onDeleteClick = () => {
-        const user = window.settings.get('user')
-        setOpen(false)
-    }
     return (
         <PopUp
             open={open}
-            onClose={closeModal}
+            onClose={() => { setOpen(false) }}
             key={project.name}
         >
             <div className='text-xl font-medium mb-2'>Проект отсутствует локально</div>
             <div className='w-2/5 flex justify-between'>
                 <Button onClick={onDownloadClick} btnText='Скачать' />
                 <div className='w-5'></div>
-                <Button onClick={onDeleteClick} btnText='Удалить' />
+                {/* <Button onClick={onDeleteClick} btnText='Удалить' /> */}
             </div>
         </PopUp>
     )
