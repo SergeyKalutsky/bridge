@@ -10,7 +10,7 @@ function getProjectDir(project?: string): string {
     if (project) {
         return path.join(BASE_DIR, store.get('user.login'), project)
     }
-    return path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
+    return path.join(BASE_DIR, store.get('user.login'), store.get('userProjects.activeProject.name'))
 }
 
 export { store, getProjectDir, BASE_DIR, LOG_PATH }

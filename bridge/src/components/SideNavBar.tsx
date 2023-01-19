@@ -9,14 +9,14 @@ const SideNavBar = (): JSX.Element => {
     const history = useHistory()
     const [open, setOpen] = useState(false)
     const checkActiveProject = (path: string): void => {
-        const active_project = window.settings.get('active_project')
-        active_project !== undefined ?
+        const activeProject = window.settings.get('userProjects.activeProject')
+        activeProject ?
             history.push(path) :
             setOpen(true)
     }
     const checkSetActive = (num: number) => {
-        const active_project = window.settings.get('active_project')
-        if (active_project === undefined) {
+        const activeProject = window.settings.get('userProjects.activeProject')
+        if (!activeProject) {
             return
         }
         setActive(num)

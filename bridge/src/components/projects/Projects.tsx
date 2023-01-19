@@ -1,6 +1,7 @@
 import { useState, useEffect, useReducer, createContext } from 'react'
 import { ToggleBar, SideMenu, Workspace } from '../common';
 import { ProjectsCreate } from './create/ProjectsCreate'
+import { ProjectInfo } from './ProjectInfo';
 import ProjectItem from './ProjectItem';
 import MenuHeader from './MenuHeader';
 import { UserProjects, Project } from './types';
@@ -16,7 +17,7 @@ function reducer(state: { page: JSX.Element }, action: Action) {
         case 'createProject':
             return { page: <ProjectsCreate /> }
         case 'home':
-            return { page: null }
+            return { page: <ProjectInfo /> }
     }
 }
 
@@ -33,12 +34,15 @@ export const projectContext = createContext<ProjectContext>(null)
 
 const Projects = (): JSX.Element => {
     const [userProjects, setUserProjects] = useState<UserProjects>(null)
-    const [state, dispatch] = useReducer(reducer, { page: null });
+    const [state, dispatch] = useReducer(reducer, { page: <ProjectInfo /> });
     const [activeToggle, setActiveToggle] = useState(false)
     const handleToggle = () => { setActiveToggle(!activeToggle) }
 
     useEffect(() => {
-        const projects = window.settings.get('userProjects')
+        let projects = window.settings.get('userProjects')
+        if (!projects) {
+            projects ={ activeProject: null, projectList: [] }
+        }
         setUserProjects(projects)
     }, [])
 

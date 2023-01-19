@@ -107,8 +107,7 @@ function mkbasedir() {
 
 function mkprojectdir() {
     return ipcMain.on('projects:mkprojectdir', (event, project_name) => {
-        const filePath = path.join(BASE_DIR, store.get('user.login'), project_name)
-        fs.mkdirSync(filePath, { recursive: true })
+        fs.mkdirSync(getProjectDir(project_name), { recursive: true })
     })
 }
 
@@ -149,7 +148,7 @@ function renameFile() {
     return ipcMain.on('projects:renamefile', (event, data) => {
         const newPath = path.join(path.parse(data.activePath.path).dir, data.newName)
         fs.renameSync(data.activePath.path, newPath);
-        store.set('active_project.activePath', { path: newPath, isDirectory: data.activePath.isDirectory })
+        store.set('userProjects.activeProject.activePath', { path: newPath, isDirectory: data.activePath.isDirectory })
         git.remove({ fs, dir: getProjectDir(), filepath: data.activePath.path.replace(getProjectDir() + '/', '') })
         event.returnValue = newPath
     })
@@ -167,8 +166,7 @@ function createFolder() {
     return ipcMain.handle('projects:createfolder', (event, data) => {
         let folderPath: string
         if (data.activePath === undefined) {
-            const project_name = store.get('active_project.name')
-            const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+            const project_dir = getProjectDir()
             folderPath = path.join(project_dir, data.name)
         } else if (data.activePath.isDirectory) {
             folderPath = path.join(data.activePath.path, data.name)
@@ -184,8 +182,7 @@ function createFile() {
     return ipcMain.handle('projects:createfile', (event, data) => {
         let filePath: string
         if (data.activePath === undefined) {
-            const project_name = store.get('active_project.name')
-            const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+            const project_dir = getProjectDir()
             filePath = path.join(project_dir, data.name)
         } else if (data.activePath.isDirectory) {
             filePath = path.join(data.activePath.path, data.name)
@@ -220,10 +217,9 @@ function readActiveFile() {
 
 function listFiles() {
     return ipcMain.handle('projects:listfiles', async (event) => {
-        const project_name = store.get('active_project.name')
-        const project_dir = path.join(BASE_DIR, store.get('user.login'), project_name)
+        const project_dir = getProjectDir()
         const files = {
-            name: project_name,
+            name: store.get('userProjects.activeProject.name'),
             isDirectory: true,
             path: project_dir,
             files: await walkAsync(project_dir)
@@ -235,7 +231,7 @@ function listFiles() {
 function copyFile() {
     return ipcMain.handle('projects:copyfile', async (event, arg) => {
         if (arg.root) {
-            arg.destination = path.join(BASE_DIR, store.get('user.login'), store.get('active_project.name'))
+            arg.destination = getProjectDir()
         }
         arg.destination = path.join(arg.destination, path.parse(arg.src).base)
         await ncpPromise(arg.src, arg.destination)
