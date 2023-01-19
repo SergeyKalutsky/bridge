@@ -67,12 +67,12 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
                                 />
                             </div>
                             <span>Члены проекта</span>
-                            <div className='w-full h-[200px] flex flex-col bg-amber-200/50 rounded-lg'>
+                            <div className='w-full h-[200px] flex flex-col bg-zinc-400 rounded-lg'>
                                 {/* Члены проекта  */}
                             </div>
                             <RowWithButton icon='folder' text="Открыть проект в файловом проводнике" btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
-                            <RowWithButton icon='github' text="GitHub репо" btnText="Добавить" />
-                            <RowWithButton icon='key' text="Токен" btnText="Изменить" />
+                            <RowWithButton icon='github' text="GitHub репо" btnText={newProject.http ? 'Изменить' : 'Добавить'} />
+                            {newProject.http ? <RowWithButton icon='key' text="Токен" btnText={newProject.http ? 'Изменить' : 'Добавить'} /> : null}
                             <RowWithButton icon='trash' className='mb-10' text="Удалить проект навсегда" btnText="Удалить" btnTheme="danger" onClick={() => { setDeleteOpen(true) }} />
                         </div>
                     </div>
