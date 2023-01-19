@@ -55,6 +55,7 @@ const Projects = (): JSX.Element => {
     }
 
     async function deleteProject(project: Project): Promise<void> {
+        window.projects.delete(project.name)
         setUserProjects({
             ...userProjects,
             projectList: userProjects.projectList.filter((userProject) => { return userProject.name != project.name; }),
