@@ -89,7 +89,7 @@ export function ProjectsDescription(): JSX.Element {
                     <div className='w-1/2 h-[40px]'>
                         {img.base64 ?
                             null :
-                            <Button width={24} btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
+                            <Button w={300} btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
                         }
 
                     </div>
