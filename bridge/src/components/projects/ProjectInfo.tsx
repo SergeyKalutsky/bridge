@@ -4,10 +4,12 @@ import { RowWithButton } from "./RowWithButton"
 import { HeaderPath } from "./create/HeaderPath"
 import { Project } from "./types"
 import { projectContext } from "./Projects"
+import DeleteProjectPopUp from "./popups/DeleteProjectPopUp"
 
 
 export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Element {
     const { updateProject } = useContext(projectContext)
+    const [openDelete, setDeleteOpen] = useState(false)
     const [newProject, setNewProject] = useState<Project>(oldProject)
     const [img, setImg] = useState<{ path: string, base64: string }>({ path: '', base64: '' })
 
@@ -35,45 +37,51 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
     }, [])
 
     return (
-        <div className="w-full h-full">
-            <HeaderPath path='Информация о проекте' />
-            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll'>
-                <div className='w-3/5 h-4/5'>
-                    <div className='w-full h-4/7 gap-y-4 flex flex-col'>
-                        <div className='w-full'>
-                            <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mb-5" onClick={() => { window.dialogue.openImageFile() }} />
-                            <div className='w-full flex justify-center items-center'>
-                                {img.base64 ?
-                                    null :
-                                    <Button w={300} className='mb-10' btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
-                                }
+        <>
+            <div className="w-full h-full">
+                <HeaderPath path='Информация о проекте' />
+                <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll'>
+                    <div className='w-3/5 h-4/5'>
+                        <div className='w-full h-4/7 gap-y-4 flex flex-col'>
+                            <div className='w-full'>
+                                <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mb-5" onClick={() => { window.dialogue.openImageFile() }} />
+                                <div className='w-full flex justify-center items-center'>
+                                    {img.base64 ?
+                                        null :
+                                        <Button w={300} className='mb-10' btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
+                                    }
+                                </div>
+                                <InputForm
+                                    type="text"
+                                    placeholder='Название'
+                                    classInput='border-none pl-4'
+                                    value={newProject?.name}
+                                    onChange={(e) => { setNewProject({ ...newProject, name: e.target.value }) }}
+                                />
                             </div>
-                            <InputForm
-                                type="text"
-                                placeholder='Название'
-                                classInput='border-none pl-4'
-                                value={newProject?.name}
-                                onChange={(e) => { setNewProject({ ...newProject, name: e.target.value }) }}
-                            />
+                            <div className='w-full flex flex-col'>
+                                <TextArea
+                                    placeholder='Описание'
+                                    value={newProject?.description}
+                                    onChange={(e) => { setNewProject({ ...newProject, description: e.target.value }) }}
+                                />
+                            </div>
+                            <span>Члены проекта</span>
+                            <div className='w-full h-[200px] flex flex-col bg-amber-200/50 rounded-lg'>
+                                {/* Члены проекта  */}
+                            </div>
+                            <RowWithButton icon='folder' text="Открыть проект в файловом проводнике" btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
+                            <RowWithButton icon='github' text="GitHub репо" btnText="Добавить" />
+                            <RowWithButton icon='key' text="Токен" btnText="Изменить" />
+                            <RowWithButton icon='trash' className='mb-10' text="Удалить проект навсегда" btnText="Удалить" btnTheme="danger" onClick={() => { setDeleteOpen(true) }} />
                         </div>
-                        <div className='w-full flex flex-col'>
-                            <TextArea
-                                placeholder='Описание'
-                                value={newProject?.description}
-                                onChange={(e) => { setNewProject({ ...newProject, description: e.target.value }) }}
-                            />
-                        </div>
-                        <span>Члены проекта</span>
-                        <div className='w-full h-[200px] flex flex-col bg-amber-200/50 rounded-lg'>
-                            {/* Члены проекта  */}
-                        </div>
-                        <RowWithButton icon='folder' text="Открыть проект в файловом проводнике"  btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
-                        <RowWithButton icon='github' text="GitHub репо" btnText="Добавить" />
-                        <RowWithButton icon='key' text="Токен" btnText="Изменить" />
-                        <RowWithButton icon='trash' className='mb-10' text="Удалить проект без возможности восстановления" btnText="Удалить" btnTheme="danger" />
                     </div>
                 </div>
             </div>
-        </div>
+            <DeleteProjectPopUp
+                projectDelete={oldProject}
+                open={openDelete}
+                setOpen={setDeleteOpen} />
+        </>
     )
 }

@@ -10,10 +10,11 @@ export default function DeleteProjectPopUp({ projectDelete, open, setOpen }: {
     projectDelete: Project
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element {
-    const { deleteProject } = useContext(projectContext);
+    const { deleteProject, dispatch } = useContext(projectContext);
     const handleClick = () => {
         deleteProject(projectDelete)
         setOpen(false);
+        dispatch({ type: 'home' })
     };
     return (
         <PopUp

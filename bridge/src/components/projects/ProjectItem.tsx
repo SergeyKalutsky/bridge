@@ -1,13 +1,12 @@
 import { useContext, useState } from "react"
-import { Project, UserProjects } from './types'
-import DeleteProjectPopUp from './popups/DeleteProjectPopUp'
+import { Project } from './types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { projectContext } from "./Projects"
 
 
 
-const ProjectNameRow = ({ children, project, icons }) => {
+const ProjectNameRow = ({ children, project }) => {
     const [active, setActive] = useState(false)
     const { userProjects, setActiveProject } = useContext(projectContext)
 
@@ -22,35 +21,19 @@ const ProjectNameRow = ({ children, project, icons }) => {
             onMouseLeave={() => { project.islocal ? setActive(false) : null }}
             onClick={() => { setActive(false); setActiveProject(project) }}>
             {children}
-            {active && project.islocal &&
-                <div className='mr-8 w-80px flex flex-row justify-between cursor-pointer text-slate-900 text-2xl'>
-                    {icons}
-                </div>}
         </div>
     )
 }
 
 
 const ProjectItem = ({ project }: { project: Project }): JSX.Element => {
-    const [openDelete, setDeleteOpen] = useState(false)
-    const icons = (<>
-        <div className='hover:text-white'>
-            <FontAwesomeIcon icon={faTrashAlt} onClick={() => { setDeleteOpen(true) }} />
-        </div>
-    </>)
     return (
         <>
-            <ProjectNameRow project={project} icons={icons}>
+            <ProjectNameRow project={project}>
                 <span className='ml-5 font-medium text-white w-full'>
                     {project.name}
                 </span>
             </ProjectNameRow>
-
-            {/* Popups */}
-            <DeleteProjectPopUp
-                projectDelete={project}
-                open={openDelete}
-                setOpen={setDeleteOpen} />
         </>
     )
 }
