@@ -51,32 +51,34 @@ export function ProjectsGithub(): JSX.Element {
             event.target.value = ''
         }
     }
-    return (<>
-        <div className='w-full bg-teal-200/60 flex flex-col justify-center items-start mb-8 rounded-lg pt-2 pb-2 pr-2 pl-2'>
-            <p className='pl-2'>Этот шаг <span className='font-bold'>необязателен</span>.</p>
-            <p className='pl-2'>Вам потребуется <span className='font-bold'>github аккаунт</span> и <LinkText text='fain-grain-token' />.</p>
-        </div>
-        <div className='flex flex-col justify-center items-center '>
-            <InputForm
-                onChange={(e) => { setInputData({ ...inputData, remote: e.target.value }) }}
-                placeholder='GitHub репо url'
-                type='text'
-                classInput='border-none pl-5 text-xl'
-                classDiv='mb-5' >
-            </InputForm>
-            <InputForm
-                handleKeyPress={handleKeyPress}
-                onChange={(e) => { setInputData({ ...inputData, token: e.target.value }) }}
-                placeholder='Token'
-                type='password'
-                classInput='border-none pl-5 text-xl text-security-disc' >
-            </InputForm>
-            <div className='w-[120px] h-[40px] mt-8'>
-                {!projectCreate.http ? <Button btnText='Добавить' onClick={onClick} /> : null}
+    return (
+        <div className='w-3/4 max-w-xl h-4/5 flex-col justify-center items-center'>
+            <div className='w-full bg-teal-200/60 flex flex-col justify-center items-start mb-8 rounded-lg pt-2 pb-2 pr-2 pl-2'>
+                <p className='pl-2'>Этот шаг <span className='font-bold'>необязателен</span>.</p>
+                <p className='pl-2'>Вам потребуется <span className='font-bold'>github аккаунт</span> и <LinkText text='fain-grain-token' />.</p>
+            </div>
+            <div className='flex flex-col justify-center items-center '>
+                <InputForm
+                    onChange={(e) => { setInputData({ ...inputData, remote: e.target.value }) }}
+                    placeholder='GitHub репо url'
+                    type='text'
+                    classInput='border-none pl-5 text-xl'
+                    classDiv='mb-5' >
+                </InputForm>
+                <InputForm
+                    handleKeyPress={handleKeyPress}
+                    onChange={(e) => { setInputData({ ...inputData, token: e.target.value }) }}
+                    placeholder='Token'
+                    type='password'
+                    classInput='border-none pl-5 text-xl text-security-disc' >
+                </InputForm>
+                <div className='w-[120px] h-[40px] mt-8'>
+                    {!projectCreate.http ? <Button btnText='Добавить' onClick={onClick} /> : null}
+                </div>
+            </div>
+            <div className='h-[100px] w-full mt-4'>
+                {messageJsx}
             </div>
         </div>
-        <div className='h-[100px] w-full mt-4'>
-            {messageJsx}
-        </div>
-    </>)
+    )
 }

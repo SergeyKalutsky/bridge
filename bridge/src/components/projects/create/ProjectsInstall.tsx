@@ -45,16 +45,18 @@ export function ProjectsInstall(): JSX.Element {
     }, [])
     return (
         <>
-            <span className="text-white font-medium text-2xl">Необходимые библиотеки и программы:</span>
-            <Packages pkgs={pkgs} className='w-full mt-5' />
-            <Logs className='bg-zinc-600 w-full mt-5' />
-            <div className='flex items-center justify-center h-[40px] mt-4'>
-                {loadMessage}
+            <div className='w-3/4 max-w-2xl h-4/5 flex-col justify-center items-center'>
+                <span className="text-white font-medium text-2xl">Необходимые библиотеки и программы:</span>
+                <Packages pkgs={pkgs} className='w-full mt-5' />
+                <Logs className='bg-zinc-600 w-full mt-5' />
+                <div className='flex items-center justify-center h-[40px] mt-4'>
+                    {loadMessage}
+                </div>
+                <div className='mt-20'>
+                    <span className="text-white font-medium text-base ">{'Лог Файл: ' + window.settings.logPath()}</span>
+                </div >
+                <SudoPopUp />
             </div>
-            <div className='mt-20'>
-                <span className="text-white font-medium text-base ">{'Лог Файл: ' + window.settings.logPath()}</span>
-            </div >
-            <SudoPopUp />
         </>
     )
 }
