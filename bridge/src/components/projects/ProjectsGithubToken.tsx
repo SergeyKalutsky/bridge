@@ -5,10 +5,10 @@ import { Project } from './types'
 import { HeaderPath } from './create/HeaderPath'
 import { BackButton } from './BackButton'
 
-export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
+export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProject }:
     {
         project: Project,
-        setAddGitHub: React.Dispatch<React.SetStateAction<boolean>>
+        setChangeGitHubToken: React.Dispatch<React.SetStateAction<boolean>>
         setNewProject: React.Dispatch<React.SetStateAction<Project>>
     }): JSX.Element {
     const { updateProject } = useContext(projectContext)
@@ -26,7 +26,7 @@ export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
         if (messageJsx?.props?.text === 'Удаленный сервер добавлен успешно') {
             updateProject({ projectName: project.name, newProject: { ...project, http: inputData.remote } })
             setNewProject({ ...project, http: inputData.remote })
-            setAddGitHub(false)
+            setChangeGitHubToken(false)
         }
     }, [messageJsx])
 
@@ -54,33 +54,31 @@ export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
         window.projects.addGitHubRemote({ token: inputData.token, repo: project.name, url: inputData.remote })
     }
     function onBackClick() {
-        setAddGitHub(false)
+        setChangeGitHubToken(false)
     }
     return (
         <div className="w-full h-full bg-zinc-500 ">
-            <HeaderPath path='Добавить GitHub аккаунт' />
+            <HeaderPath path='Изменить GitHub токен' />
             <BackButton onClick={onBackClick} />
             <div className='flex flex-col h-[calc(100%-148px)] items-center justify-center overflow-scroll'>
                 <div className=' w-3/5 h-3/5 max-w-xl flex-col justify-center items-center'>
-                    <div className='w-full bg-teal-200/60 flex flex-col justify-center items-start mb-8 rounded-lg pt-3 pb-3 pr-3 pl-3 text-xl'>
-                        <p className='pl-2'>Вам потребуется <span className='font-bold'>github аккаунт</span> и <LinkText text='fain-grain-token' />.</p>
-                    </div>
                     <div className='flex flex-col justify-center items-center '>
-                        <InputForm
-                            onChange={(e) => { setInputData({ ...inputData, remote: e.target.value }) }}
+                    <InputForm
+                            disabled={true}
+                            value={project.http}
                             placeholder='GitHub репо url'
                             type='text'
-                            classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl'
-                            classDiv='mb-5' >
+                            classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl bg-zinc-300 hover:cursor-not-allowed'
+                            classDiv='mb-5 hover:cursor-not-allowed bg-zinc-300'  >
                         </InputForm>
                         <InputForm
                             onChange={(e) => { setInputData({ ...inputData, token: e.target.value }) }}
-                            placeholder='Token'
+                            placeholder='Новый Token'
                             type='password'
                             classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl text-security-disc' >
                         </InputForm>
                         <div className='w-[120px] h-[40px] mt-8'>
-                            <Button btnText='Добавить' onClick={onClick} />
+                            <Button btnText='Изменить' onClick={onClick} />
                         </div>
                     </div>
                     <div className='h-[100px] w-full mt-4'>

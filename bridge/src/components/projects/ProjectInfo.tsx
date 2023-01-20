@@ -8,14 +8,26 @@ import DeleteProjectPopUp from "./popups/DeleteProjectPopUp"
 import { FcEditImage } from 'react-icons/fc'
 import { ProjectMembers } from "./ProjectMembers"
 import { ProjectsGithubAdd } from "./ProjectsGithubAdd"
+import { ProjectsGithubToken } from "./ProjectsGithubToken"
+import { SuccessMessage } from "../common"
+import _ from 'lodash'
 
 
 export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Element {
     const { updateProject } = useContext(projectContext)
     const [openDelete, setDeleteOpen] = useState(false)
-    const [addGitHub, setaddGitHub] = useState(false)
+    const [addGitHub, setAddGitHub] = useState(false)
+    const [changeGitHubToken, setChangeGitHubToken] = useState(false)
     const [newProject, setNewProject] = useState<Project>(oldProject)
+    const [messageJsx, setMessageJsx] = useState<JSX.Element>()
+    const [inputData, setInputData] = useState<{ name: string, description: string }>()
     const [img, setImg] = useState<{ path: string, base64: string }>({ path: '', base64: '' })
+
+    useEffect(() => {
+        if(!_.isEqual(oldProject, newProject)) {
+            setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
+        }
+    }, [newProject])
 
     useEffect(() => {
         setNewProject({ ...newProject, thumbnailPath: img.path })
@@ -40,7 +52,10 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
         return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
     if (addGitHub) {
-        return <ProjectsGithubAdd project={newProject} setaddGitHub={setaddGitHub} />
+        return <ProjectsGithubAdd project={newProject} setAddGitHub={setAddGitHub} setNewProject={setNewProject} />
+    }
+    if (changeGitHubToken) {
+        return <ProjectsGithubToken project={newProject} setChangeGitHubToken={setChangeGitHubToken} setNewProject={setNewProject} />
     }
     return (
         <>
@@ -50,6 +65,7 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
                     <div className='w-3/5 h-full'>
                         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
                             <div className='w-full'>
+                                {messageJsx}
                                 <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mb-5" onClick={() => { window.dialogue.openImageFile() }} />
                                 <div className='w-full flex justify-center items-center'>
                                     {img.base64 ?
@@ -63,21 +79,36 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
                                     placeholder='Название'
                                     classInput='border-none pl-4'
                                     value={newProject?.name}
-                                    onChange={(e) => { setNewProject({ ...newProject, name: e.target.value }) }}
+                                    onChange={(e) => { setInputData({ ...inputData, name: e.target.value }) }}
                                 />
                             </div>
                             <div className='w-full flex flex-col'>
                                 <TextArea
                                     placeholder='Описание'
                                     value={newProject?.description}
-                                    onChange={(e) => { setNewProject({ ...newProject, description: e.target.value }) }}
+                                    onChange={(e) => { setInputData({ ...inputData, description: e.target.value }) }}
                                 />
                             </div>
                             {newProject.http ? <ProjectMembers /> : null}
-                            <RowWithButton icon='folder' text="Открыть проект в файловом проводнике" btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
-                            <RowWithButton icon='github' text="GitHub репо" btnText={newProject.http ? 'Изменить' : 'Добавить'} onClick={() => setaddGitHub(true)} />
-                            {newProject.http ? <RowWithButton icon='key' text="Токен" btnText={newProject.http ? 'Изменить' : 'Добавить'} /> : null}
-                            <RowWithButton icon='trash' className='mb-10' text="Удалить проект навсегда" btnText="Удалить" btnTheme="danger" onClick={() => { setDeleteOpen(true) }} />
+                            <RowWithButton
+                                icon='folder'
+                                text="Открыть проект в файловом проводнике"
+                                btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
+                            <RowWithButton
+                                icon='github'
+                                text="GitHub репо"
+                                btnText={newProject.http ? 'Изменить' : 'Добавить'}
+                                onClick={() => setAddGitHub(true)} />
+                            {newProject.http ?
+                                <RowWithButton icon='key'
+                                    text="Токен"
+                                    btnText={newProject.http ? 'Изменить' : 'Добавить'}
+                                    onClick={() => setChangeGitHubToken(true)} /> : null}
+                            <RowWithButton icon='trash'
+                                className='mb-10'
+                                text="Удалить проект навсегда"
+                                btnText="Удалить"
+                                btnTheme="danger" onClick={() => { setDeleteOpen(true) }} />
                         </div>
                     </div>
                 </div>

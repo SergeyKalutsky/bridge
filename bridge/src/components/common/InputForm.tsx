@@ -7,6 +7,7 @@ interface Props {
     value?: string
     classInput?: string,
     classDiv?: string,
+    disabled?: boolean
     handleKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -18,6 +19,7 @@ export default function InputForm({ children,
     classInput = '',
     classDiv = '',
     handleKeyPress,
+    disabled=false,
     onChange }: Props): JSX.Element {
     const handleFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (value === undefined)
@@ -42,6 +44,7 @@ export default function InputForm({ children,
         <div className={defaultClassDiv + classDiv}>
             {children}
             <input ref={ref} className={defaultClassInput + classInput + (bigText ? ' text-4xl pt-[6px] pb-[6px]' : '')}
+                disabled={disabled}
                 type={type}
                 placeholder={placeholder}
                 onChange={handleChange}
