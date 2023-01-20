@@ -41,9 +41,9 @@ export default function InputForm({ children,
     const defaultClassInput = 'bg-zinc-50 pl-3 pr-3 pt-2 pb-2 text-xl w-full text-slate-700 placeholder-slate-500 font-medium border border-neutral-400 rounded-lg focus:outline-none '
     const defaultClassDiv = 'flex items-center justify-start w-full rounded-lg focus:outline-none bg-zinc-50 '
     return (
-        <div className={defaultClassDiv + classDiv}>
+        <div className={defaultClassDiv + classDiv + (bigText ? ' h-[52px]' : '')}>
             {children}
-            <input ref={ref} className={defaultClassInput + classInput + (bigText ? ' text-4xl pt-[6px] pb-[6px]' : '')}
+            <input ref={ref} className={defaultClassInput + classInput + (bigText ? ' text-4xl pt-0 pb-0 h-[52px]' : '')}
                 disabled={disabled}
                 type={type}
                 placeholder={placeholder}
