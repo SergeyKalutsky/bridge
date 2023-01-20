@@ -16,9 +16,9 @@ interface Props {
 
 const File = ({ name, path, ide, setIDE }: Props): JSX.Element => {
   const savePath = () => {
-    const activeProject = window.settings.get('active_project')
-    activeProject.activePath = { path: path, isDirectory: false }
-    window.settings.set({ active_project: activeProject })
+    const userProjects = window.settings.get('userProjects')
+    userProjects.activeProject.activePath = { path: path, isDirectory: false }
+    window.settings.set({ userProjects: userProjects })
   }
   const extList = path.split(".")
   const ext = extList[extList.length - 1]

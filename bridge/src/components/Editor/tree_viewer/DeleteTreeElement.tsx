@@ -14,7 +14,7 @@ const DeleteTreeElement = ({ ide, updateFileTree }: Props): JSX.Element => {
     const [open, setOpen] = useState(false)
     const handleClick = async () => {
         window.projects.deleteTreeElement(ide.activePath)
-        window.settings.del('active_project.activePath')
+        window.settings.del('userProjects.activeProject.activePath')
         updateFileTree({
             ...ide,
             activePath: { path: ide.files[0].path, isDirectory: true },

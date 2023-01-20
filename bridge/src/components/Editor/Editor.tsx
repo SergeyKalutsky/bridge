@@ -32,7 +32,7 @@ const Editor = (): JSX.Element => {
     useEffect(() => {
         const loadActiveFile = async () => {
             let editor = await buildEditor()
-            const activePath = window.settings.get('active_project.activePath')
+            const activePath = window.settings.get('userProjects.activeProject.activePath')
             if (activePath !== undefined && activePath.isDirectory === false) {
                 const extList = activePath.path.split(".")
                 const ext = extList[extList.length - 1]

@@ -20,9 +20,9 @@ const Folder = ({ name, children,  path, ide, setIDE }: Props): JSX.Element => {
     e.stopPropagation();
     setIDE({ ...ide, activePath: { path: path, isDirectory: true } })
 
-    const activeProject = window.settings.get('active_project')
-    activeProject.activePath = { path: path, isDirectory: true }
-    window.settings.set({ active_project: activeProject })
+    const userProjects = window.settings.get('userProjects')
+    userProjects.activeProject.activePath = { path: path, isDirectory: true }
+    window.settings.set({ userProjects: userProjects })
     setIsOpen(!isOpen)
     window.localStorage.setItem(path, JSON.stringify(!isOpen))
   };

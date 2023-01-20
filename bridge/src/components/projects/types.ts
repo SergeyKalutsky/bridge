@@ -8,6 +8,10 @@ type Project = {
     description?: string
     thumbnailPath?: string
     template?: Template
+    activePath?: {
+        path: string
+        isDirectory: boolean
+    }
 }
 
 interface UserProjects {

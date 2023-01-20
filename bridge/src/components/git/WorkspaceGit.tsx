@@ -24,7 +24,7 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
     const args = {oid: git.oids[0], oid_prev: git.activeOid}
 
     await window.git.revert(args)
-    window.settings.del('active_project.activePath')
+    window.settings.del('userProjects.activeProject.activePath')
     setGit({
       ...git,
       oids: await window.git.log()
