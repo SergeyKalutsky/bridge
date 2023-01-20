@@ -8,25 +8,27 @@ import { FcEditImage } from 'react-icons/fc'
 import { ProjectMembers } from "./ProjectMembers"
 import { ProjectsGithubAdd } from "./ProjectsGithubAdd"
 import { ProjectsGithubToken } from "./ProjectsGithubToken"
-import { SuccessMessage, InputForm, TextArea } from "../common"
+import { InputForm, TextArea, Button, SuccessMessage } from "../common"
 import _ from 'lodash'
 
 
 export function ProjectInfo(): JSX.Element {
     const { updateProject, userProjects } = useContext(projectContext)
+    const [hasChanges, setHasChanged] = useState(false)
     const [openDelete, setDeleteOpen] = useState(false)
     const [addGitHub, setAddGitHub] = useState(false)
     const [changeGitHubToken, setChangeGitHubToken] = useState(false)
     const [newProject, setNewProject] = useState<Project>(userProjects.activeProject)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
-    const [inputData, setInputData] = useState<{ name: string, description: string }>()
+    // const [inputData, setInputData] = useState<{ name: string, description: string }>()
     const [img, setImg] = useState<{ path: string, base64: string }>({ path: '', base64: '' })
 
     useEffect(() => {
         if (!_.isEqual(userProjects.activeProject, newProject)) {
-            updateProject({ projectName: userProjects.activeProject.name, newProject })
-            setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
+            setHasChanged(true)
+            return
         }
+        setHasChanged(false)
     }, [newProject])
 
     useEffect(() => {
@@ -51,6 +53,12 @@ export function ProjectInfo(): JSX.Element {
         });
         return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
+
+    function onSaveChangeClick() {
+        updateProject({ projectName: userProjects.activeProject.name, newProject })
+        setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
+    }
+
     if (addGitHub) {
         return <ProjectsGithubAdd setAddGitHub={setAddGitHub} />
     }
@@ -79,15 +87,24 @@ export function ProjectInfo(): JSX.Element {
                                     placeholder='Название'
                                     classInput='border-none pl-4'
                                     value={newProject?.name}
-                                    onChange={(e) => { setInputData({ ...inputData, name: e.target.value }) }}
+                                    onChange={(e) => { setNewProject({ ...newProject, name: e.target.value }) }}
                                 />
                             </div>
                             <div className='w-full flex flex-col'>
                                 <TextArea
                                     placeholder='Описание'
                                     value={newProject?.description}
-                                    onChange={(e) => { setInputData({ ...inputData, description: e.target.value }) }}
+                                    onChange={(e) => { setNewProject({ ...newProject, description: e.target.value }) }}
                                 />
+                            </div>
+                            <div className={`w-full h-[55px] flex justify-between items-center bg-zinc-600/20 shadow-sm rounded-lg`}>
+                                <div className="ml-4 flex justify-start items-center">
+                                </div>
+                                <Button
+                                    disabled={!hasChanges}
+                                    onClick={onSaveChangeClick}
+                                    className="mr-3 pt-0 pb-0 pr-2 pl-2" h={40}
+                                    theme='teal' btnText='Cохранить' />
                             </div>
                             {newProject.http ? <ProjectMembers /> : null}
                             <RowWithButton
