@@ -8,7 +8,7 @@ import { UserProjects, Project } from './types';
 
 
 type Action =
-    | { type: 'projectInfo', payload: Project }
+    | { type: 'projectInfo' }
     | { type: 'createProject' }
     | { type: 'home' }
 
@@ -17,7 +17,7 @@ function reducer(state: { page: JSX.Element }, action: Action) {
         case 'createProject':
             return { page: <ProjectsCreate /> }
         case 'projectInfo':
-            return { page: <ProjectInfo oldProject={action.payload} /> }
+            return { page: <ProjectInfo /> }
         case 'home':
             return { page: null }
     }
@@ -50,12 +50,7 @@ const Projects = (): JSX.Element => {
         if (projects.activeProject) {
             // If we have a selected active project on 
             // the load we are going to show the info about it
-            dispatch(
-                {
-                    type: 'projectInfo',
-                    payload: projects.activeProject
-                }
-            )
+            dispatch({ type: 'projectInfo' })
         }
     }, [])
 
@@ -77,8 +72,9 @@ const Projects = (): JSX.Element => {
         setUserProjects({
             ...userProjects,
             projectList: newProjects,
-            activeProject: userProjects.activeProject.name === projectName ? newProject : userProjects.activeProject
+            activeProject: newProject
         });
+        dispatch({ type: 'projectInfo' })
     }
 
     async function deleteProject(project: Project): Promise<void> {
@@ -95,12 +91,7 @@ const Projects = (): JSX.Element => {
             ...userProjects,
             activeProject: project
         });
-        dispatch(
-            {
-                type: 'projectInfo',
-                payload: project
-            }
-        )
+        dispatch({ type: 'projectInfo' })
     }
 
     return (

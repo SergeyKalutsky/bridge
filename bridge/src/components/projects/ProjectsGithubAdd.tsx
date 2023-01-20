@@ -1,6 +1,5 @@
 import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText, Button, SuccessMessage } from '../common'
-import { useState, useEffect, useContext } from 'react'
-import { projectContext } from './Projects'
+import { useState, useEffect } from 'react'
 import { Project } from './types'
 import { HeaderPath } from './create/HeaderPath'
 import { BackButton } from './BackButton'
@@ -11,7 +10,6 @@ export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
         setAddGitHub: React.Dispatch<React.SetStateAction<boolean>>
         setNewProject: React.Dispatch<React.SetStateAction<Project>>
     }): JSX.Element {
-    const { updateProject } = useContext(projectContext)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [inputData, setInputData] = useState<{ token: string, remote: string }>({ token: '', remote: '' })
 
@@ -24,7 +22,6 @@ export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
 
     useEffect(() => {
         if (messageJsx?.props?.text === 'Удаленный сервер добавлен успешно') {
-            updateProject({ projectName: project.name, newProject: { ...project, http: inputData.remote } })
             setNewProject({ ...project, http: inputData.remote })
             setAddGitHub(false)
         }

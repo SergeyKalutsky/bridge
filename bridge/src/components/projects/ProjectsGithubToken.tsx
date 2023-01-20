@@ -1,6 +1,5 @@
-import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText, Button, SuccessMessage } from '../common'
-import { useState, useEffect, useContext } from 'react'
-import { projectContext } from './Projects'
+import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, Button, SuccessMessage } from '../common'
+import { useState, useEffect } from 'react'
 import { Project } from './types'
 import { HeaderPath } from './create/HeaderPath'
 import { BackButton } from './BackButton'
@@ -11,7 +10,6 @@ export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProje
         setChangeGitHubToken: React.Dispatch<React.SetStateAction<boolean>>
         setNewProject: React.Dispatch<React.SetStateAction<Project>>
     }): JSX.Element {
-    const { updateProject } = useContext(projectContext)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [inputData, setInputData] = useState<{ token: string, remote: string }>({ token: '', remote: '' })
 
@@ -24,7 +22,6 @@ export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProje
 
     useEffect(() => {
         if (messageJsx?.props?.text === 'Удаленный сервер добавлен успешно') {
-            updateProject({ projectName: project.name, newProject: { ...project, http: inputData.remote } })
             setNewProject({ ...project, http: inputData.remote })
             setChangeGitHubToken(false)
         }
@@ -63,7 +60,7 @@ export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProje
             <div className='flex flex-col h-[calc(100%-148px)] items-center justify-center overflow-scroll'>
                 <div className=' w-3/5 h-3/5 max-w-xl flex-col justify-center items-center'>
                     <div className='flex flex-col justify-center items-center '>
-                    <InputForm
+                        <InputForm
                             disabled={true}
                             value={project.http}
                             placeholder='GitHub репо url'
