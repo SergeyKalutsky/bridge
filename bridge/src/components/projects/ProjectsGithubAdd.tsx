@@ -3,10 +3,13 @@ import { useState, useEffect, useContext } from 'react'
 import { projectContext } from './Projects'
 import { Project } from './types'
 import { HeaderPath } from './create/HeaderPath'
+import { BackButton } from './BackButton'
 
-
-
-export function ProjectsGithubAdd({ project }: { project: Project }): JSX.Element {
+export function ProjectsGithubAdd({ project, setaddGitHub }:
+    {
+        project: Project,
+        setaddGitHub: React.Dispatch<React.SetStateAction<boolean>>
+    }): JSX.Element {
     const { updateProject } = useContext(projectContext)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [inputData, setInputData] = useState<{ token: string, remote: string }>({ token: '', remote: '' })
@@ -47,11 +50,14 @@ export function ProjectsGithubAdd({ project }: { project: Project }): JSX.Elemen
         setMessageJsx(<LoadingMessage text='Добавляем удаленный сервер' />)
         window.projects.addGitHubRemote({ token: inputData.token, repo: project.name, url: inputData.remote })
     }
-
+    function onBackClick() {
+        setaddGitHub(false)
+    }
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full bg-zinc-500 ">
             <HeaderPath path='Добавить GitHub аккаунт' />
-            <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll'>
+            <BackButton onClick={onBackClick} />
+            <div className='flex flex-col h-[calc(100%-148px)] items-center justify-center overflow-scroll'>
                 <div className=' w-3/5 h-3/5 max-w-xl flex-col justify-center items-center'>
                     <div className='w-full bg-teal-200/60 flex flex-col justify-center items-start mb-8 rounded-lg pt-3 pb-3 pr-3 pl-3 text-xl'>
                         <p className='pl-2'>Вам потребуется <span className='font-bold'>github аккаунт</span> и <LinkText text='fain-grain-token' />.</p>

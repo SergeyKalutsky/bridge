@@ -40,7 +40,7 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
         return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
     if (addGitHub) {
-        return <ProjectsGithubAdd project={newProject} />
+        return <ProjectsGithubAdd project={newProject} setaddGitHub={setaddGitHub} />
     }
     return (
         <>
