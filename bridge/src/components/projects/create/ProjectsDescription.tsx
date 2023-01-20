@@ -68,8 +68,7 @@ export function ProjectsDescription(): JSX.Element {
         setError(null)
     }
     return (
-        <div className='w-full h-4/7 gap-y-4 flex flex-col'>
-            {error ? error : <div className='w-full h-[40px]'></div>}
+        <div className='w-3/4 max-w-2xl h-full gap-y-4 flex flex-col'>
             <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mt-5" onClick={() => { window.dialogue.openImageFile() }} />
             <div className='w-full flex justify-center items-center'>
                 {img.base64 ?
@@ -78,6 +77,7 @@ export function ProjectsDescription(): JSX.Element {
                         onClick={() => { window.dialogue.openImageFile() }} />
                 }
             </div>
+            {error ? error : <div className='w-full h-[40px]'></div>}
             <div className='w-full'>
                 <InputForm
                     type="text"
