@@ -94,6 +94,11 @@ export function ProjectInfo(): JSX.Element {
                                 icon='folder'
                                 text="Открыть проект в файловом проводнике"
                                 btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
+                            {newProject.http ? <RowWithButton
+                                icon='share'
+                                text="Ссылка на проект"
+                                btnText='Поделиться'
+                                onClick={() => setAddGitHub(true)} /> : null}
                             <RowWithButton
                                 icon='github'
                                 text="GitHub репо"
