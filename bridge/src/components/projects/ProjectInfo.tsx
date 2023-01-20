@@ -5,6 +5,7 @@ import { HeaderPath } from "./create/HeaderPath"
 import { Project } from "./types"
 import { projectContext } from "./Projects"
 import DeleteProjectPopUp from "./popups/DeleteProjectPopUp"
+import { FcEditImage } from 'react-icons/fc'
 
 
 export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Element {
@@ -41,14 +42,15 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
             <div className="w-full h-full">
                 <HeaderPath path='Информация о проекте' />
                 <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll'>
-                    <div className='w-3/5 h-4/5'>
+                    <div className='w-3/5 h-full'>
                         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
                             <div className='w-full'>
                                 <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mb-5" onClick={() => { window.dialogue.openImageFile() }} />
                                 <div className='w-full flex justify-center items-center'>
                                     {img.base64 ?
                                         null :
-                                        <Button w={300} className='mb-10' btnText='Загрузить изображение' onClick={() => { window.dialogue.openImageFile() }} />
+                                        <FcEditImage style={{ marginBottom: 35, width: 150, height: 170, cursor: 'pointer' }} 
+                                        onClick={() => { window.dialogue.openImageFile() }} />
                                     }
                                 </div>
                                 <InputForm
