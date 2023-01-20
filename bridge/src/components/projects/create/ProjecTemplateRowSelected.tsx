@@ -17,7 +17,7 @@ export function ProjecTemplateRowSelected({ template, setTemplate, setTemplateRo
     return (
         <>
             <div className='w-3/4 max-w-2xl h-3/5 flex-col justify-center items-center'>
-                <div className='w-full h-[60px] bg-sky-700/75 flex items-center rounded-lg shadow-sm'>
+                <div className='w-full h-[60px] bg-sky-900/90 flex items-center rounded-lg shadow-sm'>
                     <div className='pl-5 w-1/2 text-slate-100 text-2xl'>{template.name}</div>
                     <div className='pr-6 w-1/2 text-slate-200 flex items-center justify-end'>
                         <div className='hover: cursor-pointer'>
@@ -25,8 +25,8 @@ export function ProjecTemplateRowSelected({ template, setTemplate, setTemplateRo
                         </div>
                     </div>
                 </div>
-                <div className='mt-10  w-full h-4/5 bg-sky-600/60 rounded-md  overflow-scroll shadow-sm'>
-                    <span className='pl-2 text-slate-50 font-medium text-xl'>{template.description}</span>
+                <div className='mt-10 pl-5 pb-3 pt-5 pr-5 w-full h-4/5 bg-sky-700/25 border-2 border-sky-900 border-opacity-50 rounded-lg  overflow-scroll shadow-sm'>
+                    <span className=' text-slate-50 font-medium text-xl'>{template.description}</span>
                 </div>
             </div>
         </>
