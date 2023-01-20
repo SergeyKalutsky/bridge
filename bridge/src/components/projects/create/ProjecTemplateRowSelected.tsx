@@ -25,7 +25,7 @@ export function ProjecTemplateRowSelected({ template, setTemplate, setTemplateRo
                         </div>
                     </div>
                 </div>
-                <div className='mt-10 pl-5 pb-3 pt-5 pr-5 w-full h-4/5 bg-sky-700/25 border-2 border-sky-900 border-opacity-50 rounded-lg  overflow-scroll shadow-sm'>
+                <div className='mt-10 pl-5 pb-3 pt-5 pr-5 w-full h-4/5 bg-sky-700/25 border-4 border-sky-900 border-opacity-25 rounded-lg  overflow-scroll shadow-sm'>
                     <span className=' text-slate-50 font-medium text-xl'>{template.description}</span>
                 </div>
             </div>
