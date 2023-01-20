@@ -6,6 +6,7 @@ import { Project } from "./types"
 import { projectContext } from "./Projects"
 import DeleteProjectPopUp from "./popups/DeleteProjectPopUp"
 import { FcEditImage } from 'react-icons/fc'
+import { ProjectMembers } from "./ProjectMembers"
 
 
 export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Element {
@@ -49,8 +50,8 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
                                 <div className='w-full flex justify-center items-center'>
                                     {img.base64 ?
                                         null :
-                                        <FcEditImage style={{ marginBottom: 35, width: 150, height: 170, cursor: 'pointer' }} 
-                                        onClick={() => { window.dialogue.openImageFile() }} />
+                                        <FcEditImage style={{ marginBottom: 35, width: 150, height: 170, cursor: 'pointer' }}
+                                            onClick={() => { window.dialogue.openImageFile() }} />
                                     }
                                 </div>
                                 <InputForm
@@ -68,10 +69,7 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
                                     onChange={(e) => { setNewProject({ ...newProject, description: e.target.value }) }}
                                 />
                             </div>
-                            <span>Члены проекта</span>
-                            <div className='w-full h-[200px] flex flex-col bg-zinc-400 rounded-lg'>
-                                {/* Члены проекта  */}
-                            </div>
+                            {newProject.http ? <ProjectMembers /> : null}
                             <RowWithButton icon='folder' text="Открыть проект в файловом проводнике" btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
                             <RowWithButton icon='github' text="GitHub репо" btnText={newProject.http ? 'Изменить' : 'Добавить'} />
                             {newProject.http ? <RowWithButton icon='key' text="Токен" btnText={newProject.http ? 'Изменить' : 'Добавить'} /> : null}
