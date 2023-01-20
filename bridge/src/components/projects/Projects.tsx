@@ -29,7 +29,7 @@ interface ProjectContext {
     deleteProject: (project: Project) => Promise<void>
     addProject: (project: Project) => Promise<void>
     setActiveProject: (project: Project) => void
-    updateProject: (oldProject: Project, newProject: Project) => void
+    updateProject: ({ projectName, newProject }: { projectName: string, newProject: Project }) => void
     dispatch: React.Dispatch<Action>
 }
 
@@ -71,13 +71,13 @@ const Projects = (): JSX.Element => {
         });
     }
 
-    async function updateProject(oldProject: Project, newProject: Project): Promise<void> {
-        const newProjects = userProjects.projectList.filter((userProject) => { return userProject.name != oldProject.name; })
+    async function updateProject({ projectName, newProject }: { projectName: string, newProject: Project }): Promise<void> {
+        const newProjects = userProjects.projectList.filter((userProject) => { return userProject.name != projectName; })
         newProjects.push(newProject)
         setUserProjects({
             ...userProjects,
             projectList: newProjects,
-            activeProject: userProjects.activeProject.name === oldProject.name ? newProject : userProjects.activeProject
+            activeProject: userProjects.activeProject.name === projectName ? newProject : userProjects.activeProject
         });
     }
 

@@ -7,11 +7,13 @@ import { projectContext } from "./Projects"
 import DeleteProjectPopUp from "./popups/DeleteProjectPopUp"
 import { FcEditImage } from 'react-icons/fc'
 import { ProjectMembers } from "./ProjectMembers"
+import { ProjectsGithubAdd } from "./ProjectsGithubAdd"
 
 
 export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Element {
     const { updateProject } = useContext(projectContext)
     const [openDelete, setDeleteOpen] = useState(false)
+    const [addGitHub, setaddGitHub] = useState(false)
     const [newProject, setNewProject] = useState<Project>(oldProject)
     const [img, setImg] = useState<{ path: string, base64: string }>({ path: '', base64: '' })
 
@@ -37,7 +39,9 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
         });
         return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
-
+    if (addGitHub) {
+        return <ProjectsGithubAdd project={newProject} />
+    }
     return (
         <>
             <div className="w-full h-full">
@@ -71,7 +75,7 @@ export function ProjectInfo({ oldProject }: { oldProject: Project }): JSX.Elemen
                             </div>
                             {newProject.http ? <ProjectMembers /> : null}
                             <RowWithButton icon='folder' text="Открыть проект в файловом проводнике" btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
-                            <RowWithButton icon='github' text="GitHub репо" btnText={newProject.http ? 'Изменить' : 'Добавить'} />
+                            <RowWithButton icon='github' text="GitHub репо" btnText={newProject.http ? 'Изменить' : 'Добавить'} onClick={() => setaddGitHub(true)} />
                             {newProject.http ? <RowWithButton icon='key' text="Токен" btnText={newProject.http ? 'Изменить' : 'Добавить'} /> : null}
                             <RowWithButton icon='trash' className='mb-10' text="Удалить проект навсегда" btnText="Удалить" btnTheme="danger" onClick={() => { setDeleteOpen(true) }} />
                         </div>
