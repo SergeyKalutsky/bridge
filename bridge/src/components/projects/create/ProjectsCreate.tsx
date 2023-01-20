@@ -66,7 +66,7 @@ export function ProjectsCreate(): JSX.Element {
                     </projectCreateContext.Provider>
                 </div>
             </div>
-            <div className='bg-zinc-600 h-[60px] px-20 flex items-center drop-shadow-md'>
+            <div className='bg-zinc-500/80 h-[60px] px-20 flex items-center drop-shadow-md'>
                 <Button w={200} onClick={() => setStage(stage - 1)} disabled={stage == 0 || stage > 1}>{'<- Назад'}</Button>
                 <div className='grow'></div>
                 <Button w={200} onClick={onClick} disabled={disabled}>{stage == 3 ? 'Завершить' : 'Далее ->'}</Button>
