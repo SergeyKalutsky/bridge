@@ -42,18 +42,20 @@ export function ProjectsSelectTemplate(): JSX.Element {
     }
     return (
         <>
-            <InputForm
-                onChange={onChange}
-                placeholder='Введите тип проекта'
-                type='text'
-                classInput='border-none pl-1'>
-                {<BiSearch style={{ color: '#5A5A6E', width: 28, height: 30, paddingLeft: 5, backgroundColor: '#fafafa' }} />}
-            </InputForm>
-            {templateRows !== undefined && templateRows.length > 0 ?
-                <div className='mt-10  w-full h-4/5 bg-zinc-50 rounded-lg overflow-scroll'>
-                    {templateRows}
-                </div> :
-                null}
+            <div className='h-3/5 w-3/5 max-w-2xl'>
+                <InputForm
+                    onChange={onChange}
+                    placeholder='Введите тип проекта: Python, Go, bot...'
+                    type='text'
+                    classInput='border-none pl-3 pt-3 pb-3 pr-5 text-2xl placeholder-slate-400'>
+                    {<BiSearch style={{ color: '#5A5A6E', width: 40, height: 40, paddingLeft: 10, backgroundColor: '#fafafa' }} />}
+                </InputForm>
+                {templateRows !== undefined && templateRows.length > 0 ?
+                    <div className='mt-10  w-full h-4/5 bg-zinc-50 rounded-lg overflow-scroll'>
+                        {templateRows}
+                    </div> :
+                    null}
+            </div>
         </>
     )
 }

@@ -60,7 +60,7 @@ export function ProjectsCreate(): JSX.Element {
         <>
             <HeaderPath path={`Создание проекта / ${stageMap[stage].name}`} />
             <div className='bg-zinc-500 flex flex-col h-[calc(100%-28px)] items-center justify-center overflow-scroll'>
-                <div className='w-3/5 h-4/5'>
+                <div className='w-full h-full flex justify-center items-center'>
                     <projectCreateContext.Provider value={{ projectCreate, setProjectCreate, setDisabled }}>
                         {stageMap[stage].jsx}
                     </projectCreateContext.Provider>
