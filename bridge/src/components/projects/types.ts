@@ -5,6 +5,7 @@ type Project = {
     name: string
     islocal: boolean
     http: string
+    token?: string
     description?: string
     thumbnailPath?: string
     template?: Template

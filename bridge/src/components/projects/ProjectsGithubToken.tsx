@@ -1,15 +1,15 @@
 import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, Button, SuccessMessage } from '../common'
-import { useState, useEffect } from 'react'
-import { Project } from './types'
+import { useState, useEffect, useContext } from 'react'
 import { HeaderPath } from './create/HeaderPath'
 import { BackButton } from './BackButton'
+import { projectContext } from './Projects'
 
-export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProject }:
+export function ProjectsGithubToken({ setChangeGitHubToken }:
     {
-        project: Project,
         setChangeGitHubToken: React.Dispatch<React.SetStateAction<boolean>>
-        setNewProject: React.Dispatch<React.SetStateAction<Project>>
     }): JSX.Element {
+    const { updateProject, userProjects } = useContext(projectContext)
+    const [isButton, setIsButton] = useState(true)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [inputData, setInputData] = useState<{ token: string, remote: string }>({ token: '', remote: '' })
 
@@ -21,9 +21,16 @@ export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProje
     }, [inputData])
 
     useEffect(() => {
-        if (messageJsx?.props?.text === 'Удаленный сервер добавлен успешно') {
-            setNewProject({ ...project, http: inputData.remote })
-            setChangeGitHubToken(false)
+        if (messageJsx?.props?.text === 'Токен обновлен') {
+            updateProject({
+                projectName: userProjects.activeProject.name,
+                newProject: {
+                    ...userProjects.activeProject,
+                    token: inputData.token,
+                    http: inputData.remote
+                }
+            })
+            setIsButton(false)
         }
     }, [messageJsx])
 
@@ -33,7 +40,7 @@ export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProje
                 setMessageJsx(<ErrorMessage text={msg} classDiv='mt-8 pt-2 pb-2 pr-2 pl-2' />)
                 return
             }
-            setMessageJsx(<SuccessMessage text={'Удаленный сервер добавлен успешно'} />)
+            setMessageJsx(<SuccessMessage text={'Токен обновлен'} />)
         })
         return () => window.shared.removeListeners('projects:pushremote')
     }, [])
@@ -48,7 +55,7 @@ export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProje
             return
         }
         setMessageJsx(<LoadingMessage text='Добавляем удаленный сервер' />)
-        window.projects.addGitHubRemote({ token: inputData.token, repo: project.name, url: inputData.remote })
+        window.projects.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
     }
     function onBackClick() {
         setChangeGitHubToken(false)
@@ -62,7 +69,7 @@ export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProje
                     <div className='flex flex-col justify-center items-center '>
                         <InputForm
                             disabled={true}
-                            value={project.http}
+                            value={userProjects.activeProject.http}
                             placeholder='GitHub репо url'
                             type='text'
                             classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl bg-zinc-300 hover:cursor-not-allowed'
@@ -75,7 +82,7 @@ export function ProjectsGithubToken({ project, setChangeGitHubToken, setNewProje
                             classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl text-security-disc' >
                         </InputForm>
                         <div className='w-[120px] h-[40px] mt-8'>
-                            <Button btnText='Изменить' onClick={onClick} />
+                            {isButton ? <Button btnText='Изменить' onClick={onClick} /> : null}
                         </div>
                     </div>
                     <div className='h-[100px] w-full mt-4'>

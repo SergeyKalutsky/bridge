@@ -1,15 +1,15 @@
 import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText, Button, SuccessMessage } from '../common'
-import { useState, useEffect } from 'react'
-import { Project } from './types'
+import { useState, useEffect, useContext } from 'react'
 import { HeaderPath } from './create/HeaderPath'
 import { BackButton } from './BackButton'
+import { projectContext } from './Projects'
 
-export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
+export function ProjectsGithubAdd({ setAddGitHub }:
     {
-        project: Project,
         setAddGitHub: React.Dispatch<React.SetStateAction<boolean>>
-        setNewProject: React.Dispatch<React.SetStateAction<Project>>
     }): JSX.Element {
+    const { updateProject, userProjects } = useContext(projectContext)
+    const [isButton, setIsButton] = useState(true)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [inputData, setInputData] = useState<{ token: string, remote: string }>({ token: '', remote: '' })
 
@@ -22,8 +22,15 @@ export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
 
     useEffect(() => {
         if (messageJsx?.props?.text === 'Удаленный сервер добавлен успешно') {
-            setNewProject({ ...project, http: inputData.remote })
-            setAddGitHub(false)
+            updateProject({
+                projectName: userProjects.activeProject.name,
+                newProject: {
+                    ...userProjects.activeProject,
+                    token: inputData.token,
+                    http: inputData.remote
+                }
+            })
+            setIsButton(false)
         }
     }, [messageJsx])
 
@@ -48,7 +55,7 @@ export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
             return
         }
         setMessageJsx(<LoadingMessage text='Добавляем удаленный сервер' />)
-        window.projects.addGitHubRemote({ token: inputData.token, repo: project.name, url: inputData.remote })
+        window.projects.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
     }
     function onBackClick() {
         setAddGitHub(false)
@@ -77,7 +84,7 @@ export function ProjectsGithubAdd({ project, setNewProject, setAddGitHub }:
                             classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl text-security-disc' >
                         </InputForm>
                         <div className='w-[120px] h-[40px] mt-8'>
-                            <Button btnText='Добавить' onClick={onClick} />
+                            {isButton ? <Button btnText='Добавить' onClick={onClick} /> : null}
                         </div>
                     </div>
                     <div className='h-[100px] w-full mt-4'>

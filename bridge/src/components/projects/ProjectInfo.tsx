@@ -1,4 +1,3 @@
-import { InputForm, Button, TextArea } from "../common"
 import { useContext, useState, useEffect } from "react"
 import { RowWithButton } from "./RowWithButton"
 import { HeaderPath } from "./create/HeaderPath"
@@ -9,26 +8,26 @@ import { FcEditImage } from 'react-icons/fc'
 import { ProjectMembers } from "./ProjectMembers"
 import { ProjectsGithubAdd } from "./ProjectsGithubAdd"
 import { ProjectsGithubToken } from "./ProjectsGithubToken"
-import { SuccessMessage } from "../common"
+import { SuccessMessage, InputForm, TextArea } from "../common"
 import _ from 'lodash'
 
 
 export function ProjectInfo(): JSX.Element {
-    const { userProjects } = useContext(projectContext)
+    const { updateProject, userProjects } = useContext(projectContext)
     const [openDelete, setDeleteOpen] = useState(false)
     const [addGitHub, setAddGitHub] = useState(false)
     const [changeGitHubToken, setChangeGitHubToken] = useState(false)
     const [newProject, setNewProject] = useState<Project>(userProjects.activeProject)
-    // const [messageJsx, setMessageJsx] = useState<JSX.Element>()
+    const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [inputData, setInputData] = useState<{ name: string, description: string }>()
     const [img, setImg] = useState<{ path: string, base64: string }>({ path: '', base64: '' })
 
-    // useEffect(() => {
-    //     if (!_.isEqual(userProjects.activeProject, newProject)) {
-    //         updateProject({ projectName: userProjects.activeProject.name, newProject })
-    //         setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
-    //     }
-    // }, [newProject])
+    useEffect(() => {
+        if (!_.isEqual(userProjects.activeProject, newProject)) {
+            updateProject({ projectName: userProjects.activeProject.name, newProject })
+            setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
+        }
+    }, [newProject])
 
     useEffect(() => {
         setNewProject({ ...newProject, thumbnailPath: img.path })
@@ -66,7 +65,7 @@ export function ProjectInfo(): JSX.Element {
                     <div className='w-3/5 h-full'>
                         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
                             <div className='w-full'>
-                                {/* {messageJsx} */}
+                                {messageJsx}
                                 <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mb-5" onClick={() => { window.dialogue.openImageFile() }} />
                                 <div className='w-full flex justify-center items-center'>
                                     {img.base64 ?

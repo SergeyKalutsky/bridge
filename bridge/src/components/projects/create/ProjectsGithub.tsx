@@ -18,7 +18,7 @@ export function ProjectsGithub(): JSX.Element {
 
     useEffect(() => {
         if (messageJsx?.props?.text === 'Удаленный сервер добавлен успешно') {
-            setProjectCreate({ ...projectCreate, http: inputData.remote })
+            setProjectCreate({ ...projectCreate, http: inputData.remote, token: inputData.token })
         }
     }, [messageJsx])
 

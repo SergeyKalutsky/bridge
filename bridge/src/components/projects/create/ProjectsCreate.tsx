@@ -23,7 +23,8 @@ const dummyProject: Project = {
     description: '',
     http: '',
     thumbnailPath: '',
-    template: null
+    template: null,
+    token: ''
 }
 
 export function ProjectsCreate(): JSX.Element {
