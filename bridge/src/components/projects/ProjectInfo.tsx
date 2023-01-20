@@ -52,10 +52,10 @@ export function ProjectInfo(): JSX.Element {
         return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
     if (addGitHub) {
-        return <ProjectsGithubAdd project={newProject} setAddGitHub={setAddGitHub} setNewProject={setNewProject} />
+        return <ProjectsGithubAdd setAddGitHub={setAddGitHub} />
     }
     if (changeGitHubToken) {
-        return <ProjectsGithubToken project={newProject} setChangeGitHubToken={setChangeGitHubToken} setNewProject={setNewProject} />
+        return <ProjectsGithubToken setChangeGitHubToken={setChangeGitHubToken} />
     }
     return (
         <>
