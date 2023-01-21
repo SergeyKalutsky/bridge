@@ -37,7 +37,7 @@ export default function Button({ children,
     w = 40,
     h = 50 }: Props): JSX.Element {
     const style = theme === undefined ? themes['default'] : themes[theme]
-    const disabledStyle = disabled ? 'cursor-not-allowed bg-slate-900' : style['hover']
+    const disabledStyle = disabled ? 'cursor-not-allowed bg-slate-800/40' : style['hover']
     return (
         <button disabled={disabled}
             className={`${disabledStyle} ${style['base']} pl-3 pr-3 pb-2 pt-2 font-medium text-xl focus:outline-none flex flex-row justify-center items-center w-[${w}px] h-[${h}px] ${className}`}
