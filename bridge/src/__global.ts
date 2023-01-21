@@ -20,6 +20,7 @@ declare global {
             platform(): string
         };
         projects: {
+            rename({newName, activePath}: {newName:string, activePath: ActivePath}): Promise<ActivePath>
             projectPath(): Promise<string>
             openSystemFolder(): void
             getProjectTemplates(query: string): Promise<Template[]>

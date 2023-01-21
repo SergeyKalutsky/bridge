@@ -20,7 +20,7 @@ contextBridge.exposeInMainWorld('settings', {
     del: (key: string): any => ipcRenderer.invoke('settings:del', key),
     logPath: (): string => ipcRenderer.sendSync('settings:logpath'),
     platform: (): string => ipcRenderer.sendSync('settings:platform'),
-    
+
 })
 
 contextBridge.exposeInMainWorld('projects', {
@@ -37,7 +37,7 @@ contextBridge.exposeInMainWorld('projects', {
     createFile: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfile', createInfo),
     createFolder: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfolder', createInfo),
     renameFile: (data: { new_name: string, path: ActivePath }): string => ipcRenderer.sendSync('projects:renamefile', data),
-    deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
+    rename: ({newName, activePath}: {newName:string, activePath: ActivePath}): Promise<ActivePath> => ipcRenderer.invoke('projects:rename', {newName, activePath}),    deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
     mkprojectdir: (project_name: string): void => ipcRenderer.send('projects:mkprojectdir', project_name),
     copyFile: (args: { src: string, destination: string, root: boolean }): Promise<void> => ipcRenderer.invoke('projects:copyfile', args)
 })

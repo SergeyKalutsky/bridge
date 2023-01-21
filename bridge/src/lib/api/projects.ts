@@ -152,6 +152,19 @@ function deleteTreeElement() {
     })
 }
 
+function rename() {
+    return ipcMain.handle('projects:rename', async (event, {newName, activePath}) => {
+        const oldPath = getProjectDir()
+        const newPath = path.join(path.parse(oldPath).dir, newName)
+        if (activePath) {
+            activePath.path = path.join(newPath, activePath.path.replace(oldPath, ''))
+        }
+        fs.renameSync(oldPath, newPath);
+        return activePath
+    })
+}
+
+
 function renameFile() {
     return ipcMain.on('projects:renamefile', (event, data) => {
         const newPath = path.join(path.parse(data.activePath.path).dir, data.newName)
@@ -265,6 +278,7 @@ function projectAPI(): void {
     createFile()
     listFiles()
     mkprojectdir()
+    rename()
 }
 
 export default projectAPI
