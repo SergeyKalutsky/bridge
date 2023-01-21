@@ -56,10 +56,11 @@ export function ProjectInfo(): JSX.Element {
 
     function onSaveChangeClick() {
         const exist = userProjects.projectList.filter((project) => project.name === newProject.name).length > 0
+            && newProject.name !== userProjects.activeProject.name
         console.log(exist)
         if (exist) {
-            setMessageJsx(<ErrorMessage text='Проект с таким именем существует' classDiv="mt-10 pr-2 pl-2 pb-2 pt-2" />) 
-            return   
+            setMessageJsx(<ErrorMessage text='Проект с таким именем существует' classDiv="mt-10 pr-2 pl-2 pb-2 pt-2" />)
+            return
         }
         updateProject({ projectName: userProjects.activeProject.name, newProject })
         setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
