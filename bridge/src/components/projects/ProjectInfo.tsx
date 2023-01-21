@@ -8,7 +8,7 @@ import { FcEditImage } from 'react-icons/fc'
 import { ProjectMembers } from "./ProjectMembers"
 import { ProjectsGithubAdd } from "./ProjectsGithubAdd"
 import { ProjectsGithubToken } from "./ProjectsGithubToken"
-import { InputForm, TextArea, Button, SuccessMessage } from "../common"
+import { InputForm, TextArea, Button, SuccessMessage, ErrorMessage } from "../common"
 import _ from 'lodash'
 
 
@@ -55,6 +55,12 @@ export function ProjectInfo(): JSX.Element {
     }, [])
 
     function onSaveChangeClick() {
+        const exist = userProjects.projectList.filter((project) => project.name === newProject.name).length > 0
+        console.log(exist)
+        if (exist) {
+            setMessageJsx(<ErrorMessage text='Проект с таким именем существует' classDiv="mt-10 pr-2 pl-2 pb-2 pt-2" />) 
+            return   
+        }
         updateProject({ projectName: userProjects.activeProject.name, newProject })
         setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
     }
