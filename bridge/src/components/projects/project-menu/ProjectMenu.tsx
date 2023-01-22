@@ -87,7 +87,8 @@ export function ProjectMenu(): JSX.Element {
                 payload: {
                     ...state,
                     project: userProjects.activeProject,
-                    base64: await window.projects.loadimagebase64(userProjects.activeProject.thumbnailPath)
+                    base64: userProjects.activeProject.thumbnailPath ?
+                        await window.projects.loadimagebase64(userProjects.activeProject.thumbnailPath) : ''
                 }
             })
         }
