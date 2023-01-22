@@ -80,6 +80,10 @@ export function ProjectMenu(): JSX.Element {
     }, [state.project])
 
     useEffect(() => {
+        if (userProjects.activeProject.name == state.project.name) {
+            dispatch({ type: 'open', payload: { projectHasChanged: false } })
+            return
+        }
         // Updates project if active project has been changed
         const initProject = async () => {
             dispatch({
@@ -93,6 +97,7 @@ export function ProjectMenu(): JSX.Element {
             })
         }
         initProject()
+        setMessageJsx(null)
     }, [userProjects.activeProject])
 
     useEffect(() => {
