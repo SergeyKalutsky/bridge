@@ -4,10 +4,12 @@ import { HeaderPath } from '../create/HeaderPath'
 import { BackButton } from '../../common/BackButton'
 import { projectContext } from '../Projects'
 import { Action } from './ProjectMenu'
+import { ProjectMenuState } from './ProjectMenu'
 
-export function ProjectsGithubToken({ dispatch }:
+export function ProjectsGithubToken({ dispatch, state }:
     {
         dispatch: React.Dispatch<Action>
+        state: ProjectMenuState
     }): JSX.Element {
     const { updateProject, userProjects } = useContext(projectContext)
     const [isButton, setIsButton] = useState(true)
@@ -23,6 +25,17 @@ export function ProjectsGithubToken({ dispatch }:
 
     useEffect(() => {
         if (messageJsx?.props?.text === 'Токен обновлен') {
+            dispatch({
+                type: 'update',
+                payload: {
+                    ...state,
+                    project: {
+                        ...state.project,
+                        token: inputData.token,
+                        http: inputData.remote
+                    }
+                }
+            })
             updateProject({
                 projectName: userProjects.activeProject.name,
                 newProject: {

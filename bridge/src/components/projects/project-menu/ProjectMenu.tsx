@@ -41,7 +41,7 @@ interface Open {
     openChangeGitHubToken?: boolean,
     openGitHub?: boolean
 }
-interface ProjectMenuState {
+export interface ProjectMenuState {
     projectHasChanged?: boolean,
     openDeletePopUp?: boolean,
     openChangeGitHubToken?: boolean,
@@ -71,7 +71,7 @@ export function ProjectMenu(): JSX.Element {
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
 
     useEffect(() => {
-        // checks if the changes 
+        // checks if unsaved changes has occured 
         if (!_.isEqual(userProjects.activeProject, state.project)) {
             dispatch({ type: 'open', payload: { projectHasChanged: true } })
             return
@@ -80,11 +80,11 @@ export function ProjectMenu(): JSX.Element {
     }, [state.project])
 
     useEffect(() => {
+        // Init project when open a new one
         if (userProjects.activeProject.name == state.project.name) {
             dispatch({ type: 'open', payload: { projectHasChanged: false } })
             return
         }
-        // Updates project if active project has been changed
         const initProject = async () => {
             dispatch({
                 type: 'update',
@@ -126,10 +126,10 @@ export function ProjectMenu(): JSX.Element {
     }
 
     if (state.openGitHub) {
-        return <ProjectsGithubAdd dispatch={dispatch} />
+        return <ProjectsGithubAdd state={state} dispatch={dispatch} />
     }
     if (state.openChangeGitHubToken) {
-        return <ProjectsGithubToken dispatch={dispatch} />
+        return <ProjectsGithubToken state={state} dispatch={dispatch} />
     }
     return (
         <>
