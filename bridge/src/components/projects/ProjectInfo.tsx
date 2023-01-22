@@ -21,10 +21,11 @@ export function ProjectInfo(): JSX.Element {
     const [newProject, setNewProject] = useState<Project>(userProjects.activeProject)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     // const [inputData, setInputData] = useState<{ name: string, description: string }>()
-    const [img, setImg] = useState<{ path: string, base64: string }>({ path: '', base64: '' })
+    const [img, setImg] = useState<{ path: string, base64: string }>({ path: userProjects.activeProject.thumbnailPath, base64: '' })
 
     useEffect(() => {
         if (!_.isEqual(userProjects.activeProject, newProject)) {
+            console.log(userProjects.activeProject, newProject)
             setHasChanged(true)
             return
         }
