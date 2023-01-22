@@ -1,13 +1,13 @@
-import { useContext, useState, useEffect, useReducer } from "react"
-import { RowWithButton } from "./RowWithButton"
-import { HeaderPath } from "../create/HeaderPath"
 import { Project } from "../types"
+import { HeaderPath } from "../create/HeaderPath"
+import { FcEditImage } from 'react-icons/fc'
+import { RowWithButton } from "./RowWithButton"
 import { projectContext } from "../Projects"
 import DeleteProjectPopUp from "../popups/DeleteProjectPopUp"
-import { FcEditImage } from 'react-icons/fc'
 import { ProjectMembers } from "../project-members/ProjectMembers"
 import { ProjectsGithubAdd } from "./ProjectsGithubAdd"
 import { ProjectsGithubToken } from "./ProjectsGithubToken"
+import { useContext, useState, useEffect, useReducer } from "react"
 import { InputForm, TextArea, Button, SuccessMessage, ErrorMessage } from "../../common"
 import _ from 'lodash'
 
@@ -71,6 +71,7 @@ export function ProjectMenu(): JSX.Element {
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
 
     useEffect(() => {
+        // checks if the changes 
         if (!_.isEqual(userProjects.activeProject, state.project)) {
             dispatch({ type: 'open', payload: { projectHasChanged: true } })
             return
@@ -79,10 +80,12 @@ export function ProjectMenu(): JSX.Element {
     }, [state.project])
 
     useEffect(() => {
+        // Updates project if active project has been changed
         dispatch({ type: 'update', payload: { ...state, project: userProjects.activeProject } })
     }, [userProjects.activeProject])
 
     useEffect(() => {
+        // Loads thumb image for a project
         window.shared.incomingData("dialogue:openimagefile", async (filepath: string) => {
             dispatch({
                 type: 'image',
