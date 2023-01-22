@@ -12,10 +12,10 @@ import { InputForm, TextArea, Button, SuccessMessage, ErrorMessage } from "../..
 import _ from 'lodash'
 
 type Action =
-    | { type: 'projectHasChanged' }
-    | { type: 'openDeletePopUp' }
-    | { type: 'openGitHub' }
-    | { type: 'openChangeGitHubToken' }
+    | { type: 'projectHasChanged', payload: boolean }
+    | { type: 'openDeletePopUp', payload: boolean }
+    | { type: 'openGitHub', payload: boolean }
+    | { type: 'openChangeGitHubToken', payload: boolean }
 
 
 const initialState = { projectHasChanged: false, openDeletePopUp: false, openChangeGitHubToken: false, openGitHub: false }
@@ -29,13 +29,13 @@ function reducer(state: {
     action: Action) {
     switch (action.type) {
         case 'projectHasChanged':
-            return { ...state, projectHasChanged: !state.projectHasChanged }
+            return { ...state, projectHasChanged: action.payload }
         case 'openDeletePopUp':
-            return { ...state, openDeletePopUp: !state.openDeletePopUp }
+            return { ...state, openDeletePopUp: action.payload }
         case 'openChangeGitHubToken':
-            return { ...state, openChangeGitHubToken: !state.openChangeGitHubToken }
+            return { ...state, openChangeGitHubToken: action.payload }
         case 'openGitHub':
-            return { ...state, openGitHub: !state.openGitHub }
+            return { ...state, openGitHub: action.payload }
     }
 }
 
@@ -48,10 +48,10 @@ export function ProjectMenu(): JSX.Element {
 
     useEffect(() => {
         if (!_.isEqual(userProjects.activeProject, newProject)) {
-            setHasChanged(true)
+            dispatch({ type: 'projectHasChanged', payload: true })
             return
         }
-        setHasChanged(false)
+        dispatch({ type: 'projectHasChanged', payload: false })
     }, [newProject])
 
     useEffect(() => {
@@ -88,11 +88,11 @@ export function ProjectMenu(): JSX.Element {
         setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
     }
 
-    if (addGitHub) {
-        return <ProjectsGithubAdd setAddGitHub={setAddGitHub} />
+    if (state.openGitHub) {
+        return <ProjectsGithubAdd dispatch={dispatch} />
     }
-    if (changeGitHubToken) {
-        return <ProjectsGithubToken setChangeGitHubToken={setChangeGitHubToken} />
+    if (state.openChangeGitHubToken) {
+        return <ProjectsGithubToken dispatch={dispatch} />
     }
     return (
         <>
@@ -130,7 +130,7 @@ export function ProjectMenu(): JSX.Element {
                                 <div className="ml-4 flex justify-start items-center">
                                 </div>
                                 <Button
-                                    disabled={!hasChanges}
+                                    disabled={!state.projectHasChanged}
                                     onClick={onSaveChangeClick}
                                     className="mr-3 pt-0 pb-0 pr-2 pl-2" h={40}
                                     theme='teal' btnText='Cохранить' />
@@ -144,17 +144,17 @@ export function ProjectMenu(): JSX.Element {
                                 icon='share'
                                 text="Ссылка на проект"
                                 btnText='Поделиться'
-                                onClick={() => setAddGitHub(true)} /> : null}
+                                onClick={() => dispatch({type: 'openGitHub', payload: true})} /> : null}
                             <RowWithButton
                                 icon='github'
                                 text="GitHub репо"
                                 btnText={newProject.http ? 'Изменить' : 'Добавить'}
-                                onClick={() => setAddGitHub(true)} />
+                                onClick={() => dispatch({type: 'openGitHub', payload: true})} />
                             {newProject.http ?
                                 <RowWithButton icon='key'
                                     text="Токен"
                                     btnText={newProject.http ? 'Изменить' : 'Добавить'}
-                                    onClick={() => setChangeGitHubToken(true)} /> : null}
+                                    onClick={() => dispatch({type: 'openChangeGitHubToken', payload: true})} /> : null}
                             <RowWithButton icon='trash'
                                 className='mb-10'
                                 text="Удалить проект навсегда"
