@@ -12,23 +12,17 @@ import Logs from "./Logs";
 import { SudoPopUp } from "./SudoPopUp";
 import { TextArea } from "./TextArea";
 import Packages from "./Packages";
-import { LoadingMessage } from "./LoadingMessage";
-import { ErrorMessage } from "./ErrorMessage";
-import { WarningMessage } from "./WarningMessage";
 import { LinkText } from "./LinkText";
-import { SuccessMessage } from "./SuccessMessage";
 import { BackButton } from "./BackButton";
+import { Message } from "./Message";
 
 export {
+    Message,
     BackButton,
-    SuccessMessage,
     TextArea,
     Button,
     LinkText,
-    LoadingMessage,
-    ErrorMessage,
     IconButton,
-    WarningMessage,
     InputForm,
     PopUp,
     SideNavBar,

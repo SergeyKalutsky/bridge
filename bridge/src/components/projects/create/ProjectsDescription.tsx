@@ -1,4 +1,4 @@
-import { InputForm, ErrorMessage, Button, TextArea } from '../../common'
+import { InputForm, Message, TextArea } from '../../common'
 import { useState, useEffect, useContext } from 'react'
 import { projectCreateContext } from './ProjectsCreate'
 import { FcEditImage } from 'react-icons/fc'
@@ -62,7 +62,7 @@ export function ProjectsDescription(): JSX.Element {
         setRepo(e.target.value)
         const error = projectNameError({ name: e.target.value })
         if (error) {
-            setError(<ErrorMessage text={error} classDiv='pt-2 pb-2 pr-2 pl-2' />)
+            setError(<Message type='error' text={error} className='pt-2 pb-2 pr-2 pl-2' />)
             return
         }
         setError(null)

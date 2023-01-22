@@ -2,14 +2,14 @@ import { Package } from '../../../types'
 import { projectContext } from '../Projects'
 import { projectCreateContext } from './ProjectsCreate'
 import { useState, useEffect, useContext } from 'react'
-import { Packages, Logs, SudoPopUp, LoadingMessage } from '../../../components/common'
+import { Packages, Logs, SudoPopUp, Message } from '../../../components/common'
 
 
 export function ProjectsInstall(): JSX.Element {
     const { projectCreate, setDisabled } = useContext(projectCreateContext)
     const { userProjects, addProject } = useContext(projectContext)
     const [pkgs, setPkgs] = useState<Package[]>(projectCreate.template.pkgs)
-    const [loadMessage, setLoadMessage] = useState<JSX.Element>(<LoadingMessage text='Проверка устновленных библиотек' />)
+    const [loadMessage, setLoadMessage] = useState<JSX.Element>(<Message type='loading' text='Проверка устновленных библиотек' />)
 
     useEffect(() => {
         const exist = userProjects?.projectList?.filter((project) => project.name === projectCreate.name).length
@@ -32,13 +32,13 @@ export function ProjectsInstall(): JSX.Element {
             const exist = userProjects?.projectList?.filter((project) => project.name === projectCreate.name).length
 
             if (count === pkgs.length && !exist) {
-                setLoadMessage(<LoadingMessage text='Клонируем шаблон проекта' />)
+                setLoadMessage(<Message type='loading' text='Клонируем шаблон проекта' />)
                 window.git.clone({ repo: projectCreate.name, git_url: projectCreate.template.http })
                 return
             }
             if (!exist) {
                 window.pkg.install(pkgs)
-                setLoadMessage(<LoadingMessage text='Установка. Это может занять длительное время' />)
+                setLoadMessage(<Message type='loading' text='Установка. Это может занять длительное время' />)
             }
         });
         return () => window.shared.removeListeners('pkg:check')

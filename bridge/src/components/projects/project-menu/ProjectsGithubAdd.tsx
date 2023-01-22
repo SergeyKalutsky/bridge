@@ -1,4 +1,4 @@
-import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText, Button, SuccessMessage } from '../../common'
+import { InputForm, LinkText, Button, Message } from '../../common'
 import { useState, useEffect, useContext } from 'react'
 import { HeaderPath } from '../create/HeaderPath'
 import { BackButton } from '../../common/BackButton'
@@ -17,7 +17,7 @@ export function ProjectsGithubAdd({ dispatch }:
     useEffect(() => {
         if (inputData?.token?.includes('ghp')) {
             const msg = 'Похоже что вы используете классический токен. Ради безопасности вашего GitHub аккаунта настоятельно рекомендуем перейти на Fine-Grain Token'
-            setMessageJsx(<WarningMessage text={msg} />)
+            setMessageJsx(<Message type='warning' text={msg} />)
         }
     }, [inputData])
 
@@ -38,24 +38,24 @@ export function ProjectsGithubAdd({ dispatch }:
     useEffect(() => {
         window.shared.incomingData("projects:pushremote", async ({ type, msg }) => {
             if (type === 'error') {
-                setMessageJsx(<ErrorMessage text={msg} classDiv='mt-8 pt-2 pb-2 pr-2 pl-2' />)
+                setMessageJsx(<Message type='error' text={msg} className='mt-8 pt-2 pb-2 pr-2 pl-2' />)
                 return
             }
-            setMessageJsx(<SuccessMessage text={'Удаленный сервер добавлен успешно'} />)
+            setMessageJsx(<Message type='success' text={'Удаленный сервер добавлен успешно'} />)
         })
         return () => window.shared.removeListeners('projects:pushremote')
     }, [])
 
     const onClick = () => {
         if (!inputData?.remote || !inputData.token) {
-            setMessageJsx(<ErrorMessage text={'Все поля должны быть заполнены'} classDiv='mt-8 pt-2 pb-2 pr-2 pl-2' />)
+            setMessageJsx(<Message type='error' text={'Все поля должны быть заполнены'} className='mt-8 pt-2 pb-2 pr-2 pl-2' />)
             return
         }
         if (!inputData.remote.includes('https')) {
-            setMessageJsx(<ErrorMessage text={'Некорректный URL GitHub репо'} classDiv='mt-8 pt-2 pb-2 pr-2 pl-2' />)
+            setMessageJsx(<Message type='error' text={'Некорректный URL GitHub репо'} className='mt-8 pt-2 pb-2 pr-2 pl-2' />)
             return
         }
-        setMessageJsx(<LoadingMessage text='Добавляем удаленный сервер' />)
+        setMessageJsx(<Message type='loading' text='Добавляем удаленный сервер' />)
         window.projects.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
     }
     function onBackClick() {

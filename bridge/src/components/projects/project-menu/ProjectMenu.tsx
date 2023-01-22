@@ -8,7 +8,7 @@ import { ProjectMembers } from "../project-members/ProjectMembers"
 import { ProjectsGithubAdd } from "./ProjectsGithubAdd"
 import { ProjectsGithubToken } from "./ProjectsGithubToken"
 import { useContext, useState, useEffect, useReducer } from "react"
-import { InputForm, TextArea, Button, SuccessMessage, ErrorMessage } from "../../common"
+import { InputForm, TextArea, Button, Message } from "../../common"
 import _ from 'lodash'
 
 export type Action =
@@ -102,11 +102,11 @@ export function ProjectMenu(): JSX.Element {
         const exist = userProjects.projectList.filter((project) => project.name === state.project.name).length > 0
             && state.project.name !== userProjects.activeProject.name
         if (exist) {
-            setMessageJsx(<ErrorMessage text='Проект с таким именем существует' classDiv="mt-10 pr-2 pl-2 pb-2 pt-2" />)
+            setMessageJsx(<Message type='error' text='Проект с таким именем существует' className="mt-10 pr-2 pl-2 pb-2 pt-2" />)
             return
         }
         updateProject({ projectName: userProjects.activeProject.name, newProject: state.project })
-        setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
+        setMessageJsx(<Message type='success' text='Данные успешно обновлены' className="mt-10" />)
     }
 
     if (state.openGitHub) {
