@@ -81,7 +81,17 @@ export function ProjectMenu(): JSX.Element {
 
     useEffect(() => {
         // Updates project if active project has been changed
-        dispatch({ type: 'update', payload: { ...state, project: userProjects.activeProject } })
+        const initProject = async () => {
+            dispatch({
+                type: 'update',
+                payload: {
+                    ...state,
+                    project: userProjects.activeProject,
+                    base64: await window.projects.loadimagebase64(userProjects.activeProject.thumbnailPath)
+                }
+            })
+        }
+        initProject()
     }, [userProjects.activeProject])
 
     useEffect(() => {
@@ -165,7 +175,7 @@ export function ProjectMenu(): JSX.Element {
                                 icon='share'
                                 text="Ссылка на проект"
                                 btnText='Поделиться'
-                                onClick={() =>  dispatch({ type: 'open', payload: { openGitHub: true } })} /> : null}
+                                onClick={() => dispatch({ type: 'open', payload: { openGitHub: true } })} /> : null}
                             <RowWithButton
                                 icon='github'
                                 text="GitHub репо"
@@ -188,7 +198,7 @@ export function ProjectMenu(): JSX.Element {
             <DeleteProjectPopUp
                 projectDelete={userProjects.activeProject}
                 open={state.openDeletePopUp}
-                onClose={() => { dispatch({ type: 'open', payload: { openDeletePopUp: false } })}} />
+                onClose={() => { dispatch({ type: 'open', payload: { openDeletePopUp: false } }) }} />
         </>
     )
 }

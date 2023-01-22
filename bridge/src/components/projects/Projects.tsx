@@ -71,7 +71,6 @@ const Projects = (): JSX.Element => {
             await window.projects.rename({ newName: newProject.name, activePath: newProject.activePath })
             : newProject.activePath
             
-        console.log(newProject)
         const newProjects = userProjects.projectList.filter((userProject) => { return userProject.name != projectName; })
         newProjects.push(newProject)
         setUserProjects({
