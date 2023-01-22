@@ -12,79 +12,97 @@ import { InputForm, TextArea, Button, SuccessMessage, ErrorMessage } from "../..
 import _ from 'lodash'
 
 export type Action =
-    | { type: 'projectHasChanged', payload: boolean }
-    | { type: 'openDeletePopUp', payload: boolean }
-    | { type: 'openGitHub', payload: boolean }
-    | { type: 'openChangeGitHubToken', payload: boolean }
+    | { type: 'open', payload: Open }
+    | { type: 'image', payload: { path: string, base64: string } }
+    | { type: 'update', payload: ProjectMenuState }
 
 
-const initialState = { projectHasChanged: false, openDeletePopUp: false, openChangeGitHubToken: false, openGitHub: false }
+const initialState = {
+    projectHasChanged: false,
+    openDeletePopUp: false,
+    openChangeGitHubToken: false,
+    openGitHub: false,
+    project: {
+        id: null,
+        islocal: true,
+        name: '',
+        description: '',
+        http: '',
+        thumbnailPath: '',
+        template: null,
+        token: ''
+    },
+    base64: ''
+}
 
-function reducer(state: {
-    projectHasChanged: boolean,
-    openDeletePopUp: boolean,
-    openChangeGitHubToken: boolean,
-    openGitHub: boolean
-},
-    action: Action) {
+interface Open {
+    projectHasChanged?: boolean,
+    openDeletePopUp?: boolean,
+    openChangeGitHubToken?: boolean,
+    openGitHub?: boolean
+}
+interface ProjectMenuState {
+    projectHasChanged?: boolean,
+    openDeletePopUp?: boolean,
+    openChangeGitHubToken?: boolean,
+    openGitHub?: boolean
+    base64: string
+    project: Project
+}
+
+function reducer(state: ProjectMenuState, action: Action) {
     switch (action.type) {
-        case 'projectHasChanged':
-            return { ...state, projectHasChanged: action.payload }
-        case 'openDeletePopUp':
-            return { ...state, openDeletePopUp: action.payload }
-        case 'openChangeGitHubToken':
-            return { ...state, openChangeGitHubToken: action.payload }
-        case 'openGitHub':
-            return { ...state, openGitHub: action.payload }
+        case 'open':
+            return { ...state, ...action.payload }
+        case 'image':
+            return {
+                ...state,
+                base64: action.payload.base64,
+                project: { ...state.project, thumbnailPath: action.payload.path }
+            }
+        case 'update':
+            return action.payload
     }
 }
 
 export function ProjectMenu(): JSX.Element {
     const { updateProject, userProjects } = useContext(projectContext)
     const [state, dispatch] = useReducer(reducer, initialState)
-    const [newProject, setNewProject] = useState<Project>(userProjects.activeProject)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
-    const [img, setImg] = useState<{ path: string, base64: string }>({ path: userProjects.activeProject.thumbnailPath, base64: '' })
 
     useEffect(() => {
-        if (!_.isEqual(userProjects.activeProject, newProject)) {
-            dispatch({ type: 'projectHasChanged', payload: true })
+        if (!_.isEqual(userProjects.activeProject, state.project)) {
+            dispatch({ type: 'open', payload: { projectHasChanged: true } })
             return
         }
-        dispatch({ type: 'projectHasChanged', payload: false })
-    }, [newProject])
+        dispatch({ type: 'open', payload: { projectHasChanged: false } })
+    }, [state.project])
 
     useEffect(() => {
-        setNewProject({ ...newProject, thumbnailPath: img.path })
-    }, [img])
-
-    useEffect(() => {
-        setNewProject({ ...userProjects.activeProject })
-        const loadBase64 = async () => {
-            if (userProjects.activeProject.thumbnailPath) {
-                setImg({ ...img, base64: await window.projects.loadimagebase64(userProjects.activeProject.thumbnailPath) })
-            } else {
-                setImg({ path: '', base64: '' })
-            }
-        }
-        loadBase64()
-    }, [userProjects])
+        dispatch({ type: 'update', payload: { ...state, project: userProjects.activeProject } })
+    }, [userProjects.activeProject])
 
     useEffect(() => {
         window.shared.incomingData("dialogue:openimagefile", async (filepath: string) => {
-            setImg({ path: filepath, base64: await window.projects.loadimagebase64(filepath) })
+            dispatch({
+                type: 'image',
+                payload: {
+                    path: filepath,
+                    base64: await window.projects.loadimagebase64(filepath)
+                }
+            })
         });
         return () => window.shared.removeListeners('dialogue:openimagefile')
     }, [])
 
     function onSaveChangeClick() {
-        const exist = userProjects.projectList.filter((project) => project.name === newProject.name).length > 0
-            && newProject.name !== userProjects.activeProject.name
+        const exist = userProjects.projectList.filter((project) => project.name === state.project.name).length > 0
+            && state.project.name !== userProjects.activeProject.name
         if (exist) {
             setMessageJsx(<ErrorMessage text='Проект с таким именем существует' classDiv="mt-10 pr-2 pl-2 pb-2 pt-2" />)
             return
         }
-        updateProject({ projectName: userProjects.activeProject.name, newProject })
+        updateProject({ projectName: userProjects.activeProject.name, newProject: state.project })
         setMessageJsx(<SuccessMessage text='Данные успешно обновлены' classDiv="mt-10" />)
     }
 
@@ -103,9 +121,9 @@ export function ProjectMenu(): JSX.Element {
                         <div className='w-full h-4/7 gap-y-4 flex flex-col'>
                             <div className='w-full'>
                                 {messageJsx}
-                                <img src={`data:image/jpeg;base64,${img.base64}`} alt="" className="w-full hover:cursor-pointer mb-5" onClick={() => { window.dialogue.openImageFile() }} />
+                                <img src={`data:image/jpeg;base64,${state.base64}`} alt="" className="w-full hover:cursor-pointer mb-5" onClick={() => { window.dialogue.openImageFile() }} />
                                 <div className='w-full flex justify-center items-center'>
-                                    {img.base64 ?
+                                    {state.base64 ?
                                         null :
                                         <FcEditImage style={{ marginBottom: 35, width: 150, height: 170, cursor: 'pointer' }}
                                             onClick={() => { window.dialogue.openImageFile() }} />
@@ -115,15 +133,15 @@ export function ProjectMenu(): JSX.Element {
                                     type="text"
                                     placeholder='Название'
                                     classInput='border-none pl-4'
-                                    value={newProject?.name}
-                                    onChange={(e) => { setNewProject({ ...newProject, name: e.target.value }) }}
+                                    value={state.project?.name}
+                                    onChange={(e) => { dispatch({ type: 'update', payload: { ...state, project: { ...state.project, name: e.target.value } } }) }}
                                 />
                             </div>
                             <div className='w-full flex flex-col'>
                                 <TextArea
                                     placeholder='Описание'
-                                    value={newProject?.description}
-                                    onChange={(e) => { setNewProject({ ...newProject, description: e.target.value }) }}
+                                    value={state.project?.description}
+                                    onChange={(e) => { dispatch({ type: 'update', payload: { ...state, project: { ...state.project, description: e.target.value } } }) }}
                                 />
                             </div>
                             <div className={`w-full h-[55px] flex justify-between items-center bg-zinc-600/20 shadow-sm rounded-lg`}>
@@ -135,31 +153,31 @@ export function ProjectMenu(): JSX.Element {
                                     className="mr-3 pt-0 pb-0 pr-2 pl-2" h={40}
                                     theme='teal' btnText='Cохранить' />
                             </div>
-                            {newProject.http ? <ProjectMembers /> : null}
+                            {state.project?.http ? <ProjectMembers /> : null}
                             <RowWithButton
                                 icon='folder'
                                 text="Открыть проект в файловом проводнике"
                                 btnText="Открыть" onClick={() => window.projects.openSystemFolder()} />
-                            {newProject.http ? <RowWithButton
+                            {state.project?.http ? <RowWithButton
                                 icon='share'
                                 text="Ссылка на проект"
                                 btnText='Поделиться'
-                                onClick={() => dispatch({ type: 'openGitHub', payload: true })} /> : null}
+                                onClick={() =>  dispatch({ type: 'open', payload: { openGitHub: true } })} /> : null}
                             <RowWithButton
                                 icon='github'
                                 text="GitHub репо"
-                                btnText={newProject.http ? 'Изменить' : 'Добавить'}
-                                onClick={() => dispatch({ type: 'openGitHub', payload: true })} />
-                            {newProject.http ?
+                                btnText={state.project?.http ? 'Изменить' : 'Добавить'}
+                                onClick={() => dispatch({ type: 'open', payload: { openGitHub: true } })} />
+                            {state.project?.http ?
                                 <RowWithButton icon='key'
                                     text="Токен"
-                                    btnText={newProject.http ? 'Изменить' : 'Добавить'}
-                                    onClick={() => dispatch({ type: 'openChangeGitHubToken', payload: true })} /> : null}
+                                    btnText={state.project?.http ? 'Изменить' : 'Добавить'}
+                                    onClick={() => dispatch({ type: 'open', payload: { openChangeGitHubToken: true } })} /> : null}
                             <RowWithButton icon='trash'
                                 className='mb-10'
                                 text="Удалить проект навсегда"
                                 btnText="Удалить"
-                                btnTheme="danger" onClick={() => dispatch({ type: 'openDeletePopUp', payload: true })} />
+                                btnTheme="danger" onClick={() => dispatch({ type: 'open', payload: { openDeletePopUp: true } })} />
                         </div>
                     </div>
                 </div>
@@ -167,7 +185,7 @@ export function ProjectMenu(): JSX.Element {
             <DeleteProjectPopUp
                 projectDelete={userProjects.activeProject}
                 open={state.openDeletePopUp}
-                onClose={()=> {dispatch({ type: 'openDeletePopUp', payload: false })}} />
+                onClose={() => { dispatch({ type: 'open', payload: { openDeletePopUp: false } })}} />
         </>
     )
 }

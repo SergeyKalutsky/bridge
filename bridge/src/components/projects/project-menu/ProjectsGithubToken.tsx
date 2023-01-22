@@ -59,7 +59,7 @@ export function ProjectsGithubToken({ dispatch }:
         window.projects.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
     }
     function onBackClick() {
-        dispatch({ type: 'openChangeGitHubToken', payload: false })
+        dispatch({ type: 'open', payload: { openChangeGitHubToken: false } })
     }
     return (
         <div className="w-full h-full bg-zinc-500 ">
