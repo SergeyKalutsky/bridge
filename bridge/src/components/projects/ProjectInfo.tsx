@@ -20,12 +20,10 @@ export function ProjectInfo(): JSX.Element {
     const [changeGitHubToken, setChangeGitHubToken] = useState(false)
     const [newProject, setNewProject] = useState<Project>(userProjects.activeProject)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
-    // const [inputData, setInputData] = useState<{ name: string, description: string }>()
     const [img, setImg] = useState<{ path: string, base64: string }>({ path: userProjects.activeProject.thumbnailPath, base64: '' })
 
     useEffect(() => {
         if (!_.isEqual(userProjects.activeProject, newProject)) {
-            console.log(userProjects.activeProject, newProject)
             setHasChanged(true)
             return
         }
@@ -58,7 +56,6 @@ export function ProjectInfo(): JSX.Element {
     function onSaveChangeClick() {
         const exist = userProjects.projectList.filter((project) => project.name === newProject.name).length > 0
             && newProject.name !== userProjects.activeProject.name
-        console.log(exist)
         if (exist) {
             setMessageJsx(<ErrorMessage text='Проект с таким именем существует' classDiv="mt-10 pr-2 pl-2 pb-2 pt-2" />)
             return
