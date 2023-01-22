@@ -1,7 +1,7 @@
 import { useState, useEffect, useReducer, createContext } from 'react'
 import { ToggleBar, SideMenu, Workspace } from '../common';
 import { ProjectsCreate } from './create/ProjectsCreate'
-import { ProjectInfo } from './ProjectInfo';
+import { ProjectMenu } from './project-menu/ProjectMenu';
 import ProjectItem from './ProjectItem';
 import MenuHeader from './MenuHeader';
 import { UserProjects, Project } from './types';
@@ -17,7 +17,7 @@ function reducer(state: { page: JSX.Element }, action: Action) {
         case 'createProject':
             return { page: <ProjectsCreate /> }
         case 'projectInfo':
-            return { page: <ProjectInfo /> }
+            return { page: <ProjectMenu /> }
         case 'home':
             return { page: null }
     }

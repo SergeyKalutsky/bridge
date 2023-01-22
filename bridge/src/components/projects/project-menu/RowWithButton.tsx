@@ -1,4 +1,4 @@
-import { Button } from "../common";
+import { Button } from "../../common";
 import { BsGithub } from 'react-icons/bs'
 import { FaTrashAlt, FaKey, FaShare } from 'react-icons/fa'
 import { AiFillFolderOpen } from 'react-icons/ai'

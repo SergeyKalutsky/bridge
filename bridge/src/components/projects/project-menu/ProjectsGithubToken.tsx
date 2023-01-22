@@ -1,12 +1,12 @@
-import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, LinkText, Button, SuccessMessage } from '../common'
+import { InputForm, ErrorMessage, WarningMessage, LoadingMessage, Button, SuccessMessage } from '../../common'
 import { useState, useEffect, useContext } from 'react'
-import { HeaderPath } from './create/HeaderPath'
-import { BackButton } from './BackButton'
-import { projectContext } from './Projects'
+import { HeaderPath } from '../create/HeaderPath'
+import { BackButton } from '../../common/BackButton'
+import { projectContext } from '../Projects'
 
-export function ProjectsGithubAdd({ setAddGitHub }:
+export function ProjectsGithubToken({ setChangeGitHubToken }:
     {
-        setAddGitHub: React.Dispatch<React.SetStateAction<boolean>>
+        setChangeGitHubToken: React.Dispatch<React.SetStateAction<boolean>>
     }): JSX.Element {
     const { updateProject, userProjects } = useContext(projectContext)
     const [isButton, setIsButton] = useState(true)
@@ -21,7 +21,7 @@ export function ProjectsGithubAdd({ setAddGitHub }:
     }, [inputData])
 
     useEffect(() => {
-        if (messageJsx?.props?.text === 'Удаленный сервер добавлен успешно') {
+        if (messageJsx?.props?.text === 'Токен обновлен') {
             updateProject({
                 projectName: userProjects.activeProject.name,
                 newProject: {
@@ -40,7 +40,7 @@ export function ProjectsGithubAdd({ setAddGitHub }:
                 setMessageJsx(<ErrorMessage text={msg} classDiv='mt-8 pt-2 pb-2 pr-2 pl-2' />)
                 return
             }
-            setMessageJsx(<SuccessMessage text={'Удаленный сервер добавлен успешно'} />)
+            setMessageJsx(<SuccessMessage text={'Токен обновлен'} />)
         })
         return () => window.shared.removeListeners('projects:pushremote')
     }, [])
@@ -58,33 +58,31 @@ export function ProjectsGithubAdd({ setAddGitHub }:
         window.projects.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
     }
     function onBackClick() {
-        setAddGitHub(false)
+        setChangeGitHubToken(false)
     }
     return (
         <div className="w-full h-full bg-zinc-500 ">
-            <HeaderPath path='Добавить GitHub аккаунт' />
+            <HeaderPath path='Изменить GitHub токен' />
             <BackButton onClick={onBackClick} />
             <div className='flex flex-col h-[calc(100%-148px)] items-center justify-center overflow-scroll'>
                 <div className=' w-3/5 h-3/5 max-w-xl flex-col justify-center items-center'>
-                    <div className='w-full bg-teal-200/60 flex flex-col justify-center items-start mb-8 rounded-lg pt-3 pb-3 pr-3 pl-3 text-xl'>
-                        <p className='pl-2'>Вам потребуется <span className='font-bold'>github аккаунт</span> и <LinkText text='fain-grain-token' />.</p>
-                    </div>
                     <div className='flex flex-col justify-center items-center '>
                         <InputForm
-                            onChange={(e) => { setInputData({ ...inputData, remote: e.target.value }) }}
+                            disabled={true}
+                            value={userProjects.activeProject.http}
                             placeholder='GitHub репо url'
                             type='text'
-                            classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl'
-                            classDiv='mb-5' >
+                            classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl bg-zinc-300 hover:cursor-not-allowed'
+                            classDiv='mb-5 hover:cursor-not-allowed bg-zinc-300'  >
                         </InputForm>
                         <InputForm
                             onChange={(e) => { setInputData({ ...inputData, token: e.target.value }) }}
-                            placeholder='Token'
+                            placeholder='Новый Token'
                             type='password'
                             classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl text-security-disc' >
                         </InputForm>
                         <div className='w-[120px] h-[40px] mt-8'>
-                            {isButton ? <Button btnText='Добавить' onClick={onClick} /> : null}
+                            {isButton ? <Button btnText='Изменить' onClick={onClick} /> : null}
                         </div>
                     </div>
                     <div className='h-[100px] w-full mt-4'>

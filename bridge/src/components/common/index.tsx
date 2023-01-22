@@ -17,8 +17,10 @@ import { ErrorMessage } from "./ErrorMessage";
 import { WarningMessage } from "./WarningMessage";
 import { LinkText } from "./LinkText";
 import { SuccessMessage } from "./SuccessMessage";
+import { BackButton } from "./BackButton";
 
 export {
+    BackButton,
     SuccessMessage,
     TextArea,
     Button,

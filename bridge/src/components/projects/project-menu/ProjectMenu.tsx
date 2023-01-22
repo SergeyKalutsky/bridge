@@ -1,23 +1,47 @@
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, useReducer } from "react"
 import { RowWithButton } from "./RowWithButton"
-import { HeaderPath } from "./create/HeaderPath"
-import { Project } from "./types"
-import { projectContext } from "./Projects"
-import DeleteProjectPopUp from "./popups/DeleteProjectPopUp"
+import { HeaderPath } from "../create/HeaderPath"
+import { Project } from "../types"
+import { projectContext } from "../Projects"
+import DeleteProjectPopUp from "../popups/DeleteProjectPopUp"
 import { FcEditImage } from 'react-icons/fc'
-import { ProjectMembers } from "./ProjectMembers"
+import { ProjectMembers } from "../project-members/ProjectMembers"
 import { ProjectsGithubAdd } from "./ProjectsGithubAdd"
 import { ProjectsGithubToken } from "./ProjectsGithubToken"
-import { InputForm, TextArea, Button, SuccessMessage, ErrorMessage } from "../common"
+import { InputForm, TextArea, Button, SuccessMessage, ErrorMessage } from "../../common"
 import _ from 'lodash'
 
+type Action =
+    | { type: 'projectHasChanged' }
+    | { type: 'openDeletePopUp' }
+    | { type: 'openGitHub' }
+    | { type: 'openChangeGitHubToken' }
 
-export function ProjectInfo(): JSX.Element {
+
+const initialState = { projectHasChanged: false, openDeletePopUp: false, openChangeGitHubToken: false, openGitHub: false }
+
+function reducer(state: {
+    projectHasChanged: boolean,
+    openDeletePopUp: boolean,
+    openChangeGitHubToken: boolean,
+    openGitHub: boolean
+},
+    action: Action) {
+    switch (action.type) {
+        case 'projectHasChanged':
+            return { ...state, projectHasChanged: !state.projectHasChanged }
+        case 'openDeletePopUp':
+            return { ...state, openDeletePopUp: !state.openDeletePopUp }
+        case 'openChangeGitHubToken':
+            return { ...state, openChangeGitHubToken: !state.openChangeGitHubToken }
+        case 'openGitHub':
+            return { ...state, openGitHub: !state.openGitHub }
+    }
+}
+
+export function ProjectMenu(): JSX.Element {
     const { updateProject, userProjects } = useContext(projectContext)
-    const [hasChanges, setHasChanged] = useState(false)
-    const [openDelete, setDeleteOpen] = useState(false)
-    const [addGitHub, setAddGitHub] = useState(false)
-    const [changeGitHubToken, setChangeGitHubToken] = useState(false)
+    const [state, dispatch] = useReducer(reducer, initialState)
     const [newProject, setNewProject] = useState<Project>(userProjects.activeProject)
     const [messageJsx, setMessageJsx] = useState<JSX.Element>()
     const [img, setImg] = useState<{ path: string, base64: string }>({ path: userProjects.activeProject.thumbnailPath, base64: '' })
