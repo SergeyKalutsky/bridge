@@ -3,10 +3,11 @@ import { useState, useEffect, useContext } from 'react'
 import { HeaderPath } from '../create/HeaderPath'
 import { BackButton } from '../../common/BackButton'
 import { projectContext } from '../Projects'
+import { Action } from './ProjectMenu'
 
-export function ProjectsGithubToken({ setChangeGitHubToken }:
+export function ProjectsGithubToken({ dispatch }:
     {
-        setChangeGitHubToken: React.Dispatch<React.SetStateAction<boolean>>
+        dispatch: React.Dispatch<Action>
     }): JSX.Element {
     const { updateProject, userProjects } = useContext(projectContext)
     const [isButton, setIsButton] = useState(true)
@@ -58,7 +59,7 @@ export function ProjectsGithubToken({ setChangeGitHubToken }:
         window.projects.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
     }
     function onBackClick() {
-        setChangeGitHubToken(false)
+        dispatch({ type: 'openChangeGitHubToken', payload: false })
     }
     return (
         <div className="w-full h-full bg-zinc-500 ">

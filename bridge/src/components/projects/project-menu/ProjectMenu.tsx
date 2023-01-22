@@ -11,7 +11,7 @@ import { ProjectsGithubToken } from "./ProjectsGithubToken"
 import { InputForm, TextArea, Button, SuccessMessage, ErrorMessage } from "../../common"
 import _ from 'lodash'
 
-type Action =
+export type Action =
     | { type: 'projectHasChanged', payload: boolean }
     | { type: 'openDeletePopUp', payload: boolean }
     | { type: 'openGitHub', payload: boolean }
@@ -144,30 +144,30 @@ export function ProjectMenu(): JSX.Element {
                                 icon='share'
                                 text="Ссылка на проект"
                                 btnText='Поделиться'
-                                onClick={() => dispatch({type: 'openGitHub', payload: true})} /> : null}
+                                onClick={() => dispatch({ type: 'openGitHub', payload: true })} /> : null}
                             <RowWithButton
                                 icon='github'
                                 text="GitHub репо"
                                 btnText={newProject.http ? 'Изменить' : 'Добавить'}
-                                onClick={() => dispatch({type: 'openGitHub', payload: true})} />
+                                onClick={() => dispatch({ type: 'openGitHub', payload: true })} />
                             {newProject.http ?
                                 <RowWithButton icon='key'
                                     text="Токен"
                                     btnText={newProject.http ? 'Изменить' : 'Добавить'}
-                                    onClick={() => dispatch({type: 'openChangeGitHubToken', payload: true})} /> : null}
+                                    onClick={() => dispatch({ type: 'openChangeGitHubToken', payload: true })} /> : null}
                             <RowWithButton icon='trash'
                                 className='mb-10'
                                 text="Удалить проект навсегда"
                                 btnText="Удалить"
-                                btnTheme="danger" onClick={() => { setDeleteOpen(true) }} />
+                                btnTheme="danger" onClick={() => dispatch({ type: 'openDeletePopUp', payload: true })} />
                         </div>
                     </div>
                 </div>
             </div>
             <DeleteProjectPopUp
                 projectDelete={userProjects.activeProject}
-                open={openDelete}
-                setOpen={setDeleteOpen} />
+                open={state.openDeletePopUp}
+                onClose={()=> {dispatch({ type: 'openDeletePopUp', payload: false })}} />
         </>
     )
 }
