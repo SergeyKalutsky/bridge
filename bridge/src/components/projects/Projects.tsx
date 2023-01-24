@@ -52,6 +52,11 @@ const Projects = (): JSX.Element => {
             // the load we are going to show the info about it
             dispatch({ type: 'projectInfo' })
         }
+        if (projects.projectList.length == 0) {
+            // If user do not have any project 
+            // we promt him to create one
+            dispatch({ type: 'createProject' })
+        }
     }, [])
 
     useEffect(() => {
@@ -70,7 +75,7 @@ const Projects = (): JSX.Element => {
         newProject.activePath = projectName !== newProject.name ?
             await window.projects.rename({ newName: newProject.name, activePath: newProject.activePath })
             : newProject.activePath
-            
+
         const newProjects = userProjects.projectList.filter((userProject) => { return userProject.name != projectName; })
         newProjects.push(newProject)
         setUserProjects({
