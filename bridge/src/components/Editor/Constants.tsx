@@ -60,7 +60,8 @@ const ACE_MODS = {
     pjp: 'image',
     png: 'image',
     svg: 'image',
-    webp:'image'
+    webp:'image',
+    ico: 'image'
 };
 
 export {
