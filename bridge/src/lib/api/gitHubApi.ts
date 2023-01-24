@@ -1,7 +1,6 @@
 import git from 'isomorphic-git'
 import http from 'isomorphic-git/http/node'
 import fs from 'fs'
-import path from 'path'
 import { Octokit } from "@octokit/core"
 
 export async function userLogin(token: string) {
@@ -98,49 +97,33 @@ async function makeStartDir(repo: string) {
 }
 
 async function commit(dir: string,
-    commitMessage: string = 'robot',
+    commitMessage: 'robot',
     author: { name: string, email?: string } = { name: 'robot', }) {
     await git.add({ fs, dir: dir, filepath: '.' })
     await git.commit({ fs, dir: dir, message: commitMessage, author })
 }
 
-async function pushFirsCommit(dir: string, token: string) {
-    const gitHubLogin = await userLogin(token)
-    const url = `https://github.com/${gitHubLogin}/${dir}.git`
-    await git.addRemote({ fs, dir: dir, remote: 'origin', url: url })
-    await git.push({
-        fs, http, dir: dir, remote: 'origin', ref: 'master',
-        onAuth: () => ({ username: gitHubLogin, password: token }),
-    })
-}
 
 function tokenType(token: string): string {
     if (token.includes('github_pat')) return 'fine-grain'
     return 'classic'
 }
 
-export async function checkGitHubToken(token: string, repo: string,): Promise<number> {
-    // 409 PushRejectedError { reason: 'not-fast-forward' } undefined
-    // 200 ok
-    // 403 Forbidden
-    // 404 not found(or private and you dont have permission)
-    // 401 bad credentials
 
-    makeStartDir(repo)
-    await git.init({ fs, dir: repo })
-    await commit(repo)
+export async function pushTestBranch({ dir, token, git_url }:
+    { dir: string; token: string, git_url: string }
+): Promise<boolean> {
+    const branch = Date.now().toString()
+    await git.branch({ fs, dir: dir, ref: branch })
     try {
-        await pushFirsCommit(repo, token)
-        fs.rmSync(repo, { recursive: true, force: true });
-        return 200
-    } catch (HttpError) {
-        fs.rmSync(repo, { recursive: true, force: true });
-        if ('response' in HttpError) {
-            return HttpError.response.status
-        }
-        if (HttpError.code === 'PushRejectedError') {
-            return 409
-        }
-        return HttpError.data.statusCode
+        await git.push({
+            fs, http, dir: dir, url: git_url, remote: 'origin', ref: branch,
+            onAuth: () => ({ username: 'robot', password: token }),
+        })
+        await git.deleteBranch({ fs, dir: dir, ref: branch })
+        return true
+    } catch (e) {
+        await git.deleteBranch({ fs, dir: dir, ref: branch })
+        return false
     }
 }

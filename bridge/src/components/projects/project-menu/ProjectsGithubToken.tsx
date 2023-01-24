@@ -3,8 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import { HeaderPath } from '../create/HeaderPath'
 import { BackButton } from '../../common/BackButton'
 import { projectContext } from '../Projects'
-import { Action } from './ProjectMenu'
-import { ProjectMenuState } from './ProjectMenu'
+import { Action, ProjectMenuState } from './ProjectMenu'
 
 export function ProjectsGithubToken({ dispatch, state }:
     {
@@ -13,7 +12,7 @@ export function ProjectsGithubToken({ dispatch, state }:
     }): JSX.Element {
     const { updateProject, userProjects } = useContext(projectContext)
     const [isButton, setIsButton] = useState(true)
-    const [messageJsx, setMessageJsx] = useState<JSX.Element>()
+    const [messageJsx, setMessageJsx] = useState<JSX.Element>(null)
     const [inputData, setInputData] = useState<{ token: string, remote: string }>({ token: '', remote: '' })
 
     useEffect(() => {
@@ -24,6 +23,10 @@ export function ProjectsGithubToken({ dispatch, state }:
     }, [inputData])
 
     useEffect(() => {
+        if (messageJsx?.props?.text === 'Не удалось добавить токен.') {
+            setIsButton(true)
+            return
+        }
         if (messageJsx?.props?.text === 'Токен обновлен') {
             dispatch({
                 type: 'update',
@@ -32,7 +35,6 @@ export function ProjectsGithubToken({ dispatch, state }:
                     project: {
                         ...state.project,
                         token: inputData.token,
-                        http: inputData.remote
                     }
                 }
             })
@@ -41,7 +43,6 @@ export function ProjectsGithubToken({ dispatch, state }:
                 newProject: {
                     ...userProjects.activeProject,
                     token: inputData.token,
-                    http: inputData.remote
                 }
             })
             setIsButton(false)
@@ -49,27 +50,24 @@ export function ProjectsGithubToken({ dispatch, state }:
     }, [messageJsx])
 
     useEffect(() => {
-        window.shared.incomingData("projects:pushremote", async ({ type, msg }) => {
+        window.shared.incomingData("projects:testtoken", async ({ type, msg }) => {
             if (type === 'error') {
                 setMessageJsx(<Message type='error' text={msg} className='mt-8 pt-2 pb-2 pr-2 pl-2' />)
                 return
             }
             setMessageJsx(<Message type='success' text={'Токен обновлен'} />)
         })
-        return () => window.shared.removeListeners('projects:pushremote')
+        return () => window.shared.removeListeners('projects:testtoken')
     }, [])
 
     const onClick = () => {
-        if (!inputData?.remote || !inputData.token) {
-            setMessageJsx(<Message type='error' text={'Все поля должны быть заполнены'} className='mt-8 pt-2 pb-2 pr-2 pl-2' />)
-            return
-        }
-        if (!inputData.remote.includes('https')) {
-            setMessageJsx(<Message type='error' text={'Некорректный URL GitHub репо'} className='mt-8 pt-2 pb-2 pr-2 pl-2' />)
-            return
-        }
-        setMessageJsx(<Message type='loading' text='Добавляем удаленный сервер' />)
-        window.projects.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
+        setMessageJsx(<Message type='loading' text='Проверяем токен' />)
+        window.projects.testGitHubToken({
+            token: inputData.token,
+            repo: userProjects.activeProject.name,
+            git_url: userProjects.activeProject.http
+        })
+        setIsButton(false)
     }
     function onBackClick() {
         dispatch({ type: 'open', payload: { openChangeGitHubToken: false } })
@@ -95,9 +93,11 @@ export function ProjectsGithubToken({ dispatch, state }:
                             type='password'
                             classInput='border-none pl-5 pt-3 pb-3 pr-3 text-xl text-security-disc' >
                         </InputForm>
-                        <div className='w-[120px] h-[40px] mt-8'>
-                            {isButton ? <Button btnText='Изменить' onClick={onClick} /> : null}
-                        </div>
+                        {isButton ?
+                            <div className='w-[120px] h-[40px] mt-8'>
+                                <Button btnText='Изменить' onClick={onClick} />
+                            </div>
+                            : null}
                     </div>
                     <div className='h-[100px] w-full mt-4'>
                         {messageJsx}

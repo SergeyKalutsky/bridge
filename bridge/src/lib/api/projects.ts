@@ -87,7 +87,20 @@ function addGitHubRemote() {
             event.reply('projects:pushremote', { type: 'error', msg: msg })
             return
         }
-        event.reply('projects:pushremote', { type: 'success', message: '' })
+        event.reply('projects:pushremote', { type: 'success', msg: '' })
+    })
+}
+
+function testGitHubToken() {
+    return ipcMain.on('projects:testtoken', async (event, { token, repo, git_url }) => {
+        const dir = getProjectDir(repo)
+        const success = await gitHubApi.pushTestBranch({ token, dir, git_url })
+        console.log(success)
+        if (success){
+            event.reply('projects:testtoken', { type: 'success', msg: '' })
+            return
+        }
+        event.reply('projects:testtoken', { type: 'error', msg: 'Не удалось добавить токен.' })
     })
 }
 
@@ -153,7 +166,7 @@ function deleteTreeElement() {
 }
 
 function rename() {
-    return ipcMain.handle('projects:rename', async (event, {newName, activePath}) => {
+    return ipcMain.handle('projects:rename', async (event, { newName, activePath }) => {
         const oldPath = getProjectDir()
         const newPath = path.join(path.parse(oldPath).dir, newName)
         if (activePath) {
@@ -261,6 +274,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    testGitHubToken()
     openSystemFolder()
     getProjectTemplates()
     addGitHubRemote()

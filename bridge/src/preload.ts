@@ -27,6 +27,7 @@ contextBridge.exposeInMainWorld('projects', {
     openSystemFolder: (): void => ipcRenderer.send('projects:opensystemfolder'),
     getProjectTemplates: (query: string): Promise<Template[]> => ipcRenderer.invoke('projects:getprojecttemplates', query),
     addGitHubRemote: ({ repo, token, url }: { repo: string, token: string, url: string }): void => ipcRenderer.send('projects:pushremote', { repo, token, url }),
+    testGitHubToken: ({ repo, token, git_url }: { repo: string, token: string, git_url: string }): void => ipcRenderer.send('projects:testtoken', { repo, token, git_url }),
     loadimagebase64: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:loadimagebase64', filepath),
     mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
@@ -37,7 +38,7 @@ contextBridge.exposeInMainWorld('projects', {
     createFile: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfile', createInfo),
     createFolder: (createInfo: CreateInfo): Promise<string> => ipcRenderer.invoke('projects:createfolder', createInfo),
     renameFile: (data: { new_name: string, path: ActivePath }): string => ipcRenderer.sendSync('projects:renamefile', data),
-    rename: ({newName, activePath}: {newName:string, activePath: ActivePath}): Promise<ActivePath> => ipcRenderer.invoke('projects:rename', {newName, activePath}),    deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
+    rename: ({ newName, activePath }: { newName: string, activePath: ActivePath }): Promise<ActivePath> => ipcRenderer.invoke('projects:rename', { newName, activePath }), deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
     mkprojectdir: (project_name: string): void => ipcRenderer.send('projects:mkprojectdir', project_name),
     copyFile: (args: { src: string, destination: string, root: boolean }): Promise<void> => ipcRenderer.invoke('projects:copyfile', args)
 })

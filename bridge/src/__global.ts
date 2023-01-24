@@ -25,6 +25,7 @@ declare global {
             openSystemFolder(): void
             getProjectTemplates(query: string): Promise<Template[]>
             addGitHubRemote({ repo, token, url }: { repo: string, token: string, url: string }): Promise<void>
+            testGitHubToken({ repo, token, git_url }: { repo: string, token: string, git_url: string }): Promise<void>
             createFile(createInfo: CreateInfo): Promise<string>;
             createFolder(createInfo: CreateInfo): Promise<string>;
             readActiveFile(filepath: string): Promise<string>;
