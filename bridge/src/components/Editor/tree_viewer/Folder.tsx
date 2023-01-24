@@ -12,7 +12,7 @@ interface Props {
 
 const Folder = ({ name, children,  path, ide, setIDE }: Props): JSX.Element => {
   const open = JSON.parse(window.localStorage.getItem(path))
-  const [isOpen, setIsOpen] = useState(open === null ? false : open);
+  const [isOpen, setIsOpen] = useState(open === null ? true : open);
   const [color, setColor] = useState('bg-transperent')
   const ref = useRef(null)
   const handleToggle = e => {
