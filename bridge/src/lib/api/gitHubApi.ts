@@ -127,3 +127,10 @@ export async function pushTestBranch({ dir, token, git_url }:
         return false
     }
 }
+
+
+// Lists all branches | listBranches
+// Shows current branch | currentBranch
+// Switches branch | checkout
+// Status of each | branch
+// fetch for all branches | fetch does fetch of all branches by default
