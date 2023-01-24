@@ -24,7 +24,7 @@ const FILE_ICONS = {
     jsx: <DiReact />,
     py: <SiPython style={{ color: '#367dc9' }} />,
     yml: <DiDocker />,
-    md: <DiMarkdown />,
+    md: <DiMarkdown style={{ color: '#f9fafb' }} />,
     jpg: <FcImageFile />,
     apng: <FcImageFile />,
     avif: <FcImageFile />,

@@ -1,5 +1,5 @@
 import { FILE_ICONS } from "../Constants";
-import { AiOutlineFile } from "react-icons/ai";
+import { AiFillFile } from "react-icons/ai";
 import { IDE } from "../types";
 import { ACE_MODS } from '../Constants'
 import buildEditor from '../TextEditor'
@@ -36,7 +36,7 @@ const File = ({ name, path, ide, setIDE }: Props): JSX.Element => {
         });
         savePath()
       }}>
-      {FILE_ICONS[ext] || <AiOutlineFile />}
+      {FILE_ICONS[ext] || <AiFillFile style={{ color: '#dbeafe' }} />}
       <span className="ml-[5px] text-[18px] text-white overflow-hidden whitespace-nowrap text-ellipsis">{name}</span>
     </div>
   );
