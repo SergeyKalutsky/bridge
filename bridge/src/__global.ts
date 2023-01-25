@@ -42,6 +42,9 @@ declare global {
             renameFile(data: { newName: string, activePath: ActivePath }): any
         };
         git: {
+            checkoutBranch({ dir, branch }: { dir: string, branch: string }): void 
+            listBranches(dir: string): Promise<string> 
+            getCurrentBranch(): Promise<string>
             clone({ repo, git_url }: { repo: string, git_url: string }): Promise<void>;
             revert(args: { oid: string, oid_prev: string }): Promise<void>
             pull(): Promise<void>;

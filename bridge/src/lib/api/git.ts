@@ -1,4 +1,6 @@
+/* eslint-disable import/no-named-as-default-member */
 import { store, BASE_DIR, getProjectDir } from './storage'
+import * as gitHubApi from './gitHubApi'
 import { ipcMain } from 'electron';
 import path from 'path'
 import git from 'isomorphic-git'
@@ -159,6 +161,104 @@ const revertChanges = async (oid: string, oid_revert: string, dir: string) => {
 }
 
 
+
+
+function checkoutBranch() {
+  return ipcMain.on('git:checkoutbranch', async (event, { dir, branch }) => {
+    await git.checkout({
+      fs,
+      dir: dir,
+      ref: branch
+    })
+  })
+}
+
+function status() {
+  return ipcMain.handle('git:status', async (event, dir) => {
+    const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3
+
+    const statusMapping = {
+      "003": "added, staged, deleted unstaged",
+      "020": "new, untracked",
+      "022": "added, staged",
+      "023": "added, staged, with unstaged changes",
+      "100": "deleted, staged",
+      "101": "deleted, unstaged",
+      "103": "modified, staged, deleted unstaged",
+      "111": "unmodified",
+      "121": "modified, unstaged",
+      "122": "modified, staged",
+      "123": "modified, staged, with unstaged changes"
+    };
+
+    const statusMatrix = (await git.statusMatrix({ fs, dir }))
+      .filter(row => row[HEAD] !== row[WORKDIR] || row[HEAD] !== row[STAGE])
+
+    return statusMatrix.map(row => statusMapping[row.slice(1).join("")] + ": " + row[FILE])
+  })
+}
+
+
+
+function addGitHubRemote() {
+  return ipcMain.on('git:pushremote', async (event, { token, repo, url }) => {
+    const dir = getProjectDir(repo)
+    const errorName = await gitHubApi.pushRemote({ token, dir, url })
+    if (errorName === 'UrlParseError') {
+      const msg = 'GitHub URL неправильный'
+      event.reply('git:pushremote', { type: 'error', msg: msg })
+      return
+    }
+    if (errorName === 'BadToken') {
+      const msg = 'Токен не существует или его срок действия истек'
+      event.reply('git:pushremote', { type: 'error', msg: msg })
+      return
+    }
+    if (errorName === 'PushRejectedError') {
+      const msg = 'Push отклонен. Скорее всего удаленное репо не пустое. Удалите и создайте его снова.'
+      event.reply('git:pushremote', { type: 'error', msg: msg })
+      return
+    }
+    if (errorName === 'NotFound') {
+      const msg = 'Удаленный GitHub репо не найден.'
+      event.reply('git:pushremote', { type: 'error', msg: msg })
+      return
+    }
+    if (errorName === 'Forbidden') {
+      const msg = 'У токена недостаточно прав для доступа к удаленному репо'
+      event.reply('git:pushremote', { type: 'error', msg: msg })
+      return
+    }
+    event.reply('git:pushremote', { type: 'success', msg: '' })
+  })
+}
+
+function testGitHubToken() {
+  return ipcMain.on('git:testtoken', async (event, { token, repo, git_url }) => {
+    const dir = getProjectDir(repo)
+    const success = await gitHubApi.pushTestBranch({ token, dir, git_url })
+    console.log(success)
+    if (success) {
+      event.reply('git:testtoken', { type: 'success', msg: '' })
+      return
+    }
+    event.reply('git:testtoken', { type: 'error', msg: 'Не удалось добавить токен.' })
+  })
+}
+
+
+function getCurrentBranch() {
+  return ipcMain.handle('git:getcurrentbranch', async () => {
+    return await git.currentBranch({ fs, dir: getProjectDir(), fullname: false })
+  })
+}
+
+function listBranches() {
+  return ipcMain.handle('git:listbranches', async (event, dir) => {
+    return await git.listBranches({ fs, dir: dir })
+  })
+}
+
 function clone() {
   return ipcMain.on('git:clone', async (event, { repo, git_url }) => {
     await git.clone({
@@ -230,6 +330,12 @@ function init() {
 
 
 function gitAPI(): void {
+  testGitHubToken()
+  addGitHubRemote()
+  status()
+  checkoutBranch()
+  listBranches()
+  getCurrentBranch()
   revert()
   clone()
   log()

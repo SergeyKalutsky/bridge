@@ -1,8 +1,7 @@
-import { FileChanges, CreateInfo, ActivePath, Package } from './types'
+import { FileChanges, CreateInfo, ActivePath, Package, Template } from './types'
 import { contextBridge, ipcRenderer } from "electron"
 import { GitDiff } from './components/git/types'
 import { FileObject } from './components/Editor/types'
-import { Template } from './types'
 
 contextBridge.exposeInMainWorld('shared', {
     incomingData: (channel, callback) => { ipcRenderer.on(channel, (event, ...args) => callback(...args)) },
@@ -15,9 +14,9 @@ contextBridge.exposeInMainWorld('dialogue', {
 })
 
 contextBridge.exposeInMainWorld('settings', {
-    set: (val: any): Promise<any> => ipcRenderer.invoke('settings:set', val),
+    set: (val: any): Promise<void> => ipcRenderer.invoke('settings:set', val),
     get: (key: string): any => ipcRenderer.sendSync('settings:get', key),
-    del: (key: string): any => ipcRenderer.invoke('settings:del', key),
+    del: (key: string): Promise<void> => ipcRenderer.invoke('settings:del', key),
     logPath: (): string => ipcRenderer.sendSync('settings:logpath'),
     platform: (): string => ipcRenderer.sendSync('settings:platform'),
 
@@ -26,8 +25,6 @@ contextBridge.exposeInMainWorld('settings', {
 contextBridge.exposeInMainWorld('projects', {
     openSystemFolder: (): void => ipcRenderer.send('projects:opensystemfolder'),
     getProjectTemplates: (query: string): Promise<Template[]> => ipcRenderer.invoke('projects:getprojecttemplates', query),
-    addGitHubRemote: ({ repo, token, url }: { repo: string, token: string, url: string }): void => ipcRenderer.send('projects:pushremote', { repo, token, url }),
-    testGitHubToken: ({ repo, token, git_url }: { repo: string, token: string, git_url: string }): void => ipcRenderer.send('projects:testtoken', { repo, token, git_url }),
     loadimagebase64: (filepath: string): Promise<string> => ipcRenderer.invoke('projects:loadimagebase64', filepath),
     mkbasedir: (data) => ipcRenderer.send('projects:mkbasedir', { user: data }),
     getLocalProjectsNames: (): any => ipcRenderer.sendSync('projects:getlocalprojectsnames'),
@@ -44,6 +41,11 @@ contextBridge.exposeInMainWorld('projects', {
 })
 
 contextBridge.exposeInMainWorld('git', {
+    checkoutBranch: ({ dir, branch }: { dir: string, branch: string }): void => ipcRenderer.send('git:checkoutbranch', { dir, branch }),
+    listBranches: (dir: string): Promise<string> => ipcRenderer.invoke('git:listbranches', dir),
+    addGitHubRemote: ({ repo, token, url }: { repo: string, token: string, url: string }): void => ipcRenderer.send('git:pushremote', { repo, token, url }),
+    testGitHubToken: ({ repo, token, git_url }: { repo: string, token: string, git_url: string }): void => ipcRenderer.send('git:testtoken', { repo, token, git_url }),
+    getCurrentBranch: (): Promise<string> => ipcRenderer.invoke('git:getcurrentbranch'),
     clone: ({ repo, git_url }: { repo: string, git_url: string }): void => ipcRenderer.send('git:clone', { repo, git_url }),
     pull: (): Promise<void> => ipcRenderer.invoke('git:pull'),
     push: (): Promise<void> => ipcRenderer.invoke('git:push'),

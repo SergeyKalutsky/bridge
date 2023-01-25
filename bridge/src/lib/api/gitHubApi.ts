@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import git from 'isomorphic-git'
 import http from 'isomorphic-git/http/node'
 import fs from 'fs'
@@ -128,9 +129,54 @@ export async function pushTestBranch({ dir, token, git_url }:
     }
 }
 
+async function status(dir: string) {
+    const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3
 
-// Lists all branches | listBranches
-// Shows current branch | currentBranch
-// Switches branch | checkout
-// Status of each | branch
+    const statusMapping = {
+        "003": "added, staged, deleted unstaged",
+        "020": "new, untracked",
+        "022": "added, staged",
+        "023": "added, staged, with unstaged changes",
+        "100": "deleted, staged",
+        "101": "deleted, unstaged",
+        "103": "modified, staged, deleted unstaged",
+        "111": "unmodified",
+        "121": "modified, unstaged",
+        "122": "modified, staged",
+        "123": "modified, staged, with unstaged changes"
+    };
+
+    const statusMatrix = (await git.statusMatrix({ fs, dir }))
+    //   .filter(row => row[HEAD] !== row[WORKDIR] || row[HEAD] !== row[STAGE])
+
+    return statusMatrix.map(row => statusMapping[row.slice(1).join("")] + ": " + row[FILE])
+}
+
+async function localHeads(dir: string) {
+    const branches = await git.listBranches({ fs, dir: dir })
+    const heads = {}
+    for (const branch of branches) {
+        const commits = await git.log({
+            fs,
+            dir: dir,
+            depth: 1,
+            ref: branch
+        })
+        heads[branch] = commits[0].oid
+    }
+    return heads
+}
+
+async function main() {
+    const dir = '/Users/sergeykalutsky/Library/Application Support/bridge/storage/guest/test2303'
+    // await logAllBranches(dir)
+    const info = await git.getRemoteInfo({
+        http,
+        url:
+            "https://github.com/SergeyKalutsky/test2303.git"
+    });
+    console.log(info)
+}
+
+
 // fetch for all branches | fetch does fetch of all branches by default

@@ -50,14 +50,14 @@ export function ProjectsGithubAdd({ dispatch, state }:
     }, [messageJsx])
 
     useEffect(() => {
-        window.shared.incomingData("projects:pushremote", async ({ type, msg }) => {
+        window.shared.incomingData("git:pushremote", async ({ type, msg }) => {
             if (type === 'error') {
                 setMessageJsx(<Message type='error' text={msg} className='mt-8 pt-2 pb-2 pr-2 pl-2' />)
                 return
             }
             setMessageJsx(<Message type='success' text={'Удаленный сервер добавлен успешно'} />)
         })
-        return () => window.shared.removeListeners('projects:pushremote')
+        return () => window.shared.removeListeners('git:pushremote')
     }, [])
 
     const onClick = () => {
@@ -70,7 +70,7 @@ export function ProjectsGithubAdd({ dispatch, state }:
             return
         }
         setMessageJsx(<Message type='loading' text='Добавляем удаленный сервер' />)
-        window.projects.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
+        window.git.addGitHubRemote({ token: inputData.token, repo: userProjects.activeProject.name, url: inputData.remote })
     }
     function onBackClick() {
         dispatch({ type: 'open', payload: { openGitHub: false } })

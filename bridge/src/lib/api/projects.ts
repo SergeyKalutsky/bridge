@@ -1,7 +1,6 @@
 import { ipcMain, shell } from 'electron';
 import { store, BASE_DIR, getProjectDir } from './storage'
 import { FileObject } from '../../components/Editor/types';
-import * as gitHubApi from './gitHubApi'
 import git from 'isomorphic-git'
 import util from 'util'
 import path from 'path'
@@ -57,52 +56,6 @@ async function walkAsync(dir: string): Promise<FileObject[]> {
     return folderFiles
 }
 
-
-function addGitHubRemote() {
-    return ipcMain.on('projects:pushremote', async (event, { token, repo, url }) => {
-        const dir = getProjectDir(repo)
-        const errorName = await gitHubApi.pushRemote({ token, dir, url })
-        if (errorName === 'UrlParseError') {
-            const msg = 'GitHub URL неправильный'
-            event.reply('projects:pushremote', { type: 'error', msg: msg })
-            return
-        }
-        if (errorName === 'BadToken') {
-            const msg = 'Токен не существует или его срок действия истек'
-            event.reply('projects:pushremote', { type: 'error', msg: msg })
-            return
-        }
-        if (errorName === 'PushRejectedError') {
-            const msg = 'Push отклонен. Скорее всего удаленное репо не пустое. Удалите и создайте его снова.'
-            event.reply('projects:pushremote', { type: 'error', msg: msg })
-            return
-        }
-        if (errorName === 'NotFound') {
-            const msg = 'Удаленный GitHub репо не найден.'
-            event.reply('projects:pushremote', { type: 'error', msg: msg })
-            return
-        }
-        if (errorName === 'Forbidden') {
-            const msg = 'У токена недостаточно прав для доступа к удаленному репо'
-            event.reply('projects:pushremote', { type: 'error', msg: msg })
-            return
-        }
-        event.reply('projects:pushremote', { type: 'success', msg: '' })
-    })
-}
-
-function testGitHubToken() {
-    return ipcMain.on('projects:testtoken', async (event, { token, repo, git_url }) => {
-        const dir = getProjectDir(repo)
-        const success = await gitHubApi.pushTestBranch({ token, dir, git_url })
-        console.log(success)
-        if (success){
-            event.reply('projects:testtoken', { type: 'success', msg: '' })
-            return
-        }
-        event.reply('projects:testtoken', { type: 'error', msg: 'Не удалось добавить токен.' })
-    })
-}
 
 function loadimagebase64() {
     return ipcMain.handle('projects:loadimagebase64', async (event, filepath) => {
@@ -274,10 +227,8 @@ function copyFile() {
 }
 
 function projectAPI(): void {
-    testGitHubToken()
     openSystemFolder()
     getProjectTemplates()
-    addGitHubRemote()
     loadimagebase64()
     renameFile()
     copyFile()

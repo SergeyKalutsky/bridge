@@ -50,19 +50,19 @@ export function ProjectsGithubToken({ dispatch, state }:
     }, [messageJsx])
 
     useEffect(() => {
-        window.shared.incomingData("projects:testtoken", async ({ type, msg }) => {
+        window.shared.incomingData("git:testtoken", async ({ type, msg }) => {
             if (type === 'error') {
                 setMessageJsx(<Message type='error' text={msg} className='mt-8 pt-2 pb-2 pr-2 pl-2' />)
                 return
             }
             setMessageJsx(<Message type='success' text={'Токен обновлен'} />)
         })
-        return () => window.shared.removeListeners('projects:testtoken')
+        return () => window.shared.removeListeners('git:testtoken')
     }, [])
 
     const onClick = () => {
         setMessageJsx(<Message type='loading' text='Проверяем токен' />)
-        window.projects.testGitHubToken({
+        window.git.testGitHubToken({
             token: inputData.token,
             repo: userProjects.activeProject.name,
             git_url: userProjects.activeProject.http
