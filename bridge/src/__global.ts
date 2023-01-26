@@ -24,13 +24,11 @@ declare global {
             projectPath(): Promise<string>
             openSystemFolder(): void
             getProjectTemplates(query: string): Promise<Template[]>
-            addGitHubRemote({ repo, token, url }: { repo: string, token: string, url: string }): Promise<void>
-            testGitHubToken({ repo, token, git_url }: { repo: string, token: string, git_url: string }): Promise<void>
             createFile(createInfo: CreateInfo): Promise<string>;
             createFolder(createInfo: CreateInfo): Promise<string>;
             readActiveFile(filepath: string): Promise<string>;
             loadimagebase64(filepath: string): Promise<string>
-
+            
             mkbasedir(data: any): Promise<void>;
             getLocalProjectsNames(): string[];
             delete(name: string): void;
@@ -42,8 +40,10 @@ declare global {
             renameFile(data: { newName: string, activePath: ActivePath }): any
         };
         git: {
+            addGitHubRemote({ repo, token, url }: { repo: string, token: string, url: string }): Promise<void>
+            testGitHubToken({ repo, token, git_url }: { repo: string, token: string, git_url: string }): Promise<void>
             checkoutBranch({ dir, branch }: { dir: string, branch: string }): void 
-            listBranches(dir: string): Promise<string> 
+            listBranches(): Promise<string[]> 
             getCurrentBranch(): Promise<string>
             clone({ repo, git_url }: { repo: string, git_url: string }): Promise<void>;
             revert(args: { oid: string, oid_prev: string }): Promise<void>
