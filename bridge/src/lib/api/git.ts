@@ -254,8 +254,8 @@ function getCurrentBranch() {
 }
 
 function listBranches() {
-  return ipcMain.handle('git:listbranches', async (event, dir) => {
-    return await git.listBranches({ fs, dir: dir })
+  return ipcMain.handle('git:listbranches', async () => {
+    return await git.listBranches({ fs, dir: getProjectDir() })
   })
 }
 
