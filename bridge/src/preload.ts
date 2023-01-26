@@ -41,7 +41,7 @@ contextBridge.exposeInMainWorld('projects', {
 })
 
 contextBridge.exposeInMainWorld('git', {
-    checkoutBranch: ({ dir, branch }: { dir: string, branch: string }): void => ipcRenderer.send('git:checkoutbranch', { dir, branch }),
+    checkoutBranch: ({ branch }: { branch: string }): void => ipcRenderer.send('git:checkoutbranch', { branch }),
     listBranches: (): Promise<string[]> => ipcRenderer.invoke('git:listbranches'),
     addGitHubRemote: ({ repo, token, url }: { repo: string, token: string, url: string }): void => ipcRenderer.send('git:pushremote', { repo, token, url }),
     testGitHubToken: ({ repo, token, git_url }: { repo: string, token: string, git_url: string }): void => ipcRenderer.send('git:testtoken', { repo, token, git_url }),

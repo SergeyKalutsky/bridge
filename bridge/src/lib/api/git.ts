@@ -164,10 +164,10 @@ const revertChanges = async (oid: string, oid_revert: string, dir: string) => {
 
 
 function checkoutBranch() {
-  return ipcMain.on('git:checkoutbranch', async (event, { dir, branch }) => {
+  return ipcMain.on('git:checkoutbranch', async (event, { branch }) => {
     await git.checkout({
       fs,
-      dir: dir,
+      dir: getProjectDir(),
       ref: branch
     })
   })
