@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react'
 import { PopUp, InputForm } from '../../common'
+import { IoMdGitBranch } from 'react-icons/io'
 
 
-function BranchRow({ branch }: {
+function BranchRow({ branch, setOpen }: {
     branch: string;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element {
+    function onClick() {
+        window.git.checkoutBranch({ branch: branch });
+        setOpen(false)
+    }
     return (<div
-        className={`pl-5 hover: cursor-pointer hover:bg-sky-400/20 text-slate-800 text-xl flex items-center w-full h-[40px]`}>
+        onClick={onClick}
+        className={`pl-2 hover: cursor-pointer hover:bg-sky-400/20 text-slate-800 text-xl flex items-center w-full h-[40px]`}>
+        <IoMdGitBranch style={{ color: '#18181b', height: 23, width: 23, marginRight: '3px' }} />
         {branch}
     </div>);
 
@@ -22,7 +30,7 @@ const BranchPopUp = ({ open, setOpen, selectedBranch }: {
         const branches = async () => {
             const branches = await window.git.listBranches()
             setBranches(branches.map(branch => branch === selectedBranch ?
-                null : <BranchRow branch={branch} key={branch} />))
+                null : <BranchRow branch={branch} key={branch} setOpen={setOpen} />))
         }
         console.log(selectedBranch)
         branches()
