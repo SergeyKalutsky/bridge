@@ -1,23 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineFolderAdd } from "react-icons/ai";
-import { IDE } from "../types";
-import { InputForm, PopUp, Button } from "../../common";
+import { InputForm, PopUp } from "../../common";
+import { ideContext } from "../Editor";
 
 
-interface Props {
-    ide: IDE
-    updateFileTree: (ide: IDE) => void
-}
-
-
-const NewFolder = ({ ide, updateFileTree }: Props): JSX.Element => {
+const NewFolder = (): JSX.Element => {
     const [open, setOpen] = useState(false)
+    const { ide, setIDE, buildFileTree } = useContext(ideContext)
     const handleEnter = async (event) => {
         if (event.key !== 'Enter') return
         await window.projects.createFolder({ activePath: ide.activePath, name: event.target.value });
-        updateFileTree({
+        setIDE({
             ...ide,
-            files: await window.projects.showFiles()
+            files: await window.projects.showFiles(),
+            fileTree: buildFileTree(ide, ide.files[0].files)
         })
         setOpen(false)
     }
