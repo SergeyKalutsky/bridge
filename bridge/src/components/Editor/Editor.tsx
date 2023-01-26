@@ -49,11 +49,13 @@ export default function Editor(): JSX.Element {
                 const ext = extList[extList.length - 1];
                 editor = await buildEditor(ACE_MODS[ext], false, activePath.path);
             }
+            const branch = await window.git.getCurrentBranch();
             setIDE({
                 ...ide,
                 activePath: activePath,
                 files: await window.projects.showFiles(),
-                editor: editor
+                editor: editor,
+                branch: branch
             });
         };
         loadActiveFile();

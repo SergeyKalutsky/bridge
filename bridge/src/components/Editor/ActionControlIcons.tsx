@@ -27,7 +27,7 @@ export function ActionControllIcons(): JSX.Element {
                 {/* <IconButton onClick={()=>{window.terminal.keystoke('\x03')}}> <FaStop style={{ color: '#d91a1a', height: 25, width: 25 }} /></IconButton> */}
                 <div className="flex">
                     <IconButton onClick={() => { window.git.commit(); }}>
-                        <IoMdGitCommit style={{ color: 'grey', height: 45, width: 45, cursor: 'not-allowed' }} />
+                        <IoMdGitCommit style={{ color: 'white', height: 45, width: 45 }} />
                     </IconButton>
                     <IconButton>
                         <FaLongArrowAltDown style={{ color: 'white', height: 30, width: 30, textDecorationColor: 'white' }} />

@@ -1,14 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { PopUp, InputForm } from '../../common'
 import { IoMdGitBranch } from 'react-icons/io'
+import { ideContext } from '../Editor';
 
 
 function BranchRow({ branch, setOpen }: {
     branch: string;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element {
-    function onClick() {
-        window.git.checkoutBranch({ branch: branch });
+    const { ide, setIDE, buildFileTree } = useContext(ideContext)
+    async function onClick() {
+        await window.git.checkoutBranch({ branch: branch });
+        const files = await window.projects.showFiles()
+        setIDE({
+            ...ide,
+            branch: branch,
+            files: files,
+            fileTree: buildFileTree(ide, files),
+            activePath: null
+        })
         setOpen(false)
     }
     return (<div

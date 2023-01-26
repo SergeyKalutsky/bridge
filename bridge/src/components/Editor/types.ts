@@ -15,7 +15,8 @@ interface IDE {
     editor: JSX.Element,
     activePath: ActivePath,
     files: FileObject[],
-    fileTree: JSX.Element[]
+    fileTree: JSX.Element[],
+    branch: string
 }
 
 export { ActivePath, FileObject, IDE }

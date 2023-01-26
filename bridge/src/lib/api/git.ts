@@ -161,10 +161,8 @@ const revertChanges = async (oid: string, oid_revert: string, dir: string) => {
 }
 
 
-
-
 function checkoutBranch() {
-  return ipcMain.on('git:checkoutbranch', async (event, { branch }) => {
+  return ipcMain.handle('git:checkoutbranch', async (event, { branch }) => {
     await git.checkout({
       fs,
       dir: getProjectDir(),
@@ -172,6 +170,7 @@ function checkoutBranch() {
     })
   })
 }
+
 
 function status() {
   return ipcMain.handle('git:status', async (event, dir) => {

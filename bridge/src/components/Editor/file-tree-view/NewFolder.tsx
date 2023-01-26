@@ -10,10 +10,11 @@ const NewFolder = (): JSX.Element => {
     const handleEnter = async (event) => {
         if (event.key !== 'Enter') return
         await window.projects.createFolder({ activePath: ide.activePath, name: event.target.value });
+        const files = await window.projects.showFiles()
         setIDE({
             ...ide,
-            files: await window.projects.showFiles(),
-            fileTree: buildFileTree(ide, ide.files[0].files)
+            files: files,
+            fileTree: buildFileTree(ide, files)
         })
         setOpen(false)
     }

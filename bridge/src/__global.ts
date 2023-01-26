@@ -42,7 +42,7 @@ declare global {
         git: {
             addGitHubRemote({ repo, token, url }: { repo: string, token: string, url: string }): Promise<void>
             testGitHubToken({ repo, token, git_url }: { repo: string, token: string, git_url: string }): Promise<void>
-            checkoutBranch({ branch }: { branch: string }): void 
+            checkoutBranch({ branch }: { branch: string }): Promise<void>
             listBranches(): Promise<string[]> 
             getCurrentBranch(): Promise<string>
             clone({ repo, git_url }: { repo: string, git_url: string }): Promise<void>;
