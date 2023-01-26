@@ -2,6 +2,9 @@ import { useContext, useEffect, useState } from 'react'
 import { PopUp, InputForm } from '../../common'
 import { IoMdGitBranch } from 'react-icons/io'
 import { ideContext } from '../Editor';
+import { FileObject } from '../types';
+import buildEditor from '../TextEditor';
+import { ACE_MODS } from '../Constants';
 
 
 function BranchRow({ branch, setOpen }: {
@@ -11,13 +14,36 @@ function BranchRow({ branch, setOpen }: {
     const { ide, setIDE, buildFileTree } = useContext(ideContext)
     async function onClick() {
         await window.git.checkoutBranch({ branch: branch });
+        const activePath = await window.settings.get('userProjects.activeProject.activePath')
         const files = await window.projects.showFiles()
+        const checkPathExists = (files: FileObject[]): boolean => {
+            if (!files) return false
+            for (const file of files) {
+                if (!file.isDirectory && file.path === activePath.path) {
+                    return true
+                } else {
+                    return checkPathExists(file.files)
+                }
+            }
+            return false
+        }
+        const exist = checkPathExists(files)
+        let editor: JSX.Element
+        if (exist) {
+            const extList = activePath.path.split(".");
+            const ext = extList[extList.length - 1];
+            editor = await buildEditor(ACE_MODS[ext], false, activePath.path)
+        } else {
+            editor = await buildEditor()
+        }
+
         setIDE({
             ...ide,
             branch: branch,
             files: files,
             fileTree: buildFileTree(ide, files),
-            activePath: null
+            activePath: exist ? ide.activePath : null,
+            editor: editor
         })
         setOpen(false)
     }
@@ -42,7 +68,6 @@ const BranchPopUp = ({ open, setOpen, selectedBranch }: {
             setBranches(branches.map(branch => branch === selectedBranch ?
                 null : <BranchRow branch={branch} key={branch} setOpen={setOpen} />))
         }
-        console.log(selectedBranch)
         branches()
     }, [selectedBranch])
     return (
