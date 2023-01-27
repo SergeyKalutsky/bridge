@@ -9,10 +9,12 @@ export function BranchMenu(): JSX.Element {
     return (
         <>
             <div className="w-2/4 flex justify-start items-center">
-                <div className="ml-10 flex items-center justify-center w-[130px] h-[40px] hover:cursor-pointer rounded-lg hover:bg-zinc-800/60 pl-2 pr-2 pt-1 pb-1"
+                <div className="ml-10 flex items-center justify-center w-[200px] h-[40px] hover:cursor-pointer rounded-lg hover:bg-zinc-800/60 pl-2 pr-2 pt-1 pb-1"
                     onClick={() => { setOpen(true); }}>
-                    <IoMdGitBranch style={{ color: 'white', height: 25, width: 25 }} />
-                    <span className="text-slate-100 text-2xl ml-2 font-medium">{ide?.branch}</span>
+                    <IoMdGitBranch style={{ color: 'white', height: 35, width: 35 }} />
+                    <span className="text-slate-100 grow text-2xl ml-2 font-medium text-ellipsis whitespace-nowrap truncate">
+                        {ide?.branch}
+                    </span>
                 </div>
             </div>
             <BranchPopUp open={open} setOpen={setOpen} selectedBranch={ide?.branch} />
