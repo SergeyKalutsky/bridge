@@ -22,6 +22,7 @@ export function ProjectsInstall(): JSX.Element {
             // Removing information not needed locally
             delete projectCreate.template.http
             delete projectCreate.template.pkgs
+            projectCreate.islocal = true
             addProject(projectCreate)
         });
         return () => window.shared.removeListeners('git:clone')
