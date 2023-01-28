@@ -1,7 +1,5 @@
 import { useContext, useState } from "react"
 import { Project } from './types'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { projectContext } from "./Projects"
 
 
