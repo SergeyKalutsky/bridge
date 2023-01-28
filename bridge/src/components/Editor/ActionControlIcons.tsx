@@ -50,12 +50,6 @@ export function ActionControllIcons(): JSX.Element {
             return
         }
         window.terminal.keystoke('\x03')
-        setExecControl(
-            {
-                type: 'play',
-                jsx: <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
-            }
-        )
     }
     return (
         <div className="w-2/4 flex justify-end">
