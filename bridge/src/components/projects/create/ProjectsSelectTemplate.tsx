@@ -10,14 +10,14 @@ import { useContext, useEffect, useState } from 'react'
 export function ProjectsSelectTemplate(): JSX.Element {
     const { projectCreate, setProjectCreate, setDisabled } = useContext(projectCreateContext)
     const [templateRows, setTemplateRows] = useState<JSX.Element[]>()
-    const [template, setTemplate] = useState<Template>(projectCreate.template)
+    const [template, setTemplate] = useState<Template>(projectCreate?.template)
 
     useEffect(() => {
         setDisabled(!template)
     }, [template])
 
     useEffect(() => {
-        if (projectCreate.template) {
+        if (projectCreate?.template) {
             setTemplate(projectCreate.template)
             return
         }

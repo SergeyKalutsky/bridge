@@ -19,6 +19,9 @@ export function ProjectsInstall(): JSX.Element {
 
     useEffect(() => {
         window.shared.incomingData("git:clone", ({ msg }: { msg: string }) => {
+            // Removing information not needed locally
+            delete projectCreate.template.http
+            delete projectCreate.template.pkgs
             addProject(projectCreate)
         });
         return () => window.shared.removeListeners('git:clone')

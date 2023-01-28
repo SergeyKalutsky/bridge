@@ -32,8 +32,8 @@ interface Settings {
 
 interface Template {
     name: string
-    pkgs: Package[]
-    http: string
+    pkgs?: Package[]
+    http?: string
     description: string
 }
 

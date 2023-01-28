@@ -16,19 +16,8 @@ interface ProjectCreateContext {
 
 export const projectCreateContext = createContext<ProjectCreateContext>(null)
 
-const dummyProject: Project = {
-    id: null,
-    islocal: true,
-    name: '',
-    description: '',
-    http: '',
-    thumbnailPath: '',
-    template: null,
-    token: ''
-}
-
 export function ProjectsCreate(): JSX.Element {
-    const [projectCreate, setProjectCreate] = useState<Project>(dummyProject)
+    const [projectCreate, setProjectCreate] = useState<Project>()
     const { dispatch } = useContext(projectContext)
     const [disabled, setDisabled] = useState(false)
     const [stage, setStage] = useState(0)
