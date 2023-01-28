@@ -33,14 +33,12 @@ export function ActionControllIcons(): JSX.Element {
 
     function onClick() {
         if (execControl.type === 'play') {
-            if (!ide.activePath.isDirectory) {
-                const extList = ide.activePath.path.split(".");
-                const ext = extList[extList.length - 1];
-                const excecutable = CMD[ext];
-                if (excecutable !== undefined) {
-                    window.terminal.exec({ exec: excecutable, path: '"' + ide.activePath.path + '"' });
-                }
-            }
+            if (ide.activePath.isDirectory) return
+            const extList = ide.activePath.path.split(".");
+            const ext = extList[extList.length - 1];
+            const excecutable = CMD[ext];
+            if (!excecutable) return
+            window.terminal.exec({ exec: excecutable, path: '"' + ide.activePath.path + '"' });
             setExecControl(
                 {
                     type: 'stop',
