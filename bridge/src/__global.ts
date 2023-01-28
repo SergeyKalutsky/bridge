@@ -44,6 +44,7 @@ declare global {
             testGitHubToken({ repo, token, git_url }: { repo: string, token: string, git_url: string }): Promise<void>
             checkoutBranch({ branch }: { branch: string }): Promise<void>
             listBranches(): Promise<string[]> 
+            status(): Promise<string[]> 
             getCurrentBranch(): Promise<string>
             clone({ repo, git_url }: { repo: string, git_url: string }): Promise<void>;
             revert(args: { oid: string, oid_prev: string }): Promise<void>

@@ -1,7 +1,7 @@
 import { IoMdGitCommit, IoMdPlay } from 'react-icons/io'
 import { FaLongArrowAltDown, FaLongArrowAltUp, FaStop } from 'react-icons/fa'
 import { IconButton } from "../common";
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ideContext } from './Editor';
 import { CMD } from './Constants'
 
@@ -10,15 +10,33 @@ interface ExecControl {
     jsx: JSX.Element
 }
 
+interface GitStatus {
+    canCommit: boolean
+    canPush: boolean
+}
+
 export function ActionControllIcons(): JSX.Element {
     const { ide } = useContext(ideContext)
-
+    const [gitStatus, setGitStatus] = useState<GitStatus>({ canCommit: false, canPush: false })
     const [execControl, setExecControl] = useState<ExecControl>(
         {
             type: 'play',
             jsx: <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
         }
     )
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            const status = await window.git.status()
+            if (status.length > 0) {
+                setGitStatus({
+                    canCommit: true,
+                    canPush: true
+                })
+            }
+        }, 2000)
+        return () => { clearInterval(interval) };
+    }, [])
+
     window.shared.incomingData("terminal:incomingdata", (data: string) => {
         const terminalHandle = window.sessionStorage.getItem('terminalHandle')
         if (data.includes(terminalHandle)) {
@@ -56,14 +74,31 @@ export function ActionControllIcons(): JSX.Element {
                     {execControl.jsx}
                 </IconButton>
                 <div className="flex">
-                    <IconButton onClick={() => { window.git.commit(); }}>
-                        <IoMdGitCommit style={{ color: 'white', height: 45, width: 45 }} />
+                    <IconButton onClick={() => {
+                        if (!gitStatus.canCommit) return
+                        window.git.commit()
+                        setGitStatus({
+                            canCommit: false,
+                            canPush: true
+                        })
+                    }}>
+                        <IoMdGitCommit style={{
+                            color: gitStatus.canCommit ? 'white' : 'grey',
+                            height: 45,
+                            width: 45,
+                            cursor: gitStatus.canCommit ? 'auto' : 'not-allowed'
+                        }} />
                     </IconButton>
                     <IconButton>
                         <FaLongArrowAltDown style={{ color: 'white', height: 30, width: 30, textDecorationColor: 'white' }} />
                     </IconButton>
                     <IconButton>
-                        <FaLongArrowAltUp style={{ color: 'grey', height: 30, width: 30, textDecorationColor: 'white', cursor: 'not-allowed' }} />
+                        <FaLongArrowAltUp style={{
+                            color: gitStatus.canPush ? 'white' : 'grey',
+                            height: 30,
+                            width: 30,
+                            cursor: gitStatus.canPush ? 'auto' : 'not-allowed'
+                        }} />
                     </IconButton>
                 </div>
             </div>

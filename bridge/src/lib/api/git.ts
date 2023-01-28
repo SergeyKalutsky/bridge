@@ -173,7 +173,7 @@ function checkoutBranch() {
 
 
 function status() {
-  return ipcMain.handle('git:status', async (event, dir) => {
+  return ipcMain.handle('git:status', async (event) => {
     const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3
 
     const statusMapping = {
@@ -189,7 +189,7 @@ function status() {
       "122": "modified, staged",
       "123": "modified, staged, with unstaged changes"
     };
-
+    const dir = getProjectDir()
     const statusMatrix = (await git.statusMatrix({ fs, dir }))
       .filter(row => row[HEAD] !== row[WORKDIR] || row[HEAD] !== row[STAGE])
 
