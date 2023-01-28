@@ -1,30 +1,68 @@
 import { IoMdGitCommit, IoMdPlay } from 'react-icons/io'
-import { FaLongArrowAltDown, FaLongArrowAltUp } from 'react-icons/fa'
+import { FaLongArrowAltDown, FaLongArrowAltUp, FaStop } from 'react-icons/fa'
 import { IconButton } from "../common";
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ideContext } from './Editor';
 import { CMD } from './Constants'
 
+interface ExecControl {
+    type: string
+    jsx: JSX.Element
+}
+
 export function ActionControllIcons(): JSX.Element {
     const { ide } = useContext(ideContext)
-    const handlePlayButtonClick = () => {
-        if (!ide.activePath.isDirectory) {
-            const extList = ide.activePath.path.split(".");
-            const ext = extList[extList.length - 1];
-            const excecutable = CMD[ext];
-            if (excecutable !== undefined) {
-                window.terminal.exec({ exec: excecutable, path: '"' + ide.activePath.path + '"' });
-            }
-        }
-    };
 
+    const [execControl, setExecControl] = useState<ExecControl>(
+        {
+            type: 'play',
+            jsx: <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
+        }
+    )
+    window.shared.incomingData("terminal:incomingdata", (data: string) => {
+        const terminalHandle = window.sessionStorage.getItem('terminalHandle')
+        if (data.includes(terminalHandle)) {
+            setExecControl(
+                {
+                    type: 'play',
+                    jsx: <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
+                }
+            )
+        }
+    });
+
+    function onClick() {
+        if (execControl.type === 'play') {
+            if (!ide.activePath.isDirectory) {
+                const extList = ide.activePath.path.split(".");
+                const ext = extList[extList.length - 1];
+                const excecutable = CMD[ext];
+                if (excecutable !== undefined) {
+                    window.terminal.exec({ exec: excecutable, path: '"' + ide.activePath.path + '"' });
+                }
+            }
+            setExecControl(
+                {
+                    type: 'stop',
+                    jsx: <FaStop style={{ color: '#d91a1a', height: 30, width: 35 }} />
+                }
+            )
+            return
+        }
+        window.terminal.keystoke('\x03')
+        setExecControl(
+            {
+                type: 'play',
+                jsx: <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
+            }
+        )
+    }
     return (
         <div className="w-2/4 flex justify-end">
             <div className="flex justify-between w-[160px] mr-10 h-1/5">
-                <IconButton onClick={handlePlayButtonClick}>
-                    <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
+                <IconButton onClick={onClick}>
+                    {execControl.jsx}
                 </IconButton>
-                {/* <IconButton onClick={()=>{window.terminal.keystoke('\x03')}}> <FaStop style={{ color: '#d91a1a', height: 25, width: 25 }} /></IconButton> */}
                 <div className="flex">
                     <IconButton onClick={() => { window.git.commit(); }}>
                         <IoMdGitCommit style={{ color: 'white', height: 45, width: 45 }} />

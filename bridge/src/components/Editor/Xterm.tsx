@@ -2,17 +2,17 @@ import 'xterm/css/xterm.css'
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { useEffect, useRef, useState } from 'react';
-
+import _ from 'lodash'
 
 
 const getDXtermWidth = (): number => {
     const sideWidth = JSON.parse(window.localStorage.getItem('sideWidth'))
     return window.innerWidth - sideWidth - 80
-  }
+}
 
 const Xterm = (): JSX.Element => {
     const term = new Terminal({
-        fontSize: 16,
+        fontSize: 18,
         cursorBlink: true
     })
     const fitAddon = new FitAddon();
@@ -55,6 +55,12 @@ const Xterm = (): JSX.Element => {
             window.terminal.keystoke(e)
         })
         window.shared.incomingData("terminal:incomingdata", (data: string) => {
+            if (!window.sessionStorage.getItem('terminalHandle')) {
+                data = _.trim(data)
+                window.sessionStorage.setItem('terminalHandle', data)
+                term.write(data)
+                return
+            }
             term.write(data);
             window.sessionStorage.setItem('terminalOutput', window.sessionStorage.getItem('terminalOutput') + data)
         });
@@ -78,7 +84,7 @@ const Xterm = (): JSX.Element => {
         term.open(ref.current);
         const output = window.sessionStorage.getItem('terminalOutput')
         if (output === null) {
-            term.write('Добро пожаловать, нажмите Enter$ ')
+            window.terminal.keystoke('\n')
         } else {
             term.write(output)
         }
