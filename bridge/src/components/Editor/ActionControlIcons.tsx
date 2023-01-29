@@ -84,7 +84,8 @@ export function ActionControllIcons(): JSX.Element {
 
     return (
         <div className="w-2/4 flex justify-end">
-            <div className="flex justify-between w-[160px] mr-10 h-1/5">
+            <div className={!http ? 'justify-start flex w-[160px] gap-x-4' :
+                'flex justify-between w-[160px] mr-10 h-1/5'}>
                 <IconButton onClick={onClick}>
                     {execControl.jsx}
                 </IconButton>
