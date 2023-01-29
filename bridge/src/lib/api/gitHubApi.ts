@@ -1,5 +1,5 @@
 /* eslint-disable import/no-named-as-default-member */
-import git from 'isomorphic-git'
+import git, { GetRemoteInfoResult } from 'isomorphic-git'
 import http from 'isomorphic-git/http/node'
 import fs from 'fs'
 import { Octokit } from "@octokit/core"
@@ -152,20 +152,34 @@ async function status(dir: string) {
     return statusMatrix.map(row => statusMapping[row.slice(1).join("")] + ": " + row[FILE])
 }
 
-async function localHeads(dir: string) {
-    const branches = await git.listBranches({ fs, dir: dir })
-    const heads = {}
-    for (const branch of branches) {
-        const commits = await git.log({
-            fs,
-            dir: dir,
-            depth: 1,
-            ref: branch
-        })
-        heads[branch] = commits[0].oid
-    }
-    return heads
+
+async function getOids(dir: string, branch: string) {
+    const commits = await git.log({
+        fs,
+        dir: dir,
+        ref: branch
+    })
+    const oids = commits.map(commit => commit.oid)
+    return oids
 }
+
+async function remoteInfo(url: string): Promise<GetRemoteInfoResult> {
+    const info = await git.getRemoteInfo({
+        http,
+        url: url
+    });
+    return info
+}
+
+export async function headPositonLocal(branch: string, url: string, dir: string): Promise<string> {
+    const info = await remoteInfo(url)
+    const remoteHead = info.heads[branch]
+    const oids = await getOids(dir, branch)
+    if (oids[oids.length - 1] === remoteHead) return 'even'
+    if (!oids.includes(remoteHead)) return 'behind'
+    return 'ahead'
+}
+
 
 async function main() {
     const dir = '/Users/sergeykalutsky/Library/Application Support/bridge/storage/guest/test2303'
@@ -178,5 +192,5 @@ async function main() {
     console.log(info)
 }
 
-
+main()
 // fetch for all branches | fetch does fetch of all branches by default
