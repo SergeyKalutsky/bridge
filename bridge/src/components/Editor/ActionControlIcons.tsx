@@ -18,7 +18,8 @@ interface GitStatus {
 export function ActionControllIcons(): JSX.Element {
     const { ide } = useContext(ideContext)
     const [gitStatus, setGitStatus] = useState<GitStatus>({ canCommit: false, canPush: false })
-    const http = window.settings.get('userProjects.activeProject.http')
+    const project = window.settings.get('userProjects.activeProject')
+
     const [execControl, setExecControl] = useState<ExecControl>(
         {
             type: 'play',
@@ -28,13 +29,31 @@ export function ActionControllIcons(): JSX.Element {
 
     useEffect(() => {
         const setInitPush = async () => {
-            if (!(http && ide?.branch)) return
-            const headPos = await window.git.headPositonLocal({ branch: ide.branch, url: http })
+            if (!(project?.http && ide?.branch)) return
+            const pos = window.sessionStorage.getItem(project.name+ide.branch)
+            if (pos) {
+                if (pos === 'ahead') {
+                    setGitStatus({
+                        ...gitStatus,
+                        canPush: true
+                    })
+                    return 
+                }
+            }
+            const headPos = await window.git.headPositonLocal({ branch: ide.branch, url: project.http })
             console.log(headPos)
+            if (headPos === 'ahead') {
+                window.sessionStorage.setItem(project.name+ide.branch, headPos)
+                setGitStatus({
+                    ...gitStatus,
+                    canPush: true
+                })
+            }
         }
         setInitPush()
         const interval = setInterval(async () => {
             const status = await window.git.status()
+            console.log(status)
             if (status.length > 0) {
                 setGitStatus({
                     canCommit: true,
@@ -87,12 +106,13 @@ export function ActionControllIcons(): JSX.Element {
             canCommit: false,
             canPush: true
         })
+        window.sessionStorage.setItem(project.name+ide.branch, 'ahead')
     }
 
 
     return (
         <div className="w-2/4 flex justify-end">
-            <div className={!http ? 'justify-start flex w-[160px] gap-x-4' :
+            <div className={!project?.http ? 'justify-start flex w-[160px] gap-x-4' :
                 'flex justify-between w-[160px] mr-10 h-1/5'}>
                 <IconButton onClick={onClick}>
                     {execControl.jsx}
@@ -106,7 +126,7 @@ export function ActionControllIcons(): JSX.Element {
                             cursor: gitStatus.canCommit ? 'auto' : 'not-allowed'
                         }} />
                     </IconButton>
-                    {http ?
+                    {project?.http ?
                         <>
                             <IconButton>
                                 <FaLongArrowAltDown style={{ color: 'white', height: 30, width: 30, textDecorationColor: 'white' }} />
@@ -116,7 +136,7 @@ export function ActionControllIcons(): JSX.Element {
                                     color: gitStatus.canPush ? 'white' : 'grey',
                                     height: 30,
                                     width: 30,
-                                    cursor: gitStatus.canPush ? 'auto' : 'not-allowed'
+                                    cursor: gitStatus.canPush ? 'pointer' : 'not-allowed'
                                 }} />
                             </IconButton>
                         </> : null}
