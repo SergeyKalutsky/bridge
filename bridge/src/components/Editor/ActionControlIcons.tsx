@@ -19,7 +19,6 @@ export function ActionControllIcons(): JSX.Element {
     const { ide } = useContext(ideContext)
     const [gitStatus, setGitStatus] = useState<GitStatus>({ canCommit: false, canPush: false })
     const http = window.settings.get('userProjects.activeProject.http')
-    console.log(http)
     const [execControl, setExecControl] = useState<ExecControl>(
         {
             type: 'play',
@@ -28,7 +27,12 @@ export function ActionControllIcons(): JSX.Element {
     )
 
     useEffect(() => {
-
+        const setInitPush = async () => {
+            if (!(http && ide?.branch)) return
+            const headPos = await window.git.headPositonLocal({ branch: ide.branch, url: http })
+            console.log(headPos)
+        }
+        setInitPush()
         const interval = setInterval(async () => {
             const status = await window.git.status()
             if (status.length > 0) {
@@ -39,19 +43,23 @@ export function ActionControllIcons(): JSX.Element {
             }
         }, 2000)
         return () => { clearInterval(interval) };
+    }, [ide?.branch])
+
+    useEffect(() => {
+        window.shared.incomingData("terminal:incomingdata", (data: string) => {
+            const terminalHandle = window.sessionStorage.getItem('terminalHandle')
+            if (data.includes(terminalHandle)) {
+                setExecControl(
+                    {
+                        type: 'play',
+                        jsx: <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
+                    }
+                )
+            }
+        });
+        return () => window.shared.removeListeners("terminal:incomingdata")
     }, [])
 
-    window.shared.incomingData("terminal:incomingdata", (data: string) => {
-        const terminalHandle = window.sessionStorage.getItem('terminalHandle')
-        if (data.includes(terminalHandle)) {
-            setExecControl(
-                {
-                    type: 'play',
-                    jsx: <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
-                }
-            )
-        }
-    });
 
     function onClick() {
         if (execControl.type === 'play') {

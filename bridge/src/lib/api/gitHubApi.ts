@@ -173,9 +173,9 @@ async function remoteInfo(url: string): Promise<GetRemoteInfoResult> {
 
 export async function headPositonLocal(branch: string, url: string, dir: string): Promise<string> {
     const info = await remoteInfo(url)
-    const remoteHead = info.heads[branch]
+    const remoteHead = info.refs.heads[branch]
     const oids = await getOids(dir, branch)
-    if (oids[oids.length - 1] === remoteHead) return 'even'
+    if (oids[0] === remoteHead) return 'even'
     if (!oids.includes(remoteHead)) return 'behind'
     return 'ahead'
 }
@@ -187,7 +187,7 @@ async function main() {
     const info = await git.getRemoteInfo({
         http,
         url:
-            "https://github.com/SergeyKalutsky/test2303.git"
+            "https://github.com/SergeyKalutsky/web.git"
     });
     console.log(info)
 }

@@ -281,7 +281,6 @@ function log() {
 function headPositonLocal() {
   return ipcMain.handle('git:headpositionlocal', async (event, { branch, url }: { branch: string, url: string }) => {
     return await gitHubApi.headPositonLocal(branch, url, getProjectDir())
-    // await git.pull({ fs, http, dir: getProjectDir(), author }).then(console.log)
   })
 }
 
