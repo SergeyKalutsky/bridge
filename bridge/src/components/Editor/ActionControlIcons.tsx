@@ -25,6 +25,8 @@ export function ActionControllIcons(): JSX.Element {
         }
     )
     useEffect(() => {
+        const http = window.settings.get('userProjects.activeProject.http')
+        
         const interval = setInterval(async () => {
             const status = await window.git.status()
             if (status.length > 0) {

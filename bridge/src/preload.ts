@@ -51,6 +51,7 @@ contextBridge.exposeInMainWorld('git', {
     push: (): Promise<void> => ipcRenderer.invoke('git:push'),
     commit: (): Promise<void> => ipcRenderer.invoke('git:commit'),
     status: (): Promise<string[]> => ipcRenderer.invoke('git:status'),
+    headPositonLocal: ({ branch, url }: { branch: string, url: string }): Promise<string> => ipcRenderer.invoke('git:headpositionlocal', { branch, url }),
     log: () => ipcRenderer.sendSync('git:log'),
     diff: (args: { oid: string, oid_prev: string }): GitDiff[] => ipcRenderer.sendSync('git:diff', args),
     init: (project_name: string) => ipcRenderer.send('git:init', project_name),
