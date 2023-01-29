@@ -18,15 +18,17 @@ interface GitStatus {
 export function ActionControllIcons(): JSX.Element {
     const { ide } = useContext(ideContext)
     const [gitStatus, setGitStatus] = useState<GitStatus>({ canCommit: false, canPush: false })
+    const http = window.settings.get('userProjects.activeProject.http')
+    console.log(http)
     const [execControl, setExecControl] = useState<ExecControl>(
         {
             type: 'play',
             jsx: <IoMdPlay style={{ color: '#76de85', height: 30, width: 35 }} />
         }
     )
+
     useEffect(() => {
-        const http = window.settings.get('userProjects.activeProject.http')
-        
+
         const interval = setInterval(async () => {
             const status = await window.git.status()
             if (status.length > 0) {
@@ -69,6 +71,17 @@ export function ActionControllIcons(): JSX.Element {
         }
         window.terminal.keystoke('\x03')
     }
+
+    function handleCommitClick() {
+        if (!gitStatus.canCommit) return
+        window.git.commit()
+        setGitStatus({
+            canCommit: false,
+            canPush: true
+        })
+    }
+
+
     return (
         <div className="w-2/4 flex justify-end">
             <div className="flex justify-between w-[160px] mr-10 h-1/5">
@@ -76,14 +89,7 @@ export function ActionControllIcons(): JSX.Element {
                     {execControl.jsx}
                 </IconButton>
                 <div className="flex">
-                    <IconButton onClick={() => {
-                        if (!gitStatus.canCommit) return
-                        window.git.commit()
-                        setGitStatus({
-                            canCommit: false,
-                            canPush: true
-                        })
-                    }}>
+                    <IconButton onClick={handleCommitClick}>
                         <IoMdGitCommit style={{
                             color: gitStatus.canCommit ? 'white' : 'grey',
                             height: 45,
@@ -91,17 +97,20 @@ export function ActionControllIcons(): JSX.Element {
                             cursor: gitStatus.canCommit ? 'auto' : 'not-allowed'
                         }} />
                     </IconButton>
-                    <IconButton>
-                        <FaLongArrowAltDown style={{ color: 'white', height: 30, width: 30, textDecorationColor: 'white' }} />
-                    </IconButton>
-                    <IconButton>
-                        <FaLongArrowAltUp style={{
-                            color: gitStatus.canPush ? 'white' : 'grey',
-                            height: 30,
-                            width: 30,
-                            cursor: gitStatus.canPush ? 'auto' : 'not-allowed'
-                        }} />
-                    </IconButton>
+                    {http ?
+                        <>
+                            <IconButton>
+                                <FaLongArrowAltDown style={{ color: 'white', height: 30, width: 30, textDecorationColor: 'white' }} />
+                            </IconButton>
+                            <IconButton>
+                                <FaLongArrowAltUp style={{
+                                    color: gitStatus.canPush ? 'white' : 'grey',
+                                    height: 30,
+                                    width: 30,
+                                    cursor: gitStatus.canPush ? 'auto' : 'not-allowed'
+                                }} />
+                            </IconButton>
+                        </> : null}
                 </div>
             </div>
         </div>
