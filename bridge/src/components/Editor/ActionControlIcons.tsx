@@ -1,6 +1,6 @@
 import { IoMdGitCommit, IoMdPlay } from 'react-icons/io'
 import { FaLongArrowAltDown, FaLongArrowAltUp, FaStop } from 'react-icons/fa'
-import { IconButton } from "../common";
+import { IconButton, Message } from "../common";
 import { useContext, useEffect, useState } from 'react';
 import { ideContext } from './Editor';
 import { CMD } from './Constants'
@@ -18,6 +18,7 @@ interface GitStatus {
 export function ActionControllIcons(): JSX.Element {
     const { ide } = useContext(ideContext)
     const [gitStatus, setGitStatus] = useState<GitStatus>({ canCommit: false, canPush: false })
+    const [message, setMessage] = useState<JSX.Element>()
     const project = window.settings.get('userProjects.activeProject')
 
     const [execControl, setExecControl] = useState<ExecControl>(
@@ -110,20 +111,27 @@ export function ActionControllIcons(): JSX.Element {
     }
 
     async function handlePullClick() {
+        setMessage(<Message type='loading' text='Скачиваем update с удаленного сервера'/>)
         await window.git.pull()
+        setMessage(null)
     }
 
     async function handlePushClick() {
+        setMessage(<Message type='loading' text='Отправляем update на удаленный сервер'/>)
         await window.git.push(ide.branch)
         window.sessionStorage.setItem(project.name + ide.branch, 'even')
         setGitStatus({
             ...gitStatus,
             canPush: false
         })
+        setMessage(null)
     }
 
     return (
-        <div className="w-2/4 flex justify-end">
+        <div className="w-3/4 flex justify-end">
+            <div className='mr-5'>
+                {message}
+            </div>
             <div className={!project?.http ? 'justify-start flex w-[160px] gap-x-4' :
                 'flex justify-between w-[160px] mr-10 h-1/5'}>
                 <IconButton onClick={onClick}>
