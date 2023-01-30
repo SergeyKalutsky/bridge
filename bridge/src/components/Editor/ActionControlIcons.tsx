@@ -30,20 +30,20 @@ export function ActionControllIcons(): JSX.Element {
     useEffect(() => {
         const setInitPush = async () => {
             if (!(project?.http && ide?.branch)) return
-            const pos = window.sessionStorage.getItem(project.name+ide.branch)
+            const pos = window.sessionStorage.getItem(project.name + ide.branch)
             if (pos) {
                 if (pos === 'ahead') {
                     setGitStatus({
                         ...gitStatus,
                         canPush: true
                     })
-                    return 
+                    return
                 }
             }
             const headPos = await window.git.headPositonLocal({ branch: ide.branch, url: project.http })
             console.log(headPos)
             if (headPos === 'ahead') {
-                window.sessionStorage.setItem(project.name+ide.branch, headPos)
+                window.sessionStorage.setItem(project.name + ide.branch, headPos)
                 setGitStatus({
                     ...gitStatus,
                     canPush: true
@@ -56,8 +56,8 @@ export function ActionControllIcons(): JSX.Element {
             console.log(status)
             if (status.length > 0) {
                 setGitStatus({
-                    canCommit: true,
-                    canPush: true
+                    ...gitStatus,
+                    canCommit: true
                 })
             }
         }, 2000)
@@ -106,9 +106,21 @@ export function ActionControllIcons(): JSX.Element {
             canCommit: false,
             canPush: true
         })
-        window.sessionStorage.setItem(project.name+ide.branch, 'ahead')
+        window.sessionStorage.setItem(project.name + ide.branch, 'ahead')
     }
 
+    async function handlePullClick() {
+        await window.git.pull()
+    }
+
+    async function handlePushClick() {
+        await window.git.push(ide.branch)
+        window.sessionStorage.setItem(project.name + ide.branch, 'even')
+        setGitStatus({
+            ...gitStatus,
+            canPush: false
+        })
+    }
 
     return (
         <div className="w-2/4 flex justify-end">
@@ -129,15 +141,24 @@ export function ActionControllIcons(): JSX.Element {
                     {project?.http ?
                         <>
                             <IconButton>
-                                <FaLongArrowAltDown style={{ color: 'white', height: 30, width: 30, textDecorationColor: 'white' }} />
+                                <FaLongArrowAltDown
+                                    onClick={handlePullClick}
+                                    style={{
+                                        color: 'white',
+                                        height: 30,
+                                        width: 30,
+                                        textDecorationColor: 'white'
+                                    }} />
                             </IconButton>
                             <IconButton>
-                                <FaLongArrowAltUp style={{
-                                    color: gitStatus.canPush ? 'white' : 'grey',
-                                    height: 30,
-                                    width: 30,
-                                    cursor: gitStatus.canPush ? 'pointer' : 'not-allowed'
-                                }} />
+                                <FaLongArrowAltUp
+                                    onClick={handlePushClick}
+                                    style={{
+                                        color: gitStatus.canPush ? 'white' : 'grey',
+                                        height: 30,
+                                        width: 30,
+                                        cursor: gitStatus.canPush ? 'pointer' : 'not-allowed'
+                                    }} />
                             </IconButton>
                         </> : null}
                 </div>

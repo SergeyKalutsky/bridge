@@ -300,15 +300,16 @@ function commit() {
 
 
 function push() {
-  return ipcMain.on('git:push', async () => {
-    await git.push({
+  return ipcMain.handle('git:push', async (event, branch: string) => {
+    const res = await git.push({
       fs,
       http,
       dir: getProjectDir(),
-      remote: 'origin',
-      ref: 'master',
-      onAuth: () => ({ username: 'SergeyKalutsky', password: '' }),
+      url: store.get('userProjects.activeProject.http'),
+      ref: branch,
+      onAuth: () => ({ username: 'SergeyKalutsky', password: store.get('userProjects.activeProject.token') }),
     })
+    console.log(res)
   })
 }
 

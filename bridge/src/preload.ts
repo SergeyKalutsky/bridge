@@ -48,7 +48,7 @@ contextBridge.exposeInMainWorld('git', {
     getCurrentBranch: (): Promise<string> => ipcRenderer.invoke('git:getcurrentbranch'),
     clone: ({ repo, git_url }: { repo: string, git_url: string }): void => ipcRenderer.send('git:clone', { repo, git_url }),
     pull: (): Promise<void> => ipcRenderer.invoke('git:pull'),
-    push: (): Promise<void> => ipcRenderer.invoke('git:push'),
+    push: (branch: string): Promise<void> => ipcRenderer.invoke('git:push', branch),
     commit: (): Promise<void> => ipcRenderer.invoke('git:commit'),
     status: (): Promise<string[]> => ipcRenderer.invoke('git:status'),
     headPositonLocal: ({ branch, url }: { branch: string, url: string }): Promise<string> => ipcRenderer.invoke('git:headpositionlocal', { branch, url }),
