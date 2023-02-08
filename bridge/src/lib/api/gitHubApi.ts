@@ -219,32 +219,7 @@ export async function pullForce({ dir, branch, url, author }:
     }
 }
 
-async function main() {
-    const dir = '/Users/sergeykalutsky/Library/Application Support/bridge/storage/guest/test'
-    const url = 'https://github.com/SergeyKalutsky/test.git'
-    const author = { name: 'SergeyKalutsky', email: 'skalutsky@gmail.com' }
-    const branch = 'master'
-    await git.fetch({
-        fs, http, dir: dir, url: url, ref: branch,
-        singleBranch: true,
-        tags: false
-    })
-    try {
-        await git.merge({ fs, dir, ours: branch, theirs: `remotes/origin/${branch}`, author })
-        await git.checkout({ fs, dir: dir, ref: branch })
-    } catch (e) {
-        const oidsRemote = await getOids(dir, `remotes/origin/${branch}`)
-        const oidsLocal = await getOids(dir, branch)
-        for (const oid of oidsRemote) {
-            if (oidsLocal.includes(oid)) {
-                await git.checkout({ fs, dir: dir, ref: oid })
-                await git.deleteBranch({ fs, dir: dir, ref: branch })
-                await git.branch({ fs, dir: dir, ref: branch })
-                await git.merge({ fs, dir, ours: branch, theirs: `remotes/origin/${branch}`, author })
-                await git.checkout({ fs, dir: dir, ref: branch })
-                break
-            }
-        }
-    }
-}
-main()
+// async function main() {
+    
+// }
+// main()
