@@ -285,8 +285,13 @@ function headPositonLocal() {
 }
 
 function pull() {
-  return ipcMain.handle('git:pull', async () => {
-    await git.pull({ fs, http, dir: getProjectDir(), author }).then(console.log)
+  return ipcMain.handle('git:pull', async (event, branch) => {
+    await gitHubApi.pullForce({
+      dir: getProjectDir(),
+      branch,
+      url: store.get('userProjects.activeProject.http'),
+      author
+    })
   })
 }
 
@@ -300,13 +305,14 @@ function commit() {
 
 
 function push() {
-  return ipcMain.handle('git:push', async (event, branch: string) => {
+  return ipcMain.handle('git:push', async (event, { branch, force }) => {
     const res = await git.push({
       fs,
       http,
       dir: getProjectDir(),
       url: store.get('userProjects.activeProject.http'),
       ref: branch,
+      force: force,
       onAuth: () => ({ username: 'SergeyKalutsky', password: store.get('userProjects.activeProject.token') }),
     })
     console.log(res)

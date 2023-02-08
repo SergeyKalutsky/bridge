@@ -181,16 +181,70 @@ export async function headPositonLocal(branch: string, url: string, dir: string)
 }
 
 
-async function main() {
-    const dir = '/Users/sergeykalutsky/Library/Application Support/bridge/storage/guest/test2303'
-    // await logAllBranches(dir)
-    const info = await git.getRemoteInfo({
-        http,
-        url:
-            "https://github.com/SergeyKalutsky/web.git"
-    });
-    console.log(info)
+export async function pullForce({ dir, branch, url, author }:
+    {
+        dir: string;
+        branch: string;
+        url: string;
+        author: { name: string; email: string; };
+    }): Promise<void> {
+    // We always pull force to avoid merge conflicts
+    // First I do not believe the kids and beginners are capable of resolving them
+    // Second the logic of the repo is 1 superuser and branch users
+    // Superuser has the ability to override everyone on their respective branches.
+    // In other words the conflict with itself on the branch is impossible, and the conflict with
+    // superuser should'nt be possible.
+    // This is a simpler way to callaborate.
+    await git.fetch({
+        fs, http, dir: dir, url: url, ref: branch,
+        singleBranch: true,
+        tags: false
+    })
+    try {
+        await git.merge({ fs, dir, ours: branch, theirs: `remotes/origin/${branch}`, author })
+        await git.checkout({ fs, dir: dir, ref: branch })
+    } catch (e) {
+        const oidsRemote = await getOids(dir, `remotes/origin/${branch}`)
+        const oidsLocal = await getOids(dir, branch)
+        for (const oid of oidsRemote) {
+            if (oidsLocal.includes(oid)) {
+                await git.checkout({ fs, dir: dir, ref: oid })
+                await git.deleteBranch({ fs, dir: dir, ref: branch })
+                await git.branch({ fs, dir: dir, ref: branch })
+                await git.merge({ fs, dir, ours: branch, theirs: `remotes/origin/${branch}`, author })
+                await git.checkout({ fs, dir: dir, ref: branch })
+                break
+            }
+        }
+    }
 }
 
+async function main() {
+    const dir = '/Users/sergeykalutsky/Library/Application Support/bridge/storage/guest/test'
+    const url = 'https://github.com/SergeyKalutsky/test.git'
+    const author = { name: 'SergeyKalutsky', email: 'skalutsky@gmail.com' }
+    const branch = 'master'
+    await git.fetch({
+        fs, http, dir: dir, url: url, ref: branch,
+        singleBranch: true,
+        tags: false
+    })
+    try {
+        await git.merge({ fs, dir, ours: branch, theirs: `remotes/origin/${branch}`, author })
+        await git.checkout({ fs, dir: dir, ref: branch })
+    } catch (e) {
+        const oidsRemote = await getOids(dir, `remotes/origin/${branch}`)
+        const oidsLocal = await getOids(dir, branch)
+        for (const oid of oidsRemote) {
+            if (oidsLocal.includes(oid)) {
+                await git.checkout({ fs, dir: dir, ref: oid })
+                await git.deleteBranch({ fs, dir: dir, ref: branch })
+                await git.branch({ fs, dir: dir, ref: branch })
+                await git.merge({ fs, dir, ours: branch, theirs: `remotes/origin/${branch}`, author })
+                await git.checkout({ fs, dir: dir, ref: branch })
+                break
+            }
+        }
+    }
+}
 main()
-// fetch for all branches | fetch does fetch of all branches by default

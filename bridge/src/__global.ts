@@ -49,8 +49,8 @@ declare global {
             getCurrentBranch(): Promise<string>
             clone({ repo, git_url }: { repo: string, git_url: string }): Promise<void>;
             revert(args: { oid: string, oid_prev: string }): Promise<void>
-            pull(): Promise<void>;
-            push(branch: string): Promise<void>;
+            pull(branch: string): Promise<void>;
+            push({ branch, force }: { branch: string, force: boolean }): Promise<void>;
             commit(): Promise<void>;
             log(): Promise<string[]>;
             diff(args: { oid: string, oid_prev: string }): Promise<GitDiff[]>;

@@ -3,7 +3,8 @@ import { FaLongArrowAltDown, FaLongArrowAltUp, FaStop } from 'react-icons/fa'
 import { IconButton, Message } from "../common";
 import { useContext, useEffect, useState } from 'react';
 import { ideContext } from './Editor';
-import { CMD } from './Constants'
+import { CMD, ACE_MODS } from './Constants'
+import buildEditor from './TextEditor';
 
 interface ExecControl {
     type: string
@@ -16,7 +17,7 @@ interface GitStatus {
 }
 
 export function ActionControllIcons(): JSX.Element {
-    const { ide } = useContext(ideContext)
+    const { ide, setIDE, buildFileTree } = useContext(ideContext)
     const [gitStatus, setGitStatus] = useState<GitStatus>({ canCommit: false, canPush: false })
     const [message, setMessage] = useState<JSX.Element>()
     const project = window.settings.get('userProjects.activeProject')
@@ -111,14 +112,24 @@ export function ActionControllIcons(): JSX.Element {
     }
 
     async function handlePullClick() {
-        setMessage(<Message type='loading' text='Скачиваем update с удаленного сервера'/>)
-        await window.git.pull()
+        setMessage(<Message type='loading' text='Скачиваем update с удаленного сервера' />)
+        await window.git.pull(ide.branch)
+        const files = await window.projects.showFiles()
+        const extList = ide.activePath.path.split(".");
+        const ext = extList[extList.length - 1];
+        const editor = await buildEditor(ACE_MODS[ext], false, ide.activePath.path)
+        setIDE({
+            ...ide,
+            files: files,
+            fileTree: buildFileTree(ide, files),
+            editor: editor
+        })
         setMessage(null)
     }
 
     async function handlePushClick() {
-        setMessage(<Message type='loading' text='Отправляем update на удаленный сервер'/>)
-        await window.git.push(ide.branch)
+        setMessage(<Message type='loading' text='Отправляем update на удаленный сервер' />)
+        await window.git.push({ branch: ide.branch, force: false })
         window.sessionStorage.setItem(project.name + ide.branch, 'even')
         setGitStatus({
             ...gitStatus,
