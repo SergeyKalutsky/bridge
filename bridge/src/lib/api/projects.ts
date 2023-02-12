@@ -166,6 +166,12 @@ function createFolder() {
     })
 }
 
+function getFileBasename() {
+    return ipcMain.handle('projects:getfilebasename', (event, { filepath }) => {
+        return path.basename(filepath)
+    })
+}
+
 function createFile() {
     return ipcMain.handle('projects:createfile', (event, data) => {
         let filePath: string
@@ -227,6 +233,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    getFileBasename()
     openSystemFolder()
     getProjectTemplates()
     loadimagebase64()

@@ -20,6 +20,7 @@ declare global {
             platform(): string
         };
         projects: {
+            getFileBasename({ filepath }: { filepath: string }): Promise<string>
             rename({ newName, activePath }: { newName: string, activePath: ActivePath }): Promise<ActivePath>
             projectPath(): Promise<string>
             openSystemFolder(): void

@@ -1,4 +1,3 @@
-import path from 'path'
 import { useState, useEffect, useContext } from "react";
 import { InputForm, PopUp } from "../../common";
 import { MdDriveFileRenameOutline } from "react-icons/md";
@@ -24,7 +23,10 @@ function RenameFile(): JSX.Element {
 
     useEffect(() => {
         if (!ide?.activePath) return
-        setFilename(path.parse(ide.activePath.path).base)
+        const setBasename = async () => {
+            setFilename(await window.projects.getFileBasename({ filepath: ide.activePath.path }))
+        }
+        setBasename()
     });
     return (
         <>
