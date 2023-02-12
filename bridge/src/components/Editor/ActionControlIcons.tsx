@@ -55,7 +55,6 @@ export function ActionControllIcons(): JSX.Element {
         setInitPush()
         const interval = setInterval(async () => {
             const status = await window.git.status()
-            console.log(status)
             if (status.length > 0) {
                 setGitStatus({
                     ...gitStatus,

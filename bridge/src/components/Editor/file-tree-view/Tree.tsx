@@ -19,9 +19,14 @@ function Tree({ children }: { children: React.ReactNode }): JSX.Element {
             e.preventDefault();
             e.stopPropagation();
             setColor("bg-transperent");
-
-            for (const f of e.dataTransfer.files) {
-                await window.projects.copyFile({ src: f.path, destination: '', root: true });
+            if (e.dataTransfer.files.length > 0) {
+                for (const f of e.dataTransfer.files) {
+                    await window.projects.copyFile({ src: f.path, destination: '', root: true });
+                }
+            } else {
+                const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
+                await window.projects.copyFile({ src: draggedPath.path, destination: '', root: true });
+                await window.projects.deleteTreeElement(draggedPath)
             }
             const files = await window.projects.showFiles();
             setIDE({ ...ide, files: files });

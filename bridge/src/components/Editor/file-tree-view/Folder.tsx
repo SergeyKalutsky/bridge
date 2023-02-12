@@ -37,10 +37,16 @@ export default function Folder({ name, children, path }: {
       e.preventDefault();
       e.stopPropagation();
       setColor("bg-transperent");
-
-      for (const f of e.dataTransfer.files) {
-        await window.projects.copyFile({ src: f.path, destination: path, root: false });
+      if (e.dataTransfer.files.length > 0) {
+        for (const f of e.dataTransfer.files) {
+          await window.projects.copyFile({ src: f.path, destination: path, root: false });
+        }
+      } else {
+        const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
+        await window.projects.copyFile({ src: draggedPath.path, destination: path, root: false });
+        await window.projects.deleteTreeElement(draggedPath)
       }
+
       const files = await window.projects.showFiles();
       setIDE({ ...ide, files: files });
     };
@@ -51,12 +57,14 @@ export default function Folder({ name, children, path }: {
       setColor("bg-slate-700");
     });
   }, []);
+
   const bgColor = ide.activePath !== undefined && path === ide.activePath.path ? "bg-slate-700" : "bg-transperent";
   const height = isOpen ? "h-0" : "h-auto";
   return (
-    <div 
-    ref={ref} className={`pl-[20px] ${color}`} onMouseDown={() => console.log('folder')}>
+    <div
+      ref={ref} className={`pl-[20px] ${color}`}>
       <div
+        onMouseDown={() => window.localStorage.setItem('draggedPath', JSON.stringify({ path: path, isDirectory: true }))}
         draggable="true"
         className={`${bgColor} flex items-center hover:bg-slate-700 hover:cursor-pointer`}
         onClick={handleToggle}>

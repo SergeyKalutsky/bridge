@@ -21,15 +21,11 @@ export default function File({ name, path }: {
   const ext = extList[extList.length - 1];
   const bgColor = ide.activePath && path === ide.activePath.path ? 'bg-slate-700' : 'bg-transparent';
 
-  function handleMouse(e) {
-    console.log('file')
-  }
-
   return (
     <div
-      draggable="true"
       className={`pl-[20px] flex items-center ${bgColor} hover:bg-slate-700 hover:cursor-pointer`}
-      onMouseDown={handleMouse}
+      onMouseDown={() => window.localStorage.setItem('draggedPath', JSON.stringify({ path: path, isDirectory: false }))}
+      draggable="true"
       onClick={async (e) => {
         e.preventDefault();
         e.stopPropagation();
