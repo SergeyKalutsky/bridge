@@ -20,12 +20,19 @@ export default function File({ name, path }: {
   const extList = path.split(".");
   const ext = extList[extList.length - 1];
   const bgColor = ide.activePath && path === ide.activePath.path ? 'bg-slate-700' : 'bg-transparent';
+
+  function handleMouse(e) {
+    console.log('file')
+  }
+
   return (
-    <div className={`pl-[20px] flex items-center ${bgColor} hover:bg-slate-700 hover:cursor-pointer`}
+    <div
+      draggable="true"
+      className={`pl-[20px] flex items-center ${bgColor} hover:bg-slate-700 hover:cursor-pointer`}
+      onMouseDown={handleMouse}
       onClick={async (e) => {
         e.preventDefault();
         e.stopPropagation();
-
         setIDE({
           ...ide,
           activePath: { path: path, isDirectory: false },
@@ -34,7 +41,9 @@ export default function File({ name, path }: {
         savePath();
       }}>
       {FILE_ICONS[ext] || <AiFillFile style={{ color: '#dbeafe' }} />}
-      <span className="ml-[5px] text-[18px] text-white overflow-hidden whitespace-nowrap text-ellipsis">{name}</span>
+      <span
+        className="ml-[5px] text-[18px] select-none text-white overflow-hidden whitespace-nowrap text-ellipsis">{name}
+      </span>
     </div>
   );
 }

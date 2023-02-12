@@ -54,11 +54,14 @@ export default function Folder({ name, children, path }: {
   const bgColor = ide.activePath !== undefined && path === ide.activePath.path ? "bg-slate-700" : "bg-transperent";
   const height = isOpen ? "h-0" : "h-auto";
   return (
-    <div ref={ref} className={`pl-[20px] ${color}`}>
-      <div className={`${bgColor} flex items-center hover:bg-slate-700 hover:cursor-pointer`}
+    <div 
+    ref={ref} className={`pl-[20px] ${color}`} onMouseDown={() => console.log('folder')}>
+      <div
+        draggable="true"
+        className={`${bgColor} flex items-center hover:bg-slate-700 hover:cursor-pointer`}
         onClick={handleToggle}>
-        <span><AiFillFolder style={{ color: '#d97706' }} /></span>
-        <span className="ml-[5px] text-[20px] text-white text-ellipsis overflow-hidden whitespace-nowrap">{name}</span>
+        <span ><AiFillFolder style={{ color: '#d97706' }} /></span>
+        <span className="ml-[5px] text-[20px] select-none text-white text-ellipsis overflow-hidden whitespace-nowrap">{name}</span>
       </div>
       <div className={`overflow-hidden ${height}`}>{children}</div>
     </div>
