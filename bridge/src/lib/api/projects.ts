@@ -166,9 +166,10 @@ function createFolder() {
     })
 }
 
+
 function getFileBasename() {
-    return ipcMain.handle('projects:getfilebasename', (event, { filepath }) => {
-        return path.basename(filepath)
+    return ipcMain.on('projects:getfilebasename', (event, { filepath }) => {
+        event.returnValue = path.basename(filepath)
     })
 }
 

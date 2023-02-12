@@ -23,11 +23,8 @@ function RenameFile(): JSX.Element {
 
     useEffect(() => {
         if (!ide?.activePath) return
-        const setBasename = async () => {
-            setFilename(await window.projects.getFileBasename({ filepath: ide.activePath.path }))
-        }
-        setBasename()
-    });
+        setFilename(window.projects.getFileBasename({ filepath: ide.activePath.path }))
+    }, [open]);
     return (
         <>
             <MdDriveFileRenameOutline onClick={() => { setOpen(true); }} className="hover:bg-neutral-500 hover:rounded-full h-[25px]" />
@@ -35,7 +32,12 @@ function RenameFile(): JSX.Element {
                 open={open}
                 onClose={() => { setOpen(false); }}>
                 <div className="w-4/5">
-                    <InputForm value={filename} handleKeyPress={handleEnter} type="text" placeholder="Название файла" />
+                    <InputForm
+                        value={filename}
+                        handleKeyPress={handleEnter}
+                        onChange={(e) => { setFilename(e.target.value) }}
+                        type="text"
+                        placeholder="Название файла" />
                 </div>
             </PopUp>
         </>
