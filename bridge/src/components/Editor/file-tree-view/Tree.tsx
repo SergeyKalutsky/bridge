@@ -1,9 +1,11 @@
 import Folder from "./Folder";
 import File from "./File"
+import ReplaceFilePopUp from "./ReplaceFilePopUp";
 import { ideContext } from "../Editor";
 import { useEffect, useState, useRef, useContext } from "react";
 
-function Tree({ children }: { children: React.ReactNode }): JSX.Element {
+function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
+    const [popUp, setPopUp] = useState<JSX.Element>()
     const [color, setColor] = useState('bg-transperent');
     const { ide, setIDE } = useContext(ideContext)
     const ref = useRef(null);
@@ -16,19 +18,28 @@ function Tree({ children }: { children: React.ReactNode }): JSX.Element {
 
     useEffect(() => {
         const drop = async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setColor("bg-transperent");
+            e.preventDefault()
+            e.stopPropagation()
+            setColor("bg-transperent")
             if (e.dataTransfer.files.length > 0) {
                 for (const f of e.dataTransfer.files) {
                     await window.projects.copyFile({ src: f.path, destination: '', root: true });
                 }
             } else {
                 const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
+                const filename = window.projects.getFileBasename({ filepath: draggedPath.path })
+                const files = await window.projects.showFiles();
+                for (const file of files[0].files) {
+                    if (file.name === filename) {
+                        setPopUp(null)
+                        setPopUp(<ReplaceFilePopUp destination={''} draggedPath={draggedPath} root={true} />)
+                        return
+                    }
+                }
                 await window.projects.copyFile({ src: draggedPath.path, destination: '', root: true });
                 await window.projects.deleteTreeElement(draggedPath)
             }
-            const files = await window.projects.showFiles();
+            const files = await window.projects.showFiles()
             setIDE({ ...ide, files: files });
         };
         ref.current.addEventListener('drop', drop);
@@ -49,7 +60,16 @@ function Tree({ children }: { children: React.ReactNode }): JSX.Element {
 
     };
 
-    return <div ref={ref} onClick={handleClick} className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>{children}</div>;
+    return (
+        <>
+            <div ref={ref}
+                onClick={handleClick}
+                className={`leading-8 h-[calc(100%-40px)] ${color} overflow-y-scroll`}>
+                {children}
+            </div>
+            {popUp}
+        </>
+    )
 }
 
 Tree.File = File;
