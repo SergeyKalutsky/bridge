@@ -7,14 +7,16 @@ import { ideContext } from "../Editor";
 
 export default function DeleteTreeElement(): JSX.Element {
     const [open, setOpen] = useState(false);
-    const { ide, setIDE } = useContext(ideContext)
+    const { ide, setIDE, buildFileTree } = useContext(ideContext)
     const handleClick = async () => {
         window.projects.deleteTreeElement(ide.activePath);
         window.settings.del('userProjects.activeProject.activePath');
+        const files = await window.projects.showFiles()
         setIDE({
             ...ide,
-            activePath: { path: ide.files[0].path, isDirectory: true },
-            files: await window.projects.showFiles(),
+            activePath: { path: files[0].path, isDirectory: true },
+            files: files,
+            fileTree: buildFileTree(files[0].files),
             editor: await buildEditor()
         });
         setOpen(false);
