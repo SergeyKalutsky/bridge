@@ -11,7 +11,7 @@ export default function Folder({ name, children, path }: {
   const [popUp, setPopUp] = useState<JSX.Element>()
   const open = JSON.parse(window.localStorage.getItem(path));
   const [isOpen, setIsOpen] = useState(open === null ? true : open)
-  const { ide, setIDE } = useContext(ideContext)
+  const { ide, setIDE, buildFileTree } = useContext(ideContext)
   const [color, setColor] = useState('bg-transperent')
   const ref = useRef(null);
 
@@ -46,6 +46,11 @@ export default function Folder({ name, children, path }: {
         }
       } else {
         const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
+        // Do not do anything if this is the current file directory its been transfered to
+        const dirname = window.projects.getDirName({ filepath: draggedPath.path })
+        console.log(path, dirname)
+        if (dirname === path) return
+
         const filename = window.projects.getFileBasename({ filepath: draggedPath.path })
         for (const child of children) {
           const file = window.projects.getFileBasename({ filepath: child.key.toString() })
@@ -60,7 +65,7 @@ export default function Folder({ name, children, path }: {
       }
 
       const files = await window.projects.showFiles();
-      setIDE({ ...ide, files: files });
+      setIDE({ ...ide, files: files, fileTree: buildFileTree(files[0].files) });
     };
     ref.current.addEventListener('drop', drop);
     ref.current.addEventListener('dragover', (e) => {

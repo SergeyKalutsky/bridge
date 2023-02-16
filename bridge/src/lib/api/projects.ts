@@ -173,6 +173,12 @@ function getFileBasename() {
     })
 }
 
+function getDirName() {
+    return ipcMain.on('projects:getdirname', (event, { filepath }) => {
+        event.returnValue = path.dirname(filepath)
+    })
+}
+
 function createFile() {
     return ipcMain.handle('projects:createfile', (event, data) => {
         let filePath: string
@@ -234,6 +240,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    getDirName()
     getFileBasename()
     openSystemFolder()
     getProjectTemplates()

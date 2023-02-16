@@ -10,7 +10,7 @@ import { ideContext } from "../Editor";
 
 
 export default function FileTreeView(): JSX.Element {
-    const { ide, buildFileTree } = useContext(ideContext)
+    const { ide } = useContext(ideContext)
     const activeProject = window.settings.get('userProjects.activeProject');
     return (
         <>
@@ -28,7 +28,7 @@ export default function FileTreeView(): JSX.Element {
                 </div>
             </SideMenuHeader>
             <Tree >
-                {ide !== undefined ? buildFileTree(ide, ide.files[0].files) : null}
+                {ide !== undefined ? ide.fileTree : null}
             </Tree>
         </>
     );

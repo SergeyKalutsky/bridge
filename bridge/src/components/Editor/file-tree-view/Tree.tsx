@@ -7,7 +7,7 @@ import { useEffect, useState, useRef, useContext } from "react";
 function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
     const [popUp, setPopUp] = useState<JSX.Element>()
     const [color, setColor] = useState('bg-transperent');
-    const { ide, setIDE } = useContext(ideContext)
+    const { ide, setIDE, buildFileTree } = useContext(ideContext)
     const ref = useRef(null);
     useEffect(() => {
         const onDragLeave = (e) => {
@@ -26,9 +26,11 @@ function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
                     await window.projects.copyFile({ src: f.path, destination: '', root: true });
                 }
             } else {
-                const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
-                const filename = window.projects.getFileBasename({ filepath: draggedPath.path })
                 const files = await window.projects.showFiles();
+                const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
+                const dirname = window.projects.getDirName({ filepath: draggedPath.path })
+                if (files[0].path === dirname) return
+                const filename = window.projects.getFileBasename({ filepath: draggedPath.path })
                 for (const file of files[0].files) {
                     if (file.name === filename) {
                         setPopUp(null)
@@ -40,7 +42,7 @@ function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
                 await window.projects.deleteTreeElement(draggedPath)
             }
             const files = await window.projects.showFiles()
-            setIDE({ ...ide, files: files });
+            setIDE({ ...ide, files: files, fileTree: buildFileTree(files[0].files) });
         };
         ref.current.addEventListener('drop', drop);
         ref.current.addEventListener('dragover', (e) => {

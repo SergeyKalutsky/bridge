@@ -29,6 +29,7 @@ declare global {
             createFolder(createInfo: CreateInfo): Promise<string>;
             readActiveFile(filepath: string): Promise<string>;
             loadimagebase64(filepath: string): Promise<string>
+            getDirName({ filepath }: { filepath: string }): string
 
             mkbasedir(data: any): Promise<void>;
             getLocalProjectsNames(): string[];
