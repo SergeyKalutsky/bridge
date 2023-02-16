@@ -19,8 +19,8 @@ export default function InputForm({ children,
     classInput = '',
     classDiv = '',
     handleKeyPress,
-    disabled=false,
-    onChange }: Props): JSX.Element {
+    disabled = false,
+    onChange = () => { return undefined } }: Props): JSX.Element {
     const handleFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (value === undefined)
             return

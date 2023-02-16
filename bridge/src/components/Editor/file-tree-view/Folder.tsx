@@ -48,7 +48,6 @@ export default function Folder({ name, children, path }: {
         const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
         // Do not do anything if this is the current file directory its been transfered to
         const dirname = window.projects.getDirName({ filepath: draggedPath.path })
-        console.log(path, dirname)
         if (dirname === path) return
 
         const filename = window.projects.getFileBasename({ filepath: draggedPath.path })
