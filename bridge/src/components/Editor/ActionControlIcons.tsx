@@ -120,7 +120,7 @@ export function ActionControllIcons(): JSX.Element {
         setIDE({
             ...ide,
             files: files,
-            fileTree: buildFileTree(ide, files),
+            fileTree: buildFileTree(files),
             editor: editor
         })
         setMessage(null)

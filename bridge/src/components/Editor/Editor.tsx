@@ -13,7 +13,7 @@ import { ActionControllIcons } from "./ActionControlIcons";
 interface IDEContext {
     ide: IDE,
     setIDE: React.Dispatch<React.SetStateAction<IDE>>
-    buildFileTree: (ide: IDE, files: FileObject[]) => JSX.Element[]
+    buildFileTree: (files: FileObject[]) => JSX.Element[]
 }
 
 export const ideContext = createContext<IDEContext>(null)
@@ -23,7 +23,7 @@ export default function Editor(): JSX.Element {
     const [ide, setIDE] = useState<IDE>();
 
 
-    function buildFileTree(ide: IDE, files: FileObject[]): JSX.Element[] {
+    function buildFileTree(files: FileObject[]): JSX.Element[] {
         const elements = [];
         for (const file of files) {
             if (!file.isDirectory) {
@@ -34,7 +34,7 @@ export default function Editor(): JSX.Element {
                 elements.push(<Tree.Folder name={file.name}
                     key={file.path}
                     path={file.path}
-                    children={buildFileTree(ide, file.files)} />);
+                    children={buildFileTree(file.files)} />);
             }
         }
         return elements;
@@ -50,12 +50,14 @@ export default function Editor(): JSX.Element {
                 editor = await buildEditor(ACE_MODS[ext], false, activePath.path);
             }
             const branch = await window.git.getCurrentBranch();
+            const files = await window.projects.showFiles()
             setIDE({
                 ...ide,
                 activePath: activePath,
-                files: await window.projects.showFiles(),
+                files: files,
+                fileTree: buildFileTree(files[0].files),
                 editor: editor,
-                branch: branch
+                branch: branch,
             });
         };
         loadActiveFile();

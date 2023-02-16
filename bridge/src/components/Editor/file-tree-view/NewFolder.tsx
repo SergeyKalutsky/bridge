@@ -14,7 +14,7 @@ const NewFolder = (): JSX.Element => {
         setIDE({
             ...ide,
             files: files,
-            fileTree: buildFileTree(ide, files)
+            fileTree: buildFileTree(files[0].files)
         })
         setOpen(false)
     }

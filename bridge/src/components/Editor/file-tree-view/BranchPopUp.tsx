@@ -41,7 +41,7 @@ function BranchRow({ branch, setOpen }: {
             ...ide,
             branch: branch,
             files: files,
-            fileTree: buildFileTree(ide, files),
+            fileTree: buildFileTree(files[0].files),
             activePath: exist ? ide.activePath : null,
             editor: editor
         })
