@@ -38,6 +38,7 @@ contextBridge.exposeInMainWorld('projects', {
     rename: ({ newName, activePath }: { newName: string, activePath: ActivePath }): Promise<ActivePath> => ipcRenderer.invoke('projects:rename', { newName, activePath }), deleteTreeElement: (activePath: ActivePath): void => ipcRenderer.send('projects:deletetreeelement', activePath),
     getFileBasename: ({ filepath }: { filepath: string }): string => ipcRenderer.sendSync('projects:getfilebasename', { filepath }),
     getDirName: ({ filepath }: { filepath: string }): string => ipcRenderer.sendSync('projects:getdirname', { filepath }),
+    getFolderFiles: ({ directoryPath }: { directoryPath: string }): string[] => ipcRenderer.sendSync('projects:getfolderfiles', { directoryPath }),
     mkprojectdir: (project_name: string): void => ipcRenderer.send('projects:mkprojectdir', project_name),
     copyFile: (args: { src: string, destination: string, root: boolean }): Promise<void> => ipcRenderer.invoke('projects:copyfile', args)
 })

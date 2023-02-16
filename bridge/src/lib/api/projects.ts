@@ -213,8 +213,14 @@ function readActiveFile() {
     return ipcMain.handle('projects:readactivefile', async (event, filepath) => {
         return await readFileAsync(filepath, 'utf-8')
     })
-
 }
+
+function getFolderFiles() {
+    return ipcMain.on('projects:getfolderfiles', (event, { directoryPath }) => {
+        event.returnValue = fs.readdirSync(directoryPath, { withFileTypes: true }).map(item => item.name)
+    })
+}
+
 
 function listFiles() {
     return ipcMain.handle('projects:listfiles', async (event) => {
@@ -240,6 +246,7 @@ function copyFile() {
 }
 
 function projectAPI(): void {
+    getFolderFiles()
     getDirName()
     getFileBasename()
     openSystemFolder()

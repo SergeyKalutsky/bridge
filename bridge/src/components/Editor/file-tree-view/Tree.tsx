@@ -30,6 +30,7 @@ function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
                 const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
                 const dirname = window.projects.getDirName({ filepath: draggedPath.path })
                 if (files[0].path === dirname) return
+                
                 const filename = window.projects.getFileBasename({ filepath: draggedPath.path })
                 for (const file of files[0].files) {
                     if (file.name === filename) {

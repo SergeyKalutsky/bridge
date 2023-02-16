@@ -21,6 +21,7 @@ declare global {
         };
         projects: {
             getFileBasename({ filepath }: { filepath: string }): string
+            getFolderFiles({ directoryPath }: { directoryPath: string }): string[]
             rename({ newName, activePath }: { newName: string, activePath: ActivePath }): Promise<ActivePath>
             projectPath(): Promise<string>
             openSystemFolder(): void

@@ -51,8 +51,8 @@ export default function Folder({ name, children, path }: {
         if (dirname === path) return
 
         const filename = window.projects.getFileBasename({ filepath: draggedPath.path })
-        for (const child of children) {
-          const file = window.projects.getFileBasename({ filepath: child.key.toString() })
+        const files = window.projects.getFolderFiles({ directoryPath: path })
+        for (const file of files) {
           if (file === filename) {
             setPopUp(null)
             setPopUp(<ReplaceFilePopUp destination={path} draggedPath={draggedPath} root={false} />)
