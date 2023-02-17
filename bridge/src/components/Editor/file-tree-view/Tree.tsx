@@ -44,12 +44,15 @@ function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
                 await window.projects.deleteTreeElement(draggedPath)
             }
             const files = await window.projects.showFiles()
+            const branch = await window.git.getCurrentBranch();
+            window.settings.del('userProjects.activeProject.activePath');
             setIDE({
                 ...ide,
                 files: files,
                 fileTree: buildFileTree(files[0].files),
                 editor: await buildEditor(),
-                activePath: { path: files[0].path, isDirectory: true }
+                activePath: { path: files[0].path, isDirectory: true },
+                branch: branch
             });
         };
         ref.current.addEventListener('drop', drop);

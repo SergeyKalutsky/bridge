@@ -65,6 +65,7 @@ export default function Folder({ name, children, path }: {
       }
 
       const files = await window.projects.showFiles();
+      window.settings.del('userProjects.activeProject.activePath');
       setIDE({
         ...ide,
         files: files,
