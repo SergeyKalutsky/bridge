@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { AiFillFolder } from "react-icons/ai";
 import { ideContext } from "../Editor";
 import ReplaceFilePopUp from "./ReplaceFilePopUp";
+import buildEditor from "../TextEditor";
 
 export default function Folder({ name, children, path }: {
   children: JSX.Element[];
@@ -64,7 +65,13 @@ export default function Folder({ name, children, path }: {
       }
 
       const files = await window.projects.showFiles();
-      setIDE({ ...ide, files: files, fileTree: buildFileTree(files[0].files) });
+      setIDE({
+        ...ide,
+        files: files,
+        fileTree: buildFileTree(files[0].files),
+        editor: await buildEditor(),
+        activePath: { path: files[0].path, isDirectory: true }
+      });
     };
     ref.current.addEventListener('drop', drop);
     ref.current.addEventListener('dragover', (e) => {

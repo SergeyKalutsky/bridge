@@ -2,6 +2,7 @@ import Folder from "./Folder";
 import File from "./File"
 import ReplaceFilePopUp from "./ReplaceFilePopUp";
 import { ideContext } from "../Editor";
+import buildEditor from "../TextEditor";
 import { useEffect, useState, useRef, useContext } from "react";
 
 function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
@@ -30,7 +31,7 @@ function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
                 const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
                 const dirname = window.projects.getDirName({ filepath: draggedPath.path })
                 if (files[0].path === dirname) return
-                
+
                 const filename = window.projects.getFileBasename({ filepath: draggedPath.path })
                 for (const file of files[0].files) {
                     if (file.name === filename) {
@@ -43,7 +44,13 @@ function Tree({ children }: { children: JSX.Element[] }): JSX.Element {
                 await window.projects.deleteTreeElement(draggedPath)
             }
             const files = await window.projects.showFiles()
-            setIDE({ ...ide, files: files, fileTree: buildFileTree(files[0].files) });
+            setIDE({
+                ...ide,
+                files: files,
+                fileTree: buildFileTree(files[0].files),
+                editor: await buildEditor(),
+                activePath: { path: files[0].path, isDirectory: true }
+            });
         };
         ref.current.addEventListener('drop', drop);
         ref.current.addEventListener('dragover', (e) => {
