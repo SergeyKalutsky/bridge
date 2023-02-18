@@ -43,7 +43,6 @@ export function ActionControllIcons(): JSX.Element {
                 }
             }
             const headPos = await window.git.headPositonLocal({ branch: ide.branch, url: project.http })
-            console.log(headPos)
             if (headPos === 'ahead') {
                 window.sessionStorage.setItem(project.name + ide.branch, headPos)
                 setGitStatus({
@@ -68,7 +67,7 @@ export function ActionControllIcons(): JSX.Element {
     useEffect(() => {
         window.shared.incomingData("terminal:incomingdata", (data: string) => {
             const terminalHandle = window.sessionStorage.getItem('terminalHandle')
-            if (data.includes(terminalHandle)) {
+            if (data.includes(terminalHandle) && !data.includes('&')) {
                 setExecControl(
                     {
                         type: 'play',

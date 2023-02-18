@@ -55,9 +55,8 @@ const Xterm = (): JSX.Element => {
             window.terminal.keystoke(e)
         })
         window.shared.incomingData("terminal:incomingdata", (data: string) => {
-            if (!window.sessionStorage.getItem('terminalHandle')) {
-                data = _.trim(data)
-                window.sessionStorage.setItem('terminalHandle', data)
+            if (!window.sessionStorage.getItem('terminalHandle') && _.trim(data)) {
+                window.sessionStorage.setItem('terminalHandle', _.trim(data))
                 term.write(data)
                 return
             }
@@ -84,7 +83,7 @@ const Xterm = (): JSX.Element => {
         term.open(ref.current);
         const output = window.sessionStorage.getItem('terminalOutput')
         if (output === null) {
-            window.terminal.keystoke('\n')
+            window.terminal.keystoke('\r')
         } else {
             term.write(output)
         }
