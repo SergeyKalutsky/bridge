@@ -7,7 +7,7 @@ import { ExecControl } from "./types";
 import { ideContext } from './Editor';
 
 
-export function PlayButton() {
+export function PlayButton(): JSX.Element {
     const { ide } = useContext(ideContext)
     const [execControl, setExecControl] = useState<ExecControl>(
         {
