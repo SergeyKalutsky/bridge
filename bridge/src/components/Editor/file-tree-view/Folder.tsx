@@ -17,17 +17,22 @@ export default function Folder({ name, children, path }: {
   const ref = useRef(null);
 
 
-  const handleToggle = e => {
+  async function handleClick(e) {
     e.preventDefault();
     e.stopPropagation();
     setIDE({ ...ide, activePath: { path: path, isDirectory: true } });
 
     const userProjects = window.settings.get('userProjects');
     userProjects.activeProject.activePath = { path: path, isDirectory: true };
+    setIDE({
+      ...ide,
+      activePath: { path: path, isDirectory: true },
+      editor: await buildEditor('plain_text', false, null)
+    });
     window.settings.set({ userProjects: userProjects });
     setIsOpen(!isOpen);
     window.localStorage.setItem(path, JSON.stringify(!isOpen));
-  };
+  }
 
   useEffect(() => {
     const onDragLeave = (e) => {
@@ -92,7 +97,7 @@ export default function Folder({ name, children, path }: {
           onMouseDown={() => window.localStorage.setItem('draggedPath', JSON.stringify({ path: path, isDirectory: true }))}
           draggable="true"
           className={`${bgColor} flex items-center hover:bg-slate-700 hover:cursor-pointer`}
-          onClick={handleToggle}>
+          onClick={handleClick}>
           <span ><AiFillFolder style={{ color: '#d97706' }} /></span>
           <span className="ml-[5px] text-[20px] select-none text-white text-ellipsis overflow-hidden whitespace-nowrap">{name}</span>
         </div>

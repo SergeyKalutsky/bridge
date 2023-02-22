@@ -54,6 +54,15 @@ export function ActionControllIcons(): JSX.Element {
         setMessage(<Message type='loading' text='Скачиваем update с удаленного сервера' className='text-lg' />)
         await window.git.pull(ide.branch)
         const files = await window.projects.showFiles()
+        if (ide.activePath.isDirectory) {
+            setIDE({
+                ...ide,
+                files: files,
+                fileTree: buildFileTree(files[0].files)
+            })
+            setMessage(null)
+            return
+        }
         const extList = ide.activePath.path.split(".");
         const ext = extList[extList.length - 1];
         const editor = await buildEditor(ACE_MODS[ext], false, ide.activePath.path)

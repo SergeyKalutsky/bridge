@@ -13,8 +13,8 @@ import "ace-builds/src-noconflict/theme-monokai";
 export default async function buildEditor(mode = 'plain_text',
     readOnly = true,
     path = null): Promise<JSX.Element> {
-    let fileContent = 'Выберите или создайте файл, чтобы начать работать';
-    if (path !== null) {
+    let fileContent = '';
+    if (path) {
         fileContent = await window.projects.readActiveFile(path);
     }
     const onChange = (newValue: string) => {
