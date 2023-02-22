@@ -19,4 +19,14 @@ interface IDE {
     branch: string
 }
 
-export { ActivePath, FileObject, IDE }
+interface ExecControl {
+    type: string
+    jsx: JSX.Element
+}
+
+interface GitStatus {
+    canCommit: boolean
+    canPush: boolean
+}
+
+export { ActivePath, FileObject, IDE, ExecControl, GitStatus }
