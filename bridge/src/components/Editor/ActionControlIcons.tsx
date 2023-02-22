@@ -19,22 +19,12 @@ export function ActionControllIcons(): JSX.Element {
         const setInitPush = async () => {
             if (!(project?.http && ide?.branch)) return
             const pos = window.sessionStorage.getItem(project.name + ide.branch)
-            if (pos) {
-                if (pos === 'ahead') {
-                    setGitStatus({
-                        ...gitStatus,
-                        canPush: true
-                    })
-                    return
-                }
-            }
-            const headPos = await window.git.headPositonLocal({ branch: ide.branch, url: project.http })
-            if (headPos === 'ahead') {
-                window.sessionStorage.setItem(project.name + ide.branch, headPos)
+            if (pos === 'ahead') {
                 setGitStatus({
                     ...gitStatus,
                     canPush: true
                 })
+                return
             }
         }
         setInitPush()
@@ -46,7 +36,7 @@ export function ActionControllIcons(): JSX.Element {
                     canCommit: true
                 })
             }
-        }, 2000)
+        }, 1000)
         return () => { clearInterval(interval) };
     }, [ide?.branch])
 
@@ -61,7 +51,7 @@ export function ActionControllIcons(): JSX.Element {
     }
 
     async function handlePullClick() {
-        setMessage(<Message type='loading' text='Скачиваем update с удаленного сервера' />)
+        setMessage(<Message type='loading' text='Скачиваем update с удаленного сервера' className='text-lg' />)
         await window.git.pull(ide.branch)
         const files = await window.projects.showFiles()
         const extList = ide.activePath.path.split(".");
@@ -70,14 +60,14 @@ export function ActionControllIcons(): JSX.Element {
         setIDE({
             ...ide,
             files: files,
-            fileTree: buildFileTree(files),
+            fileTree: buildFileTree(files[0].files),
             editor: editor
         })
         setMessage(null)
     }
 
     async function handlePushClick() {
-        setMessage(<Message type='loading' text='Отправляем update на удаленный сервер' />)
+        setMessage(<Message type='loading' text='Отправляем update на удаленный сервер' className='text-lg' />)
         await window.git.push({ branch: ide.branch, force: false })
         window.sessionStorage.setItem(project.name + ide.branch, 'even')
         setGitStatus({
