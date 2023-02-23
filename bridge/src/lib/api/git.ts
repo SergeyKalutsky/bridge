@@ -174,29 +174,9 @@ function checkoutBranch() {
 
 function status() {
   return ipcMain.handle('git:status', async (event) => {
-    const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3
-
-    const statusMapping = {
-      "003": "added, staged, deleted unstaged",
-      "020": "new, untracked",
-      "022": "added, staged",
-      "023": "added, staged, with unstaged changes",
-      "100": "deleted, staged",
-      "101": "deleted, unstaged",
-      "103": "modified, staged, deleted unstaged",
-      "111": "unmodified",
-      "121": "modified, unstaged",
-      "122": "modified, staged",
-      "123": "modified, staged, with unstaged changes"
-    };
-    const dir = getProjectDir()
-    const statusMatrix = (await git.statusMatrix({ fs, dir }))
-      .filter(row => row[HEAD] !== row[WORKDIR] || row[HEAD] !== row[STAGE])
-
-    return statusMatrix.map(row => statusMapping[row.slice(1).join("")] + ": " + row[FILE])
+    return await gitHubApi.status(getProjectDir())
   })
 }
-
 
 
 function addGitHubRemote() {
@@ -298,7 +278,7 @@ function pull() {
 
 function commit() {
   return ipcMain.handle('git:commit', async () => {
-    await git.add({ fs, dir: getProjectDir(), filepath: '.' })
+    await gitHubApi.add(getProjectDir())
     await git.commit({ fs, dir: getProjectDir(), message: 'test', author })
   })
 }

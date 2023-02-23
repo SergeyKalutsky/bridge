@@ -129,7 +129,7 @@ export async function pushTestBranch({ dir, token, git_url }:
     }
 }
 
-async function status(dir: string) {
+export async function status(dir: string) {
     const FILE = 0, HEAD = 1, WORKDIR = 2, STAGE = 3
 
     const statusMapping = {
@@ -147,13 +147,13 @@ async function status(dir: string) {
     };
 
     const statusMatrix = (await git.statusMatrix({ fs, dir }))
-    //   .filter(row => row[HEAD] !== row[WORKDIR] || row[HEAD] !== row[STAGE])
+        .filter(row => row[HEAD] !== row[WORKDIR] || row[HEAD] !== row[STAGE])
 
     return statusMatrix.map(row => statusMapping[row.slice(1).join("")] + ": " + row[FILE])
 }
 
 
-async function getOids(dir: string, branch: string) {
+export async function getOids(dir: string, branch: string) {
     const commits = await git.log({
         fs,
         dir: dir,
@@ -219,7 +219,24 @@ export async function pullForce({ dir, branch, url, author }:
     }
 }
 
+
+export async function add(dir: string) {
+    const statusMatrix = await status(dir)
+    for (const stat of statusMatrix) {
+        if (stat.includes('deleted') && stat.includes('unstaged')) {
+            const [_, file] = stat.split(': ')
+            await git.remove({ fs, dir, filepath: file })
+        }
+    }
+    await git.add({ fs, dir: dir, filepath: '.' })
+}
+
+
+
 // async function main() {
-    
+//     const dir = 'C:\\Users\\skalu\\AppData\\Roaming\\bridge\\storage\\guest\\122'
+//     // await git.add({ fs, dir: dir, filepath: 'readme.md' })
+//     await add(dir)
+
 // }
 // main()

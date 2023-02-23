@@ -6,21 +6,7 @@ import util from 'util'
 import path from 'path'
 import fs from 'fs'
 import ncp from 'ncp'
-import glob from 'glob'
 import { templates } from './templates';
-
-
-const removeFromGit = (dir: string) => {
-    const listFiles = function (src, callback) {
-        glob(src + '/**/*.*', callback);
-    };
-    listFiles(dir, async (err, res) => {
-        if (err) throw err
-        for (const filePath of res) {
-            await git.remove({ fs, dir: getProjectDir(), filepath: filePath.replace(getProjectDir() + '/', '') })
-        }
-    });
-}
 
 
 const fsPromises = fs.promises;
@@ -108,12 +94,9 @@ function deleteTreeElement() {
         // unless we use remove, git.add(..., '.') can only add existing files
         if (activePath.isDirectory) {
             fs.rmSync(activePath.path, { recursive: true });
-            removeFromGit(activePath.path)
         } else {
             fs.unlinkSync(activePath.path)
             const relFilePath = activePath.path.replace(getProjectDir() + '/', '')
-            console.log(relFilePath)
-            await git.remove({ fs, dir: getProjectDir(), filepath: relFilePath })
         }
     })
 }
@@ -136,7 +119,6 @@ function renameFile() {
         const newPath = path.join(path.parse(data.activePath.path).dir, data.newName)
         fs.renameSync(data.activePath.path, newPath);
         store.set('userProjects.activeProject.activePath', { path: newPath, isDirectory: data.activePath.isDirectory })
-        git.remove({ fs, dir: getProjectDir(), filepath: data.activePath.path.replace(getProjectDir() + '/', '') })
         event.returnValue = newPath
     })
 }

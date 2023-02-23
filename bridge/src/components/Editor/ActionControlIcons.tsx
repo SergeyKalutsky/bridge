@@ -19,6 +19,7 @@ export function ActionControllIcons(): JSX.Element {
         const setInitPush = async () => {
             if (!(project?.http && ide?.branch)) return
             const pos = window.sessionStorage.getItem(project.name + ide.branch)
+            console.log('here', pos)
             if (pos === 'ahead') {
                 setGitStatus({
                     ...gitStatus,
@@ -30,6 +31,7 @@ export function ActionControllIcons(): JSX.Element {
         setInitPush()
         const interval = setInterval(async () => {
             const status = await window.git.status()
+            console.log(status)
             if (status.length > 0) {
                 setGitStatus({
                     ...gitStatus,
