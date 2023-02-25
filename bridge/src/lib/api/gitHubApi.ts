@@ -3,6 +3,87 @@ import git, { GetRemoteInfoResult } from 'isomorphic-git'
 import http from 'isomorphic-git/http/node'
 import fs from 'fs'
 import { Octokit } from "@octokit/core"
+import path from 'path'
+
+function Utf8ArrayToStr(array) {
+    let out, i, c;
+    let char2, char3;
+
+    out = "";
+    const len = array?.length ? array.length : 0;
+    i = 0;
+    while (i < len) {
+        c = array[i++];
+        switch (c >> 4) {
+            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+                // 0xxxxxxx
+                out += String.fromCharCode(c);
+                break;
+            case 12: case 13:
+                // 110x xxxx   10xx xxxx
+                char2 = array[i++];
+                out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+                break;
+            case 14:
+                // 1110 xxxx  10xx xxxx  10xx xxxx
+                char2 = array[i++];
+                char3 = array[i++];
+                out += String.fromCharCode(((c & 0x0F) << 12) |
+                    ((char2 & 0x3F) << 6) |
+                    ((char3 & 0x3F) << 0));
+                break;
+        }
+    }
+    return out;
+}
+
+
+export async function getFileChanges(dir: string, oid: string, oid_prev: string) {
+    const imgExt = ['apng', 'avif', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp']
+    const A = git.TREE({ ref: oid })
+    const B = git.TREE({ ref: oid_prev })
+    // Get a list of the files that changed
+    const fileChanges = []
+    await git.walk({
+        fs: fs,
+        dir: dir,
+        trees: [A, B],
+        map: async function (filename, [A, B]) {
+            const arr = filename.split('.')
+            const ext = arr[arr.length - 1]
+
+            if (A === null) {
+                fileChanges.push({
+                    filename: filename,
+                    newFile: '',
+                    oldFile: imgExt.includes(ext) ? 'raw bytes++' : Utf8ArrayToStr(await B.content())
+                })
+                return
+            }
+
+            if (await A.type() === 'tree')
+                return
+
+            if (B === null) {
+                fileChanges.push({
+                    filename: filename,
+                    newFile: imgExt.includes(ext) ? 'raw bytes++' : Utf8ArrayToStr(await A.content()),
+                    oldFile: ''
+                })
+                return
+            }
+            if (await A.oid() === await B.oid())
+                return
+            fileChanges.push({
+                filename: filename,
+                newFile: Utf8ArrayToStr(await A.content()),
+                oldFile: Utf8ArrayToStr(await B.content())
+            })
+
+        }
+    })
+    return fileChanges
+}
 
 export async function userLogin(token: string) {
     const octokit = new Octokit({ auth: token });
@@ -233,10 +314,12 @@ export async function add(dir: string) {
 
 
 
-// async function main() {
-//     const dir = 'C:\\Users\\skalu\\AppData\\Roaming\\bridge\\storage\\guest\\122'
-//     // await git.add({ fs, dir: dir, filepath: 'readme.md' })
-//     await add(dir)
+async function main() {
+    const dir = '/Users/sergeykalutsky/Library/Application Support/bridge/storage/guest/test'
+    const oids = await getOids(dir, 'master')
+    const changes = await getFileChanges(dir, oids[0], oids[1])
+    console.log(changes)
+    // await add(dir)
 
-// }
-// main()
+}
+main()

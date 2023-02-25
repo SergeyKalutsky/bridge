@@ -9,6 +9,29 @@ import fs from 'fs'
 
 const author = { name: 'SergeyKalutsky', email: 'skalutsky@gmail.com' }
 
+function cleanEmptyFoldersRecursively(folder) {
+  const isDir = fs.statSync(folder).isDirectory();
+  if (!isDir) {
+    return;
+  }
+  let files = fs.readdirSync(folder);
+  if (files.length > 0) {
+    files.forEach(function (file) {
+      const fullPath = path.join(folder, file);
+      cleanEmptyFoldersRecursively(fullPath);
+    });
+
+    // re-evaluate files; after deleting subfolder
+    // we may have parent folder empty now
+    files = fs.readdirSync(folder);
+  }
+  if (files.length == 0) {
+    console.log("removing: ", folder);
+    fs.rmdirSync(folder);
+    return;
+  }
+}
+
 function Utf8ArrayToStr(array) {
   let out, i, c;
   let char2, char3;
@@ -41,75 +64,6 @@ function Utf8ArrayToStr(array) {
   return out;
 }
 
-
-function cleanEmptyFoldersRecursively(folder) {
-  const isDir = fs.statSync(folder).isDirectory();
-  if (!isDir) {
-    return;
-  }
-  let files = fs.readdirSync(folder);
-  if (files.length > 0) {
-    files.forEach(function (file) {
-      const fullPath = path.join(folder, file);
-      cleanEmptyFoldersRecursively(fullPath);
-    });
-
-    // re-evaluate files; after deleting subfolder
-    // we may have parent folder empty now
-    files = fs.readdirSync(folder);
-  }
-  if (files.length == 0) {
-    console.log("removing: ", folder);
-    fs.rmdirSync(folder);
-    return;
-  }
-}
-
-
-const getFileChanges = async (oid: string, oid_prev: string) => {
-  const imgExt = ['apng', 'avif', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp']
-  const A = git.TREE({ ref: oid })
-  const B = git.TREE({ ref: oid_prev })
-  // Get a list of the files that changed
-  const fileChanges = [];
-  await git.walk({
-    fs: fs,
-    dir: getProjectDir(),
-    trees: [A, B],
-    map: async function (filename, [A, B]) {
-      if (A === null || await A.type() === 'tree') return
-      const arr = filename.split('.')
-      const ext = arr[arr.length - 1]
-
-      if (imgExt.includes(ext)) {
-        fileChanges.push({
-          filename: filename,
-          newFile: 'raw bytes++',
-          oldFile: ''
-        })
-        return
-      }
-
-      if (B === null) {
-        fileChanges.push({
-          filename: filename,
-          newFile: Utf8ArrayToStr(await A.content()),
-          oldFile: ''
-        })
-        return
-      }
-      if (await A.oid() === await B.oid()) return
-
-      fileChanges.push({
-        filename: filename,
-        newFile: Utf8ArrayToStr(await A.content()),
-        oldFile: Utf8ArrayToStr(await B.content())
-      })
-
-    }
-  })
-  return fileChanges
-}
 
 
 const revertChanges = async (oid: string, oid_revert: string, dir: string) => {
@@ -216,7 +170,6 @@ function testGitHubToken() {
   return ipcMain.on('git:testtoken', async (event, { token, repo, git_url }) => {
     const dir = getProjectDir(repo)
     const success = await gitHubApi.pushTestBranch({ token, dir, git_url })
-    console.log(success)
     if (success) {
       event.reply('git:testtoken', { type: 'success', msg: '' })
       return
@@ -243,7 +196,7 @@ function clone() {
     await git.clone({
       fs, http, dir: path.join(BASE_DIR, store.get('user.login'), repo),
       url: git_url
-    }).then(console.log)
+    })
     event.reply('git:clone', { msg: 'cloned' })
   })
 }
@@ -295,7 +248,6 @@ function push() {
       force: force,
       onAuth: () => ({ username: 'SergeyKalutsky', password: store.get('userProjects.activeProject.token') }),
     })
-    console.log(res)
   })
 }
 
@@ -309,7 +261,7 @@ function revert() {
 
 function diff() {
   return ipcMain.on('git:diff', async (event, args) => {
-    const res = await getFileChanges(args.oid, args.oid_prev)
+    const res = await gitHubApi.getFileChanges(getProjectDir(), args.oid, args.oid_prev)
     event.returnValue = res
   })
 }
