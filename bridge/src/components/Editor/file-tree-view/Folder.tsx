@@ -46,11 +46,11 @@ export default function Folder({ name, children, path }: {
       e.preventDefault();
       e.stopPropagation();
       setColor("bg-transperent");
+      setIsOpen(false)
       if (e.dataTransfer.files.length > 0) {
         for (const f of e.dataTransfer.files) {
           await window.projects.copyFile({ src: f.path, destination: path, root: false });
         }
-        setIsOpen(false)
       } else {
         const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
         // Do not do anything if this is the current file directory its been transfered to
@@ -69,7 +69,6 @@ export default function Folder({ name, children, path }: {
         await window.projects.copyFile({ src: draggedPath.path, destination: path, root: false });
         await window.projects.deleteTreeElement(draggedPath)
       }
-
       const files = await window.projects.showFiles();
       window.settings.del('userProjects.activeProject.activePath');
       setIDE({
