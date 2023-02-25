@@ -50,6 +50,7 @@ export default function Folder({ name, children, path }: {
         for (const f of e.dataTransfer.files) {
           await window.projects.copyFile({ src: f.path, destination: path, root: false });
         }
+        setIsOpen(false)
       } else {
         const draggedPath = JSON.parse(window.localStorage.getItem('draggedPath'))
         // Do not do anything if this is the current file directory its been transfered to
