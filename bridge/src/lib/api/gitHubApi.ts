@@ -53,6 +53,8 @@ export async function getFileChanges(dir: string, oid: string, oid_prev: string)
             const ext = arr[arr.length - 1]
 
             if (A === null) {
+                if (await B.type() === 'tree')
+                    return
                 fileChanges.push({
                     filename: filename,
                     newFile: '',
