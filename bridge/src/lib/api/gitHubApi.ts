@@ -314,12 +314,12 @@ export async function add(dir: string) {
 
 
 
-async function main() {
-    const dir = '/Users/sergeykalutsky/Library/Application Support/bridge/storage/guest/test'
-    const oids = await getOids(dir, 'master')
-    const changes = await getFileChanges(dir, oids[0], oids[1])
-    console.log(changes)
-    // await add(dir)
+// async function main() {
+//     const dir = '/Users/sergeykalutsky/Library/Application Support/bridge/storage/guest/test'
+//     const oids = await getOids(dir, 'master')
+//     const changes = await getFileChanges(dir, oids[0], oids[1])
+//     console.log(changes)
+//     // await add(dir)
 
-}
-main()
+// }
+// main()
