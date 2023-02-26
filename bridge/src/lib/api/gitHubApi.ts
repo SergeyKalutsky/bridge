@@ -39,7 +39,7 @@ function Utf8ArrayToStr(array) {
 
 
 export async function getFileChanges(dir: string, oid: string, oid_prev: string) {
-    const imgExt = ['apng', 'avif', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp']
+    const imgExt = ['apng', 'avif', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp', 'bmp']
     const A = git.TREE({ ref: oid })
     const B = git.TREE({ ref: oid_prev })
     // Get a list of the files that changed
