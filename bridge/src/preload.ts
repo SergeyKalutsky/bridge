@@ -1,6 +1,6 @@
 import { FileChanges, CreateInfo, ActivePath, Package, Template } from './types'
 import { contextBridge, ipcRenderer } from "electron"
-import { GitDiff } from './components/git/types'
+import { GitDiff } from './components/Git/types'
 import { FileObject } from './components/Editor/types'
 
 contextBridge.exposeInMainWorld('shared', {

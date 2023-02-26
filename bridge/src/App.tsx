@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import LoginPage from './components/login/LoginPage';
+import LoginPage from './components/Login/LoginPage';
 import AppContent from './components/AppContent'
 import './assets/index.css'
 

@@ -1,5 +1,5 @@
 import { FileObject } from './components/Editor/types';
-import { GitDiff } from './components/git/types';
+import { GitDiff } from './components/Git/types';
 import { Package, FileChanges, CreateInfo, ActivePath, Template } from './types';
 
 
