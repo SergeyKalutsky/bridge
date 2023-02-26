@@ -1,11 +1,38 @@
 import { Workspace, ToolBar, IconButton } from "../common";
-import { HiRefresh } from 'react-icons/hi'
+// import { HiRefresh } from 'react-icons/hi'
+import { Link, useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import ReactDiffViewer from 'react-diff-viewer';
 import darkModeStyle from './DiffViewerStyles'
 import { Git } from './types'
 import Switch from "react-switch";
 import DropDown from './DropDown';
+
+function BroseFilesButton({ git, setGit }: {
+  git: Git;
+  setGit: React.Dispatch<React.SetStateAction<Git>>;
+}): JSX.Element {
+  const history = useHistory()
+  async function handleClick() {
+    history.push('/commithistory')
+    // const args = { oid: git.oids[0], oid_prev: git.activeOid };
+    // await window.git.revert(args);
+    // window.settings.del('userProjects.activeProject.activePath');
+    // setGit({
+    //   ...git,
+    //   oids: await window.git.log()
+    // });
+  }
+  return (
+    <div className="w-1/4 flex justify-start items-center" onClick={handleClick}>
+      <div className="ml-10 flex items-center justify-center w-[200px] h-[40px] hover:cursor-pointer rounded-lg hover:bg-zinc-800/60 pl-2 pr-2 pt-1 pb-1">
+        <span className="text-slate-100 grow text-lg font-medium text-ellipsis whitespace-nowrap truncate">Посмотреть файлы</span>
+      </div>
+    </div>
+  )
+}
+
+
 
 export default function WorkspaceGit({ git, setGit }: {
   git: Git;
@@ -18,16 +45,7 @@ export default function WorkspaceGit({ git, setGit }: {
     setDiffViewFileIndex(0);
   }, [git.gitDiffs]);
 
-  const handleIconClick = async () => {
-    const args = { oid: git.oids[0], oid_prev: git.activeOid };
 
-    await window.git.revert(args);
-    window.settings.del('userProjects.activeProject.activePath');
-    setGit({
-      ...git,
-      oids: await window.git.log()
-    });
-  };
   const diff = git.gitDiffs[diffViewFileIndex];
   return (
     <Workspace>
@@ -45,9 +63,10 @@ export default function WorkspaceGit({ git, setGit }: {
                 offHandleColor={'#C7C3C3'}
                 onHandleColor={'#C7C3C3'}
                 checked={splitView} />
-              <IconButton onClick={handleIconClick}>
+              <BroseFilesButton git={git} setGit={setGit} />
+              {/* <IconButton onClick={handleIconClick}>
                 <HiRefresh style={{ color: '#ffffff', height: 30, width: 30 }} />
-              </IconButton>
+              </IconButton> */}
             </div>
           </div>
         </ToolBar>

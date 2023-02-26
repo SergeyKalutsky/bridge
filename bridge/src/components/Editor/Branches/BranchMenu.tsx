@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { IoMdGitBranch } from 'react-icons/io'
-import { ideContext } from '../Editor/Editor';
+import { ideContext } from '../Editor';
 import BranchPopUp from "./BranchPopUp";
 
 export function BranchMenu(): JSX.Element {

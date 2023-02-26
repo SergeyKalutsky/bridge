@@ -1,13 +1,10 @@
 import { IDE, FileObject } from "./types";
-import Xterm from "./Xterm";
 import buildEditor from "./TextEditor";
 import FileTreeView from "./file-tree-view/FileTreeView";
 import { ACE_MODS } from './Constants'
 import { useEffect, useState, createContext } from "react";
 import { ToggleBar, SideMenu, Workspace, ToolBar } from "../common";
 import { Tree } from "./file-tree-view/Tree";
-import { BranchMenu } from "./Branches/BranchMenu";
-import { ActionControllIcons } from "./ActionControlIcons";
 
 
 interface IDEContext {
@@ -18,7 +15,7 @@ interface IDEContext {
 
 export const ideContext = createContext<IDEContext>(null)
 
-export default function Editor(): JSX.Element {
+export default function CommitView(): JSX.Element {
     const [activeToggle, setActiveToggle] = useState(false);
     const [ide, setIDE] = useState<IDE>();
 
@@ -72,12 +69,9 @@ export default function Editor(): JSX.Element {
                 <ToggleBar handleToggle={() => { setActiveToggle(!activeToggle); }} />
                 <Workspace>
                     <ToolBar>
-                        <BranchMenu />
-                        <ActionControllIcons />
                     </ToolBar>
                     <div className="w-full flex-1 flex flex-col">
                         {ide ? ide.editor : null}
-                        <Xterm />
                     </div>
                 </Workspace>
             </ideContext.Provider>

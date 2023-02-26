@@ -3,6 +3,7 @@ import SideNavBar from './SideNavBar'
 import { Git } from './git/Git'
 import  Projects from './projects/Projects'
 import Editor from './Editor/Editor'
+import CommitView from "./CommitView/CommitView";
 
 const AppContent = (): JSX.Element => {
 
@@ -13,6 +14,7 @@ const AppContent = (): JSX.Element => {
                 <Switch>
                     <Route exact path="/" component={Projects} />
                     <Route exact path="/editor" component={Editor} />
+                    <Route exact path="/commithistory" component={CommitView} />
                     <Route exact path="/git" component={Git} />
                 </Switch>
             </Router>
