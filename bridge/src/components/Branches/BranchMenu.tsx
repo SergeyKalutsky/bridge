@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { IoMdGitBranch } from 'react-icons/io'
-import { ideContext } from './Editor';
-import BranchPopUp from "./file-tree-view/BranchPopUp";
+import { ideContext } from '../Editor/Editor';
+import BranchPopUp from "./BranchPopUp";
 
 export function BranchMenu(): JSX.Element {
     const [open, setOpen] = useState(false);

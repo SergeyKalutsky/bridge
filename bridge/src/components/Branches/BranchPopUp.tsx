@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
-import { PopUp, InputForm } from '../../common'
+import { PopUp, InputForm } from '../common'
 import { IoMdGitBranch } from 'react-icons/io'
-import { ideContext } from '../Editor';
-import { FileObject } from '../types';
-import buildEditor from '../TextEditor';
-import { ACE_MODS } from '../Constants';
+import { ideContext } from '../Editor/Editor';
+import { FileObject } from '../Editor/types';
+import buildEditor from '../Editor/TextEditor';
+import { ACE_MODS } from '../Editor/Constants';
 
 
 function BranchRow({ branch, setOpen }: {

@@ -6,7 +6,7 @@ import { ACE_MODS } from './Constants'
 import { useEffect, useState, createContext } from "react";
 import { ToggleBar, SideMenu, Workspace, ToolBar } from "../common";
 import { Tree } from "./file-tree-view/Tree";
-import { BranchMenu } from "./BranchMenu";
+import { BranchMenu } from "../Branches/BranchMenu";
 import { ActionControllIcons } from "./ActionControlIcons";
 
 
