@@ -1,6 +1,6 @@
 import { Workspace, ToolBar, IconButton } from "../common";
 // import { HiRefresh } from 'react-icons/hi'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import ReactDiffViewer from 'react-diff-viewer';
 import darkModeStyle from './DiffViewerStyles'
@@ -14,9 +14,9 @@ function BroseFilesButton({ git, setGit }: {
 }): JSX.Element {
   const history = useHistory()
   async function handleClick() {
-    history.push('/commithistory')
     // const args = { oid: git.oids[0], oid_prev: git.activeOid };
-    // await window.git.revert(args);
+    await window.git.checkoutBranch({ branch: git.activeOid });
+    history.push('/commithistory')
     // window.settings.del('userProjects.activeProject.activePath');
     // setGit({
     //   ...git,
