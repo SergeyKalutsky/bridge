@@ -7,30 +7,28 @@ import { Git } from './types'
 import Switch from "react-switch";
 import DropDown from './DropDown';
 
-type Props = {
-  git: Git
-  setGit: React.Dispatch<React.SetStateAction<Git>>
-}
-
-const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
-  const [diffViewFileIndex, setDiffViewFileIndex] = useState(0)
-  const [splitView, setSplitView] = useState(true)
+export default function WorkspaceGit({ git, setGit }: {
+  git: Git;
+  setGit: React.Dispatch<React.SetStateAction<Git>>;
+}): JSX.Element {
+  const [diffViewFileIndex, setDiffViewFileIndex] = useState(0);
+  const [splitView, setSplitView] = useState(true);
 
   useEffect(() => {
-    setDiffViewFileIndex(0)
-  }, [git.gitDiffs])
+    setDiffViewFileIndex(0);
+  }, [git.gitDiffs]);
 
   const handleIconClick = async () => {
-    const args = {oid: git.oids[0], oid_prev: git.activeOid}
+    const args = { oid: git.oids[0], oid_prev: git.activeOid };
 
-    await window.git.revert(args)
-    window.settings.del('userProjects.activeProject.activePath')
+    await window.git.revert(args);
+    window.settings.del('userProjects.activeProject.activePath');
     setGit({
       ...git,
       oids: await window.git.log()
-    })
-  }
-  const diff = git.gitDiffs[diffViewFileIndex]
+    });
+  };
+  const diff = git.gitDiffs[diffViewFileIndex];
   return (
     <Workspace>
       <div className='h-full w-[calc(100%-430)] bg-neutral-900 flex flex-col'>
@@ -41,7 +39,7 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
                 diffViewFileIndex={diffViewFileIndex}
                 setDiffViewFileIndex={setDiffViewFileIndex} />
               <Switch
-                onChange={() => { setSplitView(splitView ? false : true) }}
+                onChange={() => { setSplitView(splitView ? false : true); }}
                 offColor={'#2b25cf'}
                 onColor={'#0f9100'}
                 offHandleColor={'#C7C3C3'}
@@ -62,8 +60,5 @@ const WorkspaceGit = ({ git, setGit }: Props): JSX.Element => {
         </div>
       </div>
     </Workspace>
-  )
+  );
 }
-
-
-export default WorkspaceGit
