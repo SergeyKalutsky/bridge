@@ -24,8 +24,6 @@ export default function File({ name, path }: {
   return (
     <div
       className={`pl-[20px] flex items-center ${bgColor} hover:bg-slate-700 hover:cursor-pointer`}
-      onMouseDown={() => window.localStorage.setItem('draggedPath', JSON.stringify({ path: path, isDirectory: false }))}
-      draggable="true"
       onClick={async (e) => {
         e.preventDefault();
         e.stopPropagation();
